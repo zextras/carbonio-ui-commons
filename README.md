@@ -23,4 +23,4 @@ Common frontend features module for Zextras Carbonio
 
 <h2>License</h2>
 
-Released under the AGPL-3.0-only license as specified here: LICENSES/AGPL-3.0-only.txt.
+Released under the AGPL-3.0-only license

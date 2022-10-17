@@ -27,4 +27,8 @@ export type ModalFooterProps = {
 	tooltip?: string;
 	secondaryTooltip?: string;
 	paddingTop?: string;
+	additionalAction?: () => void;
+	additionalBtnType?: ButtonProps['type'];
+	additionalColor?: string;
+	additionalLabel?: string;
 };

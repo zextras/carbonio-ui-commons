@@ -5,10 +5,10 @@
  */
 import { noop } from 'lodash';
 import React from 'react';
+import { MAIL_APP_ID } from '../../../constants';
+import { getSoapFetch } from './network/fetch';
 
 const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
-const soapFetchMock = (req: Record<string, unknown>): Promise<Record<string, unknown>> =>
-	Promise.resolve(req);
 
 export const FOLDERS = {
 	USER_ROOT: '1',
@@ -62,7 +62,6 @@ const mockedAccountItem = {
 		]
 	}
 };
-export const soapFetch = jest.fn(soapFetchMock);
 export const getUserAccount = jest.fn(() => mockedAccountItem);
 export const useUserAccount = jest.fn(() => mockedAccountItem);
 export const t = jest.fn(noop);
@@ -83,3 +82,6 @@ const getFilesAction = jest.fn(() => noop);
 const getFilesActionAvailable = jest.fn(() => noop);
 export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);
 export const useBoard = jest.fn();
+export * from './network/fetch';
+
+export const soapFetch = getSoapFetch('test-environment');

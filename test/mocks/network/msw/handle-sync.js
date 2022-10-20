@@ -3,5 +3,4 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-
-export const PreviewsManagerContext = jest.fn();
+export const handleSyncRequest = (req, res, ctxt) => res(ctxt.json('ciccio'));

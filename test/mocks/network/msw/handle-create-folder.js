@@ -73,7 +73,7 @@ const getResponse = (id) => ({
 	_jsns: 'urn:zimbraSoap'
 });
 export const handleCreateFolderRequest = (req, res, ctx) => {
-	const { id } = req.body.Body.CreateFolderRequest;
-	const response = getResponse(id);
+	const resp = req.body.Body.CreateFolderRequest;
+	const response = getResponse(resp.id);
 	return res(ctx.json(response));
 };

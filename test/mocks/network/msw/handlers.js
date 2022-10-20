@@ -5,8 +5,12 @@
  */
 import { rest } from 'msw';
 import { handleGetMsgRequest } from './handle-get-msg';
+import { handleCreateFolderRequest } from './handle-create-folder';
 
 export const handlers = [
 	// Mails handlers
-	rest.post('/service/soap/GetMsgRequest', handleGetMsgRequest)
+	rest.post('/service/soap/GetMsgRequest', handleGetMsgRequest),
+
+	// Calendars handlers
+	rest.post('/service/soap/CreateFolderRequest', handleCreateFolderRequest)
 ];

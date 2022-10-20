@@ -7,8 +7,6 @@ import { noop } from 'lodash';
 import React from 'react';
 
 const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
-const soapFetchMock = (req: Record<string, unknown>): Promise<Record<string, unknown>> =>
-	Promise.resolve(req);
 
 export const FOLDERS = {
 	USER_ROOT: '1',
@@ -62,7 +60,6 @@ const mockedAccountItem = {
 		]
 	}
 };
-export const soapFetch = jest.fn(soapFetchMock);
 export const getUserAccount = jest.fn(() => mockedAccountItem);
 export const useUserAccount = jest.fn(() => mockedAccountItem);
 export const t = jest.fn(noop);

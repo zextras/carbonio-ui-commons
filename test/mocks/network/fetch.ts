@@ -57,11 +57,13 @@ const useAccountStore = {
 	setState: (state: any): void => {}
 };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const handleSync = (context: any): void => {};
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const goToLogin = (): void => {};
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+// eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-function-return-type
 const report = (app: any) => (e: any) => {};
 
 export const noOp = (): void => {
@@ -192,7 +194,7 @@ export const getSoapFetch =
 	<Request, Response>(api: string, body: Request, otherAccount?: string): Promise<Response> => {
 		const { zimbraVersion, account } = useAccountStore.getState();
 		const { notify, session } = useNetworkStore.getState();
-		return fetch(new URL(`/service/soap/${api}Request`, 'http://localhost'), {
+		return fetch(new URL(`/service/soap/${api}Request`, 'http://localhost').toString(), {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

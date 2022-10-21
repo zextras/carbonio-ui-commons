@@ -5,7 +5,6 @@
  */
 import { noop } from 'lodash';
 import React from 'react';
-import { MAIL_APP_ID } from '../../../constants';
 import { getSoapFetch } from './network/fetch';
 
 const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;

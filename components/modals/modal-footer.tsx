@@ -106,6 +106,8 @@ const ModalFooter: FC<ModalFooterProps> = ({
 							)}
 						</Padding>
 					)}
+
+					<Padding vertical="small">
 					{tooltip ? (
 						<Tooltip label={tooltip} placement="top" maxWidth="fit">
 							<Button
@@ -129,6 +131,7 @@ const ModalFooter: FC<ModalFooterProps> = ({
 							backgroundColor={color || background}
 						/>
 					)}
+					</Padding>
 				</Container>
 			</Container>
 		</Container>

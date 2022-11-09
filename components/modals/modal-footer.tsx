@@ -106,8 +106,21 @@ const ModalFooter: FC<ModalFooterProps> = ({
 							)}
 						</Padding>
 					)}
-					{tooltip ? (
-						<Tooltip label={tooltip} placement="top" maxWidth="fit">
+
+					<Padding vertical="small">
+						{tooltip ? (
+							<Tooltip label={tooltip} placement="top" maxWidth="fit">
+								<Button
+									size={size}
+									color={color}
+									onClick={onConfirm}
+									label={label}
+									type={primaryBtnType}
+									disabled={disabled}
+									backgroundColor={color || background}
+								/>
+							</Tooltip>
+						) : (
 							<Button
 								size={size}
 								color={color}
@@ -117,18 +130,8 @@ const ModalFooter: FC<ModalFooterProps> = ({
 								disabled={disabled}
 								backgroundColor={color || background}
 							/>
-						</Tooltip>
-					) : (
-						<Button
-							size={size}
-							color={color}
-							onClick={onConfirm}
-							label={label}
-							type={primaryBtnType}
-							disabled={disabled}
-							backgroundColor={color || background}
-						/>
-					)}
+						)}
+					</Padding>
 				</Container>
 			</Container>
 		</Container>

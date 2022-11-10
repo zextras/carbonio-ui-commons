@@ -73,6 +73,7 @@ export const useUserSettings = jest.fn(() => ({
 		zimbraPrefUseTimeZoneListInCalendar: 'TRUE'
 	}
 }));
+export const getUserSettings = jest.fn();
 const IntegrationComponent = jest.fn(FakeIntegration);
 const isIntegrationAvailable = jest.fn(() => true);
 
@@ -81,6 +82,9 @@ const getFilesAction = jest.fn(() => noop);
 const getFilesActionAvailable = jest.fn(() => noop);
 export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);
 export const useBoard = jest.fn();
+export const getBridgedFunctions = (): { createSnackbar: () => void } => ({
+	createSnackbar: jest.fn()
+});
 export * from './network/fetch';
 
 export const soapFetch = getSoapFetch('test-environment');

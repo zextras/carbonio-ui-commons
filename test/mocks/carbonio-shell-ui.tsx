@@ -3,8 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { faker } from '@faker-js/faker';
 import { noop } from 'lodash';
 import React from 'react';
+import { IdentityItem } from '../../../types/editor';
 import { getSoapFetch } from './network/fetch';
 
 const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
@@ -41,28 +43,42 @@ export const ZIMBRA_STANDARD_COLORS = [
 	{ zValue: 9, hex: '#ba8b00', zLabel: 'orange' }
 ];
 
-const mockedAccountItem = {
-	identities: {
-		identity: [
-			{
-				id: '1',
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefFromAddressType: 'ciccio'
+const getNewName = (): { firstName: string; lastName: string } => ({
+	firstName: faker.name.firstName(),
+	lastName: faker.name.lastName()
+});
+
+const getMockedAccountItem = (): any => {
+	const identity1 = getNewName();
+	return {
+		identities: {
+			identity: [
+				{
+					id: '1',
+					name: 'DEFAULT',
+					_attrs: {
+						zimbraPrefFromAddressType: faker.internet.email(),
+						zimbraPrefIdentityName: 'DEFAULT'
+					}
+				},
+				{
+					id: '2',
+					name: `${identity1.firstName} ${identity1.lastName}`,
+					_attrs: {
+						zimbraPrefFromAddressType: faker.internet.email(
+							identity1.firstName,
+							identity1.lastName
+						),
+						zimbraPrefIdentityName: `${identity1.firstName} ${identity1.lastName}`
+					}
 				}
-			},
-			{
-				id: '2',
-				name: 'ciccio',
-				_attrs: {
-					zimbraPrefFromAddressType: 'ciccio'
-				}
-			}
-		]
-	}
+			]
+		}
+	};
 };
-export const getUserAccount = jest.fn(() => mockedAccountItem);
-export const useUserAccount = jest.fn(() => mockedAccountItem);
+
+export const getUserAccount = jest.fn(getMockedAccountItem);
+export const useUserAccount = jest.fn(getMockedAccountItem);
 export const t = jest.fn(noop);
 export const replaceHistory = jest.fn();
 const getLink = jest.fn(() => noop);

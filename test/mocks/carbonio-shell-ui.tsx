@@ -6,7 +6,6 @@
 import { faker } from '@faker-js/faker';
 import { noop } from 'lodash';
 import React from 'react';
-import { IdentityItem } from '../../../types/editor';
 import { getSoapFetch } from './network/fetch';
 
 const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
@@ -44,8 +43,8 @@ export const ZIMBRA_STANDARD_COLORS = [
 ];
 
 const getNewName = (): { firstName: string; lastName: string } => ({
-	firstName: faker.name.firstName(),
-	lastName: faker.name.lastName()
+	firstName: faker?.name?.firstName?.() ?? '',
+	lastName: faker?.name?.lastName?.() ?? ''
 });
 
 const getMockedAccountItem = (): any => {
@@ -57,7 +56,7 @@ const getMockedAccountItem = (): any => {
 					id: '1',
 					name: 'DEFAULT',
 					_attrs: {
-						zimbraPrefFromAddressType: faker.internet.email(),
+						zimbraPrefFromAddressType: faker?.internet?.email?.() ?? '',
 						zimbraPrefIdentityName: 'DEFAULT'
 					}
 				},
@@ -65,10 +64,8 @@ const getMockedAccountItem = (): any => {
 					id: '2',
 					name: `${identity1.firstName} ${identity1.lastName}`,
 					_attrs: {
-						zimbraPrefFromAddressType: faker.internet.email(
-							identity1.firstName,
-							identity1.lastName
-						),
+						zimbraPrefFromAddressType:
+							faker?.internet?.email?.(identity1.firstName, identity1.lastName) ?? '',
 						zimbraPrefIdentityName: `${identity1.firstName} ${identity1.lastName}`
 					}
 				}

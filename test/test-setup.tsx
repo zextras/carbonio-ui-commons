@@ -3,27 +3,17 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import React, { Reducer, useMemo } from 'react';
 
-import { render, RenderOptions, RenderResult } from '@testing-library/react';
+import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalManager, ThemeProvider, SnackbarManager } from '@zextras/carbonio-design-system';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import I18nTestFactory from './i18n/i18n-test-factory';
 
-interface ProviderWrapperOptions {
-	appName: string;
-	store?: {
-		reducers: Record<string, Reducer<any, any>>;
-		preloadedState?: any;
-	};
-}
-
 interface ProvidersWrapperProps {
 	children?: React.ReactElement;
-	// renderOptions?: any;
 }
 
 function customRender(ui: React.ReactElement, options?: any): RenderResult {

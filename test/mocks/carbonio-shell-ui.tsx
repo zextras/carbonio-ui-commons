@@ -42,94 +42,90 @@ export const ZIMBRA_STANDARD_COLORS = [
 ];
 
 const mockedAccountItem = {
-		"id": "123",
-		"name": "johnSmith",
-		"displayName": "johnSmith",
-		"identities": {
-			"identity": [
-				{
-					"name": "New Persona 1",
-					"id": "123",
-					"_attrs": {
-						"zimbraPrefIdentityId": "123",
-						"zimbraPrefWhenSentToEnabled": "FALSE",
-						"zimbraPrefWhenInFoldersEnabled": "FALSE",
-						"zimbraPrefFromAddressType": "sendAs",
-						"zimbraPrefFromAddress": "johnSmith@zextras.com",
-						"objectClass": "zimbraIdentity",
-						"zimbraPrefFromDisplay": "johnSmith",
-						"zimbraPrefIdentityName": "New Persona 1",
-						"zimbraPrefReplyToEnabled": "FALSE",
-						"zimbraCreateTimestamp": "20211227131653.367Z"
+	id: '123',
+	name: 'johnSmith',
+	displayName: 'johnSmith',
+	identities: {
+		identity: [
+			{
+				name: 'New Persona 1',
+				id: '123',
+				_attrs: {
+					zimbraPrefIdentityId: '123',
+					zimbraPrefWhenSentToEnabled: 'FALSE',
+					zimbraPrefWhenInFoldersEnabled: 'FALSE',
+					zimbraPrefFromAddressType: 'sendAs',
+					zimbraPrefFromAddress: 'johnSmith@zextras.com',
+					objectClass: 'zimbraIdentity',
+					zimbraPrefFromDisplay: 'johnSmith',
+					zimbraPrefIdentityName: 'New Persona 1',
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraCreateTimestamp: '20211227131653.367Z'
+				}
+			}
+		]
+	},
+	signatures: {
+		signature: [
+			{
+				name: 'johnSmith',
+				id: '123',
+				content: [
+					{
+						type: 'text/html',
+						_content:
+							'<div><span style="color:#333333;font-family:monospace">regards</span><br style="color:#333333;font-family:monospace" /><span style="color:#333333;font-family:monospace">johnSmith</span></div>'
 					}
-				}]
-		},
-		"signatures": {
-			"signature": [
-				{
-					"name": "johnSmith",
-					"id": "123",
-					"content": [
-						{
-							"type": "text/html",
-							"_content": "<div><span style=\"color:#333333;font-family:monospace\">regards</span><br style=\"color:#333333;font-family:monospace\" /><span style=\"color:#333333;font-family:monospace\">johnSmith</span></div>"
-						}
-					]
-				}
-			]
-		},
-		"rights": {
-			"targets": [
-				{
-					"right": "sendAs",
-					"target": [
-						{
-							"type": "account",
-							"email": [
-								{
-									"addr": "johnSmith@zextras.com"
-								}
-							],
-							"d": "johnSmith"
-						},
-					]
-				},
-				{
-					"right": "viewFreeBusy",
-					"target": [
-						{
-							"type": "account",
-							"id": "123",
-							"name": "johnSmith@zextras.com",
-							"d": "johnSmith"
-						}
-					]
-				},
-				{
-					"right": "sendOnBehalfOf",
-					"target": [
-						{
-							"type": "account",
-							"email": [
-								{
-									"addr": "johnSmith@zextras.com"
-								}
-							],
-							"d": "ciccio"
-						}
-					]
-				}
-			]
-		}
+				]
+			}
+		]
+	},
+	rights: {
+		targets: [
+			{
+				right: 'sendAs',
+				target: [
+					{
+						type: 'account',
+						email: [
+							{
+								addr: 'johnSmith@zextras.com'
+							}
+						],
+						d: 'johnSmith'
+					}
+				]
+			},
+			{
+				right: 'viewFreeBusy',
+				target: [
+					{
+						type: 'account',
+						id: '123',
+						name: 'johnSmith@zextras.com',
+						d: 'johnSmith'
+					}
+				]
+			},
+			{
+				right: 'sendOnBehalfOf',
+				target: [
+					{
+						type: 'account',
+						email: [
+							{
+								addr: 'johnSmith@zextras.com'
+							}
+						],
+						d: 'ciccio'
+					}
+				]
+			}
+		]
 	}
+};
 
-
-const mockedAccountItems = [
-   mockedAccountItem
-]
-
-
-
+const mockedAccountItems = [mockedAccountItem];
 
 export const getUserAccount = jest.fn(() => mockedAccountItem);
 export const useUserAccount = jest.fn(() => mockedAccountItem);

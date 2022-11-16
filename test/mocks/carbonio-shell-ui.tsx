@@ -148,7 +148,8 @@ const getFilesAction = jest.fn(() => noop);
 const getFilesActionAvailable = jest.fn(() => noop);
 export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);
 export const useBoard = jest.fn();
+export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
 export * from './network/fetch';
-
+export const useHistory = jest.fn();
 export const soapFetch = getSoapFetch('test-environment');

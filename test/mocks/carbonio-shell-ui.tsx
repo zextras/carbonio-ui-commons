@@ -5,6 +5,7 @@
  */
 import { noop } from 'lodash';
 import React from 'react';
+import { roots } from './folders/roots';
 import { getSoapFetch } from './network/fetch';
 
 const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
@@ -132,8 +133,8 @@ export const useUserAccount = jest.fn(() => mockedAccountItem);
 export const useUserAccounts = jest.fn(() => mockedAccountItems);
 export const t = jest.fn(noop);
 export const replaceHistory = jest.fn();
-const getLink = jest.fn(() => noop);
-const getLinkAvailable = jest.fn(() => noop);
+const getLink = jest.fn(() => {});
+const getLinkAvailable = jest.fn(() => {});
 export const useIntegratedFunction = jest.fn(() => [getLink, getLinkAvailable]);
 export const useUserSettings = jest.fn(() => ({
 	prefs: {
@@ -144,12 +145,18 @@ const IntegrationComponent = jest.fn(FakeIntegration);
 const isIntegrationAvailable = jest.fn(() => true);
 
 export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
-const getFilesAction = jest.fn(() => noop);
-const getFilesActionAvailable = jest.fn(() => noop);
+const getFilesAction = jest.fn(() => {});
+const getFilesActionAvailable = jest.fn(() => {});
 export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);
 export const useBoard = jest.fn();
+export const useRoot = jest.fn((id: string) => {
+	return roots[id];
+});
+export const useRoots = jest.fn(() => {
+	return roots;
+});
+export const useFolders = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
 export * from './network/fetch';
-export const useHistory = jest.fn();
 export const soapFetch = getSoapFetch('test-environment');

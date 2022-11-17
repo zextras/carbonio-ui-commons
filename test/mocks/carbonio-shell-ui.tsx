@@ -49,7 +49,7 @@ const mockedAccountItem = {
 	identities: {
 		identity: [
 			{
-				name: 'New Persona 1',
+				name: 'DEFAULT',
 				id: '123',
 				_attrs: {
 					zimbraPrefIdentityId: '123',

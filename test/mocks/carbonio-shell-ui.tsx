@@ -142,11 +142,11 @@ export const useUserSettings = jest.fn(() => ({
 	}
 }));
 const IntegrationComponent = jest.fn(FakeIntegration);
-const isIntegrationAvailable = jest.fn(() => true);
+const isIntegrationAvailable = false;
 
 export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
-const getFilesAction = jest.fn(() => {});
-const getFilesActionAvailable = jest.fn(() => {});
+const getFilesAction = {};
+const getFilesActionAvailable = false;
 export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);
 export const useBoard = jest.fn();
 export const useRoot = jest.fn((id: string) => {

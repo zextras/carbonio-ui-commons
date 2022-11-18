@@ -149,14 +149,12 @@ const getFilesAction = {};
 const getFilesActionAvailable = false;
 export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);
 export const useBoard = jest.fn();
-export const useRoot = jest.fn((id: string) => {
-	return roots[id];
-});
-export const useRoots = jest.fn(() => {
-	return roots;
-});
+export const useRoot = jest.fn((id: string) => roots[id]);
+export const useRoots = jest.fn(() => roots);
 export const useFolders = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
+export const minimizeBoards = jest.fn();
+export const getCurrentRoute = jest.fn();
 export * from './network/fetch';
 export const soapFetch = getSoapFetch('test-environment');

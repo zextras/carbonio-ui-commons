@@ -131,10 +131,10 @@ const mockedAccountItems = [mockedAccountItem];
 export const getUserAccount = jest.fn(() => mockedAccountItem);
 export const useUserAccount = jest.fn(() => mockedAccountItem);
 export const useUserAccounts = jest.fn(() => mockedAccountItems);
-export const t = jest.fn(noop);
+export const t = jest.fn((key: string) => key);
 export const replaceHistory = jest.fn();
-const getLink = jest.fn(() => {});
-const getLinkAvailable = jest.fn(() => {});
+const getLink = {};
+const getLinkAvailable = false;
 export const useIntegratedFunction = jest.fn(() => [getLink, getLinkAvailable]);
 export const useUserSettings = jest.fn(() => ({
 	prefs: {

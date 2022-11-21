@@ -23,18 +23,10 @@ export interface RestGenericResponse {
 
 const handlers: Array<RequestHandler<RequestHandlerDefaultInfo, MockedRequest<DefaultBodyType>>> =
 	[];
-// 	// Mails handlers
-// 	rest.post('/service/soap/GetMsgRequest', handleGetMsgRequest),
-//
-// 	// Calendars handlers
-// 	rest.post('/service/soap/CreateFolderRequest', handleCreateFolderRequest)
-// ];
 
 export const getRestHandlers = (): Array<
 	RequestHandler<RequestHandlerDefaultInfo, MockedRequest<DefaultBodyType>>
-> => {
-	return [...handlers];
-};
+> => [...handlers];
 
 export const registerRestHandler = (...handler: RestHandler[]): void => {
 	handlers.push(...handler);

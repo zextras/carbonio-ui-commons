@@ -194,8 +194,9 @@ export const getSoapFetch =
 	<Request, Response>(api: string, body: Request, otherAccount?: string): Promise<Response> => {
 		const { zimbraVersion, account } = useAccountStore.getState();
 		const { notify, session } = useNetworkStore.getState();
-		const url = `/service/soap/${api}Request`;
-		const result = fetch(url, {
+		const acc = getAccount(account, otherAccount);
+		const url = new URL(`/service/soap/${api}Request`, 'http://localhost').toString();
+		const request = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -213,7 +214,7 @@ export const getSoapFetch =
 							  }
 							: undefined,
 						session: session ?? {},
-						account: getAccount(account, otherAccount),
+						account: acc,
 						userAgent: {
 							name: userAgent,
 							version: zimbraVersion
@@ -221,7 +222,8 @@ export const getSoapFetch =
 					}
 				}
 			})
-		})
+		};
+		const result = fetch(url, request)
 			.then((res) => res?.json())
 			.then((res: SoapResponse<Response>) => handleResponse(api, res))
 			.catch((e) => {

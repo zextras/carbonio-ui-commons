@@ -23,9 +23,9 @@ export const getFailOnConsoleDefaultConfig = (): failOnConsole.InitOptions => ({
  * Default logic to execute before all the tests
  */
 export const defaultBeforeAllTests = (): void => {
+	fetchMock.enableMocks();
 	server = setupServer(...getRestHandlers());
 	server.listen();
-	fetchMock.doMock();
 };
 
 /**
@@ -47,3 +47,5 @@ export const defaultAfterEachTest = (): void => {
 export const defaultAfterAllTests = (): void => {
 	server.close();
 };
+
+export const getSetupServerApi = (): SetupServerApi => server;

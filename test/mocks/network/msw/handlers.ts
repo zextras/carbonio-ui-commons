@@ -1,9 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /*
  * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { rest, RestHandler } from 'msw';
+import { RestHandler } from 'msw';
 import {
 	b as RequestHandler,
 	c as DefaultBodyType,
@@ -31,7 +32,9 @@ const handlers: Array<RequestHandler<RequestHandlerDefaultInfo, MockedRequest<De
 
 export const getRestHandlers = (): Array<
 	RequestHandler<RequestHandlerDefaultInfo, MockedRequest<DefaultBodyType>>
-> => [...handlers];
+> => {
+	return [...handlers];
+};
 
 export const registerRestHandler = (...handler: RestHandler[]): void => {
 	handlers.push(...handler);

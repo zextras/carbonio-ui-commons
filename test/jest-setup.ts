@@ -46,6 +46,7 @@ export const defaultAfterEachTest = (): void => {
 /**
  * Default logic to execute after all the tests
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export const defaultAfterAllTests = (): void => {};
 
 export const getSetupServerApi = (): SetupServerApi => server;

@@ -31,6 +31,7 @@ export const defaultBeforeAllTests = (): void => {
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const defaultBeforeEachTest = (): void => {
+	fetchMock.disableMocks();
 	server.listen({ onUnhandledRequest: 'bypass' });
 };
 
@@ -38,7 +39,6 @@ export const defaultBeforeEachTest = (): void => {
  * Default logic to execute after each tests
  */
 export const defaultAfterEachTest = (): void => {
-	fetchMock.resetMocks();
 	server.resetHandlers();
 	server.close();
 };

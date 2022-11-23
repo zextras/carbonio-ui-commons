@@ -3,8 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { faker } from '@faker-js/faker';
 import { noop } from 'lodash';
 import React from 'react';
+import { getMockedAccountItem } from './accounts/fakeAccounts';
 import { roots } from './folders/roots';
 import { getSoapFetch } from './network/fetch';
 
@@ -42,89 +44,7 @@ export const ZIMBRA_STANDARD_COLORS = [
 	{ zValue: 9, hex: '#ba8b00', zLabel: 'orange' }
 ];
 
-const mockedAccountItem = {
-	id: '123',
-	name: 'johnSmith',
-	displayName: 'johnSmith',
-	identities: {
-		identity: [
-			{
-				name: 'DEFAULT',
-				id: '123',
-				_attrs: {
-					zimbraPrefIdentityId: '123',
-					zimbraPrefWhenSentToEnabled: 'FALSE',
-					zimbraPrefWhenInFoldersEnabled: 'FALSE',
-					zimbraPrefFromAddressType: 'sendAs',
-					zimbraPrefFromAddress: 'johnSmith@zextras.com',
-					objectClass: 'zimbraIdentity',
-					zimbraPrefFromDisplay: 'johnSmith',
-					zimbraPrefIdentityName: 'New Persona 1',
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraCreateTimestamp: '20211227131653.367Z'
-				}
-			}
-		]
-	},
-	signatures: {
-		signature: [
-			{
-				name: 'johnSmith',
-				id: '123',
-				content: [
-					{
-						type: 'text/html',
-						_content:
-							'<div><span style="color:#333333;font-family:monospace">regards</span><br style="color:#333333;font-family:monospace" /><span style="color:#333333;font-family:monospace">johnSmith</span></div>'
-					}
-				]
-			}
-		]
-	},
-	rights: {
-		targets: [
-			{
-				right: 'sendAs',
-				target: [
-					{
-						type: 'account',
-						email: [
-							{
-								addr: 'johnSmith@zextras.com'
-							}
-						],
-						d: 'johnSmith'
-					}
-				]
-			},
-			{
-				right: 'viewFreeBusy',
-				target: [
-					{
-						type: 'account',
-						id: '123',
-						name: 'johnSmith@zextras.com',
-						d: 'johnSmith'
-					}
-				]
-			},
-			{
-				right: 'sendOnBehalfOf',
-				target: [
-					{
-						type: 'account',
-						email: [
-							{
-								addr: 'johnSmith@zextras.com'
-							}
-						],
-						d: 'ciccio'
-					}
-				]
-			}
-		]
-	}
-};
+const mockedAccountItem = getMockedAccountItem();
 
 const mockedAccountItems = [mockedAccountItem];
 
@@ -141,6 +61,7 @@ export const useUserSettings = jest.fn(() => ({
 		zimbraPrefUseTimeZoneListInCalendar: 'TRUE'
 	}
 }));
+export const getUserSettings = jest.fn();
 const IntegrationComponent = jest.fn(FakeIntegration);
 const isIntegrationAvailable = false;
 
@@ -149,6 +70,7 @@ const getFilesAction = {};
 const getFilesActionAvailable = false;
 export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);
 export const useBoard = jest.fn();
+export const getBridgedFunctions = jest.fn();
 export const useRoot = jest.fn((id: string) => roots[id]);
 export const useRoots = jest.fn(() => roots);
 export const useFolders = jest.fn();

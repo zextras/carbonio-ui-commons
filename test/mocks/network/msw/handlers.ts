@@ -1,9 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /*
  * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { rest, RestHandler } from 'msw';
+import { RestHandler } from 'msw';
 import {
 	b as RequestHandler,
 	c as DefaultBodyType,
@@ -22,12 +23,6 @@ export interface RestGenericResponse {
 
 const handlers: Array<RequestHandler<RequestHandlerDefaultInfo, MockedRequest<DefaultBodyType>>> =
 	[];
-// 	// Mails handlers
-// 	rest.post('/service/soap/GetMsgRequest', handleGetMsgRequest),
-//
-// 	// Calendars handlers
-// 	rest.post('/service/soap/CreateFolderRequest', handleCreateFolderRequest)
-// ];
 
 export const getRestHandlers = (): Array<
 	RequestHandler<RequestHandlerDefaultInfo, MockedRequest<DefaultBodyType>>

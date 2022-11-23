@@ -23,9 +23,9 @@ export const getFailOnConsoleDefaultConfig = (): failOnConsole.InitOptions => ({
  * Default logic to execute before all the tests
  */
 export const defaultBeforeAllTests = (): void => {
-	server = setupServer(...getRestHandlers());
-	server.listen();
 	fetchMock.doMock();
+	server = setupServer(...getRestHandlers());
+	server.listen({ onUnhandledRequest: 'bypass' });
 };
 
 /**
@@ -37,13 +37,16 @@ export const defaultBeforeEachTest = (): void => {};
 /**
  * Default logic to execute after each tests
  */
-export const defaultAfterEachTest = (): void => {
-	server.resetHandlers();
-};
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+export const defaultAfterEachTest = (): void => {};
 
 /**
  * Default logic to execute after all the tests
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export const defaultAfterAllTests = (): void => {
+	server.resetHandlers();
 	server.close();
 };
+
+export const getSetupServerApi = (): SetupServerApi => server;

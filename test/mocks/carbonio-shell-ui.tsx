@@ -6,6 +6,8 @@
 import { faker } from '@faker-js/faker';
 import { noop } from 'lodash';
 import React from 'react';
+import { getMockedAccountItem } from './accounts/fakeAccounts';
+import { roots } from './folders/roots';
 import { getSoapFetch } from './network/fetch';
 
 const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
@@ -42,44 +44,17 @@ export const ZIMBRA_STANDARD_COLORS = [
 	{ zValue: 9, hex: '#ba8b00', zLabel: 'orange' }
 ];
 
-const getNewName = (): { firstName: string; lastName: string } => ({
-	firstName: faker?.name?.firstName?.() ?? '',
-	lastName: faker?.name?.lastName?.() ?? ''
-});
+const mockedAccountItem = getMockedAccountItem();
 
-const getMockedAccountItem = (): any => {
-	const identity1 = getNewName();
-	return {
-		identities: {
-			identity: [
-				{
-					id: '1',
-					name: 'DEFAULT',
-					_attrs: {
-						zimbraPrefFromAddressType: faker?.internet?.email?.() ?? '',
-						zimbraPrefIdentityName: 'DEFAULT'
-					}
-				},
-				{
-					id: '2',
-					name: `${identity1.firstName} ${identity1.lastName}`,
-					_attrs: {
-						zimbraPrefFromAddressType:
-							faker?.internet?.email?.(identity1.firstName, identity1.lastName) ?? '',
-						zimbraPrefIdentityName: `${identity1.firstName} ${identity1.lastName}`
-					}
-				}
-			]
-		}
-	};
-};
+const mockedAccountItems = [mockedAccountItem];
 
-export const getUserAccount = jest.fn(getMockedAccountItem);
-export const useUserAccount = jest.fn(getMockedAccountItem);
-export const t = jest.fn(noop);
+export const getUserAccount = jest.fn(() => mockedAccountItem);
+export const useUserAccount = jest.fn(() => mockedAccountItem);
+export const useUserAccounts = jest.fn(() => mockedAccountItems);
+export const t = jest.fn((key: string) => key);
 export const replaceHistory = jest.fn();
-const getLink = jest.fn(() => noop);
-const getLinkAvailable = jest.fn(() => noop);
+const getLink = {};
+const getLinkAvailable = false;
 export const useIntegratedFunction = jest.fn(() => [getLink, getLinkAvailable]);
 export const useUserSettings = jest.fn(() => ({
 	prefs: {
@@ -88,14 +63,20 @@ export const useUserSettings = jest.fn(() => ({
 }));
 export const getUserSettings = jest.fn();
 const IntegrationComponent = jest.fn(FakeIntegration);
-const isIntegrationAvailable = jest.fn(() => true);
+const isIntegrationAvailable = false;
 
 export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
-const getFilesAction = jest.fn(() => noop);
-const getFilesActionAvailable = jest.fn(() => noop);
+const getFilesAction = {};
+const getFilesActionAvailable = false;
 export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);
 export const useBoard = jest.fn();
 export const getBridgedFunctions = jest.fn();
+export const useRoot = jest.fn((id: string) => roots[id]);
+export const useRoots = jest.fn(() => roots);
+export const useFolders = jest.fn();
+export const addBoard = jest.fn();
+export const useBoardHooks = jest.fn();
+export const minimizeBoards = jest.fn();
+export const getCurrentRoute = jest.fn();
 export * from './network/fetch';
-
 export const soapFetch = getSoapFetch('test-environment');

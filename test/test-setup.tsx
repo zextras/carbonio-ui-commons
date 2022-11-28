@@ -42,47 +42,6 @@ function customRender(ui: React.ReactElement, options?: any): RenderResult {
 		wrapper: ProvidersWrapper,
 		...options
 	});
-
-	// const ProvidersWrapper = (
-	// 	{ children }: ProvidersWrapperProps,
-	// 	options?: ProviderWrapperOptions
-	// ): JSX.Element => {
-	// 	const i18n = useMemo(() => {
-	// 		const i18nFactory = new I18nTestFactory();
-	// 		return i18nFactory.getAppI18n();
-	// 	}, []);
-	//
-	// 	const store = configureStore({
-	// 		devTools: {
-	// 			name: options?.appName
-	// 		},
-	// 		reducer: combineReducers(options?.store?.reducers ?? {}),
-	// 		preloadedState: options?.store?.preloadedState
-	// 	});
-	//
-	// 	return (
-	// 		<ThemeProvider>
-	// 			<Provider store={store}>
-	// 				<I18nextProvider i18n={i18n}>
-	// 					<SnackbarManager>
-	// 						<ModalManager>{children}</ModalManager>
-	// 					</SnackbarManager>
-	// 				</I18nextProvider>
-	// 			</Provider>
-	// 		</ThemeProvider>
-	// 	);
-	// };
-	//
-	// function customRender(
-	// 	ui: React.ReactElement,
-	// 	options?: Omit<RenderOptions, 'wrapper'>
-	// ): RenderResult {
-	// 	return render(ui, {
-	// 		wrapper: ProvidersWrapper,
-	// 		...options
-	// 	});
-	// }
-	//
 }
 
 export function setupTest(

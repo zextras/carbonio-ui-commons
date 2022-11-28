@@ -67,13 +67,13 @@ const goToLogin = (): void => {};
 const report = (app: any) => (e: any) => {};
 
 export const noOp = (): void => {
-	// eslint-disable-next-line @typescript-eslint/no-use-before-define
-	getSoapFetch(SHELL_APP_ID)(
-		'NoOp',
-		useNetworkStore.getState().pollingInterval === 500
-			? { _jsns: 'urn:zimbraMail', limitToOneBlocked: 1, wait: 1 }
-			: { _jsns: 'urn:zimbraMail' }
-	);
+	// // eslint-disable-next-line @typescript-eslint/no-use-before-define
+	// getSoapFetch(SHELL_APP_ID)(
+	// 	'NoOp',
+	// 	useNetworkStore.getState().pollingInterval === 500
+	// 		? { _jsns: 'urn:zimbraMail', limitToOneBlocked: 1, wait: 1 }
+	// 		: { _jsns: 'urn:zimbraMail' }
+	// );
 };
 
 const getAccount = (

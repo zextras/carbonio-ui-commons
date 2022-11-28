@@ -3,8 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { faker } from '@faker-js/faker';
-import { noop } from 'lodash';
+
 import React from 'react';
 import { getMockedAccountItem } from './accounts/fakeAccounts';
 import { roots } from './folders/roots';

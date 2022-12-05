@@ -38,7 +38,9 @@ export const defaultBeforeEachTest = (): void => {};
  * Default logic to execute after each tests
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export const defaultAfterEachTest = (): void => {};
+export const defaultAfterEachTest = (): void => {
+	jest.clearAllTimers();
+};
 
 /**
  * Default logic to execute after all the tests

@@ -5,3 +5,4 @@
  */
 
 export * from './modals';
+export * from './user-accounts.d.ts';

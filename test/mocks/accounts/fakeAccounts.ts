@@ -6,7 +6,7 @@
 
 import { faker } from '@faker-js/faker';
 
-type fakeIdentity = {
+type FakeIdentity = {
 	id: string;
 	firstName: string;
 	lastName: string;
@@ -14,7 +14,7 @@ type fakeIdentity = {
 	fullName: string;
 };
 
-const createFakeIdentity = (): fakeIdentity => {
+const createFakeIdentity = (): FakeIdentity => {
 	const firstName = faker?.name?.firstName?.() ?? '';
 	const lastName = faker?.name?.lastName?.() ?? '';
 
@@ -30,9 +30,9 @@ const createFakeIdentity = (): fakeIdentity => {
 /**
  *
  */
-const getMockedAccountItem = (): any => {
-	const identity1 = createFakeIdentity();
-	const identity2 = createFakeIdentity();
+const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
+	const identity1 = context?.identity1 ?? createFakeIdentity();
+	const identity2 = context?.identity2 ?? createFakeIdentity();
 	return {
 		id: identity1.id,
 		name: identity1.fullName,
@@ -133,4 +133,4 @@ const getMockedAccountItem = (): any => {
 	};
 };
 
-export { getMockedAccountItem, createFakeIdentity };
+export { createFakeIdentity, getMockedAccountItem };

@@ -78,3 +78,4 @@ export const minimizeBoards = jest.fn();
 export const getCurrentRoute = jest.fn();
 export * from './network/fetch';
 export const soapFetch = getSoapFetch('test-environment');
+export const useTags = jest.fn();

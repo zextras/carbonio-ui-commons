@@ -3,86 +3,56 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { Reducer, useMemo } from 'react';
-
+import React, { useMemo } from 'react';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalManager, ThemeProvider, SnackbarManager } from '@zextras/carbonio-design-system';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
+import { MemoryRouter, Route } from 'react-router-dom';
 import I18nTestFactory from './i18n/i18n-test-factory';
 
 interface ProvidersWrapperProps {
 	children?: React.ReactElement;
+	options?: any;
 }
 
-function customRender(ui: React.ReactElement, options?: any): RenderResult {
-	const ProvidersWrapper = ({ children }: ProvidersWrapperProps): JSX.Element => {
-		const i18n = useMemo(() => {
-			const i18nFactory = new I18nTestFactory();
-			return i18nFactory.getAppI18n();
-		}, []);
+const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): JSX.Element => {
+	const { store = {} } = options;
 
-		const store = options?.store ?? {};
+	const i18n = useMemo(() => {
+		const i18nFactory = new I18nTestFactory();
+		return i18nFactory.getAppI18n();
+	}, []);
 
-		return (
-			<ThemeProvider>
-				<Provider store={store}>
-					<I18nextProvider i18n={i18n}>
-						<SnackbarManager>
-							<ModalManager>{children}</ModalManager>
-						</SnackbarManager>
-					</I18nextProvider>
-				</Provider>
-			</ThemeProvider>
-		);
-	};
+	return (
+		<ThemeProvider>
+			<Provider store={store}>
+				<I18nextProvider i18n={i18n}>
+					<SnackbarManager>
+						<ModalManager>{children}</ModalManager>
+					</SnackbarManager>
+				</I18nextProvider>
+			</Provider>
+		</ThemeProvider>
+	);
+};
 
+function customRender(
+	ui: React.ReactElement,
+	{ initialEntries = ['/'], path = '*', ...options }: any
+): RenderResult {
+	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
+		<MemoryRouter initialEntries={initialEntries}>
+			<Route path={path}>
+				<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
+			</Route>
+		</MemoryRouter>
+	);
 	return render(ui, {
-		wrapper: ProvidersWrapper,
+		wrapper: Wrapper,
 		...options
 	});
-
-	// const ProvidersWrapper = (
-	// 	{ children }: ProvidersWrapperProps,
-	// 	options?: ProviderWrapperOptions
-	// ): JSX.Element => {
-	// 	const i18n = useMemo(() => {
-	// 		const i18nFactory = new I18nTestFactory();
-	// 		return i18nFactory.getAppI18n();
-	// 	}, []);
-	//
-	// 	const store = configureStore({
-	// 		devTools: {
-	// 			name: options?.appName
-	// 		},
-	// 		reducer: combineReducers(options?.store?.reducers ?? {}),
-	// 		preloadedState: options?.store?.preloadedState
-	// 	});
-	//
-	// 	return (
-	// 		<ThemeProvider>
-	// 			<Provider store={store}>
-	// 				<I18nextProvider i18n={i18n}>
-	// 					<SnackbarManager>
-	// 						<ModalManager>{children}</ModalManager>
-	// 					</SnackbarManager>
-	// 				</I18nextProvider>
-	// 			</Provider>
-	// 		</ThemeProvider>
-	// 	);
-	// };
-	//
-	// function customRender(
-	// 	ui: React.ReactElement,
-	// 	options?: Omit<RenderOptions, 'wrapper'>
-	// ): RenderResult {
-	// 	return render(ui, {
-	// 		wrapper: ProvidersWrapper,
-	// 		...options
-	// 	});
-	// }
-	//
 }
 
 export function setupTest(

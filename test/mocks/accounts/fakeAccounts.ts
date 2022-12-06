@@ -6,13 +6,20 @@
 
 import { faker } from '@faker-js/faker';
 
-type FakeIdentity = { firstName: string; lastName: string; email: string; fullName: string };
+type FakeIdentity = {
+	id: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	fullName: string;
+};
 
 const createFakeIdentity = (): FakeIdentity => {
 	const firstName = faker?.name?.firstName?.() ?? '';
 	const lastName = faker?.name?.lastName?.() ?? '';
 
 	return {
+		id: faker.datatype.uuid(),
 		firstName,
 		lastName,
 		fullName: `${firstName} ${lastName}`,
@@ -27,13 +34,13 @@ const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 	const identity1 = context?.identity1 ?? createFakeIdentity();
 	const identity2 = context?.identity2 ?? createFakeIdentity();
 	return {
-		id: '1',
+		id: identity1.id,
 		name: identity1.fullName,
 		displayName: identity1.fullName,
 		identities: {
 			identity: [
 				{
-					id: '1',
+					id: identity1.id,
 					name: 'DEFAULT',
 					_attrs: {
 						zimbraPrefIdentityName: 'DEFAULT',
@@ -49,7 +56,7 @@ const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 					}
 				},
 				{
-					id: '2',
+					id: identity2.id,
 					name: identity2.fullName,
 					_attrs: {
 						zimbraPrefFromAddressType: 'sendAs',
@@ -70,7 +77,7 @@ const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 			signature: [
 				{
 					name: identity1.fullName,
-					id: '1',
+					id: identity1.id,
 					content: [
 						{
 							type: 'text/html',

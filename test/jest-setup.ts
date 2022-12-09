@@ -25,7 +25,7 @@ export const getFailOnConsoleDefaultConfig = (): failOnConsole.InitOptions => ({
 export const defaultBeforeAllTests = (): void => {
 	fetchMock.doMock();
 	server = setupServer(...getRestHandlers());
-	server.listen({ onUnhandledRequest: 'bypass' });
+	server.listen({ onUnhandledRequest: 'warn' });
 };
 
 /**

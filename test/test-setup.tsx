@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { renderHook } from '@testing-library/react-hooks';
 import React, { useMemo } from 'react';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -10,6 +11,8 @@ import { ModalManager, ThemeProvider, SnackbarManager } from '@zextras/carbonio-
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route } from 'react-router-dom';
+import { Store } from 'redux';
+import { useOnClickNewButton } from '../../hooks/on-click-new-button';
 import I18nTestFactory from './i18n/i18n-test-factory';
 
 interface ProvidersWrapperProps {
@@ -17,8 +20,8 @@ interface ProvidersWrapperProps {
 	options?: any;
 }
 
-const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): JSX.Element => {
-	const { store = {} } = options;
+export const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): JSX.Element => {
+	const { store = {}, initialEntries = ['/calendars'], path = '/calendars' } = options;
 
 	const i18n = useMemo(() => {
 		const i18nFactory = new I18nTestFactory();
@@ -27,27 +30,24 @@ const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): JSX.Ele
 
 	return (
 		<ThemeProvider>
-			<Provider store={store}>
-				<I18nextProvider i18n={i18n}>
-					<SnackbarManager>
-						<ModalManager>{children}</ModalManager>
-					</SnackbarManager>
-				</I18nextProvider>
-			</Provider>
+			<MemoryRouter initialEntries={initialEntries}>
+				<Route path={path}>
+					<Provider store={store}>
+						<I18nextProvider i18n={i18n}>
+							<SnackbarManager>
+								<ModalManager>{children}</ModalManager>
+							</SnackbarManager>
+						</I18nextProvider>
+					</Provider>
+				</Route>
+			</MemoryRouter>
 		</ThemeProvider>
 	);
 };
 
-function customRender(
-	ui: React.ReactElement,
-	{ initialEntries = ['/'], path = '*', ...options }: any
-): RenderResult {
+function customRender(ui: React.ReactElement, options: any): RenderResult {
 	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
-		<MemoryRouter initialEntries={initialEntries}>
-			<Route path={path}>
-				<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
-			</Route>
-		</MemoryRouter>
+		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
 	);
 	return render(ui, {
 		wrapper: Wrapper,
@@ -62,4 +62,25 @@ export function setupTest(
 		user: userEvent.setup({ advanceTimers: jest.advanceTimersByTime }),
 		...customRender(...args)
 	};
+}
+type Options = {
+	initialEntries?: Array<string>;
+	path?: string;
+	store?: Store;
+};
+
+export function setupHook( // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	hook: any,
+	{ initialEntries = ['/'], path = '*', ...options }: Options = {}
+): any {
+	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
+		<MemoryRouter initialEntries={initialEntries}>
+			<Route path={path}>
+				<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
+			</Route>
+		</MemoryRouter>
+	);
+	const { result, unmount } = renderHook(() => useOnClickNewButton(), { wrapper: Wrapper });
+
+	return { result, unmount };
 }

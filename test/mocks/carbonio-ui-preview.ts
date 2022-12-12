@@ -3,4 +3,13 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-export const PreviewsManagerContext = jest.fn();
+import React from 'react';
+
+export const previewContextMock = {
+	createPreview: jest.fn(),
+	initPreview: jest.fn(),
+	openPreview: jest.fn(),
+	emptyPreview: jest.fn()
+};
+
+export const PreviewsManagerContext = React.createContext(previewContextMock);

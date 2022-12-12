@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { PreviewManager } from '@zextras/carbonio-ui-preview';
 import React, { Reducer, useMemo } from 'react';
 
 import { render, RenderResult } from '@testing-library/react';
@@ -11,6 +12,7 @@ import { ModalManager, ThemeProvider, SnackbarManager } from '@zextras/carbonio-
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import I18nTestFactory from './i18n/i18n-test-factory';
+import { previewContextMock, PreviewsManagerContext } from './mocks/carbonio-ui-preview';
 
 interface ProvidersWrapperProps {
 	children?: React.ReactElement;
@@ -30,7 +32,9 @@ function customRender(ui: React.ReactElement, options?: any): RenderResult {
 				<Provider store={store}>
 					<I18nextProvider i18n={i18n}>
 						<SnackbarManager>
-							<ModalManager>{children}</ModalManager>
+							<PreviewsManagerContext.Provider value={previewContextMock}>
+								<ModalManager>{children}</ModalManager>
+							</PreviewsManagerContext.Provider>
 						</SnackbarManager>
 					</I18nextProvider>
 				</Provider>

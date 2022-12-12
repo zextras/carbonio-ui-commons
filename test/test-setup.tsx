@@ -21,7 +21,7 @@ interface ProvidersWrapperProps {
 }
 
 export const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): JSX.Element => {
-	const { store = {}, initialEntries = ['/calendars'], path = '/calendars' } = options;
+	const { store = {}, initialEntries = ['/'], path = '/' } = options;
 
 	const i18n = useMemo(() => {
 		const i18nFactory = new I18nTestFactory();
@@ -69,16 +69,10 @@ type Options = {
 	store?: Store;
 };
 
-export function setupHook( // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-	hook: any,
-	{ initialEntries = ['/'], path = '*', ...options }: Options = {}
-): any {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function setupHook(hook: any, options: Options = {}): any {
 	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
-		<MemoryRouter initialEntries={initialEntries}>
-			<Route path={path}>
-				<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
-			</Route>
-		</MemoryRouter>
+		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
 	);
 	const { result, unmount } = renderHook(() => useOnClickNewButton(), { wrapper: Wrapper });
 

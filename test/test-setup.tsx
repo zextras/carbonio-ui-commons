@@ -107,7 +107,7 @@ export function setupHook(hook: any, options: Options = {}): any {
 	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
 		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
 	);
-	const { result, unmount } = renderHook(() => hook, { wrapper: Wrapper });
+	const { result, unmount } = renderHook(() => hook(), { wrapper: Wrapper });
 
 	return { result, unmount };
 }

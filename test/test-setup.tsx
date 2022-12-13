@@ -3,8 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { renderHook } from '@testing-library/react-hooks';
 import React, { useMemo } from 'react';
+import { renderHook } from '@testing-library/react-hooks';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalManager, ThemeProvider, SnackbarManager } from '@zextras/carbonio-design-system';
@@ -12,8 +12,8 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { Store } from 'redux';
-import { useOnClickNewButton } from '../../hooks/on-click-new-button';
 import I18nTestFactory from './i18n/i18n-test-factory';
+import { previewContextMock, PreviewsManagerContext } from './mocks/carbonio-ui-preview';
 
 interface ProvidersWrapperProps {
 	children?: React.ReactElement;
@@ -35,7 +35,9 @@ export const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): 
 					<Provider store={store}>
 						<I18nextProvider i18n={i18n}>
 							<SnackbarManager>
-								<ModalManager>{children}</ModalManager>
+								<PreviewsManagerContext.Provider value={previewContextMock}>
+									<ModalManager>{children}</ModalManager>
+								</PreviewsManagerContext.Provider>
 							</SnackbarManager>
 						</I18nextProvider>
 					</Provider>
@@ -63,6 +65,7 @@ export function setupTest(
 		...customRender(...args)
 	};
 }
+
 type Options = {
 	initialEntries?: Array<string>;
 	path?: string;
@@ -74,7 +77,7 @@ export function setupHook(hook: any, options: Options = {}): any {
 	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
 		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
 	);
-	const { result, unmount } = renderHook(() => useOnClickNewButton(), { wrapper: Wrapper });
+	const { result, unmount } = renderHook(() => hook(), { wrapper: Wrapper });
 
 	return { result, unmount };
 }

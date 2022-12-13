@@ -63,7 +63,6 @@ export const useUserSettings = jest.fn(() => ({
 export const getUserSettings = jest.fn();
 const IntegrationComponent = jest.fn(FakeIntegration);
 const isIntegrationAvailable = false;
-
 export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
 const getFilesAction = {};
 const getFilesActionAvailable = false;
@@ -77,6 +76,7 @@ export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
 export const minimizeBoards = jest.fn();
 export const getCurrentRoute = jest.fn();
+export const getTags = jest.fn();
 export * from './network/fetch';
 export const soapFetch = getSoapFetch('test-environment');
 export const useTags = jest.fn();

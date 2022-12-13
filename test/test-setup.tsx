@@ -57,36 +57,6 @@ function customRender(ui: React.ReactElement, options: any): RenderResult {
 	});
 }
 
-// function customRender(ui: React.ReactElement, options?: any): RenderResult {
-// 	const ProvidersWrapper = ({ children }: ProvidersWrapperProps): JSX.Element => {
-// 		const { store = {}, initialEntries = ['/'], path = '/' } = options;
-//
-// 		const i18n = useMemo(() => {
-// 			const i18nFactory = new I18nTestFactory();
-// 			return i18nFactory.getAppI18n();
-// 		}, []);
-//
-// 		return (
-// 			<ThemeProvider>
-// 				<Provider store={store}>
-// 					<I18nextProvider i18n={i18n}>
-// 						<SnackbarManager>
-// 							<PreviewsManagerContext.Provider value={previewContextMock}>
-// 								<ModalManager>{children}</ModalManager>
-// 							</PreviewsManagerContext.Provider>
-// 						</SnackbarManager>
-// 					</I18nextProvider>
-// 				</Provider>
-// 			</ThemeProvider>
-// 		);
-// 	};
-//
-// 	return render(ui, {
-// 		wrapper: ProvidersWrapper,
-// 		...options
-// 	});
-// }
-
 export function setupTest(
 	...args: Parameters<typeof customRender>
 ): { user: ReturnType<typeof userEvent['setup']> } & ReturnType<typeof render> {

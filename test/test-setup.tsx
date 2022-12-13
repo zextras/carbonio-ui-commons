@@ -12,7 +12,6 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { Store } from 'redux';
-import { useOnClickNewButton } from '../../hooks/on-click-new-button';
 import I18nTestFactory from './i18n/i18n-test-factory';
 
 interface ProvidersWrapperProps {
@@ -74,7 +73,7 @@ export function setupHook(hook: any, options: Options = {}): any {
 	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
 		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
 	);
-	const { result, unmount } = renderHook(() => useOnClickNewButton(), { wrapper: Wrapper });
+	const { result, unmount } = renderHook(() => hook(), { wrapper: Wrapper });
 
 	return { result, unmount };
 }

@@ -33,11 +33,6 @@ export type Contact = {
 	address: string;
 };
 
-export type SidebarComponentProps = {
-	accordions: Array<AccordionFolder>;
-	openIds: Array<string>;
-};
-
 export type SidebarProps = {
 	expanded: boolean;
 };
@@ -176,4 +171,8 @@ export type SidebarAccordionProps = {
 	localStorageName: string;
 	AccordionCustomComponent: ComponentType;
 	onClick?: (T) => void;
+};
+
+export type SidebarComponentProps = {
+	accordions: Array<Folder>;
 };

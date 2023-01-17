@@ -33,7 +33,7 @@ const createFakeIdentity = (): FakeIdentity => {
 const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 	const identity1 = context?.identity1 ?? createFakeIdentity();
 	const identity2 = context?.identity2 ?? createFakeIdentity();
-	const identity3 = context?.identity2 ?? createFakeIdentity();
+	const identity3 = context?.identity3 ?? createFakeIdentity();
 	return {
 		id: identity1.id,
 		name: identity1.email,

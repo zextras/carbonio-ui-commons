@@ -14,4 +14,4 @@ export const ParticipantRole = {
 	RESENT_FROM: 'rf'
 } as const;
 
-export type ParticipantRoleType = typeof ParticipantRole[keyof typeof ParticipantRole];
+export type ParticipantRoleType = (typeof ParticipantRole)[keyof typeof ParticipantRole];

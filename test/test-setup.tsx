@@ -59,7 +59,7 @@ function customRender(ui: React.ReactElement, options: any): RenderResult {
 
 export function setupTest(
 	...args: Parameters<typeof customRender>
-): { user: ReturnType<typeof userEvent['setup']> } & ReturnType<typeof render> {
+): { user: ReturnType<(typeof userEvent)['setup']> } & ReturnType<typeof render> {
 	return {
 		user: userEvent.setup({ advanceTimers: jest.advanceTimersByTime }),
 		...customRender(...args)

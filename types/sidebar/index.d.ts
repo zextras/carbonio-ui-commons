@@ -170,9 +170,18 @@ export type SidebarAccordionProps = {
 	folderId: string;
 	localStorageName: string;
 	AccordionCustomComponent: ComponentType;
-	onClick?: (T) => void;
+	setSelectedFolder?: (folderId: string) => void;
 };
 
-export type SidebarComponentProps = {
-	accordions: Array<Folder>;
+export type DeleteTagModalPropsType = {
+	onClose: () => void;
+	tag?: {
+		CustomComponent?: ComponentType;
+		active: boolean;
+		color?: number;
+		id: string;
+		label: string;
+		name: string;
+		open: boolean;
+	};
 };

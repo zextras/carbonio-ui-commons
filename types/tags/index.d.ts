@@ -3,9 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { ComponentType, SyntheticEvent } from 'react';
+
 import { ItemType as AccordionItemType } from '@zextras/carbonio-design-system';
 import { Tag } from '@zextras/carbonio-shell-ui';
+import React, { ComponentType, SyntheticEvent } from 'react';
 
 export type ReturnType = {
 	id: string;

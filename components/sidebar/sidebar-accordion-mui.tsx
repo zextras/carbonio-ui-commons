@@ -8,21 +8,21 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Container } from '@mui/material';
 import { Folder, useLocalStorage } from '@zextras/carbonio-shell-ui';
 import React, { FC, useCallback, useRef } from 'react';
+import { ButtonFindShares } from '../../../view/sidebar/edit-modal/parts/button-find-shares';
 import { theme } from '../../theme/theme-mui';
 import { SidebarAccordionProps } from '../../types/sidebar';
-import { ButtonFindShares } from './button-find-shares';
 
 export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 	accordions,
 	folderId,
 	localStorageName,
 	AccordionCustomComponent,
-	onClick
+	setSelectedFolder
 }) => {
 	const [openIds, setOpenIds] = useLocalStorage<Array<string>>(localStorageName, []);
 	const sidebarRef = useRef<HTMLInputElement>(null);
 
-	const defaultOnClick = useCallback(
+	const onClick = useCallback(
 		({ accordion, expanded }: { accordion: Folder; expanded: boolean }): void => {
 			if (expanded) {
 				setOpenIds((state: Array<string>) =>
@@ -48,15 +48,17 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 						key={accordion.id}
 					>
 						<AccordionSummary
+							onClick={(): void => {
+								setSelectedFolder && setSelectedFolder(accordion.id);
+							}}
 							expandIcon={
-								accordion.children.length > 0 && (
+								accordion.children.length > 0 &&
+								accordion.id !== 'all' && (
 									<ExpandMoreIcon
 										color="primary"
 										onClick={(e): void => {
 											e.preventDefault();
-											onClick ||
-												// eslint-disable-next-line max-len
-												defaultOnClick({ accordion, expanded: !openIds.includes(accordion.id) });
+											onClick({ accordion, expanded: !openIds.includes(accordion.id) });
 										}}
 									/>
 								)
@@ -86,7 +88,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 									key={accordion.id}
 									localStorageName={localStorageName}
 									AccordionCustomComponent={AccordionCustomComponent}
-									onClick={onClick || defaultOnClick}
+									setSelectedFolder={setSelectedFolder}
 								/>
 							</AccordionDetails>
 						)}

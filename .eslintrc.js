@@ -24,13 +24,13 @@ module.exports = {
 		}
 	],
 	rules: {
-		'no-console': ['error', { allow: ['error', 'warn'] }]
-		// 'notice/notice': [
-		// 	'error',
-		// 	{
-		// 		templateFile: './notice.template.ts'
-		// 	}
-		// ],
+		'no-console': ['error', { allow: ['error', 'warn'] }],
+		'notice/notice': [
+			'error',
+			{
+				templateFile: 'src/carbonio-ui-commons/notice.template.ts'
+			}
+		]
 		// 'import/order': [
 		// 	'error',
 		// 	{

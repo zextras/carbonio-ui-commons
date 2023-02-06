@@ -3,11 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { useMemo } from 'react';
-import { renderHook } from '@testing-library/react-hooks';
 import { render, RenderResult } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
-import { ModalManager, ThemeProvider, SnackbarManager } from '@zextras/carbonio-design-system';
+import { ModalManager, SnackbarManager, ThemeProvider } from '@zextras/carbonio-design-system';
+import React, { useMemo } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -59,7 +59,7 @@ function customRender(ui: React.ReactElement, options: any): RenderResult {
 
 export function setupTest(
 	...args: Parameters<typeof customRender>
-): { user: ReturnType<typeof userEvent['setup']> } & ReturnType<typeof render> {
+): { user: ReturnType<(typeof userEvent)['setup']> } & ReturnType<typeof render> {
 	return {
 		user: userEvent.setup({ advanceTimers: jest.advanceTimersByTime }),
 		...customRender(...args)

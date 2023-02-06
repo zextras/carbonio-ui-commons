@@ -1,4 +1,13 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
 import { Folders } from '@zextras/carbonio-shell-ui';
+import { createFakeIdentity } from '../accounts/fakeAccounts';
+
+const identity1 = createFakeIdentity();
+const identity2 = createFakeIdentity();
 
 export const roots = {
 	USER: {
@@ -636,7 +645,7 @@ export const roots = {
 											perm: 'r'
 										},
 										{
-											zid: 'giuliano.caregnato@zextras.com',
+											zid: identity1.email,
 											gt: 'guest',
 											perm: 'r'
 										}
@@ -1569,8 +1578,8 @@ export const roots = {
 			{
 				id: '850',
 				uuid: '3a116c57-7e00-4934-af92-1d7fe6bd5f2c',
-				name: 'luca.s@demo.zextras.io',
-				absFolderPath: '/luca.s@demo.zextras.io',
+				name: identity2.email,
+				absFolderPath: `/${identity2.email}`,
 				l: '1',
 				luuid: 'd00bf0e9-e960-46a6-9507-913a0a50cc46',
 				rev: 55152,
@@ -1581,9 +1590,9 @@ export const roots = {
 				webOfflineSyncDays: 0,
 				perm: 'rwidxc',
 				recursive: false,
-				rest: 'https://dex-s07.demo.zextras.io/home/luca.s@demo.zextras.io/',
+				rest: `https://dex-s07.demo.zextras.io/home/${identity2.email}/`,
 				deletable: true,
-				owner: 'luca.s@demo.zextras.io',
+				owner: identity2.email,
 				zid: '8b7e3c26-a1d7-4d29-80b0-7f0a54bc9b42',
 				rid: 1,
 				ruuid: '9081ea4d-0da5-4693-b9ac-99d30c71a853',

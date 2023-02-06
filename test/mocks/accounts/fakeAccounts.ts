@@ -33,9 +33,10 @@ const createFakeIdentity = (): FakeIdentity => {
 const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 	const identity1 = context?.identity1 ?? createFakeIdentity();
 	const identity2 = context?.identity2 ?? createFakeIdentity();
+	const identity3 = context?.identity3 ?? createFakeIdentity();
 	return {
 		id: identity1.id,
-		name: identity1.fullName,
+		name: identity1.email,
 		displayName: identity1.fullName,
 		identities: {
 			identity: [
@@ -70,6 +71,22 @@ const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 						zimbraPrefReplyToEnabled: 'FALSE',
 						zimbraCreateTimestamp: '20211227131653.367Z'
 					}
+				},
+				{
+					id: identity3.id,
+					name: identity3.fullName,
+					_attrs: {
+						zimbraPrefFromAddressType: 'sendAs',
+						zimbraPrefIdentityName: identity3.fullName,
+						zimbraPrefIdentityId: '3',
+						zimbraPrefWhenSentToEnabled: 'FALSE',
+						zimbraPrefWhenInFoldersEnabled: 'FALSE',
+						zimbraPrefFromAddress: identity3.email,
+						objectClass: 'zimbraIdentity',
+						zimbraPrefFromDisplay: identity3.fullName,
+						zimbraPrefReplyToEnabled: 'FALSE',
+						zimbraCreateTimestamp: '20211227131653.367Z'
+					}
 				}
 			]
 		},
@@ -96,10 +113,10 @@ const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 							type: 'account',
 							email: [
 								{
-									addr: identity1.email
+									addr: identity3.email
 								}
 							],
-							d: identity1.fullName
+							d: identity3.fullName
 						}
 					]
 				},

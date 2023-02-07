@@ -5,6 +5,7 @@
  */
 
 import { Folder } from '@zextras/carbonio-shell-ui';
+import { FC, ReactElement } from 'react';
 
 type RegisterActionType = {
 	id: string;
@@ -171,6 +172,7 @@ export type SidebarAccordionProps = {
 	localStorageName: string;
 	AccordionCustomComponent: ComponentType;
 	setSelectedFolder?: (folderId: string) => void;
+	buttonFindShares?: ReactElement;
 };
 
 export type DeleteTagModalPropsType = {

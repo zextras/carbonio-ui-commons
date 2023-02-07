@@ -8,7 +8,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Container } from '@mui/material';
 import { Folder, useLocalStorage } from '@zextras/carbonio-shell-ui';
 import React, { FC, useCallback, useRef } from 'react';
-import { ButtonFindShares } from '../../../view/sidebar/edit-modal/parts/button-find-shares';
 import { theme } from '../../theme/theme-mui';
 import { SidebarAccordionProps } from '../../types/sidebar';
 
@@ -17,7 +16,8 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 	folderId,
 	localStorageName,
 	AccordionCustomComponent,
-	setSelectedFolder
+	setSelectedFolder,
+	buttonFindShares
 }) => {
 	const [openIds, setOpenIds] = useLocalStorage<Array<string>>(localStorageName, []);
 	const sidebarRef = useRef<HTMLInputElement>(null);
@@ -39,7 +39,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 		<Container ref={sidebarRef} disableGutters>
 			{accordions.map((accordion) =>
 				accordion.id === 'find_shares' ? (
-					<ButtonFindShares key={accordion.id} />
+					buttonFindShares
 				) : (
 					<Accordion
 						disableGutters
@@ -52,7 +52,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 								setSelectedFolder && setSelectedFolder(accordion.id);
 							}}
 							expandIcon={
-								accordion.children.length > 0 &&
+								accordion?.children?.length > 0 &&
 								accordion.id !== 'all' && (
 									<ExpandMoreIcon
 										color="primary"
@@ -80,7 +80,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 						>
 							<AccordionCustomComponent item={accordion} />
 						</AccordionSummary>
-						{accordion.children.length > 0 && (
+						{accordion?.children?.length > 0 && (
 							<AccordionDetails>
 								<SidebarAccordionMui
 									accordions={accordion.children}
@@ -89,6 +89,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 									localStorageName={localStorageName}
 									AccordionCustomComponent={AccordionCustomComponent}
 									setSelectedFolder={setSelectedFolder}
+									buttonFindShares={buttonFindShares}
 								/>
 							</AccordionDetails>
 						)}

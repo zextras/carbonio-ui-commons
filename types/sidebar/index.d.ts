@@ -50,7 +50,7 @@ export type SidebarCustomItem = {
 		folderId: string;
 		setLinks: (arg: any) => void;
 		links: Folder[];
-		CustomComponent: ReactElement;
+		CustomComponent: ComponentType<{ item: AccordionItemType }> | undefined;
 	};
 };
 

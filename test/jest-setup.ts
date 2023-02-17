@@ -6,10 +6,10 @@
 
 import failOnConsole from 'jest-fail-on-console';
 import fetchMock from 'jest-fetch-mock';
-import { setupServer, SetupServerApi } from 'msw/node';
+import { setupServer, SetupServer } from 'msw/node';
 import { getRestHandlers } from './mocks/network/msw/handlers';
 
-let server: SetupServerApi;
+let server: SetupServer;
 
 /**
  * Returns the default configuration for jest failOnConsole setting
@@ -51,7 +51,7 @@ export const defaultAfterAllTests = (): void => {
 	server.close();
 };
 
-export const getSetupServerApi = (): SetupServerApi => server;
+export const getSetupServer = (): SetupServer => server;
 
 window.ResizeObserver = jest.fn().mockImplementation(() => ({
 	observe: jest.fn(),

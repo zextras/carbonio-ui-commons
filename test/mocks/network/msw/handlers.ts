@@ -4,13 +4,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { RestHandler } from 'msw';
-import {
-	b as RequestHandler,
-	c as DefaultBodyType,
-	i as RequestHandlerDefaultInfo,
-	M as MockedRequest
-} from 'msw/lib/glossary-dc3fd077';
+import { DefaultBodyType, MockedRequest, RequestHandler, RestHandler } from 'msw';
 
 export interface RestGenericRequest {
 	Body: any;
@@ -20,6 +14,10 @@ export interface RestGenericResponse {
 	Body: any;
 	Header: any;
 }
+
+type RequestHandlerDefaultInfo = {
+	header: string;
+};
 
 const handlers: Array<RequestHandler<RequestHandlerDefaultInfo, MockedRequest<DefaultBodyType>>> =
 	[];

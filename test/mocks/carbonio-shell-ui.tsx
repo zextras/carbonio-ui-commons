@@ -68,6 +68,12 @@ export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isInt
 const getFilesAction = {};
 const getFilesActionAvailable = false;
 export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);
+const filesSelectDestinationFunction = jest.fn();
+const filesSelectDestinationFunctionAvailable = false;
+export const getIntegratedFunction = jest.fn(() => [
+	filesSelectDestinationFunction,
+	filesSelectDestinationFunctionAvailable
+]);
 export const useBoard = jest.fn();
 export const getBridgedFunctions = jest.fn();
 export const useRoot = jest.fn((id: string) => roots[id]);

@@ -174,16 +174,3 @@ export type SidebarAccordionProps = {
 	setSelectedFolder?: (folderId: string) => void;
 	buttonFindShares?: ReactElement;
 };
-
-export type DeleteTagModalPropsType = {
-	onClose: () => void;
-	tag?: {
-		CustomComponent?: ComponentType;
-		active: boolean;
-		color?: number;
-		id: string;
-		label: string;
-		name: string;
-		open: boolean;
-	};
-};

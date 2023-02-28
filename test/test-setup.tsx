@@ -5,6 +5,7 @@
  */
 import { render, RenderResult } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
+import { RenderHookOptions } from '@testing-library/react-hooks/lib/types';
 import userEvent from '@testing-library/user-event';
 import { ModalManager, SnackbarManager, ThemeProvider } from '@zextras/carbonio-design-system';
 import React, { useMemo } from 'react';
@@ -66,18 +67,25 @@ export function setupTest(
 	};
 }
 
+type InitialProps = ['initialProps'];
+
 type Options = {
 	initialEntries?: Array<string>;
 	path?: string;
 	store?: Store;
+	initialProps?: any;
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function setupHook(hook: any, options: Options = {}): any {
+	const { initialProps } = options;
 	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
 		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
 	);
-	const { result, unmount } = renderHook(() => hook(), { wrapper: Wrapper });
+	const { result, unmount } = renderHook(hook, {
+		wrapper: Wrapper,
+		initialProps
+	});
 
 	return { result, unmount };
 }

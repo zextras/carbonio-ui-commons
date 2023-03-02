@@ -8,6 +8,7 @@ import React from 'react';
 import { getMockedAccountItem } from './accounts/fakeAccounts';
 import { roots } from './folders/roots';
 import { getSoapFetch } from './network/fetch';
+import { generateSettings } from './settings/settings-generator';
 
 const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
 
@@ -56,11 +57,7 @@ export const replaceHistory = jest.fn();
 const getLink = {};
 const getLinkAvailable = false;
 export const useIntegratedFunction = jest.fn(() => [getLink, getLinkAvailable]);
-export const useUserSettings = jest.fn(() => ({
-	prefs: {
-		zimbraPrefUseTimeZoneListInCalendar: 'TRUE'
-	}
-}));
+export const useUserSettings = jest.fn(() => generateSettings());
 export const getUserSettings = jest.fn();
 const IntegrationComponent = jest.fn(FakeIntegration);
 const isIntegrationAvailable = false;

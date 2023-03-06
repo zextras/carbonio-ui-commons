@@ -9,6 +9,7 @@ import type { Config } from 'jest';
  * For a detailed explanation regarding each configuration property and type check, visit:
  * https://jestjs.io/docs/configuration
  */
+
 export const defaultConfig: Config = {
 	// All imported modules in your tests should be mocked automatically
 	// automock: false,
@@ -93,7 +94,10 @@ export const defaultConfig: Config = {
 	// ],
 
 	// A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-	// moduleNameMapper: {},
+	moduleNameMapper: {
+		'\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+			require.resolve('./mocks/file-mock.ts')
+	},
 
 	// An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
 	// modulePathIgnorePatterns: [],

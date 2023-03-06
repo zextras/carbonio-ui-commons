@@ -5,10 +5,10 @@
  */
 
 import { faker } from '@faker-js/faker';
-import { AccountSettings, ZimletProp } from '@zextras/carbonio-shell-ui';
-import { createFakeIdentity } from '../accounts/fakeAccounts';
+import { getMocksContext } from '../utils/mocks-context';
 
-const identity = createFakeIdentity();
+const mocksContext = getMocksContext();
+const { identity, signatures } = mocksContext.identities.primary;
 
 export default {
 	attrs: {
@@ -64,7 +64,7 @@ export default {
 		zimbraMailIdleSessionTimeout: '0',
 		zimbraDeviceOfflineCacheEnabled: 'FALSE',
 		zimbraMobileMetadataMaxSizeEnabled: 'FALSE',
-		zimbraMailAlias: [faker.internet.email(), faker.internet.email()],
+		zimbraMailAlias: mocksContext.aliasAddresses,
 		zimbraPop3Enabled: 'FALSE',
 		zimbraFeatureMailPriorityEnabled: 'TRUE',
 		zimbraDataSourceCalendarPollingInterval: '12h',
@@ -243,7 +243,7 @@ export default {
 			'2:Y:0800:1800,3:Y:0800:1800,4:Y:0800:1800,5:Y:0800:1800,6:Y:0800:1800,7:N:0800:1800,1:N:0800:1800',
 		zimbraPrefCalendarViewTimeInterval: '1h',
 		zimbraPrefDefaultCalendarId: '10',
-		zimbraPrefDefaultSignatureId: '60588d40-17ee-413b-9342-59403e5846e7',
+		zimbraPrefDefaultSignatureId: signatures?.newEmailSignature?.id,
 		zimbraPrefComposeFormat: 'html',
 		zimbraPrefWhenSentToEnabled: 'FALSE',
 		zimbraPrefZmgPushNotificationEnabled: 'FALSE',
@@ -272,7 +272,7 @@ export default {
 		zimbraPrefIMToasterEnabled: 'TRUE',
 		zimbraPrefOutOfOfficeStatusAlertOnLogin: 'TRUE',
 		zimbraPrefVoiceItemsPerPage: '25',
-		zimbraPrefForwardReplySignatureId: '60588d40-17ee-413b-9342-59403e5846e7',
+		zimbraPrefForwardReplySignatureId: signatures?.forwardReplySignature?.id,
 		zimbraPrefMailToasterEnabled: 'TRUE',
 		zimbraPrefForwardReplyInOriginalFormat: 'FALSE',
 		zimbraPrefSortOrder:
@@ -382,9 +382,8 @@ export default {
 		zimbraPrefInboxReadLifetime: '0',
 		zimbraPrefOutOfOfficeExternalReplyEnabled: 'FALSE',
 		zimbraPrefTagTreeOpen: 'TRUE',
-		zimbraPrefMailSignatureHTML: `<div>${
-			identity.fullName
-		}</div>\n<div><span style="color: #ff0000;"><em>${faker.name.jobTitle()}</em></span></div>\n<div>&nbsp;</div>`,
+		// FIXME
+		zimbraPrefMailSignatureHTML: signatures?.newEmailSignature?.content?.[0]._content,
 		zimbraPrefGetMailAction: 'default',
 		zimbraPrefAutoAddAddressEnabled: 'TRUE',
 		zimbraPrefReadingPaneLocation: 'right',

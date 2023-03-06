@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { generateAccount } from './accounts/account-generator';
 import { getMockedAccountItem } from './accounts/fakeAccounts';
 import { roots } from './folders/roots';
 import { getSoapFetch } from './network/fetch';
@@ -44,21 +45,21 @@ export const ZIMBRA_STANDARD_COLORS = [
 	{ zValue: 9, hex: '#ba8b00', zLabel: 'orange' }
 ];
 
-const mockedAccountItem = getMockedAccountItem();
+const mockedAccount = generateAccount();
+const mockedSettings = generateSettings();
 
-const mockedAccountItems = [mockedAccountItem];
-
-export const getUserAccount = jest.fn(() => mockedAccountItem);
-export const useUserAccount = jest.fn(() => mockedAccountItem);
-export const useUserAccounts = jest.fn(() => mockedAccountItems);
-export const useAppContext = jest.fn(() => mockedAccountItems);
+export const getUserAccount = jest.fn(() => mockedAccount);
+export const useUserAccount = jest.fn(() => mockedAccount);
+export const useUserAccounts = jest.fn(() => [mockedAccount]);
+export const useUserSettings = jest.fn(() => mockedSettings);
+export const getUserSettings = jest.fn(() => mockedSettings);
+export const useAppContext = jest.fn(() => [mockedAccount]);
 export const t = jest.fn((key: string) => key);
 export const replaceHistory = jest.fn();
 const getLink = {};
 const getLinkAvailable = false;
 export const useIntegratedFunction = jest.fn(() => [getLink, getLinkAvailable]);
-export const useUserSettings = jest.fn(() => generateSettings());
-export const getUserSettings = jest.fn();
+
 const IntegrationComponent = jest.fn(FakeIntegration);
 const isIntegrationAvailable = false;
 export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);

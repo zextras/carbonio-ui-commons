@@ -152,4 +152,4 @@ const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 	};
 };
 
-export { createFakeIdentity, getMockedAccountItem };
+export { FakeIdentity, createFakeIdentity, getMockedAccountItem };

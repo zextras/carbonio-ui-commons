@@ -245,7 +245,7 @@ export default {
 		zimbraPrefCalendarViewTimeInterval: '1h',
 		zimbraPrefDefaultCalendarId: '10',
 		zimbraPrefDefaultSignatureId: signatures?.newEmailSignature?.id,
-		zimbraPrefComposeFormat: 'html',
+		// zimbraPrefComposeFormat: 'html',
 		zimbraPrefWhenSentToEnabled: 'FALSE',
 		zimbraPrefZmgPushNotificationEnabled: 'FALSE',
 		zimbraPrefDisplayTimeInMailList: 'TRUE',

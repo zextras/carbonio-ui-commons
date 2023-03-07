@@ -21,7 +21,7 @@ const SENDAS_IDENTITIES_COUNT = 1;
 /**
  * Number of accounts on which the current user has the "sendOnBehalfOf" right
  */
-const SENDONBEHALF_IDENTITIES_COUNT = 0;
+const SENDONBEHALF_IDENTITIES_COUNT = 1;
 
 /**
  * Number of accounts on which the current user has the "view free/busy status" right

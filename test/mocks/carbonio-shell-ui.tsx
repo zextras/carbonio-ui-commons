@@ -46,14 +46,15 @@ export const ZIMBRA_STANDARD_COLORS = [
 ];
 
 const mockedAccount = generateAccount();
+const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();
 
 export const getUserAccount = jest.fn(() => mockedAccount);
 export const useUserAccount = jest.fn(() => mockedAccount);
-export const useUserAccounts = jest.fn(() => [mockedAccount]);
+export const useUserAccounts = jest.fn(() => mockedAccounts);
 export const useUserSettings = jest.fn(() => mockedSettings);
 export const getUserSettings = jest.fn(() => mockedSettings);
-export const useAppContext = jest.fn(() => [mockedAccount]);
+export const useAppContext = jest.fn(() => mockedAccounts);
 export const t = jest.fn((key: string) => key);
 export const replaceHistory = jest.fn();
 const getLink = {};

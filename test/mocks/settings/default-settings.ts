@@ -5,6 +5,7 @@
  */
 
 import { faker } from '@faker-js/faker';
+import { AccountSettings } from '@zextras/carbonio-shell-ui';
 import { getMocksContext } from '../utils/mocks-context';
 
 const mocksContext = getMocksContext();
@@ -423,4 +424,4 @@ export default {
 			_content: 'true'
 		}
 	]
-};
+} as AccountSettings;

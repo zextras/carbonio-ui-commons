@@ -31,7 +31,7 @@ const DEFAULT_VIEWFREEBUSY_IDENTITIES_COUNT = 1;
 /**
  * Indicates if the signatures should be generated
  */
-const DEFAULT_GENERATE_SIGNATURES = false;
+const DEFAULT_GENERATE_SIGNATURES = true;
 
 type MocksContextIdentity = {
 	identity: FakeIdentity;

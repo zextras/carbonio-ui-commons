@@ -4,13 +4,31 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { Roots } from '@zextras/carbonio-shell-ui';
-import { getMocksContext } from '../utils/mocks-context';
+import { Grant, Roots } from '@zextras/carbonio-shell-ui';
+import { GrantType } from '../../../../types';
+import { FakeIdentity } from '../accounts/fakeAccounts';
+import { getMocksContext, getRandomIdentity } from '../utils/mocks-context';
 
 const generateRoots = (): Roots => {
 	const mocksContext = getMocksContext();
 	const rootId = faker.datatype.uuid();
 	const parentId = faker.datatype.uuid();
+
+	const generateGrant = (
+		identity: FakeIdentity | undefined,
+		type: Grant['gt'],
+		perm: Grant['perm']
+	): Grant | undefined => {
+		if (!identity) {
+			return undefined;
+		}
+
+		return {
+			zid: identity.id,
+			gt: type,
+			perm
+		};
+	};
 
 	const result = {
 		USER: {
@@ -54,13 +72,7 @@ const generateRoots = (): Roots => {
 					recursive: false,
 					deletable: true,
 					acl: {
-						grant: [
-							{
-								zid: 'c7d0e3b2-aecd-425d-94f1-1c03b8b25bb8',
-								gt: 'usr',
-								perm: 'r'
-							}
-						]
+						grant: [generateGrant(getRandomIdentity(mocksContext.otherUsersIdentities), 'usr', 'r')]
 					},
 					isLink: false,
 					children: [],
@@ -112,16 +124,8 @@ const generateRoots = (): Roots => {
 					deletable: false,
 					acl: {
 						grant: [
-							{
-								zid: '3a91e312-5a50-4d11-99b6-59246abe662d',
-								gt: 'usr',
-								perm: 'r'
-							},
-							{
-								zid: 'c0ae924f-9e12-462a-8de2-ca4ddc04638d',
-								gt: 'usr',
-								perm: 'r'
-							}
+							generateGrant(getRandomIdentity(mocksContext.otherUsersIdentities), 'usr', 'r'),
+							generateGrant(getRandomIdentity(mocksContext.otherUsersIdentities), 'usr', 'r')
 						]
 					},
 					isLink: false,

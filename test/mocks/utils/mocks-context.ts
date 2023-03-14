@@ -5,7 +5,7 @@
  */
 import { faker } from '@faker-js/faker';
 import { Folder } from '@zextras/carbonio-shell-ui';
-import { clone, cloneDeep, merge, times } from 'lodash';
+import { clone, cloneDeep, floor, merge, times } from 'lodash';
 import { SignItemType } from '../../../../types';
 import { createFakeIdentity, FakeIdentity } from '../accounts/fakeAccounts';
 
@@ -30,19 +30,14 @@ const DEFAULT_SENDONBEHALF_IDENTITIES_COUNT = 1;
 const DEFAULT_VIEWFREEBUSY_IDENTITIES_COUNT = 1;
 
 /**
+ * Number of accounts to create and to use for mock grants
+ */
+const DEFAULT_OTHER_USERS_COUNT = 10;
+
+/**
  * Indicates if the signatures should be generated
  */
 const DEFAULT_GENERATE_SIGNATURES = true;
-
-/**
- * Indicates if the folders should be generated
- */
-const DEFAULT_GENERATE_FOLDERS = true;
-
-const DEFAULT_GENERATE_FOLDERS_MAILS = true;
-const DEFAULT_GENERATE_FOLDERS_CALENDARS = true;
-const DEFAULT_GENERATE_FOLDERS_CONTACTS = true;
-const DEFAULT_GENERATE_FOLDERS_SHARED_ACCOUNTS = true;
 
 type MocksContextIdentity = {
 	identity: FakeIdentity;
@@ -50,7 +45,6 @@ type MocksContextIdentity = {
 		newEmailSignature: SignItemType;
 		forwardReplySignature: SignItemType;
 	};
-	folders?: Array<Folder>;
 };
 
 type MocksContext = {
@@ -61,20 +55,17 @@ type MocksContext = {
 		sendOnBehalf: Array<MocksContextIdentity>;
 	};
 	aliasAddresses: Array<string>;
-	viewFreeBusyIdentites: Array<FakeIdentity>;
+	viewFreeBusyIdentities: Array<FakeIdentity>;
+	otherUsersIdentities: Array<FakeIdentity>;
 };
 
 type MocksContextGenerationParams = {
 	aliasIdentitiesCount?: number;
-	sendAsIdentititesCount?: number;
+	sendAsIdentitiesCount?: number;
 	sendOnBehalfIdentitiesCount?: number;
 	viewFreeBusyIdentitiesCount?: number;
+	otherUsersIdentitiesCount?: number;
 	generateSignatures?: boolean;
-	generateFolders?: boolean;
-	generateFoldersMails?: boolean;
-	generateFoldersCalendars?: boolean;
-	generateFoldersContacts?: boolean;
-	generateFoldersSharedAccounts?: boolean;
 };
 
 /**
@@ -102,15 +93,11 @@ const generateSignature = (): SignItemType => {
  */
 const generateDefaultContext = ({
 	aliasIdentitiesCount = DEFAULT_ALIASES_IDENTITIES_COUNT,
-	sendAsIdentititesCount = DEFAULT_SENDAS_IDENTITIES_COUNT,
+	sendAsIdentitiesCount = DEFAULT_SENDAS_IDENTITIES_COUNT,
 	sendOnBehalfIdentitiesCount = DEFAULT_SENDONBEHALF_IDENTITIES_COUNT,
 	viewFreeBusyIdentitiesCount = DEFAULT_VIEWFREEBUSY_IDENTITIES_COUNT,
 	generateSignatures = DEFAULT_GENERATE_SIGNATURES,
-	generateFolders = DEFAULT_GENERATE_FOLDERS,
-	generateFoldersMails = DEFAULT_GENERATE_FOLDERS_MAILS,
-	generateFoldersCalendars = DEFAULT_GENERATE_FOLDERS_CALENDARS,
-	generateFoldersContacts = DEFAULT_GENERATE_FOLDERS_CONTACTS,
-	generateFoldersSharedAccounts = DEFAULT_GENERATE_FOLDERS_SHARED_ACCOUNTS
+	otherUsersIdentitiesCount = DEFAULT_OTHER_USERS_COUNT
 }: MocksContextGenerationParams): MocksContext => {
 	const primary = createFakeIdentity();
 	const aliases = times(aliasIdentitiesCount, () => createFakeIdentity());
@@ -121,12 +108,6 @@ const generateDefaultContext = ({
 				identity: primary,
 				...(generateSignatures && {
 					signatures: {
-						newEmailSignature: generateSignature(),
-						forwardReplySignature: generateSignature()
-					}
-				}),
-				...(generateFolders && {
-					folders: {
 						newEmailSignature: generateSignature(),
 						forwardReplySignature: generateSignature()
 					}
@@ -141,7 +122,7 @@ const generateDefaultContext = ({
 					}
 				})
 			})),
-			sendAs: times(sendAsIdentititesCount, () => ({
+			sendAs: times(sendAsIdentitiesCount, () => ({
 				identity: createFakeIdentity(),
 				...(generateSignatures && {
 					signatures: {
@@ -161,7 +142,8 @@ const generateDefaultContext = ({
 			}))
 		},
 		aliasAddresses: aliases.map((alias) => alias.email),
-		viewFreeBusyIdentites: times(viewFreeBusyIdentitiesCount, () => createFakeIdentity())
+		viewFreeBusyIdentities: times(viewFreeBusyIdentitiesCount, () => createFakeIdentity()),
+		otherUsersIdentities: times(otherUsersIdentitiesCount, () => createFakeIdentity())
 	};
 };
 
@@ -180,10 +162,23 @@ const setMocksContext = (customContext: MocksContext): void => {
 // Return a copy of the current context
 const getMocksContext = (): MocksContext => cloneDeep(context);
 
+/**
+ * Returns an identity randomly picked from the given identities array.
+ * If the identities array is undefined or empty, undefined is returned
+ * @param identities
+ */
+const getRandomIdentity = (identities: Array<FakeIdentity>): FakeIdentity | undefined => {
+	if (!identities || !identities.length) {
+		return undefined;
+	}
+	return identities[floor(Math.random() * identities.length)];
+};
+
 export {
 	MocksContext,
 	getMocksContext,
 	setMocksContext,
 	updateMocksContext,
-	generateDefaultContext
+	generateDefaultContext,
+	getRandomIdentity
 };

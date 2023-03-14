@@ -12,7 +12,7 @@ import { getMocksContext } from '../utils/mocks-context';
 const generateAccount = (): Account => {
 	const mockedContext = getMocksContext();
 	const { primary, aliases, sendAs, sendOnBehalf } = mockedContext.identities;
-	const viewFreeBusyIdentities = mockedContext.viewFreeBusyIdentites;
+	const { viewFreeBusyIdentities } = mockedContext;
 
 	// Collect all the account's available signatures
 	const allSignatures: Account['signatures']['signature'] = [];

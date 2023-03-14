@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
+import { Folder } from '@zextras/carbonio-shell-ui';
 import { clone, cloneDeep, merge, times } from 'lodash';
 import { SignItemType } from '../../../../types';
 import { createFakeIdentity, FakeIdentity } from '../accounts/fakeAccounts';
@@ -33,12 +34,23 @@ const DEFAULT_VIEWFREEBUSY_IDENTITIES_COUNT = 1;
  */
 const DEFAULT_GENERATE_SIGNATURES = true;
 
+/**
+ * Indicates if the folders should be generated
+ */
+const DEFAULT_GENERATE_FOLDERS = true;
+
+const DEFAULT_GENERATE_FOLDERS_MAILS = true;
+const DEFAULT_GENERATE_FOLDERS_CALENDARS = true;
+const DEFAULT_GENERATE_FOLDERS_CONTACTS = true;
+const DEFAULT_GENERATE_FOLDERS_SHARED_ACCOUNTS = true;
+
 type MocksContextIdentity = {
 	identity: FakeIdentity;
 	signatures?: {
 		newEmailSignature: SignItemType;
 		forwardReplySignature: SignItemType;
 	};
+	folders?: Array<Folder>;
 };
 
 type MocksContext = {
@@ -58,6 +70,11 @@ type MocksContextGenerationParams = {
 	sendOnBehalfIdentitiesCount?: number;
 	viewFreeBusyIdentitiesCount?: number;
 	generateSignatures?: boolean;
+	generateFolders?: boolean;
+	generateFoldersMails?: boolean;
+	generateFoldersCalendars?: boolean;
+	generateFoldersContacts?: boolean;
+	generateFoldersSharedAccounts?: boolean;
 };
 
 /**
@@ -88,7 +105,12 @@ const generateDefaultContext = ({
 	sendAsIdentititesCount = DEFAULT_SENDAS_IDENTITIES_COUNT,
 	sendOnBehalfIdentitiesCount = DEFAULT_SENDONBEHALF_IDENTITIES_COUNT,
 	viewFreeBusyIdentitiesCount = DEFAULT_VIEWFREEBUSY_IDENTITIES_COUNT,
-	generateSignatures = DEFAULT_GENERATE_SIGNATURES
+	generateSignatures = DEFAULT_GENERATE_SIGNATURES,
+	generateFolders = DEFAULT_GENERATE_FOLDERS,
+	generateFoldersMails = DEFAULT_GENERATE_FOLDERS_MAILS,
+	generateFoldersCalendars = DEFAULT_GENERATE_FOLDERS_CALENDARS,
+	generateFoldersContacts = DEFAULT_GENERATE_FOLDERS_CONTACTS,
+	generateFoldersSharedAccounts = DEFAULT_GENERATE_FOLDERS_SHARED_ACCOUNTS
 }: MocksContextGenerationParams): MocksContext => {
 	const primary = createFakeIdentity();
 	const aliases = times(aliasIdentitiesCount, () => createFakeIdentity());
@@ -99,6 +121,12 @@ const generateDefaultContext = ({
 				identity: primary,
 				...(generateSignatures && {
 					signatures: {
+						newEmailSignature: generateSignature(),
+						forwardReplySignature: generateSignature()
+					}
+				}),
+				...(generateFolders && {
+					folders: {
 						newEmailSignature: generateSignature(),
 						forwardReplySignature: generateSignature()
 					}

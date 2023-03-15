@@ -8,6 +8,7 @@ import React from 'react';
 import { generateAccount } from './accounts/account-generator';
 import { getMockedAccountItem } from './accounts/fakeAccounts';
 import { roots } from './folders/roots';
+import { generateRoots } from './folders/roots-generator';
 import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
 
@@ -48,6 +49,7 @@ export const ZIMBRA_STANDARD_COLORS = [
 const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();
+const mockedRoots = generateRoots();
 
 export const getUserAccount = jest.fn(() => mockedAccount);
 export const useUserAccount = jest.fn(() => mockedAccount);
@@ -75,8 +77,8 @@ export const getIntegratedFunction = jest.fn(() => [
 ]);
 export const useBoard = jest.fn();
 export const getBridgedFunctions = jest.fn();
-export const useRoot = jest.fn((id: string) => roots[id]);
-export const useRoots = jest.fn(() => roots);
+export const useRoot = jest.fn((id: string) => mockedRoots[id]);
+export const useRoots = jest.fn(() => mockedRoots);
 export const useFolders = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();

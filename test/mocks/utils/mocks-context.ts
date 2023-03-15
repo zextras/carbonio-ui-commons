@@ -41,6 +41,7 @@ const DEFAULT_GENERATE_SIGNATURES = true;
 
 type MocksContextIdentity = {
 	identity: FakeIdentity;
+	userRootId?: string;
 	signatures?: {
 		newEmailSignature: SignItemType;
 		forwardReplySignature: SignItemType;
@@ -106,6 +107,7 @@ const generateDefaultContext = ({
 		identities: {
 			primary: {
 				identity: primary,
+				userRootId: faker.datatype.uuid(),
 				...(generateSignatures && {
 					signatures: {
 						newEmailSignature: generateSignature(),
@@ -124,6 +126,7 @@ const generateDefaultContext = ({
 			})),
 			sendAs: times(sendAsIdentitiesCount, () => ({
 				identity: createFakeIdentity(),
+				userRootId: faker.datatype.uuid(),
 				...(generateSignatures && {
 					signatures: {
 						newEmailSignature: generateSignature(),
@@ -133,6 +136,7 @@ const generateDefaultContext = ({
 			})),
 			sendOnBehalf: times(sendOnBehalfIdentitiesCount, () => ({
 				identity: createFakeIdentity(),
+				userRootId: faker.datatype.uuid(),
 				...(generateSignatures && {
 					signatures: {
 						newEmailSignature: generateSignature(),
@@ -176,6 +180,7 @@ const getRandomIdentity = (identities: Array<FakeIdentity>): FakeIdentity | unde
 
 export {
 	MocksContext,
+	MocksContextIdentity,
 	getMocksContext,
 	setMocksContext,
 	updateMocksContext,

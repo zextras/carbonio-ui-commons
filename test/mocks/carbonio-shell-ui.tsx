@@ -5,9 +5,12 @@
  */
 
 import React from 'react';
+import { generateAccount } from './accounts/account-generator';
 import { getMockedAccountItem } from './accounts/fakeAccounts';
 import { roots } from './folders/roots';
+import { generateRoots } from './folders/roots-generator';
 import { getSoapFetch } from './network/fetch';
+import { generateSettings } from './settings/settings-generator';
 
 const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
 
@@ -43,25 +46,23 @@ export const ZIMBRA_STANDARD_COLORS = [
 	{ zValue: 9, hex: '#ba8b00', zLabel: 'orange' }
 ];
 
-const mockedAccountItem = getMockedAccountItem();
+const mockedAccount = generateAccount();
+const mockedAccounts = [mockedAccount];
+const mockedSettings = generateSettings();
+const mockedRoots = generateRoots();
 
-const mockedAccountItems = [mockedAccountItem];
-
-export const getUserAccount = jest.fn(() => mockedAccountItem);
-export const useUserAccount = jest.fn(() => mockedAccountItem);
-export const useUserAccounts = jest.fn(() => mockedAccountItems);
-export const useAppContext = jest.fn(() => mockedAccountItems);
+export const getUserAccount = jest.fn(() => mockedAccount);
+export const useUserAccount = jest.fn(() => mockedAccount);
+export const useUserAccounts = jest.fn(() => mockedAccounts);
+export const useUserSettings = jest.fn(() => mockedSettings);
+export const getUserSettings = jest.fn(() => mockedSettings);
+export const useAppContext = jest.fn(() => mockedAccounts);
 export const t = jest.fn((key: string) => key);
 export const replaceHistory = jest.fn();
 const getLink = {};
 const getLinkAvailable = false;
 export const useIntegratedFunction = jest.fn(() => [getLink, getLinkAvailable]);
-export const useUserSettings = jest.fn(() => ({
-	prefs: {
-		zimbraPrefUseTimeZoneListInCalendar: 'TRUE'
-	}
-}));
-export const getUserSettings = jest.fn();
+
 const IntegrationComponent = jest.fn(FakeIntegration);
 const isIntegrationAvailable = false;
 export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
@@ -76,8 +77,8 @@ export const getIntegratedFunction = jest.fn(() => [
 ]);
 export const useBoard = jest.fn();
 export const getBridgedFunctions = jest.fn();
-export const useRoot = jest.fn((id: string) => roots[id]);
-export const useRoots = jest.fn(() => roots);
+export const useRoot = jest.fn((id: string) => mockedRoots[id]);
+export const useRoots = jest.fn(() => mockedRoots);
 export const useFolders = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();

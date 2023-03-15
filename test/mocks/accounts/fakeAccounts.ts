@@ -10,6 +10,7 @@ type FakeIdentity = {
 	id: string;
 	firstName: string;
 	lastName: string;
+	userName: string;
 	email: string;
 	fullName: string;
 };
@@ -23,6 +24,7 @@ const createFakeIdentity = (): FakeIdentity => {
 		firstName,
 		lastName,
 		fullName: `${firstName} ${lastName}`,
+		userName: `${firstName}.${lastName}`,
 		email: faker?.internet?.email?.(firstName, lastName) ?? ''
 	};
 };
@@ -150,4 +152,4 @@ const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 	};
 };
 
-export { createFakeIdentity, getMockedAccountItem };
+export { FakeIdentity, createFakeIdentity, getMockedAccountItem };

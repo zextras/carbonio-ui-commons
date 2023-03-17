@@ -1,3 +1,4 @@
+cd;
 /*
  * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
  *
@@ -78,7 +79,9 @@ export const getIntegratedFunction = jest.fn(() => [
 export const useBoard = jest.fn();
 export const getBridgedFunctions = jest.fn();
 export const useRoot = jest.fn((id: string) => mockedRoots[id]);
+export const getRoot = jest.fn((id: string) => mockedRoots[id]);
 export const useRoots = jest.fn(() => mockedRoots);
+export const getRoots = jest.fn(() => mockedRoots);
 export const useFolders = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();

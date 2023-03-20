@@ -1,4 +1,3 @@
-cd;
 /*
  * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
  *
@@ -7,8 +6,6 @@ cd;
 
 import React from 'react';
 import { generateAccount } from './accounts/account-generator';
-import { getMockedAccountItem } from './accounts/fakeAccounts';
-import { roots } from './folders/roots';
 import { generateRoots } from './folders/roots-generator';
 import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';

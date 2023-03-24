@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export type SelectItems = {
+export type FolderSelectorItem = {
 	label: string;
 	value: string;
 	color: string;

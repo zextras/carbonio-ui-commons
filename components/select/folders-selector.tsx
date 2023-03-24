@@ -7,23 +7,23 @@ import { Container, Padding, Select, SelectItem, Text } from '@zextras/carbonio-
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { find, map } from 'lodash';
 import { LabelFactory, Square } from './select-label-factory';
-import { SelectItems } from '../../types/select';
+import { FolderSelectorItem } from '../../types/select';
 
-type FoldersSelectorProps = {
+type FolderSelectorLabelFactoryProps = {
 	defaultFolderId: string;
 	onChange: (selectedItem: SelectItem) => void;
 	label?: string;
-	folderItems: SelectItems[];
+	folderItems: FolderSelectorItem[];
 	disabled?: boolean;
 };
 
-export const FoldersSelector = ({
+export const FolderSelectorLabelFactory = ({
 	defaultFolderId,
 	onChange,
 	label,
 	folderItems,
 	disabled
-}: FoldersSelectorProps): ReactElement | null => {
+}: FolderSelectorLabelFactoryProps): ReactElement | null => {
 	const items = useMemo(
 		() =>
 			map(folderItems, (item) => ({

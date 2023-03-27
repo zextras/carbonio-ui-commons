@@ -6,10 +6,10 @@
 import { Container, Padding, Select, SelectItem, Text } from '@zextras/carbonio-design-system';
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { find, map } from 'lodash';
-import { LabelFactory, Square } from './select-label-factory';
+import { FolderSelectorLabelFactory, Square } from './select-label-factory';
 import { FolderSelectorItem } from '../../types/select';
 
-type FolderSelectorLabelFactoryProps = {
+type FolderSelectorProps = {
 	defaultFolderId: string;
 	onChange: (selectedItem: SelectItem) => void;
 	label?: string;
@@ -17,13 +17,13 @@ type FolderSelectorLabelFactoryProps = {
 	disabled?: boolean;
 };
 
-export const FolderSelectorLabelFactory = ({
+export const FoldersSelector = ({
 	defaultFolderId,
 	onChange,
 	label,
 	folderItems,
 	disabled
-}: FolderSelectorLabelFactoryProps): ReactElement | null => {
+}: FolderSelectorProps): ReactElement | null => {
 	const items = useMemo(
 		() =>
 			map(folderItems, (item) => ({
@@ -62,7 +62,7 @@ export const FolderSelectorLabelFactory = ({
 			defaultSelection={defaultFolderSelection}
 			disablePortal
 			disabled={disabled}
-			LabelFactory={LabelFactory}
+			LabelFactory={FolderSelectorLabelFactory}
 		/>
 	) : null;
 };

@@ -3,10 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+
 import { faker } from '@faker-js/faker';
-import { Folder } from '@zextras/carbonio-shell-ui';
-import { clone, cloneDeep, floor, merge, times } from 'lodash';
-import { SignItemType } from '../../../../types';
+import { cloneDeep, floor, merge, times } from 'lodash';
 import { createFakeIdentity, FakeIdentity } from '../accounts/fakeAccounts';
 
 /**
@@ -38,6 +37,19 @@ const DEFAULT_OTHER_USERS_COUNT = 10;
  * Indicates if the signatures should be generated
  */
 const DEFAULT_GENERATE_SIGNATURES = true;
+
+type SignItemType = {
+	name: string;
+	id: string;
+	description: string;
+	label: string;
+	content?: [
+		{
+			type: 'text/plain' | 'text/html';
+			_content: string;
+		}
+	];
+};
 
 type MocksContextIdentity = {
 	identity: FakeIdentity;

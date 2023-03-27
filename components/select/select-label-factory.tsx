@@ -65,7 +65,7 @@ interface CustomLabelFactoryProps extends LabelFactoryProps {
 	selected: CustomSelectItem[];
 }
 
-export const LabelFactory = ({
+export const FolderSelectorLabelFactory = ({
 	selected,
 	label,
 	open,

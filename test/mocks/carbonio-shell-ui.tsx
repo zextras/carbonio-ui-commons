@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { generateAccount } from './accounts/account-generator';
+import { generateFolders } from './folders/folders-generator';
 import { generateRoots } from './folders/roots-generator';
 import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
@@ -48,6 +49,7 @@ const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();
 const mockedRoots = generateRoots();
+const mockedFolders = generateFolders();
 
 export const getUserAccount = jest.fn(() => mockedAccount);
 export const useUserAccount = jest.fn(() => mockedAccount);
@@ -79,7 +81,10 @@ export const useRoot = jest.fn((id: string) => mockedRoots[id]);
 export const getRoot = jest.fn((id: string) => mockedRoots[id]);
 export const useRoots = jest.fn(() => mockedRoots);
 export const getRoots = jest.fn(() => mockedRoots);
-export const useFolders = jest.fn();
+export const useFolder = jest.fn((id: string) => mockedFolders[id]);
+export const getFolder = jest.fn((id: string) => mockedFolders[id]);
+export const useFolders = jest.fn(() => mockedFolders);
+export const getFolders = jest.fn(() => mockedFolders);
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
 export const minimizeBoards = jest.fn();

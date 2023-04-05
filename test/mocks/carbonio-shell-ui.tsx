@@ -64,6 +64,7 @@ export const useIntegratedFunction = jest.fn(() => [getLink, getLinkAvailable]);
 const IntegrationComponent = jest.fn(FakeIntegration);
 const isIntegrationAvailable = false;
 export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
+export const getIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
 const getFilesAction = {};
 const getFilesActionAvailable = false;
 export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);

@@ -74,7 +74,6 @@ export const getIntegratedFunction = jest.fn(() => [
 	filesSelectDestinationFunction,
 	filesSelectDestinationFunctionAvailable
 ]);
-export const getIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
 export const useBoard = jest.fn();
 export const getBridgedFunctions = jest.fn();
 export const useRoot = jest.fn((id: string) => mockedRoots[id]);

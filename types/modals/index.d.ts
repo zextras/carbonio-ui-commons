@@ -11,7 +11,7 @@ export type ModalFooterProps = {
 	crossAlignment?: ContainerProps['crossAlignment'] | undefined;
 	padding?: Record<string, string> | undefined;
 	onConfirm: (e?: SyntheticEvent<Element, Event> | KeyboardEvent) => void;
-	secondaryAction?: () => void | undefined;
+	secondaryAction?: (e?: SyntheticEvent<Element, Event> | KeyboardEvent) => void | undefined;
 	label: string;
 	secondaryLabel?: string | undefined;
 	disabled?: boolean | undefined;

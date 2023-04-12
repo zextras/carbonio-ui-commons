@@ -5,8 +5,7 @@
  */
 
 import { faker } from '@faker-js/faker';
-import { Folder, Folders, FolderView, Grant } from '@zextras/carbonio-shell-ui';
-import { FOLDERS } from '../carbonio-shell-ui';
+import { Folder, FOLDERS, Folders, FolderView, Grant } from '@zextras/carbonio-shell-ui';
 import { getMocksContext, getRandomIdentity } from '../utils/mocks-context';
 
 /**
@@ -587,7 +586,7 @@ export const generateFolders = (): Folders => {
 		result[child.id] = child;
 	});
 
-	fillReferenceToParent(result[FOLDERS.USER_ROOT], undefined);
+	fillReferenceToParent(result[FOLDERS.USER_ROOT]);
 
 	return result;
 };

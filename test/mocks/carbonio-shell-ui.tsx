@@ -6,10 +6,10 @@
 
 import React from 'react';
 import { generateAccount } from './accounts/account-generator';
-import { generateFolders } from './folders/folders-generator';
 import { generateRoots } from './folders/roots-generator';
 import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
+import { generateFolders } from './folders/folders-generator';
 
 const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
 

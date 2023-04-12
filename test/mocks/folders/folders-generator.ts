@@ -587,7 +587,7 @@ export const generateFolders = (): Folders => {
 		result[child.id] = child;
 	});
 
-	fillReferenceToParent(result[FOLDERS.USER_ROOT], undefined);
+	fillReferenceToParent(result[FOLDERS.USER_ROOT]);
 
 	return result;
 };

@@ -17,11 +17,14 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 	localStorageName,
 	AccordionCustomComponent,
 	setSelectedFolder,
-	buttonFindShares
+	buttonFindShares,
+	initialExpanded
 }) => {
-	const [openIds, setOpenIds] = useLocalStorage<Array<string>>(localStorageName, []);
+	const [openIds, setOpenIds] = useLocalStorage<Array<string>>(
+		localStorageName,
+		initialExpanded ?? []
+	);
 	const sidebarRef = useRef<HTMLInputElement>(null);
-
 	const onClick = useCallback(
 		({ accordion, expanded }: { accordion: Folder; expanded: boolean }): void => {
 			if (expanded) {
@@ -90,6 +93,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 									AccordionCustomComponent={AccordionCustomComponent}
 									setSelectedFolder={setSelectedFolder}
 									buttonFindShares={buttonFindShares}
+									initialExpanded={initialExpanded}
 								/>
 							</AccordionDetails>
 						)}

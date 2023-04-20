@@ -7,7 +7,7 @@
 import { Container, SnackbarManagerContext, Text } from '@zextras/carbonio-design-system';
 import { deleteTag, t } from '@zextras/carbonio-shell-ui';
 import React, { FC, useCallback, useContext, useMemo } from 'react';
-import { DeleteTagModalPropsType } from '../../types/sidebar';
+import type { DeleteTagModalPropsType } from '../../types/sidebar';
 import ModalFooter from '../modals/modal-footer';
 import ModalHeader from '../modals/modal-header';
 
@@ -27,8 +27,6 @@ const DeleteTagModal: FC<DeleteTagModalPropsType> = ({ onClose, tag }) => {
 		if (tag)
 			deleteTag(tag?.id).then((res: any) => {
 				if (res.action) {
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
 					createSnackbar({
 						key: `delete-tag`,
 						replace: true,

@@ -6,20 +6,22 @@
 
 import {
 	FolderMessage,
-	LinkFolderFields,
-	SearchFolderFields,
 	SoapFolder,
 	SoapLink,
 	SoapNotify,
-	SoapSearchFolder,
+	SoapSearchFolder
+} from '@zextras/carbonio-shell-ui';
+import {
 	BaseFolder,
 	Folder,
 	Folders,
 	LinkFolder,
+	LinkFolderFields,
 	Roots,
 	Searches,
+	SearchFolderFields,
 	UserFolder
-} from '@zextras/carbonio-shell-ui';
+} from '../types/folder';
 
 const IM_LOGS = '14';
 const ROOT_NAME = 'USER_ROOT';

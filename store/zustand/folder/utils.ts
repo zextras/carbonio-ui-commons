@@ -3,15 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import {
-	FOLDERS,
-	FolderView,
-	ROOT_NAME,
-	TreeNode,
-	Folder,
-	LinkFolder
-} from '@zextras/carbonio-shell-ui';
+
+import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
 import { sortBy } from 'lodash';
+import { Folder, FolderView, LinkFolder, TreeNode } from '../../../types/folder';
 
 const hasId = (f: Folder | TreeNode<unknown>, id: string): boolean => f.id.split(':').includes(id);
 const getOriginalId = (f: Folder): string => {

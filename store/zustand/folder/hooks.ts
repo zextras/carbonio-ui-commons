@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { ComponentType, useMemo } from 'react';
 import {
 	AccordionFolder,
-	FolderView,
 	Folder,
 	Folders,
+	FolderView,
 	Searches,
 	SearchFolder
-} from '@zextras/carbonio-shell-ui';
-import { ComponentType, useMemo } from 'react';
+} from '../../../types/folder';
 import { useFolderStore } from './store';
 import { filterNodes, folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
 

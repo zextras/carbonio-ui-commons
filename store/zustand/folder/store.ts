@@ -3,8 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { FolderState } from '@zextras/carbonio-shell-ui';
 import { create } from 'zustand';
+import { FolderState } from '../../../types/folder';
 import { folderWorker } from '../../../worker';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage

@@ -173,4 +173,5 @@ export type SidebarAccordionProps = {
 	AccordionCustomComponent: ComponentType;
 	setSelectedFolder?: (folderId: string) => void;
 	buttonFindShares?: ReactElement;
+	initialExpanded?: string[];
 };

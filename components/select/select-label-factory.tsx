@@ -3,20 +3,19 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { ReactElement } from 'react';
 import {
 	Container,
-	Padding,
-	Text,
-	Row,
 	Icon,
-	TextProps,
 	IconProps,
-	SelectItem,
-	LabelFactoryProps,
+	Padding,
+	Row,
+	Text,
+	TextProps,
 	getColor
 } from '@zextras/carbonio-design-system';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components';
+import { CustomLabelFactoryProps } from '../../types/select';
 
 export const Square = styled.div`
 	width: 1rem;
@@ -56,14 +55,6 @@ color: ${({ theme, disabled, $showPrimary }): string =>
 		: $showPrimary
 		? theme.palette.primary.regular
 		: theme.palette.secondary.regular}};`;
-
-interface CustomSelectItem extends SelectItem {
-	color?: string;
-}
-
-interface CustomLabelFactoryProps extends LabelFactoryProps {
-	selected: CustomSelectItem[];
-}
 
 export const FolderSelectorLabelFactory = ({
 	selected,

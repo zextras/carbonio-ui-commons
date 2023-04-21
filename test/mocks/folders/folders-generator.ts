@@ -5,7 +5,8 @@
  */
 
 import { faker } from '@faker-js/faker';
-import { Folder, Folders, FolderView, Grant } from '@zextras/carbonio-shell-ui';
+import { Folders, FolderView, Grant } from '@zextras/carbonio-shell-ui';
+import type { Folder } from '../../../types/folder';
 import { FOLDERS } from '../carbonio-shell-ui-constants';
 import { getMocksContext, getRandomIdentity } from '../utils/mocks-context';
 

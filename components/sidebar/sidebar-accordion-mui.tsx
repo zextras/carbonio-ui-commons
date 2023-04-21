@@ -6,9 +6,10 @@
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Container } from '@mui/material';
-import { Folder, useLocalStorage } from '@zextras/carbonio-shell-ui';
+import { useLocalStorage } from '@zextras/carbonio-shell-ui';
 import React, { FC, useCallback, useRef } from 'react';
 import { theme } from '../../theme/theme-mui';
+import type { Folder } from '../../types/folder';
 import type { SidebarAccordionProps } from '../../types/sidebar';
 
 export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({

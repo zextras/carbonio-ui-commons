@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import {
+import type {
 	FolderMessage,
 	SoapFolder,
 	SoapLink,
 	SoapNotify,
 	SoapSearchFolder
 } from '@zextras/carbonio-shell-ui';
-import {
+import type {
 	BaseFolder,
 	Folder,
 	Folders,

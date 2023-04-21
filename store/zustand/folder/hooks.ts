@@ -5,13 +5,13 @@
  */
 
 import { ComponentType, useMemo } from 'react';
-import {
+import type {
 	AccordionFolder,
 	Folder,
-	Folders,
 	FolderView,
-	Searches,
-	SearchFolder
+	Folders,
+	SearchFolder,
+	Searches
 } from '../../../types/folder';
 import { useFolderStore } from './store';
 import { filterNodes, folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';

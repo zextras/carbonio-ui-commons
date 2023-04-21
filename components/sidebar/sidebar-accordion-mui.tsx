@@ -9,7 +9,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Container } from '@mui/m
 import { Folder, useLocalStorage } from '@zextras/carbonio-shell-ui';
 import React, { FC, useCallback, useRef } from 'react';
 import { theme } from '../../theme/theme-mui';
-import { SidebarAccordionProps } from '../../types/sidebar';
+import type { SidebarAccordionProps } from '../../types/sidebar';
 
 export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 	accordions,

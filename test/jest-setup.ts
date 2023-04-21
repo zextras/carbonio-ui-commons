@@ -58,3 +58,22 @@ window.ResizeObserver = jest.fn().mockImplementation(() => ({
 	unobserve: jest.fn(),
 	disconnect: jest.fn()
 }));
+
+// mock a simplified Intersection Observer
+Object.defineProperty(window, 'IntersectionObserver', {
+	writable: false,
+	value: jest.fn().mockImplementation(
+		(
+			callback: IntersectionObserverCallback,
+			options?: IntersectionObserverInit
+		): IntersectionObserver => ({
+			thresholds: (options?.threshold || [0]) as typeof IntersectionObserver.prototype.thresholds,
+			root: options?.root || window.document,
+			rootMargin: options?.rootMargin || '0px',
+			observe: jest.fn(),
+			unobserve: jest.fn(),
+			disconnect: jest.fn(),
+			takeRecords: (): IntersectionObserverEntry[] => []
+		})
+	)
+});

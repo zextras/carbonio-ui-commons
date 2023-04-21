@@ -7,7 +7,7 @@ import { Container, Padding, Select, SelectItem, Text } from '@zextras/carbonio-
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { find, map } from 'lodash';
 import { FolderSelectorLabelFactory, Square } from './select-label-factory';
-import { FolderSelectorItem } from '../../types/select';
+import type { FolderSelectorItem } from '../../types/select';
 
 type FolderSelectorProps = {
 	defaultFolderId: string;

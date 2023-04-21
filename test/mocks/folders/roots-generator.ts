@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { Roots } from '@zextras/carbonio-shell-ui';
-import { getMocksContext, MocksContext, MocksContextIdentity } from '../utils/mocks-context';
+import type { Roots } from '../../../types/folder';
+import { getMocksContext, MocksContextIdentity } from '../utils/mocks-context';
 
 /**
  *

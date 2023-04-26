@@ -10,6 +10,7 @@ import type {
 	Folder,
 	FolderView,
 	Folders,
+	Roots,
 	SearchFolder,
 	Searches
 } from '../../../types/folder';
@@ -26,8 +27,8 @@ export const getFolders = (): Folders => useFolderStore.getState().folders;
 // ROOTS
 export const useRoot = (id: string): Folder | undefined => useFolderStore((s) => s.roots?.[id]);
 export const getRoot = (id: string): Folder | undefined => useFolderStore.getState().roots?.[id];
-export const useRoots = (): Folders => useFolderStore((s) => s.roots);
-export const getRoots = (): Folders => useFolderStore.getState().roots;
+export const useRoots = (): Roots => useFolderStore((s) => s.roots);
+export const getRoots = (): Roots => useFolderStore.getState().roots;
 
 // ROOTS BY VIEW
 export const useRootByUser = (userId: string): Folder | SearchFolder | Record<string, never> =>

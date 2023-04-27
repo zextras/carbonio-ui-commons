@@ -5,48 +5,22 @@
  */
 import { FOLDERS, useNotify, useRefresh } from '@zextras/carbonio-shell-ui';
 import { filter, forEach, map } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getFolderRequest } from '../soap/get-folder';
 import { getShareInfoRequest } from '../soap/get-share-info';
 import { useFolderStore } from '../store/zustand/folder';
 import { folderWorker } from '../worker';
 
-// TODO: the current soapFetch implementation in shell does not support custom headers,
-//  we can replace this fetch with the soapFetch once its header can be customized.
-const getFoldersByAccount = (body: unknown, header: { account: string }): Promise<any> =>
-	fetch(`/service/soap/GetFolderRequest`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			Body: {
-				GetFolderRequest: body
-			},
-			Header: {
-				context: {
-					_jsns: 'urn:zimbra',
-					account: {
-						_content: header.account,
-						by: 'name'
-					}
-				}
-			}
-		})
-	})
-		.then((res) => res?.json())
-		.then((res) => {
-			const responseFolder = res.Body.GetFolderResponse.folder[0];
-			return res?.Body?.Fault
-				? res.Body
-				: { ...responseFolder, oname: responseFolder.name, owner: header.account };
-		})
-		.catch((e) => {
-			throw e;
-		});
-
 const getFoldersByAccounts = async (requests: unknown[]): Promise<any> =>
-	Promise.all(map(requests, ({ body, header }) => getFoldersByAccount(body, header)));
+	Promise.all(
+		map(requests, async ({ id, account }) => {
+			const response = await getFolderRequest({ id }, account);
+			if (response?.folder?.length) {
+				return { ...response.folder[0], oname: response.folder[0].name, owner: account };
+			}
+			return response;
+		})
+	);
 
 export const useFoldersController = (): void => {
 	const refresh = useRefresh();
@@ -59,18 +33,11 @@ export const useFoldersController = (): void => {
 					if (sharedFolders?.folders) {
 						const sharedAccounts = filter(sharedFolders.folders, ['folderId', 1]);
 						const requests = map(sharedAccounts, (acc) => {
-							const body = {
-								_jsns: 'urn:zimbraMail',
-								folder: {
-									l: acc.folderId
-								}
-							};
-							const header = {
-								account: acc.ownerEmail
-							};
+							const id = acc.folderId;
+							const account = acc.ownerEmail;
 							return {
-								body,
-								header
+								id,
+								account
 							};
 						});
 						getFoldersByAccounts(requests).then((response) => {

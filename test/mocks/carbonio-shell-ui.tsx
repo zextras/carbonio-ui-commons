@@ -5,11 +5,13 @@
  */
 
 import React from 'react';
+import { filter } from 'lodash';
 import { generateAccount } from './accounts/account-generator';
 import { generateRoots } from './folders/roots-generator';
 import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
 import { generateFolders } from './folders/folders-generator';
+import { FOLDERS } from './carbonio-shell-ui-constants';
 
 export { FOLDERS, ZIMBRA_STANDARD_COLORS } from './carbonio-shell-ui-constants';
 
@@ -56,6 +58,9 @@ export const useFolder = jest.fn((id: string) => mockedFolders[id]);
 export const getFolder = jest.fn((id: string) => mockedFolders[id]);
 export const useFolders = jest.fn(() => mockedFolders);
 export const getFolders = jest.fn(() => mockedFolders);
+export const useFoldersByView = jest.fn((view: string) =>
+	filter(mockedFolders[FOLDERS.USER_ROOT].children, { view })
+);
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
 export const minimizeBoards = jest.fn();

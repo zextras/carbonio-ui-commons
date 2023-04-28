@@ -30,6 +30,32 @@ export const defaultBeforeAllTests = (): void => {
 };
 
 /**
+ * Mocks the Worker class
+ */
+
+type MessageHandler = (msg: string) => void;
+
+class Worker {
+	url: string;
+
+	onmessage: MessageHandler;
+
+	constructor(stringUrl: string) {
+		this.url = stringUrl;
+		this.onmessage = noop;
+	}
+
+	postMessage(msg: string): void {
+		this.onmessage(msg);
+	}
+}
+
+Object.defineProperty(window, 'Worker', {
+	writable: true,
+	value: Worker
+});
+
+/**
  * Default logic to execute before each tests
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -59,32 +85,6 @@ window.ResizeObserver = jest.fn().mockImplementation(() => ({
 	unobserve: jest.fn(),
 	disconnect: jest.fn()
 }));
-
-/**
- * Mocks the Worker class
- *
- * workers are not supported in jest, as they are a browser feature and are not supported in jsdom
- * I did not find a way to type this class, so I disabled the eslint rule
- */
-export default class Worker {
-	constructor(stringUrl: string) {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		this.url = stringUrl;
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		this.onmessage = noop;
-	}
-
-	postMessage(msg: string): void {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		this.onmessage(msg);
-	}
-}
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-window.Worker = Worker;
 
 // mock a simplified Intersection Observer
 Object.defineProperty(window, 'IntersectionObserver', {

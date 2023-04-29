@@ -5,10 +5,14 @@
  */
 import { soapFetch } from '@zextras/carbonio-shell-ui';
 
-export const getFolderRequest = async ({ id }: { id: string }): Promise<any> =>
-	soapFetch('GetFolder', {
-		_jsns: 'urn:zimbraMail',
-		folder: {
-			l: id
-		}
-	});
+export const getFolderRequest = async ({ id }: { id: string }, account?: string): Promise<any> =>
+	soapFetch(
+		'GetFolder',
+		{
+			_jsns: 'urn:zimbraMail',
+			folder: {
+				l: id
+			}
+		},
+		account
+	);

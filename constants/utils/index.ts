@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export const FOLDER_VIEW {
+export const FOLDER_VIEW = {
 	search_folder = 'search folder',
 	tag = 'tag',
 	conversation = 'conversation',

@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import type { Folder } from '../types/folder';
+
 export type ResFolder = Folder &
 	Partial<{
 		folderId: number;

@@ -7,13 +7,13 @@
 import { FOLDERS } from '@zextras/carbonio-shell-ui';
 import { filter, find, keyBy, values } from 'lodash';
 import { ComponentType, useMemo } from 'react';
-import {
+import type {
 	AccordionFolder,
 	Folder,
-	Folders,
 	FolderView,
-	Searches,
-	SearchFolder
+	Folders,
+	SearchFolder,
+	Searches
 } from '../../../types/folder';
 import { useFolderStore } from './store';
 import { folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';

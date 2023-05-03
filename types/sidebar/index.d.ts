@@ -5,6 +5,7 @@
  */
 
 import { ReactElement } from 'react';
+import type { Folder, Folders } from '../folder';
 
 type RegisterActionType = {
 	id: string;

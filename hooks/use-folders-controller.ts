@@ -3,44 +3,37 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { FOLDERS, useNotify, useRefresh } from '@zextras/carbonio-shell-ui';
+import { useNotify, useRefresh } from '@zextras/carbonio-shell-ui';
 import { filter, forEach, map } from 'lodash';
 import { useEffect } from 'react';
 import { getFolderRequest } from '../soap/get-folder';
 import { getShareInfoRequest } from '../soap/get-share-info';
 import { useFolderStore } from '../store/zustand/folder';
+import { FolderView } from '../types/folder';
 import { folderWorker } from '../worker';
 
-const getFoldersByAccounts = async (requests: unknown[]): Promise<any> =>
+const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView): Promise<any> =>
 	Promise.all(
-		map(requests, async ({ id, account }) => {
-			const response = await getFolderRequest({ id }, account);
+		map(sharedAccounts, async ({ ownerEmail }) => {
+			const response = await getFolderRequest({ view }, ownerEmail);
 			if (response?.folder?.length) {
-				return { ...response.folder[0], oname: response.folder[0].name, owner: account };
+				return { ...response.folder[0], oname: response.folder[0].name, owner: ownerEmail };
 			}
 			return response;
 		})
 	);
 
-export const useFoldersController = (): void => {
+export const useFoldersController = (view: FolderView): void => {
 	const refresh = useRefresh();
 	const notify = useNotify();
 
 	useEffect(() => {
 		if (refresh) {
-			getFolderRequest({ id: FOLDERS.USER_ROOT }).then((rootFolders: { folder: any }) => {
+			getFolderRequest({ view }).then((rootFolders: { folder: any }) => {
 				getShareInfoRequest().then((sharedFolders: { folders: any }) => {
 					if (sharedFolders?.folders) {
 						const sharedAccounts = filter(sharedFolders.folders, ['folderId', 1]);
-						const requests = map(sharedAccounts, (acc) => {
-							const id = acc.folderId;
-							const account = acc.ownerEmail;
-							return {
-								id,
-								account
-							};
-						});
-						getFoldersByAccounts(requests).then((response) => {
+						getFoldersByAccounts(sharedAccounts, view).then((response) => {
 							const folders = [
 								{
 									...rootFolders.folder[0],
@@ -56,7 +49,7 @@ export const useFoldersController = (): void => {
 				});
 			});
 		}
-	}, [refresh]);
+	}, [refresh, view]);
 
 	useEffect(() => {
 		if (notify?.length) {

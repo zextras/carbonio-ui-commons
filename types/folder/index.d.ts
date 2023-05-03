@@ -10,7 +10,7 @@ export type FolderFields = {
 	// Additional Parameters
 	isLink: boolean;
 	depth: number;
-	parent?: Folder;
+	parent?: string;
 	children: Array<Folder>;
 };
 
@@ -24,11 +24,9 @@ export type SearchFolder = BaseFolder &
 export type Folder = UserFolder | LinkFolder;
 
 export type Folders = { [id: string]: Folder };
-export type Roots = { [id: string]: Folder };
 export type Searches = { [id: string]: SearchFolder };
 export type FolderState = {
 	folders: Folders;
-	roots: Roots;
 	searches: Searches;
 };
 

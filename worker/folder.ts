@@ -17,24 +17,30 @@ import {
 	Folders,
 	LinkFolder,
 	LinkFolderFields,
-	Roots,
 	Searches,
 	SearchFolderFields,
 	UserFolder
 } from '../types/folder';
 
 const IM_LOGS = '14';
-const ROOT_NAME = 'USER_ROOT';
-const DEFAULT_ROOT = 'USER';
 
 const folders: Folders = {};
-const roots: Roots = {};
 const searches: Searches = {};
 
 const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
 	/#/.test(string || '');
 
-const omit = ({
+const omit = (
+	folder: Partial<SoapFolder> = {},
+	propToOmit: Array<keyof Partial<SoapFolder>> = []
+): Partial<SoapFolder> => {
+	const keysToOmit = structuredClone(folder);
+	propToOmit.forEach((key) => {
+		delete keysToOmit[key];
+	});
+	return keysToOmit;
+};
+/* const omit = ({
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	link: _1,
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -42,7 +48,7 @@ const omit = ({
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	search: _3,
 	...obj
-}: Partial<SoapFolder>): Partial<SoapFolder> => obj;
+}: Partial<SoapFolder>): Partial<SoapFolder> => obj; */
 
 const hasId = (f: SoapFolder, id: string): boolean => f.id.split(':').includes(id);
 const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
@@ -100,7 +106,7 @@ const normalizeLink = (l: SoapLink, p?: Folder): BaseFolder & LinkFolderFields =
 const processSearch = (soapSearch: SoapSearchFolder, parent: Folder): void => {
 	const search = {
 		...normalizeSearch(soapSearch),
-		parent,
+		parent: parent?.id,
 		isLink: parent?.isLink
 	};
 	searches[search.id] = search;
@@ -111,14 +117,11 @@ const processLink = (soapLink: SoapLink, depth: number, parent?: Folder): LinkFo
 		...normalizeLink(soapLink, parent),
 		isLink: true,
 		children: [],
-		parent,
+		parent: parent?.id,
 		depth
 	} as LinkFolder;
 	// eslint-disable-next-line no-param-reassign
 	folders[soapLink.id] = link;
-	if (link.oname === ROOT_NAME) {
-		roots[link.owner ?? 'unknown'] = link;
-	}
 	soapLink?.folder?.forEach((f) => {
 		if (!hasId(f, IM_LOGS)) {
 			// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -144,13 +147,10 @@ const processFolder = (soapFolder: SoapFolder, depth: number, parent?: Folder): 
 		...normalize(soapFolder, parent),
 		isLink: false,
 		children: [],
-		parent,
+		parent: parent?.id,
 		depth
 	};
 	folders[soapFolder.id] = folder;
-	if (folder.name === ROOT_NAME) {
-		roots[DEFAULT_ROOT] = folder;
-	}
 	soapFolder?.folder?.forEach((f) => {
 		if (!hasId(f, IM_LOGS)) {
 			const child = processFolder(f, depth + 1, folder);
@@ -180,7 +180,7 @@ export const handleFolderCreated = (created: Array<SoapFolder>): void =>
 				...normalize(val, parent),
 				isLink: false,
 				children: [],
-				parent,
+				parent: parent?.id,
 				depth: parent?.depth ? parent.depth + 1 : 0
 			};
 			folders[val.id] = folder;
@@ -195,7 +195,7 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 				...normalizeLink(val, parent),
 				isLink: true,
 				children: [],
-				parent,
+				parent: parent?.id,
 				depth: parent?.depth ? parent.depth + 1 : 0
 			};
 			folders[val.id] = folder;
@@ -207,18 +207,21 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 		if (val.id) {
 			const folder = folders[val.id];
 			if (folder) {
-				Object.assign(folder, omit(val));
+				Object.assign(folder, omit(val, ['link', 'folder', 'search']));
 				if (typeof val.f !== 'undefined') {
 					folder.checked = testFolderIsChecked({ string: val.f });
 				}
 				if (val.l) {
-					const oldParent = folders[val.id].parent;
-					const newParent = folders[val.l];
-					if (oldParent) {
-						oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
-						newParent.children.push(folder);
+					const oldParentId = folders[val.id].parent;
+					if (oldParentId) {
+						const oldParent = folders[oldParentId];
+						const newParent = folders[val.l];
+						if (oldParent) {
+							oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
+							newParent.children.push(folder);
+						}
+						folder.parent = newParent.id;
 					}
-					folder.parent = newParent;
 				}
 				folders[val.id] = folder;
 			}
@@ -229,10 +232,10 @@ export const handleFolderDeleted = (deleted: string[]): void =>
 		const folder = folders[val];
 		if (folder) {
 			if (folder.parent) {
-				folder.parent.children = folder.parent.children.filter((f) => f.id !== val);
+				const parent = folders[folder.parent];
+				parent.children = parent.children.filter((obj) => obj.id !== val);
 			}
 			delete folders[val];
-			delete roots[val];
 			delete searches[val];
 		}
 	});
@@ -252,5 +255,5 @@ onmessage = ({ data }: FolderMessage): void => {
 	}
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	postMessage({ folders, roots, searches });
+	postMessage({ folders, searches });
 };

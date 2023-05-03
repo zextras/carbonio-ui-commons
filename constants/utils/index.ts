@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-// eslint-disable-next-line no-shadow
-export enum FOLDER_VIEW {
+export const FOLDER_VIEW {
 	search_folder = 'search folder',
 	tag = 'tag',
 	conversation = 'conversation',
@@ -18,7 +17,7 @@ export enum FOLDER_VIEW {
 	wiki = 'wiki',
 	task = 'task',
 	chat = 'chat'
-}
+} as const;
 
 // eslint-disable-next-line no-shadow
 export enum TagsActionsType {

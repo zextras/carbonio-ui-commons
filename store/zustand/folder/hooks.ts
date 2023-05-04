@@ -15,6 +15,7 @@ import type {
 	SearchFolder,
 	Searches
 } from '../../../types/folder';
+
 import { useFolderStore } from './store';
 import { folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
 

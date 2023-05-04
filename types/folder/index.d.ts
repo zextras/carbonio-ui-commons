@@ -166,5 +166,5 @@ export type AccordionFolder = {
 export type TreeNode<T> = T & {
 	id: string;
 	children: TreeNode<T>[];
-	parent?: TreeNode<T>;
+	parent?: string;
 };

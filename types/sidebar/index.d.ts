@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Folder } from '@zextras/carbonio-shell-ui';
-import { FC, ReactElement } from 'react';
+import { ReactElement } from 'react';
+import type { Folder, Folders } from '../folder';
 
 type RegisterActionType = {
 	id: string;

@@ -6,6 +6,7 @@
 
 import failOnConsole from 'jest-fail-on-console';
 import fetchMock from 'jest-fetch-mock';
+import { noop } from 'lodash';
 import { setupServer, SetupServer } from 'msw/node';
 import { getRestHandlers } from './mocks/network/msw/handlers';
 
@@ -27,6 +28,32 @@ export const defaultBeforeAllTests = (): void => {
 	server = setupServer(...getRestHandlers());
 	server.listen({ onUnhandledRequest: 'warn' });
 };
+
+/**
+ * Mocks the Worker class
+ */
+
+type MessageHandler = (msg: string) => void;
+
+class Worker {
+	url: string;
+
+	onmessage: MessageHandler;
+
+	constructor(stringUrl: string) {
+		this.url = stringUrl;
+		this.onmessage = noop;
+	}
+
+	postMessage(msg: string): void {
+		this.onmessage(msg);
+	}
+}
+
+Object.defineProperty(window, 'Worker', {
+	writable: true,
+	value: Worker
+});
 
 /**
  * Default logic to execute before each tests

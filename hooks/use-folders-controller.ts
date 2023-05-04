@@ -13,7 +13,7 @@ import { folderWorker } from '../worker';
 
 const getFoldersByAccounts = async (requests: unknown[]): Promise<any> =>
 	Promise.all(
-		map(requests, async ({ id, account }) => {
+		map(requests, async ({ id, account }: { id: string; account: string }) => {
 			const response = await getFolderRequest({ id }, account);
 			if (response?.folder?.length) {
 				return { ...response.folder[0], oname: response.folder[0].name, owner: account };

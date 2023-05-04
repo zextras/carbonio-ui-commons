@@ -6,7 +6,7 @@
 
 import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
 import { sortBy } from 'lodash';
-import { Folder, FolderView, LinkFolder, TreeNode } from '../../../types/folder';
+import type { Folder, FolderView, LinkFolder, TreeNode } from '../../../types/folder';
 
 const hasId = (f: Folder | TreeNode<unknown>, id: string): boolean => f.id.split(':').includes(id);
 const getOriginalId = (f: Folder): string => {

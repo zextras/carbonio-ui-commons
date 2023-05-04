@@ -17,7 +17,7 @@ export const FOLDER_VIEW = {
 	wiki: 'wiki',
 	task: 'task',
 	chat: 'chat'
-};
+} as const;
 
 // eslint-disable-next-line no-shadow
 export enum TagsActionsType {

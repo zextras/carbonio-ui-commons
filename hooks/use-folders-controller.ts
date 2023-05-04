@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { FOLDERS, useNotify, useRefresh } from '@zextras/carbonio-shell-ui';
-import { filter, forEach, map } from 'lodash';
+import { filter, forEach, map, reject } from 'lodash';
 import { useEffect } from 'react';
 import { getFolderRequest } from '../soap/get-folder';
 import { getShareInfoRequest } from '../soap/get-share-info';
@@ -16,7 +16,12 @@ const getFoldersByAccounts = async (requests: unknown[]): Promise<any> =>
 		map(requests, async ({ id, account }: { id: string; account: string }) => {
 			const response = await getFolderRequest({ id }, account);
 			if (response?.folder?.length) {
-				return { ...response.folder[0], oname: response.folder[0].name, owner: account };
+				return {
+					...response.folder[0],
+					oname: response.folder[0].name,
+					owner: account,
+					name: account
+				};
 			}
 			return response;
 		})
@@ -41,10 +46,11 @@ export const useFoldersController = (): void => {
 							};
 						});
 						getFoldersByAccounts(requests).then((response) => {
+							const filteredFolders = reject(rootFolders.folder[0].link, ['rid', 1]);
 							const folders = [
 								{
 									...rootFolders.folder[0],
-									link: [...rootFolders.folder[0].link, ...response]
+									link: [...filteredFolders, ...response]
 								}
 							];
 							folderWorker.postMessage({

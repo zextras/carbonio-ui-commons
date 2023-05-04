@@ -30,6 +30,32 @@ export const defaultBeforeAllTests = (): void => {
 };
 
 /**
+ * Mocks the Worker class
+ */
+
+type MessageHandler = (msg: string) => void;
+
+class Worker {
+	url: string;
+
+	onmessage: MessageHandler;
+
+	constructor(stringUrl: string) {
+		this.url = stringUrl;
+		this.onmessage = noop;
+	}
+
+	postMessage(msg: string): void {
+		this.onmessage(msg);
+	}
+}
+
+Object.defineProperty(window, 'Worker', {
+	writable: true,
+	value: Worker
+});
+
+/**
  * Default logic to execute before each tests
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-function

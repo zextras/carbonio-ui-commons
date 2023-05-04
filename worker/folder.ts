@@ -60,7 +60,9 @@ const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	luuid: f.luuid,
 	checked: testFolderIsChecked({ string: f.f }),
 	f: f.f,
-	color: f.color || p?.color,
+	// the type defined in shell is not correct
+	// FIXME: remove the cast when the type will be fixed
+	color: (f.color as unknown as number) || p?.color,
 	rgb: f.rgb,
 	u: f.u,
 	i4u: f.i4u,
@@ -203,6 +205,10 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 		}
 	});
 export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void =>
+	// the type defined in shell is not correct
+	// FIXME: remove the ts-ignore when the type will be fixed
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	modified.forEach((val: Partial<SoapFolder>): void => {
 		if (val.id) {
 			const folder = folders[val.id];
@@ -242,6 +248,10 @@ export const handleFolderDeleted = (deleted: string[]): void =>
 export const handleFolderNotify = (notify: SoapNotify): void => {
 	handleFolderCreated(notify.created?.folder ?? []);
 	handleLinkCreated(notify.created?.link ?? []);
+	// the type defined in shell is not correct
+	// FIXME: remove the ts-ignore when the type will be fixed
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	handleFolderModified(notify.modified?.folder ?? notify.modified?.link ?? []);
 	handleFolderDeleted(notify.deleted ?? []);
 };

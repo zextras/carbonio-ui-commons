@@ -86,32 +86,6 @@ window.ResizeObserver = jest.fn().mockImplementation(() => ({
 	disconnect: jest.fn()
 }));
 
-/**
- * Mocks the Worker class
- *
- * workers are not supported in jest, as they are a browser feature and are not supported in jsdom
- * I did not find a way to type this class, so I disabled the eslint rule
- */
-export default class Worker {
-	constructor(stringUrl: string) {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		this.url = stringUrl;
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		this.onmessage = noop;
-	}
-
-	postMessage(msg: string): void {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		this.onmessage(msg);
-	}
-}
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-window.Worker = Worker;
-
 // mock a simplified Intersection Observer
 Object.defineProperty(window, 'IntersectionObserver', {
 	writable: false,

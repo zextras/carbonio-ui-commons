@@ -14,9 +14,5 @@ const mockedFolders = generateFolders();
 
 jest.spyOn(hooks, 'useFolder').mockImplementation((id: string) => mockedFolders[id]);
 jest.spyOn(hooks, 'getFolder').mockImplementation((id: string) => mockedFolders[id]);
-jest.spyOn(hooks, 'useFolders').mockImplementation(() => mockedFolders);
-jest.spyOn(hooks, 'getFolders').mockImplementation(() => mockedFolders);
 jest.spyOn(hooks, 'useRoot').mockImplementation((id: string) => mockedRoots[id]);
 jest.spyOn(hooks, 'getRoot').mockImplementation((id: string) => mockedRoots[id]);
-jest.spyOn(hooks, 'useRoots').mockImplementation(() => mockedRoots);
-jest.spyOn(hooks, 'getRoots').mockImplementation(() => mockedRoots);

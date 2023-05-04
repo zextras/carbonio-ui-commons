@@ -4,18 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType, useMemo } from 'react';
-import type {
-	AccordionFolder,
-	Folder,
-	FolderView,
-	Folders,
-	Roots,
-	SearchFolder,
-	Searches
-} from '../../../types/folder';
+import { FOLDERS } from '@zextras/carbonio-shell-ui';
+import { filter, find, keyBy } from 'lodash';
+import type { Folder, Folders, SearchFolder, Searches } from '../../../types/folder';
 import { useFolderStore } from './store';
-import { filterNodes, folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
 
 // FOLDERS
 export const useFolder = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);
@@ -25,67 +17,55 @@ export const useFolders = (): Folders => useFolderStore((s) => s.folders);
 export const getFolders = (): Folders => useFolderStore.getState().folders;
 
 // ROOTS
-export const useRoot = (id: string): Folder | undefined => useFolderStore((s) => s.roots?.[id]);
-export const getRoot = (id: string): Folder | undefined => useFolderStore.getState().roots?.[id];
-export const useRoots = (): Roots => useFolderStore((s) => s.roots);
-export const getRoots = (): Roots => useFolderStore.getState().roots;
+export const useRoot = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);
+export const getRoot = (id: string): Folder | undefined => useFolderStore.getState().folders?.[id];
+export const useRootsArray = (): Array<Folder> =>
+	useFolderStore((s) =>
+		filter(
+			s.folders,
+			(f) => f.id === FOLDERS.USER_ROOT || f.id?.split(':')?.[1] === FOLDERS.USER_ROOT
+		)
+	);
+export const getRootsArray = (): Array<Folder> =>
+	filter(
+		useFolderStore.getState().folders,
+		(f) => f.id === FOLDERS.USER_ROOT || f.id?.split(':')?.[1] === FOLDERS.USER_ROOT
+	);
+export const useRootsMap = (): Record<string, Folder> =>
+	useFolderStore((s) =>
+		keyBy(
+			filter(
+				s.folders,
+				(f) => f.id === FOLDERS.USER_ROOT || f.id?.split(':')?.[1] === FOLDERS.USER_ROOT
+			),
+			'id'
+		)
+	);
+export const getRootsMap = (): Record<string, Folder> =>
+	keyBy(
+		filter(
+			useFolderStore.getState().folders,
+			(f) => f.id === FOLDERS.USER_ROOT || f.id?.split(':')?.[1] === FOLDERS.USER_ROOT
+		),
+		'id'
+	);
 
 // ROOTS BY VIEW
-export const useRootByUser = (userId: string): Folder | SearchFolder | Record<string, never> =>
-	useFolderStore((s) => (s.roots ? s.roots[userId] : {}));
-export const getRootByUser = (userId: string): Folder | SearchFolder | Record<string, never> => {
-	const folders = useFolderStore.getState();
-	return folders.roots ? folders.roots[userId] : {};
+export const useRootByUser = (
+	userId: string
+): Folder | SearchFolder | Record<string, never> | undefined =>
+	useFolderStore((s) => find(s.folders, (f) => f.name === userId));
+export const getRootByUser = (
+	userId: string
+): Folder | SearchFolder | Record<string, never> | undefined => {
+	const { folders } = useFolderStore.getState();
+	return find(folders, (f) => f.name === userId);
 };
 
 // SEARCHES
-
 export const useSearchFolder = (id: string): SearchFolder | undefined =>
 	useFolderStore((s) => s.searches?.[id]);
 export const getSearchFolder = (id: string): SearchFolder | undefined =>
 	useFolderStore.getState().searches[id];
 export const useSearchFolders = (): Searches => useFolderStore((s) => s.searches);
 export const getSearchFolders = (): Searches => useFolderStore.getState().searches;
-
-// Accordion-ize
-
-export const useFoldersByView = (view: FolderView): Array<Folder> => {
-	const roots = useRoots();
-	return useMemo(
-		() =>
-			roots ? filterNodes<Folder>(Object.values(roots), folderViewFilter(view), sortFolders) : [],
-		[roots, view]
-	);
-};
-
-export const useFoldersAccordionByView = (
-	view: FolderView,
-	CustomComponent: ComponentType<{ folder: Folder }>,
-	itemProps?: (item: AccordionFolder) => Record<string, any>
-): Array<AccordionFolder> => {
-	const roots = useRoots();
-	return useMemo(
-		() =>
-			roots
-				? mapNodes<Folder, AccordionFolder>(Object.values(roots), {
-						mapFunction: (f) => {
-							const item = {
-								id: f.id,
-								label: f.name,
-								CustomComponent,
-								items: [],
-								folder: f,
-								disableHover: isRoot(f)
-							};
-							const props = itemProps?.(item) ?? {};
-							return { ...item, ...props };
-						},
-						filterFunction: folderViewFilter(view),
-						recursionKey: 'items',
-						sortFunction: sortFolders,
-						deep: false
-				  })
-				: [],
-		[CustomComponent, itemProps, roots, view]
-	);
-};

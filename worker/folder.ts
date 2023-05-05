@@ -40,17 +40,10 @@ const omit = (
 	});
 	return keysToOmit;
 };
-/* const omit = ({
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	link: _1,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	folder: _2,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	search: _3,
-	...obj
-}: Partial<SoapFolder>): Partial<SoapFolder> => obj; */
 
-const hasId = (f: SoapFolder, id: string): boolean => f.id.split(':').includes(id);
+export const hasId = (f: SoapFolder, id: string): boolean => f.id.split(':').includes(id);
+export const hasParentId = (f: Folder, parentId: string): boolean =>
+	f.parent?.split?.(':').includes(parentId) ?? false;
 const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	id: f.id,
 	uuid: f.uuid,
@@ -252,7 +245,7 @@ export const handleFolderNotify = (notify: SoapNotify): void => {
 	// FIXME: remove the ts-ignore when the type will be fixed
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	handleFolderModified(notify.modified?.folder ?? notify.modified?.link ?? []);
+	handleFolderModified([...(notify.modified?.folder ?? []), ...(notify.modified?.link ?? [])]);
 	handleFolderDeleted(notify.deleted ?? []);
 };
 

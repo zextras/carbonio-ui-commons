@@ -33,7 +33,7 @@ export const useFoldersController = (view: FolderView): void => {
 	const notify = useNotify();
 
 	useEffect(() => {
-		if (refresh) {
+		if (refresh && view) {
 			getFolderRequest({ view }).then((rootFolders: { folder: any }) => {
 				getShareInfoRequest().then((sharedFolders: { folders: any }) => {
 					if (sharedFolders?.folders) {

@@ -260,6 +260,5 @@ onmessage = ({ data }: FolderMessage): void => {
 	}
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	console.log({ folders, searches });
 	postMessage({ folders, searches });
 };

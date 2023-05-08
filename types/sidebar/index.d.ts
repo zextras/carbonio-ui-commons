@@ -43,7 +43,7 @@ export type SidebarCustomItem = {
 		id: string;
 		label: string;
 		open: boolean;
-		items: Folders;
+		items: Array<Folder>;
 		ownerName: string;
 		ownerId: string;
 		checked: boolean;

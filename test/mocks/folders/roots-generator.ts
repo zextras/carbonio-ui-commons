@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import type { Folders } from '../../../types/folder';
+import { Folder } from '../../../types/folder';
 import { getMocksContext, MocksContextIdentity } from '../utils/mocks-context';
 
 /**
@@ -20,7 +20,7 @@ let rootIdCounter = 100;
 const generateSharedAccountRoot = (
 	primaryContextIdentity: MocksContextIdentity,
 	sharedContextIdentity: MocksContextIdentity
-): Folders => {
+): Record<string, Folder> => {
 	const result = {
 		[sharedContextIdentity.identity.email]: {
 			absFolderPath: `/${sharedContextIdentity.identity.email}`,
@@ -90,7 +90,7 @@ const generateSharedAccountRoot = (
 const generateSharedAccountsRoot = (
 	primaryContextIdentity: MocksContextIdentity,
 	sharedContextIdentities: Array<MocksContextIdentity>
-): Folders => {
+): Record<string, Folder> => {
 	if (!primaryContextIdentity || !sharedContextIdentities || !sharedContextIdentities.length) {
 		return {};
 	}
@@ -106,7 +106,7 @@ const generateSharedAccountsRoot = (
 /**
  *
  */
-export const generateRoots = (): Folders => {
+export const generateRoots = (): Record<string, Folder> => {
 	const { identities } = getMocksContext();
 
 	const result = {
@@ -134,7 +134,7 @@ export const generateRoots = (): Folders => {
 		},
 		...generateSharedAccountsRoot(identities.primary, identities.sendAs),
 		...generateSharedAccountsRoot(identities.primary, identities.sendOnBehalf)
-	} as Folders;
+	} as Record<string, Folder>;
 
 	return result;
 };

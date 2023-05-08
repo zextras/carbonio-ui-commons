@@ -27,10 +27,10 @@ const IM_LOGS = '14';
 const folders: Folders = {};
 const searches: Searches = {};
 
-const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
+export const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
 	/#/.test(string || '');
 
-const omit = (
+export const omit = (
 	folder: Partial<SoapFolder> = {},
 	propToOmit: Array<keyof Partial<SoapFolder>> = []
 ): Partial<SoapFolder> => {
@@ -42,9 +42,7 @@ const omit = (
 };
 
 export const hasId = (f: SoapFolder, id: string): boolean => f.id.split(':').includes(id);
-export const hasParentId = (f: Folder, parentId: string): boolean =>
-	f.parent?.split?.(':').includes(parentId) ?? false;
-const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
+export const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	id: f.id,
 	uuid: f.uuid,
 	name: f.name,
@@ -80,14 +78,14 @@ const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	retentionPolicy: f.retentionPolicy
 });
 
-const normalizeSearch = (s: SoapSearchFolder): BaseFolder & SearchFolderFields => ({
+export const normalizeSearch = (s: SoapSearchFolder): BaseFolder & SearchFolderFields => ({
 	...normalize(s),
 	query: s.query,
 	sortBy: s.sortBy,
 	types: s.types
 });
 
-const normalizeLink = (l: SoapLink, p?: Folder): BaseFolder & LinkFolderFields => ({
+export const normalizeLink = (l: SoapLink, p?: Folder): BaseFolder & LinkFolderFields => ({
 	...normalize(l, p),
 	owner: l.owner,
 	zid: l.zid,
@@ -98,7 +96,7 @@ const normalizeLink = (l: SoapLink, p?: Folder): BaseFolder & LinkFolderFields =
 	broken: !!l.broken
 });
 
-const processSearch = (soapSearch: SoapSearchFolder, parent: Folder): void => {
+export const processSearch = (soapSearch: SoapSearchFolder, parent: Folder): void => {
 	const search = {
 		...normalizeSearch(soapSearch),
 		parent: parent?.id,
@@ -107,7 +105,7 @@ const processSearch = (soapSearch: SoapSearchFolder, parent: Folder): void => {
 	searches[search.id] = search;
 };
 
-const processLink = (soapLink: SoapLink, depth: number, parent?: Folder): LinkFolder => {
+export const processLink = (soapLink: SoapLink, depth: number, parent?: Folder): LinkFolder => {
 	const link = {
 		...normalizeLink(soapLink, parent),
 		isLink: true,
@@ -137,7 +135,11 @@ const processLink = (soapLink: SoapLink, depth: number, parent?: Folder): LinkFo
 	return link;
 };
 
-const processFolder = (soapFolder: SoapFolder, depth: number, parent?: Folder): UserFolder => {
+export const processFolder = (
+	soapFolder: SoapFolder,
+	depth: number,
+	parent?: Folder
+): UserFolder => {
 	const folder: UserFolder = {
 		...normalize(soapFolder, parent),
 		isLink: false,
@@ -164,7 +166,7 @@ const processFolder = (soapFolder: SoapFolder, depth: number, parent?: Folder): 
 	return folder;
 };
 
-const handleFolderRefresh = (soapFolders: Array<SoapFolder>): UserFolder =>
+export const handleFolderRefresh = (soapFolders: Array<SoapFolder>): UserFolder =>
 	processFolder(soapFolders[0], 0);
 
 export const handleFolderCreated = (created: Array<SoapFolder>): void =>
@@ -258,5 +260,6 @@ onmessage = ({ data }: FolderMessage): void => {
 	}
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
+	console.log({ folders, searches });
 	postMessage({ folders, searches });
 };

@@ -23,6 +23,7 @@ import type {
 } from '../types/folder';
 
 const IM_LOGS = '14';
+const USER_ROOT = '1';
 
 const folders: Folders = {};
 const searches: Searches = {};
@@ -149,7 +150,7 @@ const processFolder = (soapFolder: SoapFolder, depth: number, parent?: Folder): 
 	soapFolder?.folder?.forEach((f) => {
 		if (!hasId(f, IM_LOGS)) {
 			const child = processFolder(f, depth + 1, folder);
-			if (!hasId(f, '1')) {
+			if (!hasId(f, USER_ROOT)) {
 				folder.children.push(child);
 			}
 		}
@@ -157,7 +158,7 @@ const processFolder = (soapFolder: SoapFolder, depth: number, parent?: Folder): 
 	soapFolder?.link?.forEach((l) => {
 		if (!hasId(l, IM_LOGS)) {
 			const child = processLink(l, depth + 1, folder);
-			if (!hasId(l, '1')) {
+			if (!hasId(l, USER_ROOT)) {
 				folder.children.push(child);
 			}
 		}
@@ -260,7 +261,6 @@ onmessage = ({ data }: FolderMessage): void => {
 	if (data.op === 'notify') {
 		handleFolderNotify(data.notify);
 	}
-	console.log('@@', folders);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	postMessage({ folders, searches });

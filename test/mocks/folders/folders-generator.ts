@@ -17,7 +17,7 @@ import { getMocksContext, getRandomIdentity } from '../utils/mocks-context';
  */
 const fillReferenceToParent = (folder: Folder, parent?: Folder): void => {
 	// eslint-disable-next-line no-param-reassign
-	folder.parent = parent;
+	folder.parent = parent?.id;
 	folder.children.forEach((child) => {
 		fillReferenceToParent(child, folder);
 	});

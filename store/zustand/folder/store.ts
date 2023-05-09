@@ -10,7 +10,6 @@ import { folderWorker } from '../../../worker';
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
 export const useFolderStore = create<FolderState>()(() => ({
 	folders: {},
-	roots: {},
 	searches: {}
 }));
 

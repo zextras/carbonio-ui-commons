@@ -21,10 +21,16 @@ export const sortFolders = (f: Folder): string => {
 	return parseInt(id, 10) < 17 ? `   ${id}` : f.name.toLowerCase();
 };
 
-export const isTrash = (f: Folder): boolean => hasId(f, FOLDERS.TRASH);
-
 export const isRoot = (f: Folder): boolean =>
 	f.id === FOLDERS.USER_ROOT || (f as LinkFolder).oname === ROOT_NAME;
+
+export const isTrash = (f: Folder): boolean => hasId(f, FOLDERS.TRASH);
+
+export const isNestedInTrash = (item: Folder): boolean =>
+	!!item?.absFolderPath?.includes(`/${FOLDERS.TRASH}/`);
+
+export const isTrashOrNestedInIt = (item: Folder): boolean =>
+	isTrash(item) || isNestedInTrash(item);
 
 export const folderViewFilter =
 	(v: FolderView) =>

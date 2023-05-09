@@ -4,15 +4,24 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { soapFetch } from '@zextras/carbonio-shell-ui';
+import { isNil, omitBy } from 'lodash';
+import { FolderView } from '../types/folder';
 
-export const getFolderRequest = async ({ id }: { id: string }, account?: string): Promise<any> =>
-	soapFetch(
-		'GetFolder',
+export const getFolderRequest = async (
+	{ id, view }: { id?: string; view?: FolderView },
+	account?: string
+): Promise<any> => {
+	const body = omitBy(
 		{
 			_jsns: 'urn:zimbraMail',
-			folder: {
-				l: id
-			}
+			folder: id
+				? {
+						l: id
+				  }
+				: undefined,
+			view
 		},
-		account
+		isNil
 	);
+	return soapFetch('GetFolder', body, account);
+};

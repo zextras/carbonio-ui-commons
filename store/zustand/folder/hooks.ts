@@ -18,55 +18,93 @@ import type {
 import { useFolderStore } from './store';
 import { folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
 
-// FOLDERS
+/**
+ * Returns the folder with given ID or undefined
+ * @params id */
 export const useFolder = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);
+
+/**
+ * Returns the folder with given ID or undefined
+ * @params id */
 export const getFolder = (id: string): Folder | undefined =>
 	useFolderStore.getState()?.folders?.[id];
+
+/**
+ * Returns a folders' map including roots and links. Each folder has its own tree structure included inside its children
+ */
 export const useFoldersMap = (): Folders => useFolderStore((s) => s.folders);
+
+/**
+ * Returns a folders' array including roots and links. Each folder has its own tree structure included inside its children
+ */
 export const useFoldersArray = (): Array<Folder> => useFolderStore((s) => values(s.folders));
 
+/**
+ * Returns a folders' map including roots and links. Each folder has its own tree structure included inside its children
+ */
 export const getFoldersMap = (): Folders => useFolderStore.getState().folders;
+
+/**
+ * Returns a folders' array including roots and links. Each folder has its own tree structure included inside its children
+ */
 export const getFoldersArray = (): Array<Folder> => values(useFolderStore.getState().folders);
 
-// ROOTS
+/**
+ * Returns the root with given ID or undefined
+ * @params id */
 export const useRoot = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);
+
+/**
+ * Returns the root with given ID or undefined
+ * @params id */
 export const getRoot = (id: string): Folder | undefined => useFolderStore.getState().folders?.[id];
+
+/**
+ * Returns a roots' array. Each root has its own tree structure included inside its children
+ */
 export const useRootsArray = (): Array<Folder> =>
-	useFolderStore((s) =>
-		filter(
-			s.folders,
-			(f) => f.id === FOLDERS.USER_ROOT || f.id?.split(':')?.[1] === FOLDERS.USER_ROOT
-		)
-	);
+	useFolderStore((s) => filter(s.folders, (f) => f.id?.split(':')?.includes(FOLDERS.USER_ROOT)));
+
+/**
+ * Returns a roots' array. Each root has its own tree structure included inside its children
+ */
 export const getRootsArray = (): Array<Folder> =>
-	filter(
-		useFolderStore.getState().folders,
-		(f) => f.id === FOLDERS.USER_ROOT || f.id?.split(':')?.[1] === FOLDERS.USER_ROOT
-	);
+	filter(useFolderStore.getState().folders, (f) => f.id?.split(':')?.includes(FOLDERS.USER_ROOT));
+
+/**
+ * Returns a roots' map. Each root has its own tree structure included inside its children
+ */
 export const useRootsMap = (): Record<string, Folder> =>
 	useFolderStore((s) =>
 		keyBy(
-			filter(
-				s.folders,
-				(f) => f.id === FOLDERS.USER_ROOT || f.id?.split(':')?.[1] === FOLDERS.USER_ROOT
-			),
+			filter(s.folders, (f) => f.id?.split(':')?.includes(FOLDERS.USER_ROOT)),
 			'id'
 		)
 	);
+
+/**
+ * Returns a roots' map. Each root has its own tree structure included inside its children
+ */
 export const getRootsMap = (): Record<string, Folder> =>
 	keyBy(
-		filter(
-			useFolderStore.getState().folders,
-			(f) => f.id === FOLDERS.USER_ROOT || f.id?.split(':')?.[1] === FOLDERS.USER_ROOT
-		),
+		filter(useFolderStore.getState().folders, (f) => f.id?.split(':')?.includes(FOLDERS.USER_ROOT)),
 		'id'
 	);
 
 // ROOTS BY VIEW
+/**
+ * Returns a root with given user ID.
+ * @params userId
+ */
 export const useRootByUser = (
 	userId: string
 ): Folder | SearchFolder | Record<string, never> | undefined =>
 	useFolderStore((s) => find(s.folders, (f) => f.name === userId));
+
+/**
+ * Returns a root with given user ID.
+ * @params userId
+ */
 export const getRootByUser = (
 	userId: string
 ): Folder | SearchFolder | Record<string, never> | undefined => {

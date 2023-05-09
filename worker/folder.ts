@@ -23,6 +23,7 @@ import type {
 } from '../types/folder';
 
 const IM_LOGS = '14';
+const USER_ROOT = '1';
 
 const folders: Folders = {};
 const searches: Searches = {};
@@ -151,7 +152,7 @@ export const processFolder = (
 	soapFolder?.folder?.forEach((f) => {
 		if (!hasId(f, IM_LOGS)) {
 			const child = processFolder(f, depth + 1, folder);
-			if (!hasId(f, '1')) {
+			if (!hasId(f, USER_ROOT)) {
 				folder.children.push(child);
 			}
 		}
@@ -159,7 +160,7 @@ export const processFolder = (
 	soapFolder?.link?.forEach((l) => {
 		if (!hasId(l, IM_LOGS)) {
 			const child = processLink(l, depth + 1, folder);
-			if (!hasId(l, '1')) {
+			if (!hasId(l, USER_ROOT)) {
 				folder.children.push(child);
 			}
 		}

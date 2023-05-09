@@ -151,13 +151,17 @@ export const processFolder = (
 	soapFolder?.folder?.forEach((f) => {
 		if (!hasId(f, IM_LOGS)) {
 			const child = processFolder(f, depth + 1, folder);
-			folder.children.push(child);
+			if (!hasId(f, '1')) {
+				folder.children.push(child);
+			}
 		}
 	});
 	soapFolder?.link?.forEach((l) => {
 		if (!hasId(l, IM_LOGS)) {
 			const child = processLink(l, depth + 1, folder);
-			folder.children.push(child);
+			if (!hasId(l, '1')) {
+				folder.children.push(child);
+			}
 		}
 	});
 	soapFolder?.search?.forEach((s) => {
@@ -258,6 +262,7 @@ onmessage = ({ data }: FolderMessage): void => {
 	if (data.op === 'notify') {
 		handleFolderNotify(data.notify);
 	}
+	console.log('@@', folders);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	postMessage({ folders, searches });

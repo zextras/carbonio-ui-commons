@@ -43,6 +43,10 @@ export const omit = (
 };
 
 export const hasId = (f: SoapFolder, id: string): boolean => f.id.split(':').includes(id);
+
+export const hasParentId = (f: Folder, id: string): boolean =>
+	f?.l?.split?.(':').includes(id) ?? false;
+
 export const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	id: f.id,
 	uuid: f.uuid,
@@ -76,7 +80,8 @@ export const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	deletable: !!f.deletable,
 	meta: f.meta,
 	acl: f.acl,
-	retentionPolicy: f.retentionPolicy
+	retentionPolicy: f.retentionPolicy,
+	owner: p?.owner
 });
 
 export const normalizeSearch = (s: SoapSearchFolder): BaseFolder & SearchFolderFields => ({
@@ -88,7 +93,7 @@ export const normalizeSearch = (s: SoapSearchFolder): BaseFolder & SearchFolderF
 
 export const normalizeLink = (l: SoapLink, p?: Folder): BaseFolder & LinkFolderFields => ({
 	...normalize(l, p),
-	owner: l.owner,
+	owner: l.owner ?? p?.owner,
 	zid: l.zid,
 	rid: l.rid,
 	ruuid: l.ruuid,

@@ -51,6 +51,12 @@ export const getFoldersMap = (): Folders => useFolderStore.getState().folders;
 export const getFoldersArray = (): Array<Folder> => values(useFolderStore.getState().folders);
 
 /**
+ * Returns a folders' array including roots and links. Each folder has its own tree structure included inside its children
+ */
+export const getFoldersByAccountArray = (ownerName: string): Array<Folder> =>
+	filter(useFolderStore.getState().folders, ['owner', ownerName]);
+
+/**
  * Returns the root with given ID or undefined
  * @params id */
 export const useRoot = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);

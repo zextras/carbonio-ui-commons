@@ -104,6 +104,8 @@ export type BaseFolder = {
 	retentionPolicy?: SoapRetentionPolicy;
 	// indicates whether this folder is displayed in Calendars
 	checked?: boolean;
+	// indicates the owner of the folder, specified only when it is not the main account
+	owner?: string;
 };
 
 export type LinkFolderFields = {

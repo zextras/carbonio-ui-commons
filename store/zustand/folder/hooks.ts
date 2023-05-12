@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { FOLDERS } from '@zextras/carbonio-shell-ui';
+import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
 import { filter, find, keyBy, values } from 'lodash';
 import { ComponentType, useMemo } from 'react';
 import type {
@@ -12,10 +12,10 @@ import type {
 	Folder,
 	FolderView,
 	Folders,
+	LinkFolder,
 	SearchFolder,
 	Searches
 } from '../../../types/folder';
-
 import { useFolderStore } from './store';
 import { folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
 
@@ -51,14 +51,43 @@ export const getFoldersMap = (): Folders => useFolderStore.getState().folders;
 export const getFoldersArray = (): Array<Folder> => values(useFolderStore.getState().folders);
 
 /**
- * Returns the root with given ID or undefined
- * @params id */
-export const useRoot = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);
+ * Returns the root account id for a given folder
+ * @param folder a Folder or LinkFolder
+ * @returns the root account id or null if the folder is not a link or the root folder
+ */
+function getRootAccountId(folder: Folder | LinkFolder): string {
+	const parent = folder?.parent && getFolder(folder.parent);
+	if ('oname' in folder && folder?.oname === ROOT_NAME) {
+		return folder.id;
+	}
+	if (parent) {
+		return getRootAccountId(parent);
+	}
+	return folder.id;
+}
 
 /**
- * Returns the root with given ID or undefined
- * @params id */
-export const getRoot = (id: string): Folder | undefined => useFolderStore.getState().folders?.[id];
+ * Returns the root folder of the provided folderId or undefined
+ * @params id
+ * @returns the root folder or undefined
+ * */
+export const useRoot = (id: string): Folder | undefined =>
+	useFolderStore((s) => {
+		const folder = s.folders?.[id];
+		const rootFolderId = getRootAccountId(folder) || '';
+		return s.folders?.[rootFolderId];
+	});
+
+/**
+ * Returns the root folder of the provided folderId or undefined
+ * @params id
+ * @returns the root folder or undefined
+ * */
+export const getRoot = (id: string): Folder | undefined => {
+	const folder = useFolderStore.getState().folders?.[id];
+	const rootFolderId = getRootAccountId(folder) || '';
+	return useFolderStore.getState().folders?.[rootFolderId];
+};
 
 /**
  * Returns a roots' array. Each root has its own tree structure included inside its children

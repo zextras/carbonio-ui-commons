@@ -8,7 +8,7 @@ import { faker } from '@faker-js/faker';
 import { Grant } from '@zextras/carbonio-shell-ui';
 import type { Folder, FolderView, Folders } from '../../../types/folder';
 import { FOLDERS } from '../carbonio-shell-ui-constants';
-import { getMocksContext, getRandomIdentity } from '../utils/mocks-context';
+import { getMocksContext, getRandomIdentity, MocksContextIdentity } from '../utils/mocks-context';
 
 /**
  * Traverse the folder hierarchy and set (byref) the reference to folder's parent
@@ -24,12 +24,107 @@ const fillReferenceToParent = (folder: Folder, parent?: Folder): void => {
 };
 
 /**
+ * Recursive function that returns a flat map of the children folders
+ * @param children
+ */
+const getFlatChildren = (children: Array<Folder>): Folders => {
+	let destination: Folders = {};
+	children.forEach((child) => {
+		destination[child.id] = child;
+		if (child.children) {
+			destination = { ...destination, ...getFlatChildren(child.children) };
+		}
+	});
+
+	return destination;
+};
+
+/**
+ *
+ * @param primaryContextIdentity
+ * @param sharedContextIdentity
+ */
+const generateSharedAccountRoot = (
+	primaryContextIdentity: MocksContextIdentity,
+	sharedContextIdentity: MocksContextIdentity
+): Record<string, Folder> => {
+	const result = {
+		[sharedContextIdentity.identity.email]: {
+			// absFolderPath: `/${sharedContextIdentity.identity.email}`,
+			// acl: undefined,
+			activesyncdisabled: false,
+			broken: false,
+			checked: false,
+			children: [],
+			// color: undefined,
+			deletable: false,
+			depth: 1,
+			// // f: '*',
+			// // i4ms: undefined,
+			// // i4n: undefined,
+			// // i4next: undefined,
+			// // i4u: undefined,
+			// // id: `${(rootIdCounter = +1)}`,
+			id: `${sharedContextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
+			isLink: true,
+			// luuid: primaryContextIdentity.userRootId,
+			// md: undefined,
+			// meta: undefined,
+			// ms: 7037,
+			// n: 0,
+			name: sharedContextIdentity.identity.email,
+			oname: 'USER_ROOT',
+			owner: sharedContextIdentity.identity.email,
+			// perm: 'rwidxc',
+			recursive: false,
+			reminder: false,
+			parent: FOLDERS.USER_ROOT,
+			retentionPolicy: undefined,
+			rev: 7036,
+			rgb: undefined,
+			rid: '1',
+			ruuid: faker.datatype.uuid(),
+			s: 0,
+			u: undefined,
+			url: undefined,
+			uuid: sharedContextIdentity.userRootId ?? '',
+			// view: undefined,
+			// webOfflineSyncDays: 0,
+			zid: sharedContextIdentity.identity.id
+		}
+	};
+
+	return result;
+};
+
+/**
+ *
+ * @param primaryContextIdentity
+ * @param sharedContextIdentities
+ */
+const generateSharedAccountsRoot = (
+	primaryContextIdentity: MocksContextIdentity,
+	sharedContextIdentities: Array<MocksContextIdentity>
+): Record<string, Folder> => {
+	if (!primaryContextIdentity || !sharedContextIdentities || !sharedContextIdentities.length) {
+		return {};
+	}
+
+	let result = {};
+	sharedContextIdentities.forEach((sharedAccount) => {
+		result = { ...result, ...generateSharedAccountRoot(primaryContextIdentity, sharedAccount) };
+	});
+
+	return result;
+};
+
+/**
  * Generate a semi-fixed folders structure mock
  * TODO make it more flexible
  */
 export const generateFolders = (): Folders => {
 	const mockContext = getMocksContext();
-	const rootUuid = faker.datatype.uuid();
+	const rootUuid = mockContext.identities.primary.userRootId;
 	const inboxUuid = faker.datatype.uuid();
 	let userFolderIdSequence = 100;
 	const getNextFolderId = (zid?: string): string => {
@@ -47,7 +142,7 @@ export const generateFolders = (): Folders => {
 	const contactsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
 	const contactsRandomUser2 = getRandomIdentity(mockContext.otherUsersIdentities);
 
-	const result = {
+	let roots = {
 		[FOLDERS.USER_ROOT]: {
 			id: FOLDERS.USER_ROOT,
 			uuid: rootUuid,
@@ -580,15 +675,18 @@ export const generateFolders = (): Folders => {
 			],
 			parent: undefined,
 			depth: 0
-		}
+		},
+		...generateSharedAccountsRoot(mockContext.identities.primary, mockContext.identities.sendAs),
+		...generateSharedAccountsRoot(
+			mockContext.identities.primary,
+			mockContext.identities.sendOnBehalf
+		)
 	} as Folders;
 
-	// Append the user_root children to the result
-	result[FOLDERS.USER_ROOT].children.forEach((child) => {
-		result[child.id] = child;
-	});
+	// Add any child folder to the first level
+	roots = { ...roots, ...getFlatChildren(Object.values(roots)) };
 
-	fillReferenceToParent(result[FOLDERS.USER_ROOT]);
+	fillReferenceToParent(roots[FOLDERS.USER_ROOT]);
 
-	return result;
+	return roots;
 };

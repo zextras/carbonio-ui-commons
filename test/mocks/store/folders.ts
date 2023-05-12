@@ -13,7 +13,6 @@ import { generateRoots } from '../folders/roots-generator';
  */
 export const populateFoldersStore = (): void => {
 	const initialStoreState = {
-		roots: generateRoots(),
 		folders: generateFolders(),
 		searches: {}
 	};

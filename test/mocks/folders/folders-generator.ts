@@ -140,7 +140,8 @@ export const generateFolders = (): Folders => {
 	const calendarsRandomUser2 = getRandomIdentity(mockContext.viewFreeBusyIdentities);
 
 	const contactsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
-	const contactsRandomUser2 = getRandomIdentity(mockContext.otherUsersIdentities);
+
+	const mailsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
 
 	let roots = {
 		[FOLDERS.USER_ROOT]: {
@@ -670,6 +671,32 @@ export const generateFolders = (): Folders => {
 					isLink: true,
 					children: [],
 					parent: undefined,
+					depth: 1
+				},
+				{
+					id: getNextFolderId(),
+					uuid: faker.datatype.uuid(),
+					name: `folder of ${mailsRandomUser1?.fullName}`,
+					absFolderPath: `/folder of ${mailsRandomUser1?.fullName}`,
+					l: FOLDERS.USER_ROOT,
+					luuid: rootUuid,
+					checked: false,
+					view: 'message',
+					rev: 36953,
+					ms: 36953,
+					activesyncdisabled: false,
+					webOfflineSyncDays: 0,
+					recursive: false,
+					deletable: true,
+					owner: mailsRandomUser1?.email,
+					zid: mailsRandomUser1?.id,
+					rid: 19564,
+					ruuid: 'a0a9d63b-e27e-48cb-8d9d-6f5ae0832ac3',
+					reminder: false,
+					broken: false,
+					isLink: true,
+					children: [],
+					parent: FOLDERS.USER_ROOT,
 					depth: 1
 				}
 			],

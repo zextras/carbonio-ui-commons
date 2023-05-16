@@ -17,7 +17,7 @@ import type {
 	Searches
 } from '../../../types/folder';
 import { useFolderStore } from './store';
-import { folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
+import { folderViewFilter, getFlatChildrenFolders, isRoot, mapNodes, sortFolders } from './utils';
 
 /**
  * Returns the folder with given ID or undefined
@@ -140,6 +140,19 @@ export const getRootByUser = (
 ): Folder | SearchFolder | Record<string, never> | undefined => {
 	const { folders } = useFolderStore.getState();
 	return find(folders, (f) => f.name === userId);
+};
+
+/**
+ * Return a flat array of folder that are children of the given root
+ * @param rootId
+ */
+export const getFoldersArrayByRoot = (rootId: string): Array<Folder> => {
+	const root = getRoot(rootId);
+	if (!root) {
+		return [];
+	}
+
+	return Object.values(getFlatChildrenFolders(root.children));
 };
 
 // SEARCHES

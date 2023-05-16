@@ -52,8 +52,6 @@ export const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	luuid: f.luuid,
 	checked: testFolderIsChecked({ string: f.f }),
 	f: f.f,
-	// the type defined in shell is not correct
-	// FIXME: remove the cast when the type will be fixed
 	color: (f.color as unknown as number) || p?.color,
 	rgb: f.rgb,
 	u: f.u,

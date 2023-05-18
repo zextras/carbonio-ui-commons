@@ -140,7 +140,8 @@ export const generateFolders = (): Folders => {
 	const calendarsRandomUser2 = getRandomIdentity(mockContext.viewFreeBusyIdentities);
 
 	const contactsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
-	const contactsRandomUser2 = getRandomIdentity(mockContext.otherUsersIdentities);
+
+	const mailsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
 
 	let roots = {
 		[FOLDERS.USER_ROOT]: {
@@ -569,7 +570,34 @@ export const generateFolders = (): Folders => {
 					recursive: false,
 					deletable: false,
 					isLink: false,
-					children: [],
+					children: [
+						{
+							id: getNextFolderId(),
+							uuid: faker.datatype.uuid(),
+							name: 'Trashed folder',
+							absFolderPath: '/Trash/Trashed folder',
+							l: FOLDERS.INBOX,
+							luuid: inboxUuid,
+							checked: false,
+							f: 'u',
+							u: 1,
+							view: 'message' as FolderView,
+							rev: 27896,
+							ms: 27896,
+							n: 37,
+							s: 5550022,
+							i4ms: 33607,
+							i4next: 17183,
+							activesyncdisabled: false,
+							webOfflineSyncDays: 0,
+							recursive: false,
+							deletable: true,
+							isLink: false,
+							children: [],
+							parent: undefined,
+							depth: 2
+						}
+					],
 					parent: undefined,
 					depth: 1
 				},
@@ -670,6 +698,32 @@ export const generateFolders = (): Folders => {
 					isLink: true,
 					children: [],
 					parent: undefined,
+					depth: 1
+				},
+				{
+					id: getNextFolderId(),
+					uuid: faker.datatype.uuid(),
+					name: `folder of ${mailsRandomUser1?.fullName}`,
+					absFolderPath: `/folder of ${mailsRandomUser1?.fullName}`,
+					l: FOLDERS.USER_ROOT,
+					luuid: rootUuid,
+					checked: false,
+					view: 'message',
+					rev: 36953,
+					ms: 36953,
+					activesyncdisabled: false,
+					webOfflineSyncDays: 0,
+					recursive: false,
+					deletable: true,
+					owner: mailsRandomUser1?.email,
+					zid: mailsRandomUser1?.id,
+					rid: 19564,
+					ruuid: 'a0a9d63b-e27e-48cb-8d9d-6f5ae0832ac3',
+					reminder: false,
+					broken: false,
+					isLink: true,
+					children: [],
+					parent: FOLDERS.USER_ROOT,
 					depth: 1
 				}
 			],

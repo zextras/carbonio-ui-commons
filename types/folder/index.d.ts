@@ -28,6 +28,7 @@ export type Searches = { [id: string]: SearchFolder };
 export type FolderState = {
 	folders: Folders;
 	searches: Searches;
+	updateFolder: (id: string, opt: any) => void;
 };
 
 export type FolderView =

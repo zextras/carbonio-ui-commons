@@ -28,7 +28,7 @@ export type Searches = { [id: string]: SearchFolder };
 export type FolderState = {
 	folders: Folders;
 	searches: Searches;
-	updateFolder: (id: string, opt: any) => void;
+	updateFolder: (id: string, opt: Partial<Folder>) => void;
 };
 
 export type FolderView =

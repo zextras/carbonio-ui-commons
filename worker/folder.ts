@@ -266,7 +266,6 @@ onmessage = ({ data }: FolderMessage): void => {
 	if (data.op === 'notify') {
 		handleFolderNotify(data.notify);
 	}
-	console.log('@@', folders);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	postMessage({ folders, searches });

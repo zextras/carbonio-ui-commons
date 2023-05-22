@@ -197,3 +197,21 @@ export const useFoldersAccordionByView = (
 		[CustomComponent, itemProps, roots, view]
 	);
 };
+
+// useful hooks to update the value of a folder. Created because we don't receive acl data from notify when we modify folder grants.
+
+/**
+ * Returns a callback function to update a specific folder.
+ *
+ * @returns callback function to update a specific folder
+ */
+export const useUpdateFolder = (): ((id: string, opt: Partial<Folder>) => void) =>
+	useFolderStore((s) => s.updateFolder);
+
+/**
+ * Returns a callback function to update a specific folder.
+ *
+ * @returns callback function to update a specific folder
+ */
+export const getUpdateFolder = (): ((id: string, opt: Partial<Folder>) => void) =>
+	useFolderStore.getState().updateFolder;

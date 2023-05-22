@@ -29,40 +29,44 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 	);
 
 export const useFoldersController = (view: FolderView): void => {
-	const [intializing, setInizializing] = useState(true);
+	const [initializing, setInitializing] = useState(true);
 	const [seq, setSeq] = useState(-1);
 
 	const notify = useNotify();
 
 	useEffect(() => {
-		if (intializing && view) {
-			setInizializing((previous) => !previous);
-			getFolderRequest({ view }).then((rootFolders: { folder: any }) => {
-				getShareInfoRequest().then((sharedFolders: { folders: any }) => {
-					if (sharedFolders?.folders) {
-						const sharedAccounts = filter(sharedFolders.folders, ['folderId', 1]);
-						getFoldersByAccounts(sharedAccounts, view).then((response) => {
-							const filteredLinks = reject(rootFolders.folder[0].link, ['rid', 1]);
-							const folders = [
-								{
-									...rootFolders.folder[0],
-									link: [...filteredLinks, ...response]
-								}
-							];
-							folderWorker.postMessage({
-								op: 'refresh',
-								currentView: view,
-								folder: folders ?? []
+		if (initializing && view) {
+			setInitializing((previous) => !previous);
+			getFolderRequest({ view })
+				.then((rootFolders: { folder: any }) => {
+					getShareInfoRequest().then((sharedFolders: { folders: any }) => {
+						if (sharedFolders?.folders) {
+							const sharedAccounts = filter(sharedFolders.folders, ['folderId', 1]);
+							getFoldersByAccounts(sharedAccounts, view).then((response) => {
+								const filteredLinks = reject(rootFolders.folder[0].link, ['rid', 1]);
+								const folders = [
+									{
+										...rootFolders.folder[0],
+										link: [...filteredLinks, ...response]
+									}
+								];
+								folderWorker.postMessage({
+									op: 'refresh',
+									currentView: view,
+									folder: folders ?? []
+								});
 							});
-						});
-					}
+						}
+					});
+				})
+				.catch(() => {
+					setInitializing(true);
 				});
-			});
 		}
-	}, [intializing, view]);
+	}, [initializing, view]);
 
 	useEffect(() => {
-		if (!intializing && notify.length > 0) {
+		if (!initializing && notify.length > 0) {
 			forEach(sortBy(notify, 'seq'), (item) => {
 				if (!isEmpty(notify) && (item.seq > seq || (seq > 1 && item.seq === 1))) {
 					const isNotifyRelatedToFolders =
@@ -84,5 +88,5 @@ export const useFoldersController = (view: FolderView): void => {
 				}
 			});
 		}
-	}, [intializing, notify, seq, view]);
+	}, [initializing, notify, seq, view]);
 };

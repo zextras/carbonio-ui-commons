@@ -3,9 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { useNotify, useRefresh } from '@zextras/carbonio-shell-ui';
-import { filter, forEach, map, reject } from 'lodash';
-import { useEffect } from 'react';
+import { useNotify } from '@zextras/carbonio-shell-ui';
+import { filter, forEach, isEmpty, map, reject, sortBy } from 'lodash';
+import { useEffect, useState } from 'react';
 import { getFolderRequest } from '../soap/get-folder';
 import { getShareInfoRequest } from '../soap/get-share-info';
 import { useFolderStore } from '../store/zustand/folder';
@@ -29,11 +29,14 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 	);
 
 export const useFoldersController = (view: FolderView): void => {
-	const refresh = useRefresh();
+	const [intializing, setInizializing] = useState(true);
+	const [seq, setSeq] = useState(-1);
+
 	const notify = useNotify();
 
 	useEffect(() => {
-		if (refresh && view) {
+		if (intializing && view) {
+			setInizializing((previous) => !previous);
 			getFolderRequest({ view }).then((rootFolders: { folder: any }) => {
 				getShareInfoRequest().then((sharedFolders: { folders: any }) => {
 					if (sharedFolders?.folders) {
@@ -48,6 +51,7 @@ export const useFoldersController = (view: FolderView): void => {
 							];
 							folderWorker.postMessage({
 								op: 'refresh',
+								currentView: view,
 								folder: folders ?? []
 							});
 						});
@@ -55,17 +59,25 @@ export const useFoldersController = (view: FolderView): void => {
 				});
 			});
 		}
-	}, [refresh, view]);
+	}, [intializing, view]);
 
 	useEffect(() => {
-		if (notify?.length) {
-			forEach(notify, (item) => {
-				folderWorker.postMessage({
-					op: 'notify',
-					notify: item,
-					state: useFolderStore.getState().folders
-				});
+		if (!intializing && notify.length > 0) {
+			forEach(sortBy(notify, 'seq'), (item) => {
+				if (!isEmpty(notify) && (item.seq > seq || (seq > 1 && item.seq === 1))) {
+					const isNotifyRelatedToFolders =
+						!isEmpty(notify) && (item?.created?.folder || item?.modified?.folder || item.deleted);
+
+					if (isNotifyRelatedToFolders) {
+						folderWorker.postMessage({
+							op: 'notify',
+							notify: item,
+							state: useFolderStore.getState().folders
+						});
+					}
+					setSeq(item.seq);
+				}
 			});
 		}
-	}, [notify]);
+	}, [intializing, notify, seq, view]);
 };

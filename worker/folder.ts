@@ -27,6 +27,8 @@ const USER_ROOT = '1';
 
 const folders: Folders = {};
 const searches: Searches = {};
+// used to check if a newly created folder is being added to the correct store
+let view: string | undefined;
 
 export const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
 	/#/.test(string || '');
@@ -176,7 +178,7 @@ export const handleFolderRefresh = (soapFolders: Array<SoapFolder>): UserFolder 
 
 export const handleFolderCreated = (created: Array<SoapFolder>): void =>
 	created.forEach((val: SoapFolder) => {
-		if (val.id && val.l) {
+		if (val.id && val.l && view && val.view === view) {
 			const parent = folders[val.l];
 			const folder: UserFolder = {
 				...normalize(val, parent),
@@ -191,7 +193,7 @@ export const handleFolderCreated = (created: Array<SoapFolder>): void =>
 	});
 export const handleLinkCreated = (created: Array<SoapLink>): void =>
 	created.forEach((val: SoapLink) => {
-		if (val.id && val.l) {
+		if (val.id && val.l && view && val.view === view) {
 			const parent = folders[val.l];
 			const folder: LinkFolder = {
 				...normalizeLink(val, parent),
@@ -258,11 +260,13 @@ export const handleFolderNotify = (notify: SoapNotify): void => {
 
 onmessage = ({ data }: FolderMessage): void => {
 	if (data.op === 'refresh' && data.folder) {
+		view = data.currentView;
 		handleFolderRefresh(data.folder);
 	}
 	if (data.op === 'notify') {
 		handleFolderNotify(data.notify);
 	}
+	console.log('@@', folders);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	postMessage({ folders, searches });

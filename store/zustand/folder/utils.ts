@@ -6,6 +6,7 @@
 
 import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
 import { sortBy } from 'lodash';
+import { Folders } from '../../../types/folder';
 import type { Folder, FolderView, LinkFolder, TreeNode } from '../../../types/folder';
 
 const hasId = (f: Folder | TreeNode<unknown>, id: string): boolean => f.id.split(':').includes(id);
@@ -76,3 +77,19 @@ export const mapNodes = <T, U>(
 		}
 		return acc;
 	}, [] as U[]);
+
+/**
+ * Recursive function that returns a flat map of the children folders
+ * @param children
+ */
+export const getFlatChildrenFolders = (children: Array<Folder>): Folders => {
+	let destination: Folders = {};
+	children.forEach((child) => {
+		destination[child.id] = child;
+		if (child.children) {
+			destination = { ...destination, ...getFlatChildrenFolders(child.children) };
+		}
+	});
+
+	return destination;
+};

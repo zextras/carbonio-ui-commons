@@ -19,7 +19,8 @@ export const getFolderRequest = async (
 						l: id
 				  }
 				: undefined,
-			view
+			view,
+			tr: 1
 		},
 		isNil
 	);

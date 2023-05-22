@@ -66,7 +66,12 @@ export const useFoldersController = (view: FolderView): void => {
 			forEach(sortBy(notify, 'seq'), (item) => {
 				if (!isEmpty(notify) && (item.seq > seq || (seq > 1 && item.seq === 1))) {
 					const isNotifyRelatedToFolders =
-						!isEmpty(notify) && (item?.created?.folder || item?.modified?.folder || item.deleted);
+						!isEmpty(notify) &&
+						(item?.created?.folder ||
+							item?.modified?.folder ||
+							item.deleted ||
+							item?.created?.link ||
+							item?.modified?.link);
 
 					if (isNotifyRelatedToFolders) {
 						folderWorker.postMessage({

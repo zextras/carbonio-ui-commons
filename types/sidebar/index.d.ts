@@ -73,7 +73,7 @@ export type SharedObject = {
 	links: Array<SharedObject>;
 	CustomComponent: any;
 	of?: string;
-	name: string;
+	name?: string;
 };
 
 export type GroupedShare = Dictionary<SharedObject[]>;

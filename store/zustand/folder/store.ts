@@ -3,14 +3,27 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import produce from 'immer';
 import { create } from 'zustand';
-import { FolderState } from '../../../types/folder';
+import { Folder, FolderState } from '../../../types/folder';
 import { folderWorker } from '../../../worker';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
-export const useFolderStore = create<FolderState>()(() => ({
+export const useFolderStore = create<FolderState>()((set) => ({
 	folders: {},
-	searches: {}
+	searches: {},
+	updateFolder: (id: string, opt: Partial<Folder>): void => {
+		set(
+			produce((state) => {
+				if (state?.folders?.[id]) {
+					state.folders[id] = {
+						...state.folders[id],
+						...opt
+					};
+				}
+			})
+		);
+	}
 }));
 
 folderWorker.onmessage = ({ data }): void => {

@@ -8,7 +8,12 @@ import { faker } from '@faker-js/faker';
 import { Grant } from '@zextras/carbonio-shell-ui';
 import type { Folder, FolderView, Folders } from '../../../types/folder';
 import { FOLDERS } from '../carbonio-shell-ui-constants';
-import { getMocksContext, getRandomIdentity, MocksContextIdentity } from '../utils/mocks-context';
+import {
+	getMocksContext,
+	getRandomIdentities,
+	getRandomIdentity,
+	MocksContextIdentity
+} from '../utils/mocks-context';
 
 /**
  * Traverse the folder hierarchy and set (byref) the reference to folder's parent
@@ -49,7 +54,7 @@ const generateSharedAccountRoot = (
 	sharedContextIdentity: MocksContextIdentity
 ): Record<string, Folder> => {
 	const result = {
-		[sharedContextIdentity.identity.email]: {
+		[`${sharedContextIdentity.identity.id}:${FOLDERS.USER_ROOT}`]: {
 			// absFolderPath: `/${sharedContextIdentity.identity.email}`,
 			// acl: undefined,
 			activesyncdisabled: false,
@@ -122,7 +127,7 @@ const generateSharedAccountsRoot = (
  * Generate a semi-fixed folders structure mock
  * TODO make it more flexible
  */
-export const generateFolders = (): Folders => {
+export const generateFolders = (view?: FolderView): Folders => {
 	const mockContext = getMocksContext();
 	const rootUuid = mockContext.identities.primary.userRootId;
 	const inboxUuid = faker.datatype.uuid();
@@ -136,12 +141,15 @@ export const generateFolders = (): Folders => {
 		return `${userFolderIdSequence}`;
 	};
 
-	const calendarsRandomUser1 = getRandomIdentity(mockContext.viewFreeBusyIdentities);
-	const calendarsRandomUser2 = getRandomIdentity(mockContext.viewFreeBusyIdentities);
+	const [calendarsRandomUser1, calendarsRandomUser2] = getRandomIdentities(
+		mockContext.viewFreeBusyIdentities,
+		2
+	);
 
-	const contactsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
-
-	const mailsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
+	const [contactsRandomUser1, mailsRandomUser1] = getRandomIdentities(
+		mockContext.otherUsersIdentities,
+		2
+	);
 
 	let roots = {
 		[FOLDERS.USER_ROOT]: {
@@ -355,9 +363,7 @@ export const generateFolders = (): Folders => {
 					webOfflineSyncDays: 30,
 					recursive: false,
 					deletable: false,
-					acl: {
-						grant: []
-					},
+					acl: {},
 					isLink: false,
 					children: [
 						{

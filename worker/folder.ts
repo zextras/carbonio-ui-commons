@@ -17,6 +17,7 @@ import type {
 	Folders,
 	LinkFolder,
 	LinkFolderFields,
+	LinksIdMap,
 	Searches,
 	SearchFolderFields,
 	UserFolder
@@ -27,8 +28,25 @@ const USER_ROOT = '1';
 
 const folders: Folders = {};
 const searches: Searches = {};
+const linksIdMap: LinksIdMap = {};
 // used to check if a newly created folder is being added to the correct store
 let view: string | undefined;
+
+/**
+ *
+ * @param link
+ */
+export const getLinkIdMapKey = (link: SoapLink): string | null => {
+	if (!link) {
+		return null;
+	}
+
+	if (!link.rid || !link.zid) {
+		return null;
+	}
+
+	return `${link.zid}:${link.rid}`;
+};
 
 export const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
 	/#/.test(string || '');
@@ -116,8 +134,12 @@ export const processLink = (soapLink: SoapLink, depth: number, parent?: Folder):
 		parent: parent?.id,
 		depth
 	} as LinkFolder;
-	// eslint-disable-next-line no-param-reassign
 	folders[soapLink.id] = link;
+
+	// Get the zid:rid key of the link and add it to the links id map
+	const linkIdMapKey = getLinkIdMapKey(soapLink);
+	linkIdMapKey && (linksIdMap[linkIdMapKey] = soapLink.id);
+
 	soapLink?.folder?.forEach((f) => {
 		if (!hasId(f, IM_LOGS)) {
 			// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -268,5 +290,5 @@ onmessage = ({ data }: FolderMessage): void => {
 	}
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	postMessage({ folders, searches });
+	postMessage({ folders, linksIdMap, searches });
 };

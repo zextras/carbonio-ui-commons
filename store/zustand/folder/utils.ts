@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
+import { FOLDERS, ROOT_NAME, SoapLink } from '@zextras/carbonio-shell-ui';
 import { sortBy } from 'lodash';
 import { Folders } from '../../../types/folder';
 import type { Folder, FolderView, LinkFolder, TreeNode } from '../../../types/folder';
@@ -92,4 +92,20 @@ export const getFlatChildrenFolders = (children: Array<Folder>): Folders => {
 	});
 
 	return destination;
+};
+
+/**
+ *
+ * @param link
+ */
+export const getLinkIdMapKey = (link: SoapLink): string | null => {
+	if (!link) {
+		return null;
+	}
+
+	if (!link.rid || !link.zid) {
+		return null;
+	}
+
+	return `${link.zid}:${link.rid}`;
 };

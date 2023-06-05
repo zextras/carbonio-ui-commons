@@ -22,6 +22,7 @@ import type {
 	SearchFolderFields,
 	UserFolder
 } from '../types/folder';
+import { getLinkIdMapKey } from './utils';
 
 const IM_LOGS = '14';
 const USER_ROOT = '1';
@@ -31,22 +32,6 @@ const searches: Searches = {};
 const linksIdMap: LinksIdMap = {};
 // used to check if a newly created folder is being added to the correct store
 let view: string | undefined;
-
-/**
- *
- * @param link
- */
-export const getLinkIdMapKey = (link: SoapLink): string | null => {
-	if (!link) {
-		return null;
-	}
-
-	if (!link.rid || !link.zid) {
-		return null;
-	}
-
-	return `${link.zid}:${link.rid}`;
-};
 
 export const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
 	/#/.test(string || '');

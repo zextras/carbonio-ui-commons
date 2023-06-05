@@ -5,7 +5,7 @@
  */
 import { faker } from '@faker-js/faker';
 import { SoapLink } from '@zextras/carbonio-shell-ui';
-import { getLinkIdMapKey } from '../folder';
+import { getLinkIdMapKey } from '../utils';
 
 describe('folder worker', () => {
 	describe('getLinkIdMapKey', () => {

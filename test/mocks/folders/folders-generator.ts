@@ -6,9 +6,20 @@
 
 import { faker } from '@faker-js/faker';
 import { Grant } from '@zextras/carbonio-shell-ui';
-import type { Folder, FolderView, Folders } from '../../../types/folder';
+import type { Folder, FolderView, Folders, LinkFolder } from '../../../types/folder';
+import { FakeIdentity } from '../accounts/fakeAccounts';
 import { FOLDERS } from '../carbonio-shell-ui-constants';
 import { getMocksContext, getRandomIdentity, MocksContextIdentity } from '../utils/mocks-context';
+
+let userFolderIdSequence = 100;
+const getNextFolderId = (zid?: string): string => {
+	userFolderIdSequence += 1;
+	if (zid) {
+		return `${zid}:${userFolderIdSequence}`;
+	}
+
+	return `${userFolderIdSequence}`;
+};
 
 /**
  * Traverse the folder hierarchy and set (byref) the reference to folder's parent
@@ -40,6 +51,204 @@ const getFlatChildren = (children: Array<Folder>): Folders => {
 };
 
 /**
+ * TODO extends with Calendars and Contacts folders
+ * @param contextIdentity
+ */
+const generateSharedAccountSystemFolders = (
+	contextIdentity: MocksContextIdentity
+): Array<Folder> => {
+	if (!contextIdentity) {
+		return [];
+	}
+
+	const result = [
+		{
+			id: `${contextIdentity.identity.id}:${FOLDERS.INBOX}`,
+			uuid: faker.datatype.uuid(),
+			name: 'Inbox',
+			absFolderPath: '/Inbox',
+			l: `${contextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
+			luuid: contextIdentity.userRootId,
+			checked: false,
+			f: 'ui',
+			u: 37,
+			view: 'message' as FolderView,
+			rev: 1,
+			ms: 2633,
+			n: 889,
+			s: 174031840,
+			i4ms: 33663,
+			i4next: 17222,
+			activesyncdisabled: false,
+			webOfflineSyncDays: 30,
+			recursive: false,
+			reminder: false,
+			broken: false,
+			deletable: false,
+			acl: {
+				grant: []
+			},
+			isLink: false,
+			children: [],
+			parent: undefined,
+			depth: 1
+		},
+		{
+			id: `${contextIdentity.identity.id}:${FOLDERS.SPAM}`,
+			uuid: faker.datatype.uuid(),
+			name: 'Junk',
+			absFolderPath: '/Junk',
+			l: `${contextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
+			luuid: contextIdentity.userRootId,
+			checked: false,
+			view: 'message' as FolderView,
+			rev: 1,
+			ms: 1,
+			n: 1,
+			s: 10815,
+			i4ms: 33396,
+			i4next: 17084,
+			activesyncdisabled: false,
+			webOfflineSyncDays: 0,
+			reminder: false,
+			broken: false,
+			recursive: false,
+			deletable: false,
+			isLink: false,
+			children: [],
+			parent: undefined,
+			depth: 1
+		},
+		{
+			id: `${contextIdentity.identity.id}:${FOLDERS.SENT}`,
+			uuid: faker.datatype.uuid(),
+			name: 'Sent',
+			absFolderPath: '/Sent',
+			l: `${contextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
+			luuid: contextIdentity.userRootId,
+			checked: false,
+			view: 'message' as FolderView,
+			rev: 1,
+			ms: 1,
+			n: 313,
+			s: 61983538,
+			i4ms: 33637,
+			i4next: 17208,
+			activesyncdisabled: false,
+			webOfflineSyncDays: 30,
+			reminder: false,
+			broken: false,
+			recursive: false,
+			deletable: false,
+			isLink: false,
+			children: [],
+			parent: undefined,
+			depth: 1
+		},
+		{
+			id: `${contextIdentity.identity.id}:${FOLDERS.TRASH}`,
+			uuid: faker.datatype.uuid(),
+			name: 'Trash',
+			absFolderPath: '/Trash',
+			l: `${contextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
+			luuid: contextIdentity.userRootId,
+			checked: false,
+			rev: 1,
+			ms: 28502,
+			n: 16,
+			s: 319017,
+			i4ms: 33653,
+			i4next: 17212,
+			activesyncdisabled: false,
+			webOfflineSyncDays: 30,
+			reminder: false,
+			broken: false,
+			recursive: false,
+			deletable: false,
+			isLink: false,
+			children: [],
+			parent: undefined,
+			depth: 1
+		},
+		{
+			id: `${contextIdentity.identity.id}:${FOLDERS.DRAFTS}`,
+			uuid: faker.datatype.uuid(),
+			name: 'Drafts',
+			absFolderPath: '/Drafts',
+			l: `${contextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
+			luuid: contextIdentity.userRootId,
+			checked: false,
+			view: 'message' as FolderView,
+			rev: 1,
+			ms: 1,
+			n: 13,
+			s: 19366,
+			i4ms: 33653,
+			i4next: 17212,
+			activesyncdisabled: false,
+			webOfflineSyncDays: 30,
+			reminder: false,
+			broken: false,
+			recursive: false,
+			deletable: false,
+			isLink: false,
+			children: [],
+			parent: undefined,
+			depth: 1
+		}
+	];
+
+	return result;
+};
+
+/**
+ *
+ * @param parentId
+ * @param parentUuid
+ * @param ownerContextIdentity
+ */
+export const generateFolderLink = (
+	parentId: string,
+	parentUuid: string,
+	ownerIdentity: FakeIdentity
+): LinkFolder => {
+	const name = `${faker.datatype.string(16)} of ${ownerIdentity.fullName}`;
+
+	const result: LinkFolder = {
+		id: getNextFolderId(),
+		uuid: faker.datatype.uuid(),
+		name: faker.datatype.string(16),
+		absFolderPath: `/${name}`,
+		l: parentId,
+		luuid: parentUuid,
+		checked: false,
+		view: 'message',
+		rev: 36953,
+		ms: 36953,
+		n: 4,
+		s: 104912,
+		activesyncdisabled: false,
+		webOfflineSyncDays: 0,
+		perm: 'r',
+		recursive: false,
+		deletable: true,
+		owner: ownerIdentity.email,
+		zid: ownerIdentity.id,
+		rid: getNextFolderId(),
+		ruuid: faker.datatype.uuid(),
+		oname: name,
+		reminder: false,
+		broken: false,
+		isLink: true,
+		children: [],
+		parent: '1',
+		depth: 1
+	};
+
+	return result;
+};
+
+/**
  *
  * @param primaryContextIdentity
  * @param sharedContextIdentity
@@ -55,7 +264,7 @@ const generateSharedAccountRoot = (
 			activesyncdisabled: false,
 			broken: false,
 			checked: false,
-			children: [],
+			children: generateSharedAccountSystemFolders(sharedContextIdentity),
 			// color: undefined,
 			deletable: false,
 			depth: 1,
@@ -126,15 +335,6 @@ export const generateFolders = (): Folders => {
 	const mockContext = getMocksContext();
 	const rootUuid = mockContext.identities.primary.userRootId;
 	const inboxUuid = faker.datatype.uuid();
-	let userFolderIdSequence = 100;
-	const getNextFolderId = (zid?: string): string => {
-		userFolderIdSequence += 1;
-		if (zid) {
-			return `${zid}:${userFolderIdSequence}`;
-		}
-
-		return `${userFolderIdSequence}`;
-	};
 
 	const calendarsRandomUser1 = getRandomIdentity(mockContext.viewFreeBusyIdentities);
 	const calendarsRandomUser2 = getRandomIdentity(mockContext.viewFreeBusyIdentities);
@@ -142,6 +342,12 @@ export const generateFolders = (): Folders => {
 	const contactsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
 
 	const mailsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
+
+	const links: Array<LinkFolder> = [];
+	const linkOwner = getRandomIdentity(mockContext.otherUsersIdentities);
+	if (linkOwner) {
+		links.push(generateFolderLink(FOLDERS.INBOX, inboxUuid, linkOwner));
+	}
 
 	let roots = {
 		[FOLDERS.USER_ROOT]: {
@@ -498,7 +704,8 @@ export const generateFolders = (): Folders => {
 							children: [],
 							parent: undefined,
 							depth: 2
-						}
+						},
+						...links
 					],
 					parent: undefined,
 					depth: 1

@@ -93,19 +93,3 @@ export const getFlatChildrenFolders = (children: Array<Folder>): Folders => {
 
 	return destination;
 };
-
-/**
- *
- * @param link
- */
-export const getLinkIdMapKey = (link: SoapLink): string | null => {
-	if (!link) {
-		return null;
-	}
-
-	if (!link.rid || !link.zid) {
-		return null;
-	}
-
-	return `${link.zid}:${link.rid}`;
-};

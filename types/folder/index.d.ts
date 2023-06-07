@@ -25,8 +25,10 @@ export type Folder = UserFolder | LinkFolder;
 
 export type Folders = { [id: string]: Folder };
 export type Searches = { [id: string]: SearchFolder };
+export type LinksIdMap = { [id: string]: string };
 export type FolderState = {
 	folders: Folders;
+	linksIdMap: LinksIdMap;
 	searches: Searches;
 	updateFolder: (id: string, opt: Partial<Folder>) => void;
 };

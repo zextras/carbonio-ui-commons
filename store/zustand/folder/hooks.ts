@@ -51,6 +51,18 @@ export const getFoldersMap = (): Folders => useFolderStore.getState().folders;
 export const getFoldersArray = (): Array<Folder> => values(useFolderStore.getState().folders);
 
 /**
+ * Returns a folders' array including only links. Each folder has its own tree structure included inside its children
+ */
+export const getLinksArray = (view?: string): Array<LinkFolder> =>
+	filter(values(useFolderStore.getState().folders), (folder: Folder) => {
+		if (view && folder.view !== view) {
+			return false;
+		}
+
+		return folder.isLink;
+	}) as Array<LinkFolder>;
+
+/**
  * Returns the root account id for a given folder
  * @param folder a Folder or LinkFolder
  * @returns the root account id or null if the folder is not a link or the root folder

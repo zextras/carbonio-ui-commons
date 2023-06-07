@@ -257,8 +257,9 @@ const generateSharedAccountRoot = (
 	primaryContextIdentity: MocksContextIdentity,
 	sharedContextIdentity: MocksContextIdentity
 ): Record<string, Folder> => {
+	const id = `${sharedContextIdentity.identity.id}:${FOLDERS.USER_ROOT}`;
 	const result = {
-		[sharedContextIdentity.identity.email]: {
+		[id]: {
 			// absFolderPath: `/${sharedContextIdentity.identity.email}`,
 			// acl: undefined,
 			activesyncdisabled: false,
@@ -274,7 +275,7 @@ const generateSharedAccountRoot = (
 			// // i4next: undefined,
 			// // i4u: undefined,
 			// // id: `${(rootIdCounter = +1)}`,
-			id: `${sharedContextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
+			id,
 			isLink: true,
 			// luuid: primaryContextIdentity.userRootId,
 			// md: undefined,

@@ -154,7 +154,7 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 				goToLogin();
 			}
 		}
-		console.error(
+		console.warn(
 			new Error(
 				`${(<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Detail}: ${
 					(<ErrorSoapResponse>res).Body.Fault.Reason?.Text

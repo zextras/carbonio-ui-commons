@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 import { generateAccount } from './accounts/account-generator';
 import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
@@ -51,4 +51,6 @@ export const getCurrentRoute = jest.fn();
 export const getTags = jest.fn();
 export * from './network/fetch';
 export const soapFetch = getSoapFetch('test-environment');
-export const useTags = jest.fn();
+export const useTags = jest.fn(() => ({}));
+export const useLocalStorage = jest.fn();
+export const AppLink: FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;

@@ -9,7 +9,12 @@ import { Grant } from '@zextras/carbonio-shell-ui';
 import type { Folder, FolderView, Folders, LinkFolder } from '../../../types/folder';
 import { FakeIdentity } from '../accounts/fakeAccounts';
 import { FOLDERS } from '../carbonio-shell-ui-constants';
-import { getMocksContext, getRandomIdentity, MocksContextIdentity } from '../utils/mocks-context';
+import {
+	getMocksContext,
+	getRandomIdentities,
+	getRandomIdentity,
+	MocksContextIdentity
+} from '../utils/mocks-context';
 
 let userFolderIdSequence = 100;
 const getNextFolderId = (zid?: string): string => {
@@ -332,17 +337,20 @@ const generateSharedAccountsRoot = (
  * Generate a semi-fixed folders structure mock
  * TODO make it more flexible
  */
-export const generateFolders = (): Folders => {
+export const generateFolders = (view?: FolderView): Folders => {
 	const mockContext = getMocksContext();
 	const rootUuid = mockContext.identities.primary.userRootId;
 	const inboxUuid = faker.datatype.uuid();
 
-	const calendarsRandomUser1 = getRandomIdentity(mockContext.viewFreeBusyIdentities);
-	const calendarsRandomUser2 = getRandomIdentity(mockContext.viewFreeBusyIdentities);
+	const [calendarsRandomUser1, calendarsRandomUser2] = getRandomIdentities(
+		mockContext.viewFreeBusyIdentities,
+		2
+	);
 
-	const contactsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
-
-	const mailsRandomUser1 = getRandomIdentity(mockContext.otherUsersIdentities);
+	const [contactsRandomUser1, mailsRandomUser1] = getRandomIdentities(
+		mockContext.otherUsersIdentities,
+		2
+	);
 
 	const links: Array<LinkFolder> = [];
 	const linkOwner = getRandomIdentity(mockContext.otherUsersIdentities);
@@ -562,9 +570,7 @@ export const generateFolders = (): Folders => {
 					webOfflineSyncDays: 30,
 					recursive: false,
 					deletable: false,
-					acl: {
-						grant: []
-					},
+					acl: {},
 					isLink: false,
 					children: [
 						{

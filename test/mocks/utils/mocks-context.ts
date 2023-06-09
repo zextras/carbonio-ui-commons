@@ -26,7 +26,7 @@ const DEFAULT_SENDONBEHALF_IDENTITIES_COUNT = 1;
 /**
  * Number of accounts on which the current user has the "view free/busy status" right
  */
-const DEFAULT_VIEWFREEBUSY_IDENTITIES_COUNT = 1;
+const DEFAULT_VIEWFREEBUSY_IDENTITIES_COUNT = 2;
 
 /**
  * Number of accounts to create and to use for mock grants
@@ -190,6 +190,23 @@ const getRandomIdentity = (identities: Array<FakeIdentity>): FakeIdentity | unde
 	return identities[floor(Math.random() * identities.length)];
 };
 
+/**
+ * Returns an identity randomly picked from the given identities array.
+ * If the identities array is undefined or empty, undefined is returned
+ * @param identities
+ */
+const getRandomIdentities = (
+	identities: Array<FakeIdentity>,
+	count: number
+): Array<FakeIdentity> => {
+	if (!identities || !identities.length) {
+		return [];
+	}
+
+	const shuffledIdentities = faker.helpers.shuffle<FakeIdentity>(identities);
+	return shuffledIdentities.filter((identity, index) => index < count);
+};
+
 export {
 	MocksContext,
 	MocksContextIdentity,
@@ -197,5 +214,6 @@ export {
 	setMocksContext,
 	updateMocksContext,
 	generateDefaultContext,
-	getRandomIdentity
+	getRandomIdentity,
+	getRandomIdentities
 };

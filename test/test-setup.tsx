@@ -30,7 +30,10 @@ export const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): 
 
 	return (
 		<ThemeProvider>
-			<MemoryRouter initialEntries={initialEntries}>
+			<MemoryRouter
+				initialEntries={initialEntries}
+				initialIndex={(initialEntries?.length || 1) - 1}
+			>
 				<Route path={path}>
 					<Provider store={store}>
 						<I18nextProvider i18n={i18n}>

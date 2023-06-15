@@ -13,10 +13,10 @@ import {
 	generateSoapRoot,
 	generateSoapSystemFolder,
 	getAccountSoapRoot
-} from '../test/mocks/folders/soap-roots-generator';
-import { BaseFolder, Folder } from '../types/folder';
-import type { LinkFolder, UserFolder } from '../types/folder';
-import { handleMessage, normalize, testUtils } from './handle-message';
+} from '../../test/mocks/folders/soap-roots-generator';
+import { BaseFolder, Folder } from '../../types/folder';
+import type { LinkFolder, UserFolder } from '../../types/folder';
+import { handleMessage, normalize, testUtils } from '../handle-message';
 
 beforeEach(() => {
 	jest.restoreAllMocks();
@@ -116,7 +116,8 @@ describe('folders web worker', () => {
 						checked: expect.any(Boolean)
 					})
 				}),
-				searches: {}
+				linksIdMap: expect.any(Object),
+				searches: expect.any(Object)
 			});
 			workerSpy.mockRestore();
 		});

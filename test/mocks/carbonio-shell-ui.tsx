@@ -4,10 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
+import { Tags } from '@zextras/carbonio-shell-ui';
+import React, { FC, ReactNode } from 'react';
 import { generateAccount } from './accounts/account-generator';
 import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
+import { tags } from './tags/tags';
 
 export { FOLDERS, ZIMBRA_STANDARD_COLORS } from './carbonio-shell-ui-constants';
 
@@ -16,6 +18,7 @@ const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
 const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();
+const mockedTags: Tags = tags;
 
 export const getUserAccount = jest.fn(() => mockedAccount);
 export const useUserAccount = jest.fn(() => mockedAccount);
@@ -48,8 +51,13 @@ export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
 export const minimizeBoards = jest.fn();
 export const getCurrentRoute = jest.fn();
-export const getTags = jest.fn();
+export const useTags = jest.fn(() => mockedTags);
+export const getTags = jest.fn(() => mockedTags);
+export const useTag = jest.fn((id: string) => mockedTags[id]);
+export const getTag = jest.fn((id: string) => mockedTags[id]);
+
 export * from './network/fetch';
 export const soapFetch = getSoapFetch('test-environment');
-export const useTags = jest.fn();
 export const useNotify = jest.fn(() => []);
+export const useLocalStorage = jest.fn();
+export const AppLink: FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;

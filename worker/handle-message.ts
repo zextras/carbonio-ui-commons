@@ -11,7 +11,7 @@ import type {
 	SoapNotify,
 	SoapSearchFolder
 } from '@zextras/carbonio-shell-ui';
-import { FolderView } from '../types/folder';
+import { FolderView, LinksIdMap } from '../types/folder';
 import type {
 	BaseFolder,
 	Folder,
@@ -22,12 +22,14 @@ import type {
 	SearchFolderFields,
 	UserFolder
 } from '../types/folder';
+import { getLinkIdMapKey } from './utils';
 
 const IM_LOGS = '14';
 const USER_ROOT = '1';
 
 let folders: Folders = {};
 const searches: Searches = {};
+const linksIdMap: LinksIdMap = {};
 // used to check if a newly created folder is being added to the correct store
 let view: string | undefined;
 
@@ -146,6 +148,11 @@ export const processLink = (soapLink: SoapLink, depth: number, parent?: Folder):
 	} as LinkFolder;
 	// eslint-disable-next-line no-param-reassign
 	folders[soapLink.id] = link;
+
+	// Get the zid:rid key of the link and add it to the links id map
+	const linkIdMapKey = getLinkIdMapKey(soapLink);
+	linkIdMapKey && (linksIdMap[linkIdMapKey] = soapLink.id);
+
 	soapLink?.folder?.forEach((f) => {
 		if (!hasId(f, IM_LOGS)) {
 			// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -313,5 +320,5 @@ export const handleMessage = ({ data }: FolderMessage): void => {
 	handleFoldersMessages({ data });
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	postMessage({ folders, searches });
+	postMessage({ folders, linksIdMap, searches });
 };

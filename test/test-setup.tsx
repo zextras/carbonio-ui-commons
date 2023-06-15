@@ -68,6 +68,7 @@ export function setupTest(
 
 type Options = {
 	initialEntries?: Array<string>;
+	initialProps?: any;
 	path?: string;
 	store?: Store;
 };
@@ -77,7 +78,8 @@ export function setupHook(hook: any, options: Options = {}): any {
 	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
 		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
 	);
-	const { result, unmount } = renderHook(() => hook(), { wrapper: Wrapper });
+	const { initialProps } = options;
+	const { result, unmount, rerender } = renderHook(hook, { wrapper: Wrapper, initialProps });
 
-	return { result, unmount };
+	return { result, unmount, rerender };
 }

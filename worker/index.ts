@@ -5,4 +5,4 @@
  */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export const folderWorker = new Worker(new URL('./folder', import.meta.url));
+export const folderWorker = new Worker(new URL('./folder', import.meta.url), { type: 'module' });

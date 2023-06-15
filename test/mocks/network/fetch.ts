@@ -10,13 +10,14 @@ import {
 	ErrorSoapBodyResponse,
 	ErrorSoapResponse,
 	IS_STANDALONE,
-	SHELL_APP_ID,
 	SoapContext,
 	SoapResponse
 } from '@zextras/carbonio-shell-ui';
+import { getMocksContext } from '../utils/mocks-context';
 
 const userAgent = faker.internet.userAgent();
 const fullName = faker.name.fullName();
+const identities = getMocksContext();
 
 const useNetworkStore = {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -39,9 +40,9 @@ const useAccountStore = {
 		usedQuota: 300,
 		zimbraVersion: '',
 		account: {
-			id: faker.datatype.uuid(),
-			name: faker.internet.email(fullName),
-			displayName: fullName,
+			id: identities.identities.primary.identity.id,
+			name: identities.identities.primary.identity.email,
+			displayName: identities.identities.primary.identity.fullName,
 			signatures: { signature: [] },
 			identities: {},
 			rights: {

@@ -54,7 +54,6 @@ Object.defineProperty(window, 'Worker', {
 	writable: true,
 	value: Worker
 });
-
 /**
  * Default logic to execute before each tests
  */

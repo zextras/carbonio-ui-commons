@@ -52,3 +52,4 @@ export const getTags = jest.fn();
 export * from './network/fetch';
 export const soapFetch = getSoapFetch('test-environment');
 export const useTags = jest.fn();
+export const useNotify = jest.fn(() => []);

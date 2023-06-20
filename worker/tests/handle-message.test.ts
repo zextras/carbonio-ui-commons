@@ -95,9 +95,12 @@ describe('folders web worker', () => {
 				currentView: 'appointment',
 				folder: [tree]
 			};
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			handleMessage({ data });
+
+			handleMessage({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				data
+			});
 
 			expect(workerSpy).toHaveBeenCalledTimes(1);
 			expect(workerSpy).toHaveBeenCalledWith({
@@ -158,9 +161,12 @@ describe('folders web worker', () => {
 				currentView: 'appointment',
 				folder: [tree]
 			};
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			handleMessage({ data });
+			handleMessage({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				data
+			});
+
 			expect(workerSpy).toHaveBeenCalledTimes(1);
 			expect(workerSpy).toHaveBeenCalledWith(
 				expect.objectContaining({
@@ -203,9 +209,12 @@ describe('folders web worker', () => {
 				currentView: 'appointment',
 				folder: [tree]
 			};
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			handleMessage({ data });
+			handleMessage({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				data
+			});
+
 			expect(workerSpy).toHaveBeenCalledTimes(1);
 			expect(workerSpy).toHaveBeenCalledWith(
 				expect.objectContaining({
@@ -257,9 +266,11 @@ describe('folders web worker', () => {
 
 					testUtils.setFolders(tree);
 					testUtils.setCurrentView('appointment');
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					handleMessage({ data });
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
 
 					const folders = testUtils.getFolders();
 
@@ -283,9 +294,11 @@ describe('folders web worker', () => {
 
 					testUtils.setFolders(tree);
 					testUtils.setCurrentView('message');
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					handleMessage({ data });
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
 
 					const folders = testUtils.getFolders();
 					expect(folders[createdFolder.id]).toBeUndefined();
@@ -314,9 +327,11 @@ describe('folders web worker', () => {
 
 					testUtils.setFolders(tree);
 					testUtils.setCurrentView('appointment');
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					handleMessage({ data });
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
 
 					const folders = testUtils.getFolders();
 
@@ -346,9 +361,11 @@ describe('folders web worker', () => {
 
 					testUtils.setFolders(tree);
 					testUtils.setCurrentView('appointment');
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					handleMessage({ data });
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
 
 					const folders = testUtils.getFolders();
 
@@ -385,9 +402,11 @@ describe('folders web worker', () => {
 					};
 					testUtils.setFolders(tree);
 					testUtils.setCurrentView('appointment');
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					handleMessage({ data });
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
 
 					const folders = testUtils.getFolders();
 
@@ -414,9 +433,11 @@ describe('folders web worker', () => {
 
 					testUtils.setFolders(tree);
 					testUtils.setCurrentView('message');
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					handleMessage({ data });
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
 
 					const folders = testUtils.getFolders();
 					expect(folders[createdLink.id]).toBeUndefined();
@@ -445,9 +466,11 @@ describe('folders web worker', () => {
 
 					testUtils.setFolders(tree);
 					testUtils.setCurrentView('appointment');
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					handleMessage({ data });
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
 
 					const folders = testUtils.getFolders();
 
@@ -474,9 +497,11 @@ describe('folders web worker', () => {
 
 					testUtils.setFolders(tree);
 					testUtils.setCurrentView('appointment');
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					handleMessage({ data });
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
 
 					const folders = testUtils.getFolders();
 
@@ -547,9 +572,11 @@ describe('folders web worker', () => {
 				expect(previous[calendar.id].children).toStrictEqual([]);
 				expect(previous[folderToMove.id].parent).toStrictEqual(primaryAccount.id);
 
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				handleMessage({ data });
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
 
 				const folders = testUtils.getFolders();
 				const expectedObject = {
@@ -651,9 +678,11 @@ describe('folders web worker', () => {
 					}
 				};
 
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				handleMessage({ data });
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
 
 				const folders = testUtils.getFolders();
 
@@ -727,9 +756,11 @@ describe('folders web worker', () => {
 					}
 				};
 
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				handleMessage({ data });
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
 
 				const folders = testUtils.getFolders();
 
@@ -788,9 +819,11 @@ describe('folders web worker', () => {
 							}
 						};
 
-						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-						// @ts-ignore
-						handleMessage({ data });
+						handleMessage({
+							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+							// @ts-ignore
+							data
+						});
 
 						const folders = testUtils.getFolders();
 
@@ -862,9 +895,11 @@ describe('folders web worker', () => {
 					}
 				};
 
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				handleMessage({ data });
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
 
 				const folders = testUtils.getFolders();
 
@@ -930,9 +965,11 @@ describe('folders web worker', () => {
 					}
 				};
 
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				handleMessage({ data });
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
 
 				const folders = testUtils.getFolders();
 
@@ -978,9 +1015,11 @@ describe('folders web worker', () => {
 					}
 				};
 
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				handleMessage({ data });
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
 
 				const folders = testUtils.getFolders();
 
@@ -1012,9 +1051,11 @@ describe('folders web worker', () => {
 					}
 				};
 
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				handleMessage({ data });
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
 
 				const folders = testUtils.getFolders();
 
@@ -1052,9 +1093,11 @@ describe('folders web worker', () => {
 					}
 				};
 
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				handleMessage({ data });
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
 
 				const folders = testUtils.getFolders();
 

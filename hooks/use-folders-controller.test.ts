@@ -3,10 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { waitFor } from '@testing-library/react';
 import { rest } from 'msw';
-import { reducers } from '../../store/redux';
 import { useFolderStore } from '../store/zustand/folder';
 import { getSetupServer } from '../test/jest-setup';
 import { handleGetFolderRequest } from '../test/mocks/network/msw/handle-get-folder';
@@ -29,8 +27,7 @@ describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view:
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		const store = configureStore({ reducer: combineReducers(reducers) });
-		await waitFor(() => setupHook(useFoldersController, { store, initialProps: view }));
+		await waitFor(() => setupHook(useFoldersController, { initialProps: view }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
@@ -44,12 +41,10 @@ describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view:
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		const store = configureStore({ reducer: combineReducers(reducers) });
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
+
 		shell.useNotify.mockReturnValueOnce([]).mockReturnValueOnce([notify]);
 		const { rerender } = await waitFor(() =>
-			setupHook(useFoldersController, { store, initialProps: view })
+			setupHook(useFoldersController, { initialProps: view })
 		);
 		rerender(() => useFoldersController(view as FolderView));
 
@@ -69,12 +64,15 @@ describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view:
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		const store = configureStore({ reducer: combineReducers(reducers) });
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		shell.useNotify.mockReturnValueOnce([]).mockReturnValueOnce([notify]);
+
+		shell.useNotify.mockReturnValueOnce([]).mockReturnValueOnce([
+			// SoapNotify type is partially wrong and incomplete inside shell
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
+			notify
+		]);
 		const { rerender } = await waitFor(() =>
-			setupHook(useFoldersController, { store, initialProps: view })
+			setupHook(useFoldersController, { initialProps: view })
 		);
 		rerender(() => useFoldersController(view as FolderView));
 

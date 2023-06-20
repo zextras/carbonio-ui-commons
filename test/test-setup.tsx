@@ -19,9 +19,11 @@ interface ProvidersWrapperProps {
 	children?: React.ReactElement;
 	options?: any;
 }
+const StoreProvider = ({ store, children }: { store: Store; children: JSX.Element }): JSX.Element =>
+	store ? <Provider store={store}>{children}</Provider> : children;
 
 export const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): JSX.Element => {
-	const { store = {}, initialEntries = ['/'], path = '/' } = options;
+	const { store, initialEntries = ['/'], path = '/' } = options;
 
 	const i18n = useMemo(() => {
 		const i18nFactory = new I18nTestFactory();
@@ -35,7 +37,7 @@ export const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): 
 				initialIndex={(initialEntries?.length || 1) - 1}
 			>
 				<Route path={path}>
-					<Provider store={store}>
+					<StoreProvider store={store}>
 						<I18nextProvider i18n={i18n}>
 							<SnackbarManager>
 								<PreviewsManagerContext.Provider value={previewContextMock}>
@@ -43,7 +45,7 @@ export const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): 
 								</PreviewsManagerContext.Provider>
 							</SnackbarManager>
 						</I18nextProvider>
-					</Provider>
+					</StoreProvider>
 				</Route>
 			</MemoryRouter>
 		</ThemeProvider>

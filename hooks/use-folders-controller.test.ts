@@ -37,7 +37,7 @@ describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view:
 	});
 	test('on rerender it will not call refresh but will call notify', async () => {
 		useFolderStore.setState({ folders: {} });
-		const notify = { deleted: '1', seq: 2 };
+		const notify = { deleted: ['1'], seq: 2 };
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
@@ -66,7 +66,7 @@ describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view:
 		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 
 		shell.useNotify.mockReturnValueOnce([]).mockReturnValueOnce([
-			// SoapNotify type is partially wrong and incomplete inside shell
+			// SoapNotify type inside shell is incomplete
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			notify

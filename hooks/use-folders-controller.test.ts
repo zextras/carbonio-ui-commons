@@ -27,7 +27,7 @@ describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view:
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		await waitFor(() => setupHook(useFoldersController, { initialProps: view }));
+		await waitFor(() => setupHook(useFoldersController, { initialProps: [view] }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
@@ -44,9 +44,9 @@ describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view:
 
 		shell.useNotify.mockReturnValueOnce([]).mockReturnValueOnce([notify]);
 		const { rerender } = await waitFor(() =>
-			setupHook(useFoldersController, { initialProps: view })
+			setupHook(useFoldersController, { initialProps: [view] })
 		);
-		rerender(() => useFoldersController(view as FolderView));
+		rerender();
 
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(2);
@@ -72,9 +72,9 @@ describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view:
 			notify
 		]);
 		const { rerender } = await waitFor(() =>
-			setupHook(useFoldersController, { initialProps: view })
+			setupHook(useFoldersController, { initialProps: [view] })
 		);
-		rerender(() => useFoldersController(view as FolderView));
+		rerender();
 
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);

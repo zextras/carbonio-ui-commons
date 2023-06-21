@@ -22,7 +22,10 @@ interface ProvidersWrapperProps {
 const StoreProvider = ({ store, children }: { store: Store; children: JSX.Element }): JSX.Element =>
 	store ? <Provider store={store}>{children}</Provider> : children;
 
-export const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): JSX.Element => {
+export const ProvidersWrapper = ({
+	children,
+	options = {}
+}: ProvidersWrapperProps): JSX.Element => {
 	const { store, initialEntries = ['/'], path = '/' } = options;
 
 	const i18n = useMemo(() => {
@@ -52,7 +55,7 @@ export const ProvidersWrapper = ({ children, options }: ProvidersWrapperProps): 
 	);
 };
 
-function customRender(ui: React.ReactElement, options: any): RenderResult {
+function customRender(ui: React.ReactElement, options?: any): RenderResult {
 	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
 		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
 	);

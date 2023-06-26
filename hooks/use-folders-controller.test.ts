@@ -83,4 +83,26 @@ describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view:
 			expect.objectContaining({ op: 'notify', notify, state: expect.any(Object) })
 		);
 	});
+	test('If multiple accounts are available they will be on the same level of the main account', async () => {
+		useFolderStore.setState({ folders: {} });
+		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
+		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
+		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
+		await waitFor(() => setupHook(useFoldersController, { initialProps: [view] }));
+		expect(workerSpy).toHaveBeenCalled();
+		expect(workerSpy).toHaveBeenCalledTimes(1);
+		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
+		expect(workerSpy).toHaveBeenCalledWith(
+			expect.objectContaining({
+				op: 'refresh',
+				currentView: view,
+				folder: expect.arrayContaining([
+					// main account id
+					expect.objectContaining({ id: '1' }),
+					// shared account id
+					expect.objectContaining({ id: expect.stringContaining(':1') })
+				])
+			})
+		);
+	});
 });

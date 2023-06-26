@@ -42,20 +42,43 @@ export const useFoldersController = (view: FolderView): null => {
 					getShareInfoRequest().then((sharedFolders: { folders: any }) => {
 						if (sharedFolders?.folders) {
 							const sharedAccounts = filter(sharedFolders.folders, ['folderId', 1]);
-							getFoldersByAccounts(sharedAccounts, view).then((response) => {
+							if (sharedAccounts.length) {
 								const filteredLinks = reject(rootFolders.folder[0].link, ['rid', 1]);
-								const folders = [
-									{
-										...rootFolders.folder[0],
-										link: [...filteredLinks, ...response]
+								getFoldersByAccounts(sharedAccounts, view).then((response) => {
+									if (!response.Fault) {
+										const folders = [
+											{
+												...rootFolders.folder[0],
+												link: filteredLinks
+											},
+											...response
+										];
+										folderWorker.postMessage({
+											op: 'refresh',
+											currentView: view,
+											folder: folders ?? []
+										});
+									} else {
+										const folders = [
+											{
+												...rootFolders.folder[0],
+												link: filteredLinks
+											}
+										];
+										folderWorker.postMessage({
+											op: 'refresh',
+											currentView: view,
+											folder: folders ?? []
+										});
 									}
-								];
+								});
+							} else {
 								folderWorker.postMessage({
 									op: 'refresh',
 									currentView: view,
-									folder: folders ?? []
+									folder: rootFolders?.folder ?? []
 								});
-							});
+							}
 						}
 					});
 				})

@@ -8,7 +8,10 @@ import { rest } from 'msw';
 import { useFolderStore } from '../store/zustand/folder';
 import { getSetupServer } from '../test/jest-setup';
 import { handleGetFolderRequest } from '../test/mocks/network/msw/handle-get-folder';
-import { handleGetShareInfoRequest } from '../test/mocks/network/msw/handle-get-share-info';
+import {
+	getEmptyMSWShareInfoResponse,
+	handleGetShareInfoRequest
+} from '../test/mocks/network/msw/handle-get-share-info';
 import { setupHook } from '../test/test-setup';
 import { FolderView } from '../types/folder';
 import { folderWorker } from '../worker';
@@ -88,20 +91,43 @@ describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view:
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		await waitFor(() => setupHook(useFoldersController, { initialProps: [view] }));
+		await waitFor(() => setupHook(useFoldersController, { initialProps: ['appointment'] }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
 		expect(workerSpy).toHaveBeenCalledWith(
 			expect.objectContaining({
 				op: 'refresh',
-				currentView: view,
+				currentView: 'appointment',
 				folder: expect.arrayContaining([
 					// main account id
 					expect.objectContaining({ id: '1' }),
 					// shared account id
 					expect.objectContaining({ id: expect.stringContaining(':1') })
 				])
+			})
+		);
+	});
+
+	test('If only main account is available postMessage will be called with an array with 1 item', async () => {
+		useFolderStore.setState({ folders: {} });
+		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
+		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
+		getSetupServer().use(
+			rest.post('/service/soap/GetShareInfoRequest', (req, res, ctx) => {
+				const response = getEmptyMSWShareInfoResponse();
+				return res(ctx.json(response));
+			})
+		);
+		await waitFor(() => setupHook(useFoldersController, { initialProps: ['appointment'] }));
+		expect(workerSpy).toHaveBeenCalled();
+		expect(workerSpy).toHaveBeenCalledTimes(1);
+		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
+		expect(workerSpy).toHaveBeenCalledWith(
+			expect.objectContaining({
+				op: 'refresh',
+				currentView: 'appointment',
+				folder: [expect.objectContaining({ id: '1' })]
 			})
 		);
 	});

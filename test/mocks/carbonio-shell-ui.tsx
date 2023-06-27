@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Tags } from '@zextras/carbonio-shell-ui';
-import React, { FC, ReactNode, useMemo } from 'react';
+import { Tags, SoapNotify } from '@zextras/carbonio-shell-ui';
+import React, { FC, ReactNode } from 'react';
 import { generateAccount } from './accounts/account-generator';
 import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
@@ -58,5 +58,6 @@ export const getTag = jest.fn((id: string) => mockedTags[id]);
 
 export * from './network/fetch';
 export const soapFetch = getSoapFetch('test-environment');
+export const useNotify = jest.fn(() => [] as SoapNotify[]);
 export const useLocalStorage = jest.fn();
 export const AppLink: FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;

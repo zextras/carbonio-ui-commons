@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { render, RenderResult } from '@testing-library/react';
+import { act, render, RenderResult } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
 import { ModalManager, SnackbarManager, ThemeProvider } from '@zextras/carbonio-design-system';
@@ -83,4 +83,28 @@ export function setupHook(hook: any, options: Options = {}): any {
 	const { result, unmount } = renderHook(() => hook(), { wrapper: Wrapper });
 
 	return { result, unmount };
+}
+
+export function makeListItemsVisible(): void {
+	const { calls, instances } = (
+		window.IntersectionObserver as jest.Mock<
+			IntersectionObserver,
+			[callback: IntersectionObserverCallback, options?: IntersectionObserverInit]
+		>
+	).mock;
+	calls.forEach((call, index) => {
+		const [onChange] = call;
+		// trigger the intersection on the observed element
+		act(() => {
+			onChange(
+				[
+					{
+						intersectionRatio: 0,
+						isIntersecting: true
+					} as IntersectionObserverEntry
+				],
+				instances[index]
+			);
+		});
+	});
 }

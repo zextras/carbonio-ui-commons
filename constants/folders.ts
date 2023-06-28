@@ -5,14 +5,14 @@
  */
 
 // eslint-disable-next-line no-shadow
-export enum FolderActionsType {
-	NEW = 'new',
-	MOVE = 'move',
-	DELETE = 'delete',
-	EDIT = 'edit',
-	EMPTY = 'empty',
-	REMOVE_FROM_LIST = 'removeFromList',
-	SHARES_INFO = 'sharesInfo',
-	SHARE = 'share',
-	MARK_ALL_READ = 'read'
-}
+export const FolderActionsType = {
+	NEW: 'new',
+	MOVE: 'move',
+	DELETE: 'delete',
+	EDIT: 'edit',
+	EMPTY: 'empty',
+	REMOVE_FROM_LIST: 'removeFromList',
+	SHARES_INFO: 'sharesInfo',
+	SHARE: 'share',
+	MARK_ALL_READ: 'read'
+} as const;

@@ -309,7 +309,7 @@ export const handleFolderNotify = (notify: SoapNotify): void => {
 
 export const handleFoldersMessages = ({ data }: FolderMessage): void => {
 	if (data.op === 'refresh' && data.folder) {
-		handleFolderRefresh(data.folder, data.view);
+		handleFolderRefresh(data.folder, data.currentView);
 	}
 	if (data.op === 'notify') {
 		handleFolderNotify(data.notify);

@@ -5,19 +5,10 @@
  */
 
 import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
-import { filter, find, keyBy, values } from 'lodash';
-import { ComponentType, useMemo } from 'react';
-import type {
-	AccordionFolder,
-	Folder,
-	FolderView,
-	Folders,
-	LinkFolder,
-	SearchFolder,
-	Searches
-} from '../../../types/folder';
+import { filter, find, keyBy, times, values } from 'lodash';
+import type { Folder, Folders, LinkFolder, SearchFolder, Searches } from '../../../types/folder';
 import { useFolderStore } from './store';
-import { folderViewFilter, getFlatChildrenFolders, isRoot, mapNodes, sortFolders } from './utils';
+import { getFlatChildrenFolders } from './utils';
 
 /**
  * Returns the folder with given ID or undefined
@@ -174,41 +165,6 @@ export const getSearchFolder = (id: string): SearchFolder | undefined =>
 	useFolderStore.getState().searches[id];
 export const useSearchFolders = (): Searches => useFolderStore((s) => s.searches);
 export const getSearchFolders = (): Searches => useFolderStore.getState().searches;
-
-/**
- * @deprecated
- */
-export const useFoldersAccordionByView = (
-	view: FolderView,
-	CustomComponent: ComponentType<{ folder: Folder }>,
-	itemProps?: (item: AccordionFolder) => Record<string, any>
-): Array<AccordionFolder> => {
-	const roots = useRootsArray();
-	return useMemo(
-		() =>
-			roots
-				? mapNodes<Folder, AccordionFolder>(Object.values(roots), {
-						mapFunction: (f) => {
-							const item = {
-								id: f.id,
-								label: f.name,
-								CustomComponent,
-								items: [],
-								folder: f,
-								disableHover: isRoot(f)
-							};
-							const props = itemProps?.(item) ?? {};
-							return { ...item, ...props };
-						},
-						filterFunction: folderViewFilter(view),
-						recursionKey: 'items',
-						sortFunction: sortFolders,
-						deep: false
-				  })
-				: [],
-		[CustomComponent, itemProps, roots, view]
-	);
-};
 
 // useful hooks to update the value of a folder. Created because we don't receive acl data from notify when we modify folder grants.
 

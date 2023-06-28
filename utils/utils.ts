@@ -1,3 +1,6 @@
+import { FolderActionsType } from '../constants/folders';
+import { Folder } from '../types/folder';
+
 /*
  * SPDX-FileCopyrightText: 2023 Zextras <https://www.zextras.com>
  *
@@ -24,4 +27,28 @@ export const isValidFolderName = (folderName: string): boolean => {
 
 	// If all checks pass, the folder name is considered valid
 	return true;
+};
+
+export const allowedActionOnSharedAccount = (folder: Folder, action: string): boolean => {
+	const permission = folder.perm;
+	switch (action) {
+		case FolderActionsType.NEW:
+			if (permission)
+				if (permission.includes('rwidx')) {
+					return true;
+				} else {
+					return false;
+				}
+			return true;
+		case FolderActionsType.SHARE:
+			if (permission)
+				if (permission.includes('rwidxa')) {
+					return true;
+				} else {
+					return false;
+				}
+			return true;
+		default:
+			return true;
+	}
 };

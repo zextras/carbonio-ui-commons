@@ -43,7 +43,8 @@ export const testUtils = {
 	},
 	setCurrentView: (current: FolderView): void => {
 		view = current;
-	}
+	},
+	getCurrentView: (): string | undefined => view
 };
 
 const updateChildren = (folder: Folder, changes: any): any => {

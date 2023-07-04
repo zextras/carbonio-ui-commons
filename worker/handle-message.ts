@@ -11,7 +11,6 @@ import type {
 	SoapNotify,
 	SoapSearchFolder
 } from '@zextras/carbonio-shell-ui';
-import { FolderView, LinksIdMap } from '../types/folder';
 import type {
 	BaseFolder,
 	Folder,
@@ -22,6 +21,7 @@ import type {
 	SearchFolderFields,
 	UserFolder
 } from '../types/folder';
+import { FolderView, LinksIdMap } from '../types/folder';
 import { getLinkIdMapKey } from './utils';
 
 const IM_LOGS = '14';
@@ -212,10 +212,16 @@ export const processFolder = (
 export const handleFolderRefresh = (
 	soapFolders: Array<SoapFolder>,
 	currentView: string
-): UserFolder => {
+): UserFolder | Array<UserFolder> => {
 	view = currentView;
-	const result = processFolder(soapFolders[0], 0);
-	return result;
+	if (soapFolders.length > 1) {
+		const sharedAccounts = soapFolders.slice(1);
+		return [
+			processFolder(soapFolders[0], 0),
+			...sharedAccounts.map((folder) => processLink(folder as SoapLink, 0))
+		] as Array<UserFolder>;
+	}
+	return processFolder(soapFolders[0], 0);
 };
 
 export const handleFolderCreated = (created: Array<SoapFolder>): void =>

@@ -44,7 +44,9 @@ const useAccountStore = {
 			name: identities.identities.primary.identity.email,
 			displayName: identities.identities.primary.identity.fullName,
 			signatures: { signature: [] },
-			identities: {},
+			identities: {
+				identity: []
+			},
 			rights: {
 				targets: []
 				// targets: Array<{

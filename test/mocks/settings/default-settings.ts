@@ -155,7 +155,7 @@ export default {
 		zimbraFeatureSocialFiltersEnabled: ['SocialCast', 'LinkedIn', 'Twitter', 'Facebook'],
 		zimbraFeatureResetPasswordStatus: 'disabled',
 		zimbraFeatureAppSpecificPasswordsEnabled: 'TRUE',
-		zimbraIdentityMaxNumEntries: '20',
+		zimbraIdentityMaxNumEntries: 20,
 		zimbraFeatureAdminMailEnabled: 'TRUE',
 		zimbraFeatureDistributionListFolderEnabled: 'TRUE',
 		zimbraDataSourceImportOnLogin: 'FALSE',

@@ -87,6 +87,24 @@ const getNormalizedCreatedFolder = (folder: BaseFolder, parent: string): UserFol
 
 describe('folders web worker', () => {
 	describe('refresh', () => {
+		test('on refresh view is set to currentView', () => {
+			const tree = generateSoapRoot(true, true, faker.datatype.uuid());
+			const data = {
+				op: 'refresh',
+				currentView: 'appointment',
+				folder: [tree]
+			};
+
+			expect(testUtils.getCurrentView()).toBeUndefined();
+
+			handleMessage({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				data
+			});
+
+			expect(testUtils.getCurrentView()).toBe('appointment');
+		});
 		test('postMessage is called with normalized folders', () => {
 			const workerSpy = jest.spyOn(window, 'postMessage');
 			const tree = generateSoapRoot(true, true, faker.datatype.uuid());

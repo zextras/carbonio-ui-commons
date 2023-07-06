@@ -24,6 +24,27 @@ export const getFailOnConsoleDefaultConfig = (): failOnConsole.InitOptions => ({
  * Default logic to execute before all the tests
  */
 export const defaultBeforeAllTests = (): void => {
+	// Do not useFakeTimers with `whatwg-fetch` if using mocked server
+	// https://github.com/mswjs/msw/issues/448
+
+	// mock a simplified Intersection Observer
+	Object.defineProperty(window, 'IntersectionObserver', {
+		writable: true,
+		value: jest.fn(function intersectionObserverMock(
+			callback: IntersectionObserverCallback,
+			options: IntersectionObserverInit
+		) {
+			return {
+				thresholds: options.threshold,
+				root: options.root,
+				rootMargin: options.rootMargin,
+				observe: jest.fn(),
+				unobserve: jest.fn(),
+				disconnect: jest.fn()
+			};
+		})
+	});
+
 	fetchMock.doMock();
 	server = setupServer(...getRestHandlers());
 	server.listen({ onUnhandledRequest: 'warn' });
@@ -84,22 +105,3 @@ window.ResizeObserver = jest.fn().mockImplementation(() => ({
 	unobserve: jest.fn(),
 	disconnect: jest.fn()
 }));
-
-// mock a simplified Intersection Observer
-Object.defineProperty(window, 'IntersectionObserver', {
-	writable: false,
-	value: jest.fn().mockImplementation(
-		(
-			callback: IntersectionObserverCallback,
-			options?: IntersectionObserverInit
-		): IntersectionObserver => ({
-			thresholds: (options?.threshold || [0]) as typeof IntersectionObserver.prototype.thresholds,
-			root: options?.root || window.document,
-			rootMargin: options?.rootMargin || '0px',
-			observe: jest.fn(),
-			unobserve: jest.fn(),
-			disconnect: jest.fn(),
-			takeRecords: (): IntersectionObserverEntry[] => []
-		})
-	)
-});

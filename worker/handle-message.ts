@@ -43,7 +43,8 @@ export const testUtils = {
 	},
 	setCurrentView: (current: FolderView): void => {
 		view = current;
-	}
+	},
+	getCurrentView: (): string | undefined => view
 };
 
 const updateChildren = (folder: Folder, changes: any): any => {
@@ -309,7 +310,7 @@ export const handleFolderNotify = (notify: SoapNotify): void => {
 
 export const handleFoldersMessages = ({ data }: FolderMessage): void => {
 	if (data.op === 'refresh' && data.folder) {
-		handleFolderRefresh(data.folder, data.view);
+		handleFolderRefresh(data.folder, data.currentView);
 	}
 	if (data.op === 'notify') {
 		handleFolderNotify(data.notify);

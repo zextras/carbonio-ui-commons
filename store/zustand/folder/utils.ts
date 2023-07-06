@@ -14,6 +14,8 @@ const getOriginalId = (f: Folder): string => {
 	const parts = f.id.split(':');
 	return parts[1] ?? parts[0];
 };
+
+// TODO check if is still used by Calendars or Contacts
 export const sortFolders = (f: Folder): string => {
 	const id = getOriginalId(f);
 	if (id === FOLDERS.TRASH) {

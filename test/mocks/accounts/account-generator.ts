@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { Account } from '@zextras/carbonio-shell-ui';
+import { Account, IdentityAttrs } from '@zextras/carbonio-shell-ui';
 import { getMocksContext } from '../utils/mocks-context';
 
 /**
@@ -45,10 +45,8 @@ const generateAccount = (): Account => {
 						zimbraPrefWhenInFoldersEnabled: 'FALSE',
 						zimbraPrefFromAddressType: 'sendAs',
 						zimbraPrefFromAddress: primary.identity.email,
-						objectClass: 'zimbraIdentity',
 						zimbraPrefFromDisplay: primary.identity.fullName,
 						zimbraPrefReplyToEnabled: 'FALSE',
-						zimbraCreateTimestamp: '20211227131653.367Z',
 						zimbraPrefDefaultSignatureId: primary.signatures?.newEmailSignature?.id,
 						zimbraPrefForwardReplySignatureId: primary.signatures?.forwardReplySignature?.id
 					}
@@ -63,13 +61,11 @@ const generateAccount = (): Account => {
 						zimbraPrefWhenSentToEnabled: 'FALSE',
 						zimbraPrefWhenInFoldersEnabled: 'FALSE',
 						zimbraPrefFromAddress: identityContext.identity.email,
-						objectClass: 'zimbraIdentity',
 						zimbraPrefFromDisplay: identityContext.identity.fullName,
 						zimbraPrefReplyToEnabled: 'FALSE',
-						zimbraCreateTimestamp: '20211227131653.367Z',
 						zimbraPrefDefaultSignatureId: identityContext.signatures?.newEmailSignature?.id,
 						zimbraPrefForwardReplySignatureId: identityContext.signatures?.forwardReplySignature?.id
-					}
+					} as const
 				}))
 			]
 		},

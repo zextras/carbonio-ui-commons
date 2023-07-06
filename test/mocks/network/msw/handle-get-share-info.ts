@@ -10,7 +10,7 @@ import { getRandomView } from '../../folders/soap-roots-generator';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
-const getShareInfo = (context?: any) => {
+export const getMSWShareInfo = (context?: any) => {
 	const firstName = faker.name.firstName();
 	const lastName = faker.name.lastName();
 	const ownerEmail = faker.internet.email(firstName, lastName);
@@ -37,7 +37,7 @@ const getShareInfo = (context?: any) => {
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 const getShareInfoResponse = () => {
-	const sharedAccount = getShareInfo({
+	const sharedAccount = getMSWShareInfo({
 		folderId: 1,
 		rights: 'rwidx',
 		view: 'unknown',
@@ -46,8 +46,32 @@ const getShareInfoResponse = () => {
 	const randomLength = faker.datatype.number({ min: 50, max: 200 });
 	const randomShares = [
 		sharedAccount,
-		...map(Array.from({ length: randomLength }), () => getShareInfo())
+		...map(Array.from({ length: randomLength }), () => getMSWShareInfo())
 	];
+	return {
+		Header: {
+			context: {
+				session: {
+					id: faker.datatype.number({ min: 1, max: 999999 }),
+					_content: faker.datatype.number({ min: 1, max: 999999 })
+				}
+			}
+		},
+		Body: {
+			GetShareInfoResponse: {
+				share: randomShares,
+				_jsns: 'urn:zimbraAccount'
+			}
+		}
+	};
+};
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
+export const getEmptyMSWShareInfoResponse = () => {
+	const randomLength = faker.datatype.number({ min: 50, max: 200 });
+	const randomShares = map(Array.from({ length: randomLength }), getMSWShareInfo);
 	return {
 		Header: {
 			context: {

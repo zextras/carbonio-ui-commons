@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { Account, IdentityAttrs } from '@zextras/carbonio-shell-ui';
+import { Account } from '@zextras/carbonio-shell-ui';
 import { getMocksContext } from '../utils/mocks-context';
 
 /**

@@ -68,37 +68,18 @@ module.exports = {
 		'sonarjs/no-useless-catch': 'warn',
 		'sonarjs/no-nested-template-literals': 'warn',
 		'sonarjs/no-all-duplicated-branches': 'warn',
+		'sonarjs/no-gratuitous-expressions': 'warn',
+		'sonarjs/max-switch-cases': 'warn',
+		'sonarjs/no-empty-collection': 'warn',
+		'sonarjs/no-identical-functions': 'warn',
+
 		'@typescript-eslint/no-shadow': 'warn',
+
 		'no-param-reassign': [
 			'warn',
 			{ props: true, ignorePropertyModificationsFor: ['accumulator', 'state', 'event'] }
 		],
 		'unused-imports/no-unused-imports': 'warn'
-
-		// 'import/order': [
-		// 	'error',
-		// 	{
-		// 		groups: [['builtin', 'external']],
-		// 		pathGroups: [
-		// 			{
-		// 				pattern: 'react',
-		// 				group: 'external',
-		// 				position: 'before'
-		// 			}
-		// 		],
-		// 		pathGroupsExcludedImportTypes: ['react'],
-		// 		'newlines-between': 'always',
-		// 		alphabetize: {
-		// 			order: 'asc',
-		// 			caseInsensitive: true
-		// 		}
-		// 	}
-		// ],
-		// 'unused-imports/no-unused-imports': 'error',
-		// 'unused-imports/no-unused-vars': [
-		// 	'warn',
-		// 	{ vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }
-		// ]
 	},
 	settings: {
 		'import/resolver': {

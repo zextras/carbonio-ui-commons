@@ -5,10 +5,11 @@
  */
 
 import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
-import { filter, find, keyBy, times, values } from 'lodash';
-import type { Folder, Folders, LinkFolder, SearchFolder, Searches } from '../../../types/folder';
+import { filter, find, keyBy, values } from 'lodash';
+
 import { useFolderStore } from './store';
 import { getFlatChildrenFolders } from './utils';
+import type { Folder, Folders, LinkFolder, SearchFolder, Searches } from '../../../types/folder';
 
 /**
  * Returns the folder with given ID or undefined
@@ -77,8 +78,11 @@ function getRootAccountId(folder: Folder | LinkFolder): string {
 export const useRoot = (id: string): Folder | undefined =>
 	useFolderStore((s) => {
 		const folder = s.folders?.[id];
-		const rootFolderId = getRootAccountId(folder) || '';
-		return s.folders?.[rootFolderId];
+		if (folder) {
+			const rootFolderId = getRootAccountId(folder);
+			return s.folders?.[rootFolderId];
+		}
+		return undefined;
 	});
 
 /**
@@ -88,8 +92,11 @@ export const useRoot = (id: string): Folder | undefined =>
  * */
 export const getRoot = (id: string): Folder | undefined => {
 	const folder = useFolderStore.getState().folders?.[id];
-	const rootFolderId = getRootAccountId(folder) || '';
-	return useFolderStore.getState().folders?.[rootFolderId];
+	if (folder) {
+		const rootFolderId = getRootAccountId(folder);
+		return useFolderStore.getState().folders?.[rootFolderId];
+	}
+	return undefined;
 };
 
 /**

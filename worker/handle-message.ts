@@ -252,6 +252,15 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 			};
 			folders[val.id] = folder;
 			parent.children.push(folder);
+			parent.children.sort((a, b) => {
+				if (a.name < b.name) {
+					return -1;
+				}
+				if (a.name > b.name) {
+					return 1;
+				}
+				return 0;
+			});
 		}
 	});
 export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void =>
@@ -274,13 +283,11 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 					const oldParent = folders[oldParentId];
 					if (oldParent) {
 						if (!val.l) {
-							oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
-							oldParent.children.push(folder);
+							oldParent.children = oldParent.children.map((f) => (f.id !== val.id ? f : folder));
 						} else {
 							const newParent = folders[val.l];
 							if (newParent) {
-								oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
-								newParent.children.push(folder);
+								oldParent.children = oldParent.children.map((f) => (f.id !== val.id ? f : folder));
 								folder.parent = newParent.id;
 								folder.depth = newParent && newParent.depth !== undefined ? newParent.depth + 1 : 0;
 							}

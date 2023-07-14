@@ -253,10 +253,12 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 			folders[val.id] = folder;
 			parent.children.push(folder);
 			parent.children.sort((a, b) => {
-				if (a.name < b.name) {
+				const aLowerName = a.name.toLowerCase();
+				const bLowerName = b.name.toLowerCase();
+				if (aLowerName < bLowerName) {
 					return -1;
 				}
-				if (a.name > b.name) {
+				if (aLowerName > bLowerName) {
 					return 1;
 				}
 				return 0;

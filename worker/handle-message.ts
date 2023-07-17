@@ -11,6 +11,8 @@ import type {
 	SoapNotify,
 	SoapSearchFolder
 } from '@zextras/carbonio-shell-ui';
+
+import { getLinkIdMapKey } from './utils';
 import type {
 	BaseFolder,
 	Folder,
@@ -22,7 +24,6 @@ import type {
 	UserFolder
 } from '../types/folder';
 import { FolderView, LinksIdMap } from '../types/folder';
-import { getLinkIdMapKey } from './utils';
 
 const IM_LOGS = '14';
 const USER_ROOT = '1';
@@ -46,6 +47,19 @@ export const testUtils = {
 	},
 	getCurrentView: (): string | undefined => view
 };
+
+const sortObjectArrayByName = (obj: Array<Folder>): Array<Folder> =>
+	obj.sort((a, b) => {
+		const aLowerName = a.name.toLowerCase();
+		const bLowerName = b.name.toLowerCase();
+		if (aLowerName < bLowerName) {
+			return -1;
+		}
+		if (aLowerName > bLowerName) {
+			return 1;
+		}
+		return 0;
+	});
 
 const updateChildren = (folder: Folder, changes: any): any => {
 	if (changes.absFolderPath && folder.children.length) {
@@ -252,6 +266,7 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 			};
 			folders[val.id] = folder;
 			parent.children.push(folder);
+			sortObjectArrayByName(parent.children);
 		}
 	});
 export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void =>
@@ -274,13 +289,13 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 					const oldParent = folders[oldParentId];
 					if (oldParent) {
 						if (!val.l) {
-							oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
-							oldParent.children.push(folder);
+							oldParent.children = oldParent.children.map((f) => (f.id !== val.id ? f : folder));
 						} else {
 							const newParent = folders[val.l];
 							if (newParent) {
 								oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
 								newParent.children.push(folder);
+								sortObjectArrayByName(newParent.children);
 								folder.parent = newParent.id;
 								folder.depth = newParent && newParent.depth !== undefined ? newParent.depth + 1 : 0;
 							}

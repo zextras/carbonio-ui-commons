@@ -48,7 +48,7 @@ export const testUtils = {
 	getCurrentView: (): string | undefined => view
 };
 
-const sortObjectArrayByName = (obj: Array<Folder>): Array<Folder> =>
+const sortFoldersByName = (obj: Array<Folder>): Array<Folder> =>
 	obj.sort((a, b) => {
 		const aLowerName = a.name.toLowerCase();
 		const bLowerName = b.name.toLowerCase();
@@ -251,6 +251,7 @@ export const handleFolderCreated = (created: Array<SoapFolder>): void =>
 			};
 			folders[val.id] = folder;
 			parent.children.push(folder);
+			sortFoldersByName(parent.children);
 		}
 	});
 export const handleLinkCreated = (created: Array<SoapLink>): void =>
@@ -266,7 +267,7 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 			};
 			folders[val.id] = folder;
 			parent.children.push(folder);
-			sortObjectArrayByName(parent.children);
+			sortFoldersByName(parent.children);
 		}
 	});
 export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void =>
@@ -295,7 +296,7 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 							if (newParent) {
 								oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
 								newParent.children.push(folder);
-								sortObjectArrayByName(newParent.children);
+								sortFoldersByName(newParent.children);
 								folder.parent = newParent.id;
 								folder.depth = newParent && newParent.depth !== undefined ? newParent.depth + 1 : 0;
 							}

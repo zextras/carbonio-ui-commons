@@ -6,6 +6,7 @@
 import { faker } from '@faker-js/faker';
 import type { SoapLink } from '@zextras/carbonio-shell-ui';
 import { find } from 'lodash';
+
 import {
 	BASE_FOLDER_CALENDAR_ARGS,
 	generateSoapCustomChild,
@@ -263,9 +264,15 @@ describe('folders web worker', () => {
 	describe('notify', () => {
 		describe('handle created', () => {
 			describe('folder', () => {
-				test('when a new folder for the current view is notified, it is normalized and added', () => {
+				test('when a new folder for the current view is notified, it is normalized, added and sorted', () => {
 					const primaryAccount = getNormalizedPrimaryAccount();
-					const createdFolder = generateSoapCustomChild({ ...primaryAccount, view: 'appointment' });
+					const createdFolder = {
+						...generateSoapCustomChild({
+							...primaryAccount,
+							view: 'appointment'
+						}),
+						name: 'aaa'
+					};
 					const normalizedCreatedFolder = getNormalizedCreatedFolder(
 						createdFolder as BaseFolder,
 						primaryAccount.id
@@ -279,7 +286,15 @@ describe('folders web worker', () => {
 						}
 					};
 					const tree = {
-						[primaryAccount.id]: primaryAccount as UserFolder
+						[primaryAccount.id]: {
+							...primaryAccount,
+							children: [
+								{
+									...generateSoapCustomChild({ ...primaryAccount, view: 'appointment' }),
+									name: 'bbb'
+								}
+							]
+						} as UserFolder
 					};
 
 					testUtils.setFolders(tree);
@@ -292,6 +307,13 @@ describe('folders web worker', () => {
 
 					const folders = testUtils.getFolders();
 
+					expect(folders[primaryAccount.id].children).toHaveLength(2);
+					expect(folders[primaryAccount.id].children[0]).toStrictEqual(
+						expect.objectContaining({ name: 'aaa' })
+					);
+					expect(folders[primaryAccount.id].children[1]).toStrictEqual(
+						expect.objectContaining({ name: 'bbb' })
+					);
 					expect(folders[createdFolder.id]).toStrictEqual(normalizedCreatedFolder);
 				});
 				test('when a new folder for a different view is notified, is not added or normalized', () => {
@@ -393,12 +415,15 @@ describe('folders web worker', () => {
 				});
 			});
 			describe('link', () => {
-				test('when a new link for the current view is notified, it is normalized and added', () => {
+				test('when a new link for the current view is notified, it is normalized, added and sorted', () => {
 					const normalizedPrimaryAccount = getNormalizedPrimaryAccount();
-					const createdLink = generateSoapLink({
-						...normalizedPrimaryAccount,
-						view: 'appointment'
-					});
+					const createdLink = {
+						...generateSoapLink({
+							...normalizedPrimaryAccount,
+							view: 'appointment'
+						}),
+						name: 'aaa'
+					};
 					const normalizedCreatedFolder = getNormalizedCreatedLink(
 						createdLink,
 						normalizedPrimaryAccount.id
@@ -414,9 +439,14 @@ describe('folders web worker', () => {
 
 					const tree = {
 						[normalizedPrimaryAccount.id]: {
-							...(normalizedPrimaryAccount as UserFolder),
-							children: [createdLink as LinkFolder]
-						}
+							...normalizedPrimaryAccount,
+							children: [
+								{
+									...generateSoapLink({ ...normalizedPrimaryAccount, view: 'appointment' }),
+									name: 'bbb'
+								}
+							]
+						} as UserFolder
 					};
 					testUtils.setFolders(tree);
 					testUtils.setCurrentView('appointment');
@@ -428,6 +458,13 @@ describe('folders web worker', () => {
 
 					const folders = testUtils.getFolders();
 
+					expect(folders[normalizedPrimaryAccount.id].children).toHaveLength(2);
+					expect(folders[normalizedPrimaryAccount.id].children[0]).toStrictEqual(
+						expect.objectContaining({ name: 'aaa' })
+					);
+					expect(folders[normalizedPrimaryAccount.id].children[1]).toStrictEqual(
+						expect.objectContaining({ name: 'bbb' })
+					);
 					expect(folders[createdLink.id]).toStrictEqual(normalizedCreatedFolder);
 				});
 				test('when a new link for a different view is notified, is not added or normalized', () => {

@@ -316,8 +316,8 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 							}
 						}
 					}
-					folders[folderId] = folder;
 				}
+				folders[folderId] = folder;
 			}
 		}
 	});

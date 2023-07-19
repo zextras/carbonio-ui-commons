@@ -25,6 +25,7 @@ import type {
 } from '../types/folder';
 import { FolderView, LinksIdMap } from '../types/folder';
 
+type SharedFolder = { [id: string]: { rid: string; zid: string } };
 const IM_LOGS = '14';
 const USER_ROOT = '1';
 
@@ -270,6 +271,15 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 			sortFoldersByName(parent.children);
 		}
 	});
+
+function getKeyByValue(
+	map: { [id: string]: { rid: string; zid: string } },
+	searchValue: Folder
+): string {
+	return Object.keys(map).find(
+		(key) => searchValue.id === `${map[key].zid}:${map[key].rid}`
+	) as string;
+}
 export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void =>
 	// the type defined in shell is not correct refs: SHELL-118
 	// FIXME: remove the ts-ignore when the type will be fixed
@@ -277,7 +287,11 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 	// @ts-ignore
 	modified.forEach((val: Partial<SoapFolder>): void => {
 		if (val.id) {
-			const folder = folders[val.id];
+			const folderId = val.id.includes(':')
+				? getKeyByValue(folders as SharedFolder, val as Folder)
+				: val.id;
+			const folder = folders[folderId];
+
 			if (folder) {
 				Object.assign(folder, omit(val));
 				updateChildren(folder, val);
@@ -290,11 +304,11 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 					const oldParent = folders[oldParentId];
 					if (oldParent) {
 						if (!val.l) {
-							oldParent.children = oldParent.children.map((f) => (f.id !== val.id ? f : folder));
+							oldParent.children = oldParent.children.map((f) => (f.id !== folderId ? f : folder));
 						} else {
 							const newParent = folders[val.l];
 							if (newParent) {
-								oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
+								oldParent.children = oldParent.children.filter((f) => f.id !== folderId);
 								newParent.children.push(folder);
 								sortFoldersByName(newParent.children);
 								folder.parent = newParent.id;
@@ -302,8 +316,8 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 							}
 						}
 					}
+					folders[folderId] = folder;
 				}
-				folders[val.id] = folder;
 			}
 		}
 	});

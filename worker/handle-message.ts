@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import {
+import type {
 	FolderMessage,
 	SoapFolder,
 	SoapLink,
@@ -25,7 +25,6 @@ import type {
 } from '../types/folder';
 import { FolderView, LinksIdMap } from '../types/folder';
 
-type SharedFolder = { [id: string]: { rid: string; zid: string } };
 const IM_LOGS = '14';
 const USER_ROOT = '1';
 
@@ -48,6 +47,19 @@ export const testUtils = {
 	},
 	getCurrentView: (): string | undefined => view
 };
+
+const sortFoldersByName = (obj: Array<Folder>): Array<Folder> =>
+	obj.sort((a, b) => {
+		const aLowerName = a.name.toLowerCase();
+		const bLowerName = b.name.toLowerCase();
+		if (aLowerName < bLowerName) {
+			return -1;
+		}
+		if (aLowerName > bLowerName) {
+			return 1;
+		}
+		return 0;
+	});
 
 const updateChildren = (folder: Folder, changes: any): any => {
 	if (changes.absFolderPath && folder.children.length) {
@@ -239,6 +251,7 @@ export const handleFolderCreated = (created: Array<SoapFolder>): void =>
 			};
 			folders[val.id] = folder;
 			parent.children.push(folder);
+			sortFoldersByName(parent.children);
 		}
 	});
 export const handleLinkCreated = (created: Array<SoapLink>): void =>
@@ -254,6 +267,7 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 			};
 			folders[val.id] = folder;
 			parent.children.push(folder);
+			sortFoldersByName(parent.children);
 		}
 	});
 

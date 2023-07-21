@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type {
+import {
 	FolderMessage,
 	SoapFolder,
 	SoapLink,
@@ -48,19 +48,6 @@ export const testUtils = {
 	},
 	getCurrentView: (): string | undefined => view
 };
-
-const sortFoldersByName = (obj: Array<Folder>): Array<Folder> =>
-	obj.sort((a, b) => {
-		const aLowerName = a.name.toLowerCase();
-		const bLowerName = b.name.toLowerCase();
-		if (aLowerName < bLowerName) {
-			return -1;
-		}
-		if (aLowerName > bLowerName) {
-			return 1;
-		}
-		return 0;
-	});
 
 const updateChildren = (folder: Folder, changes: any): any => {
 	if (changes.absFolderPath && folder.children.length) {
@@ -252,7 +239,6 @@ export const handleFolderCreated = (created: Array<SoapFolder>): void =>
 			};
 			folders[val.id] = folder;
 			parent.children.push(folder);
-			sortFoldersByName(parent.children);
 		}
 	});
 export const handleLinkCreated = (created: Array<SoapLink>): void =>
@@ -268,18 +254,28 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 			};
 			folders[val.id] = folder;
 			parent.children.push(folder);
-			sortFoldersByName(parent.children);
 		}
 	});
 
-function getKeyByValue(
-	map: { [id: string]: { rid: string; zid: string } },
-	searchValue: Folder
-): string {
+function getKeyByValue(map: Folders, searchValue: Folder): string {
 	return Object.keys(map).find(
-		(key) => searchValue.id === `${map[key].zid}:${map[key].rid}`
+		(key) => searchValue.id === `${(map[key] as LinkFolder).zid}:${(map[key] as LinkFolder).rid}`
 	) as string;
 }
+
+function folderIsShared(folderId: string): boolean {
+	return folderId.includes(':');
+}
+
+function folderIsSharedWithMe(folderId: string): boolean {
+	if (!folderId) return false;
+	const folder = folders[folderId];
+	if (folder?.parent) {
+		return folderIsSharedWithMe(folder?.parent);
+	}
+	return folder?.name === 'USER_ROOT';
+}
+
 export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void =>
 	// the type defined in shell is not correct refs: SHELL-118
 	// FIXME: remove the ts-ignore when the type will be fixed
@@ -287,9 +283,9 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 	// @ts-ignore
 	modified.forEach((val: Partial<SoapFolder>): void => {
 		if (val.id) {
-			const folderId = val.id.includes(':')
-				? getKeyByValue(folders as SharedFolder, val as Folder)
-				: val.id;
+			const sharedWithMeFolderId = getKeyByValue(folders, val as Folder);
+			const isSharedWithMe = folderIsSharedWithMe(sharedWithMeFolderId);
+			const folderId = folderIsShared(val.id) && isSharedWithMe ? sharedWithMeFolderId : val.id;
 			const folder = folders[folderId];
 
 			if (folder) {
@@ -304,15 +300,15 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 					const oldParent = folders[oldParentId];
 					if (oldParent) {
 						if (!val.l) {
-							oldParent.children = oldParent.children.map((f) => (f.id !== folderId ? f : folder));
+							oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
+							oldParent.children.push(folder);
 						} else {
 							const newParent = folders[val.l];
 							if (newParent) {
 								oldParent.children = oldParent.children.filter((f) => f.id !== folderId);
 								newParent.children.push(folder);
-								sortFoldersByName(newParent.children);
 								folder.parent = newParent.id;
-								folder.depth = newParent && newParent.depth !== undefined ? newParent.depth + 1 : 0;
+								folder.depth = newParent?.depth !== undefined ? newParent.depth + 1 : 0;
 							}
 						}
 					}

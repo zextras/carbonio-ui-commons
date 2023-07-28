@@ -319,7 +319,7 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 							const newParent = folders[val.l];
 							if (newParent) {
 								oldParent.children = oldParent.children.filter((f) => f.id !== folderId);
-								newParent.children.push(folder);
+								sortFoldersByName(newParent.children);
 								folder.parent = newParent.id;
 								folder.depth = newParent?.depth !== undefined ? newParent.depth + 1 : 0;
 							}

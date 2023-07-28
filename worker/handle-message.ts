@@ -314,8 +314,7 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 					const oldParent = folders[oldParentId];
 					if (oldParent) {
 						if (!val.l) {
-							oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
-							oldParent.children.push(folder);
+							oldParent.children = oldParent.children.map((f) => (f.id !== val.id ? f : folder));
 						} else {
 							const newParent = folders[val.l];
 							if (newParent) {

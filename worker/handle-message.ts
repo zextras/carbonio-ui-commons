@@ -270,6 +270,26 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 			sortFoldersByName(parent.children);
 		}
 	});
+
+function getKeyByValue(map: Folders, searchValue: Folder): string {
+	return Object.keys(map).find(
+		(key) => searchValue.id === `${(map[key] as LinkFolder).zid}:${(map[key] as LinkFolder).rid}`
+	) as string;
+}
+
+function folderIsShared(folderId: string): boolean {
+	return folderId.includes(':');
+}
+
+function folderIsSharedWithMe(folderId: string): boolean {
+	if (!folderId) return false;
+	const folder = folders[folderId];
+	if (folder?.parent) {
+		return folderIsSharedWithMe(folder?.parent);
+	}
+	return folder?.name === 'USER_ROOT';
+}
+
 export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void =>
 	// the type defined in shell is not correct refs: SHELL-118
 	// FIXME: remove the ts-ignore when the type will be fixed
@@ -277,7 +297,11 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 	// @ts-ignore
 	modified.forEach((val: Partial<SoapFolder>): void => {
 		if (val.id) {
-			const folder = folders[val.id];
+			const sharedWithMeFolderId = getKeyByValue(folders, val as Folder);
+			const isSharedWithMe = folderIsSharedWithMe(sharedWithMeFolderId);
+			const folderId = folderIsShared(val.id) && isSharedWithMe ? sharedWithMeFolderId : val.id;
+			const folder = folders[folderId];
+
 			if (folder) {
 				Object.assign(folder, omit(val));
 				updateChildren(folder, val);
@@ -294,16 +318,16 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 						} else {
 							const newParent = folders[val.l];
 							if (newParent) {
-								oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
+								oldParent.children = oldParent.children.filter((f) => f.id !== folderId);
 								newParent.children.push(folder);
 								sortFoldersByName(newParent.children);
 								folder.parent = newParent.id;
-								folder.depth = newParent && newParent.depth !== undefined ? newParent.depth + 1 : 0;
+								folder.depth = newParent?.depth !== undefined ? newParent.depth + 1 : 0;
 							}
 						}
 					}
 				}
-				folders[val.id] = folder;
+				folders[folderId] = folder;
 			}
 		}
 	});

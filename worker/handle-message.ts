@@ -277,10 +277,6 @@ function getKeyByValue(map: Folders, searchValue: Partial<UserFolder>): string |
 	);
 }
 
-function folderIsShared(folderId: string): boolean {
-	return folderId.includes(':');
-}
-
 function folderIsSharedWithMe(folderId: string | undefined): boolean {
 	if (!folderId) return false;
 	const folder = folders[folderId];
@@ -297,40 +293,38 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 	// @ts-ignore
 
 	modified.forEach((val: Partial<SoapFolder>): void => {
-		if (val.id) {
-			const sharedWithMeFolderId = getKeyByValue(folders, val);
-			const isSharedWithMe = folderIsSharedWithMe(sharedWithMeFolderId);
-			const folderId =
-				folderIsShared(val.id) && isSharedWithMe ? (sharedWithMeFolderId as string) : val.id;
-			const folder = folders[folderId];
+		if (!val.id) return;
+		const sharedWithMeFolderId = getKeyByValue(folders, val);
+		const isSharedWithMe = folderIsSharedWithMe(sharedWithMeFolderId);
+		const folderId = isSharedWithMe && sharedWithMeFolderId ? sharedWithMeFolderId : val.id;
+		const folder = folderId ? folders[folderId] : null;
 
-			if (folder) {
-				Object.assign(folder, omit(val));
-				updateChildren(folder, val);
-				if (typeof val.f !== 'undefined') {
-					folder.checked = testFolderIsChecked({ string: val.f });
-				}
-				const oldParentId = folder.parent;
+		if (folder) {
+			Object.assign(folder, omit({ ...val, id: folderId }));
+			updateChildren(folder, val);
+			if (typeof val.f !== 'undefined') {
+				folder.checked = testFolderIsChecked({ string: val.f });
+			}
+			const oldParentId = folder.parent;
 
-				if (oldParentId) {
-					const oldParent = folders[oldParentId];
-					if (oldParent) {
-						if (!val.l) {
-							oldParent.children = oldParent.children.map((f) => (f.id !== val.id ? f : folder));
-						} else {
-							const newParent = folders[val.l];
-							if (newParent) {
-								oldParent.children = oldParent.children.filter((f) => f.id !== folderId);
-								newParent.children.push(folder);
-								sortFoldersByName(newParent.children);
-								folder.parent = newParent.id;
-								folder.depth = newParent?.depth !== undefined ? newParent.depth + 1 : 0;
-							}
+			if (oldParentId) {
+				const oldParent = folders[oldParentId];
+				if (oldParent) {
+					if (!val.l) {
+						oldParent.children = oldParent.children.map((f) => (f.id !== val.id ? f : folder));
+					} else {
+						const newParent = folders[val.l];
+						if (newParent) {
+							oldParent.children = oldParent.children.filter((f) => f.id !== folderId);
+							newParent.children.push(folder);
+							sortFoldersByName(newParent.children);
+							folder.parent = newParent.id;
+							folder.depth = newParent?.depth !== undefined ? newParent.depth + 1 : 0;
 						}
 					}
 				}
-				folders[val.id] = folder;
 			}
+			folders[folderId] = folder;
 		}
 	});
 export const handleFolderDeleted = (deleted: string[]): void =>

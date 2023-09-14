@@ -291,12 +291,14 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 	// FIXME: remove the ts-ignore when the type will be fixed
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-
 	modified.forEach((val: Partial<SoapFolder>): void => {
 		if (!val.id) return;
-		const sharedWithMeFolderId = getKeyByValue(folders, val);
-		const isSharedWithMe = folderIsSharedWithMe(sharedWithMeFolderId);
-		const folderId = isSharedWithMe && sharedWithMeFolderId ? sharedWithMeFolderId : val.id;
+		const mountPointId = getKeyByValue(folders, val);
+		const parentMountPointId = getKeyByValue(folders, { id: val.l });
+		const isSharedWithMe = folderIsSharedWithMe(mountPointId);
+		const parentIsSharedWithMe = folderIsSharedWithMe(parentMountPointId);
+		const parentFolderId = parentIsSharedWithMe && parentMountPointId ? parentMountPointId : val.l;
+		const folderId = isSharedWithMe && mountPointId ? mountPointId : val.id;
 		const folder = folderId ? folders[folderId] : null;
 
 		if (folder) {
@@ -305,6 +307,7 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 			if (typeof val.f !== 'undefined') {
 				folder.checked = testFolderIsChecked({ string: val.f });
 			}
+
 			const oldParentId = folder.parent;
 
 			if (oldParentId) {
@@ -313,7 +316,7 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 					if (!val.l) {
 						oldParent.children = oldParent.children.map((f) => (f.id !== val.id ? f : folder));
 					} else {
-						const newParent = folders[val.l];
+						const newParent = parentFolderId ? folders[parentFolderId] : null;
 						if (newParent) {
 							oldParent.children = oldParent.children.filter((f) => f.id !== folderId);
 							newParent.children.push(folder);
@@ -323,8 +326,8 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 						}
 					}
 				}
+				folders[folderId] = folder;
 			}
-			folders[folderId] = folder;
 		}
 	});
 export const handleFolderDeleted = (deleted: string[]): void =>

@@ -225,7 +225,7 @@ export const processFolder = (
 
 export const handleFolderRefresh = (
 	soapFolders: Array<SoapFolder>,
-	currentView: string
+	currentView: FolderView
 ): UserFolder | Array<UserFolder> => {
 	view = currentView;
 	if (soapFolders.length > 1) {
@@ -271,17 +271,13 @@ export const handleLinkCreated = (created: Array<SoapLink>): void =>
 		}
 	});
 
-function getKeyByValue(map: Folders, searchValue: Folder): string {
+function getKeyByValue(map: Folders, searchValue: Partial<UserFolder>): string | undefined {
 	return Object.keys(map).find(
 		(key) => searchValue.id === `${(map[key] as LinkFolder).zid}:${(map[key] as LinkFolder).rid}`
-	) as string;
+	);
 }
 
-function folderIsShared(folderId: string): boolean {
-	return folderId.includes(':');
-}
-
-function folderIsSharedWithMe(folderId: string): boolean {
+function folderIsSharedWithMe(folderId: string | undefined): boolean {
 	if (!folderId) return false;
 	const folder = folders[folderId];
 	if (folder?.parent) {
@@ -296,34 +292,37 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	modified.forEach((val: Partial<SoapFolder>): void => {
-		if (val.id) {
-			const sharedWithMeFolderId = getKeyByValue(folders, val as Folder);
-			const isSharedWithMe = folderIsSharedWithMe(sharedWithMeFolderId);
-			const folderId = folderIsShared(val.id) && isSharedWithMe ? sharedWithMeFolderId : val.id;
-			const folder = folders[folderId];
+		if (!val.id) return;
+		const mountPointId = getKeyByValue(folders, val);
+		const parentMountPointId = getKeyByValue(folders, { id: val.l });
+		const isSharedWithMe = folderIsSharedWithMe(mountPointId);
+		const parentIsSharedWithMe = folderIsSharedWithMe(parentMountPointId);
+		const parentFolderId = parentIsSharedWithMe && parentMountPointId ? parentMountPointId : val.l;
+		const folderId = isSharedWithMe && mountPointId ? mountPointId : val.id;
+		const folder = folderId ? folders[folderId] : null;
 
-			if (folder) {
-				Object.assign(folder, omit(val));
-				updateChildren(folder, val);
-				if (typeof val.f !== 'undefined') {
-					folder.checked = testFolderIsChecked({ string: val.f });
-				}
-				const oldParentId = folders[val.id].parent;
+		if (folder) {
+			Object.assign(folder, omit({ ...val, id: folderId }));
+			updateChildren(folder, val);
+			if (typeof val.f !== 'undefined') {
+				folder.checked = testFolderIsChecked({ string: val.f });
+			}
 
-				if (oldParentId) {
-					const oldParent = folders[oldParentId];
-					if (oldParent) {
-						if (!val.l) {
-							oldParent.children = oldParent.children.map((f) => (f.id !== val.id ? f : folder));
-						} else {
-							const newParent = folders[val.l];
-							if (newParent) {
-								oldParent.children = oldParent.children.filter((f) => f.id !== folderId);
-								newParent.children.push(folder);
-								sortFoldersByName(newParent.children);
-								folder.parent = newParent.id;
-								folder.depth = newParent?.depth !== undefined ? newParent.depth + 1 : 0;
-							}
+			const oldParentId = folder.parent;
+
+			if (oldParentId) {
+				const oldParent = folders[oldParentId];
+				if (oldParent) {
+					if (!val.l) {
+						oldParent.children = oldParent.children.map((f) => (f.id !== val.id ? f : folder));
+					} else {
+						const newParent = parentFolderId ? folders[parentFolderId] : null;
+						if (newParent) {
+							oldParent.children = oldParent.children.filter((f) => f.id !== folderId);
+							newParent.children.push(folder);
+							sortFoldersByName(newParent.children);
+							folder.parent = newParent.id;
+							folder.depth = newParent?.depth !== undefined ? newParent.depth + 1 : 0;
 						}
 					}
 				}

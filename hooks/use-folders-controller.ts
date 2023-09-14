@@ -3,9 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { useEffect, useState } from 'react';
+
 import { useNotify } from '@zextras/carbonio-shell-ui';
 import { filter, forEach, isEmpty, map, reject, sortBy } from 'lodash';
-import { useEffect, useState } from 'react';
+
 import { getFolderRequest } from '../soap/get-folder';
 import { getShareInfoRequest } from '../soap/get-share-info';
 import { useFolderStore } from '../store/zustand/folder';

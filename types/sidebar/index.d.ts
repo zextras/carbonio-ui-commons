@@ -5,7 +5,8 @@
  */
 
 import { ReactElement } from 'react';
-import type { Folder, Folders } from '../folder';
+
+import type { Folder } from '../folder';
 
 type RegisterActionType = {
 	id: string;
@@ -209,4 +210,5 @@ export type DataProps = {
 	urgent: false;
 	parentFolderId: string;
 	selectedIDs: Array<string>;
+	deselectAll?: () => void;
 };

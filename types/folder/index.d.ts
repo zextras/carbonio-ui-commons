@@ -3,8 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { Grant, Meta, SoapRetentionPolicy } from '@zextras/carbonio-shell-ui/types/misc';
 import { ComponentType } from 'react';
+
+import { Grant, Meta, SoapRetentionPolicy } from '@zextras/carbonio-shell-ui/types/misc';
 
 export type FolderFields = {
 	// Additional Parameters
@@ -22,7 +23,7 @@ export type SearchFolder = BaseFolder &
 	Pick<FolderFields, 'parent' | 'isLink'> &
 	SearchFolderFields;
 export type Folder = UserFolder | LinkFolder;
-
+export type RootFolder = Folder & { uuid: undefined };
 export type Folders = { [id: string]: Folder };
 export type Searches = { [id: string]: SearchFolder };
 export type LinksIdMap = { [id: string]: string };

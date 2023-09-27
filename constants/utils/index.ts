@@ -26,3 +26,10 @@ export enum TagsActionsType {
 	EDIT = 'edit',
 	Apply = 'apply'
 }
+
+export const DRAG_DATA_TYPE = {
+	MESSAGE: 'message',
+	CONVERSATION: 'conversation',
+	FOLDER: 'folder',
+	CONTACT: 'contact'
+} as const;

@@ -11,6 +11,7 @@ import React, { FC, useCallback, useRef } from 'react';
 import { theme } from '../../theme/theme-mui';
 import type { Folder } from '../../types/folder';
 import type { SidebarAccordionProps } from '../../types/sidebar';
+import { hasId } from '../../worker/handle-message';
 
 export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 	accordions,
@@ -57,7 +58,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 							}}
 							expandIcon={
 								accordion?.children?.length > 0 &&
-								accordion.id !== 'all' && (
+								!hasId(accordion, 'all') && (
 									<ExpandMoreIcon
 										color="primary"
 										onClick={(e): void => {

@@ -89,7 +89,7 @@ const omit = ({
 	...obj
 }: Partial<SoapFolder>): Partial<SoapFolder> => obj;
 
-export const hasId = (f: SoapFolder, id: string): boolean => f.id.split(':').includes(id);
+export const hasId = (f: { id: string }, id: string): boolean => f.id.split(':').includes(id);
 export const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	id: f.id,
 	uuid: f.uuid,

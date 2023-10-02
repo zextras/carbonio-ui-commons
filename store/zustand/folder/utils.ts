@@ -30,7 +30,7 @@ export const isRoot = (f: Folder): boolean =>
 export const isTrash = (f: Folder): boolean => hasId(f, FOLDERS.TRASH);
 
 export const isNestedInTrash = (item: Folder): boolean =>
-	!!item?.absFolderPath?.includes(`/${FOLDERS.TRASH}/`);
+	!!item?.absFolderPath?.includes(`/Trash/`);
 
 export const isTrashOrNestedInIt = (item: Folder): boolean =>
 	isTrash(item) || isNestedInTrash(item);

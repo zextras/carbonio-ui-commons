@@ -156,6 +156,19 @@ export const getRootByUser = (
  * Return a flat array of folder that are children of the given root
  * @param rootId
  */
+export const useFoldersArrayByRoot = (rootId: string): Array<Folder> => {
+	const root = useRoot(rootId);
+	if (!root) {
+		return [];
+	}
+
+	return Object.values(getFlatChildrenFolders(root.children));
+};
+
+/**
+ * Return a flat array of folder that are children of the given root
+ * @param rootId
+ */
 export const getFoldersArrayByRoot = (rootId: string): Array<Folder> => {
 	const root = getRoot(rootId);
 	if (!root) {

@@ -158,14 +158,13 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 				goToLogin();
 			}
 		}
-		// disable this part as it makes the tests fails
-		/* console.warn(
+		console.warn(
 			new Error(
 				`${(<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Detail}: ${
 					(<ErrorSoapResponse>res).Body.Fault.Reason?.Text
 				}`
 			)
-		); */
+		);
 	}
 	if (res.Header?.context) {
 		const responseUsedQuota =

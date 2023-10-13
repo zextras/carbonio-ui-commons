@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { FOLDERS, ROOT_NAME, SoapLink } from '@zextras/carbonio-shell-ui';
+import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
 import { sortBy } from 'lodash';
+
 import { Folders } from '../../../types/folder';
 import type { Folder, FolderView, LinkFolder, TreeNode } from '../../../types/folder';
 
-const hasId = (f: Folder | TreeNode<unknown>, id: string): boolean => f.id.split(':').includes(id);
-const getOriginalId = (f: Folder): string => {
+const hasId = (f: { id: string }, id: string): boolean => f.id.split(':').includes(id);
+const getOriginalId = (f: { id: string }): string => {
 	const parts = f.id.split(':');
 	return parts[1] ?? parts[0];
 };
@@ -27,12 +28,12 @@ export const sortFolders = (f: Folder): string => {
 export const isRoot = (f: Folder): boolean =>
 	f.id === FOLDERS.USER_ROOT || (f as LinkFolder).oname === ROOT_NAME;
 
-export const isTrash = (f: Folder): boolean => hasId(f, FOLDERS.TRASH);
+export const isTrash = (f: { id: string }): boolean => hasId(f, FOLDERS.TRASH);
 
-export const isNestedInTrash = (item: Folder): boolean =>
-	!!item?.absFolderPath?.includes(`/${FOLDERS.TRASH}/`);
+export const isNestedInTrash = (item: { absFolderPath?: string }): boolean =>
+	!!item?.absFolderPath?.includes(`/Trash/`);
 
-export const isTrashOrNestedInIt = (item: Folder): boolean =>
+export const isTrashOrNestedInIt = (item: { id: string; absFolderPath?: string }): boolean =>
 	isTrash(item) || isNestedInTrash(item);
 
 export const folderViewFilter =

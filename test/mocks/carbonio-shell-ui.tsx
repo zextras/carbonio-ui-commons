@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Tags, SoapNotify } from '@zextras/carbonio-shell-ui';
 import React, { FC, ReactNode } from 'react';
+
+import { Tags, SoapNotify } from '@zextras/carbonio-shell-ui';
+
 import { generateAccount } from './accounts/account-generator';
 import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
@@ -28,6 +30,7 @@ export const getUserSettings = jest.fn(() => mockedSettings);
 export const useAppContext = jest.fn(() => mockedAccounts);
 export const t = jest.fn((key: string) => key);
 export const replaceHistory = jest.fn();
+export const pushHistory = jest.fn();
 const getLink = {};
 const getLinkAvailable = false;
 export const useIntegratedFunction = jest.fn(() => [getLink, getLinkAvailable]);

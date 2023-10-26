@@ -8,7 +8,7 @@ import {
 	Account,
 	ErrorSoapBodyResponse,
 	ErrorSoapResponse,
-	IS_STANDALONE,
+	IS_FOCUS_MODE,
 	SoapContext,
 	SoapResponse
 } from '@zextras/carbonio-shell-ui';
@@ -152,7 +152,7 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 				(code) => code === (<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code
 			)
 		) {
-			if (IS_STANDALONE) {
+			if (IS_FOCUS_MODE) {
 				useAccountStore.setState({ authenticated: false });
 			} else {
 				goToLogin();

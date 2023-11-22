@@ -12,7 +12,7 @@ type FakeIdentity = {
 	lastName: string;
 	userName: string;
 	email: string;
-	fullName: string | undefined;
+	fullName: string;
 };
 
 type GetMockedAccountItemType = {

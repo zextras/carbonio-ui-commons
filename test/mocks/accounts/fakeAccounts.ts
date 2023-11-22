@@ -15,6 +15,12 @@ type FakeIdentity = {
 	fullName: string;
 };
 
+type GetMockedAccountItemType = {
+	identity1?: FakeIdentity & { _attrs?: Record<string, string> };
+	identity2?: FakeIdentity & { _attrs?: Record<string, string> };
+	identity3?: FakeIdentity & { _attrs?: Record<string, string> };
+};
+
 const createFakeIdentity = (): FakeIdentity => {
 	const firstName = faker?.name?.firstName?.() ?? '';
 	const lastName = faker?.name?.lastName?.() ?? '';
@@ -32,7 +38,7 @@ const createFakeIdentity = (): FakeIdentity => {
 /**
  *
  */
-const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
+const getMockedAccountItem = (context?: GetMockedAccountItemType): any => {
 	const identity1 = context?.identity1 ?? createFakeIdentity();
 	const identity2 = context?.identity2 ?? createFakeIdentity();
 	const identity3 = context?.identity3 ?? createFakeIdentity();
@@ -55,7 +61,8 @@ const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 						objectClass: 'zimbraIdentity',
 						zimbraPrefFromDisplay: identity1.fullName,
 						zimbraPrefReplyToEnabled: 'FALSE',
-						zimbraCreateTimestamp: '20211227131653.367Z'
+						zimbraCreateTimestamp: '20211227131653.367Z',
+						...(context?.identity1?._attrs ?? {})
 					}
 				},
 				{
@@ -71,7 +78,8 @@ const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 						objectClass: 'zimbraIdentity',
 						zimbraPrefFromDisplay: identity2.fullName,
 						zimbraPrefReplyToEnabled: 'FALSE',
-						zimbraCreateTimestamp: '20211227131653.367Z'
+						zimbraCreateTimestamp: '20211227131653.367Z',
+						...(context?.identity2?._attrs ?? {})
 					}
 				},
 				{
@@ -87,7 +95,8 @@ const getMockedAccountItem = (context?: Record<string, FakeIdentity>): any => {
 						objectClass: 'zimbraIdentity',
 						zimbraPrefFromDisplay: identity3.fullName,
 						zimbraPrefReplyToEnabled: 'FALSE',
-						zimbraCreateTimestamp: '20211227131653.367Z'
+						zimbraCreateTimestamp: '20211227131653.367Z',
+						...(context?.identity3?._attrs ?? {})
 					}
 				}
 			]

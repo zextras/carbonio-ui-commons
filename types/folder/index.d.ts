@@ -172,3 +172,8 @@ export type TreeNode<T> = T & {
 	children: TreeNode<T>[];
 	parent?: string;
 };
+
+export type PopulateFoldersStoreOptions = {
+	view?: FolderView;
+	noSharedAccounts?: boolean;
+};

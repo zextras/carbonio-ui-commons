@@ -68,7 +68,7 @@ const getFlatChildren = (children: Array<Folder>): Folders => {
  */
 const generateSharedAccountSystemFolders = (
 	contextIdentity: MocksContextIdentity
-): Array<Folder & { reminder: boolean; broken: boolean }> => {
+): Array<LinkFolder> => {
 	if (!contextIdentity) {
 		return [];
 	}
@@ -100,7 +100,7 @@ const generateSharedAccountSystemFolders = (
 			acl: {
 				grant: []
 			},
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -126,7 +126,7 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -152,7 +152,7 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -177,7 +177,7 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -203,7 +203,7 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1

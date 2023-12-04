@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { ReactElement, useMemo } from 'react';
+import React, { PropsWithChildren, ReactElement, useMemo } from 'react';
 
 import {
 	act,
@@ -19,12 +19,12 @@ import {
 	screen as rtlScreen,
 	within as rtlWithin
 } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
 import { ModalManager, SnackbarManager, ThemeProvider } from '@zextras/carbonio-design-system';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { MemoryRouter, MemoryRouterProps, Route, RouteProps } from 'react-router-dom';
 import { Store } from 'redux';
 
 import I18nTestFactory from './i18n/i18n-test-factory';
@@ -87,19 +87,25 @@ export function within(
 export const screen: Screen<typeof queriesExtended> = { ...rtlScreen, ...within(document.body) };
 
 interface ProvidersWrapperProps {
-	children?: React.ReactElement;
-	options?: any;
+	store?: Store;
+	initialEntries?: MemoryRouterProps['initialEntries'];
+	path?: RouteProps['path'];
 }
 
-const StoreProvider = ({ store, children }: { store: Store; children: JSX.Element }): JSX.Element =>
-	store ? <Provider store={store}>{children}</Provider> : children;
+const StoreProvider = ({
+	store,
+	children
+}: {
+	store?: Store;
+	children: React.JSX.Element;
+}): React.JSX.Element => (store ? <Provider store={store}>{children}</Provider> : children);
 
 export const ProvidersWrapper = ({
 	children,
-	options = {}
-}: ProvidersWrapperProps): JSX.Element => {
-	const { store, initialEntries = ['/'], path = '/' } = options;
-
+	store,
+	initialEntries = ['/'],
+	path = '/'
+}: PropsWithChildren<ProvidersWrapperProps>): React.JSX.Element => {
 	const i18n = useMemo(() => {
 		const i18nFactory = new I18nTestFactory();
 		return i18nFactory.getAppI18n();
@@ -127,48 +133,51 @@ export const ProvidersWrapper = ({
 	);
 };
 
+export type CustomRenderOptions = Omit<RenderOptions, 'queries' | 'wrapper'> &
+	ProvidersWrapperProps;
+
 function customRender(
 	ui: React.ReactElement,
-	options?: Omit<RenderOptions, 'queries' | 'wrapper'>
+	{ store, initialEntries, path, ...renderOptions }: CustomRenderOptions = {}
 ): RenderResult {
-	const Wrapper = ({ children }: ProvidersWrapperProps): React.JSX.Element => (
-		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
+	const Wrapper = ({ children }: PropsWithChildren<unknown>): React.JSX.Element => (
+		<ProvidersWrapper store={store} initialEntries={initialEntries} path={path}>
+			{children}
+		</ProvidersWrapper>
 	);
 	return render(ui, {
 		wrapper: Wrapper,
 		queries: { ...queries, ...customQueries },
-		...options
+		...renderOptions
 	});
 }
 
 type SetupOptions = {
-	renderOptions?: Omit<RenderOptions, 'queries'>;
+	renderOptions?: CustomRenderOptions;
 	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
-};
+} & ProvidersWrapperProps;
 
 export function setupTest(
 	ui: ReactElement,
-	options?: SetupOptions
+	{ setupOptions, ...customRenderOptions }: SetupOptions = {}
 ): { user: ReturnType<(typeof userEvent)['setup']> } & ReturnType<typeof render> {
 	return {
-		user: userEvent.setup({ advanceTimers: jest.advanceTimersByTime, ...options?.setupOptions }),
-		...customRender(ui, options?.renderOptions)
+		user: userEvent.setup({ advanceTimers: jest.advanceTimersByTime, ...setupOptions }),
+		...customRender(ui, customRenderOptions)
 	};
 }
 
-type Options = {
-	initialEntries?: Array<string>;
-	initialProps?: any;
-	path?: string;
-	store?: Store;
-};
+type SetupHookOptions<TProps extends unknown[]> = {
+	initialProps?: RenderHookOptions<TProps>['initialProps'];
+} & ProvidersWrapperProps;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function setupHook(hook: any, options: Options = {}): any {
-	const Wrapper = ({ children }: ProvidersWrapperProps): React.JSX.Element => (
-		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
+export function setupHook<TProps extends unknown[], TResult>(
+	hook: (...args: TProps) => TResult,
+	{ initialProps, ...providersProps }: SetupHookOptions<TProps> = {}
+): Pick<ReturnType<typeof renderHook<TProps, TResult>>, 'result' | 'unmount' | 'rerender'> {
+	const Wrapper = ({ children }: PropsWithChildren<unknown>): React.JSX.Element => (
+		<ProvidersWrapper {...providersProps}>{children}</ProvidersWrapper>
 	);
-	const { initialProps = [] } = options;
 	const { result, unmount, rerender } = renderHook((props) => hook(...props), {
 		wrapper: Wrapper,
 		initialProps

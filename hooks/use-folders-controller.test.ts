@@ -5,8 +5,11 @@
  */
 import { waitFor } from '@testing-library/react';
 import { rest } from 'msw';
+
+import { useFoldersController } from './use-folders-controller';
 import { useFolderStore } from '../store/zustand/folder';
 import { getSetupServer } from '../test/jest-setup';
+import * as shell from '../test/mocks/carbonio-shell-ui';
 import { handleGetFolderRequest } from '../test/mocks/network/msw/handle-get-folder';
 import {
 	getEmptyMSWShareInfoResponse,
@@ -15,8 +18,6 @@ import {
 import { setupHook } from '../test/test-setup';
 import { FolderView } from '../types/folder';
 import { folderWorker } from '../worker';
-import { useFoldersController } from './use-folders-controller';
-import * as shell from '../test/mocks/carbonio-shell-ui';
 
 const getDifferentViewCreation = (view: FolderView): unknown => {
 	if (view === 'appointment' || view === 'contact') {
@@ -25,7 +26,7 @@ const getDifferentViewCreation = (view: FolderView): unknown => {
 	return { appt: {} };
 };
 
-describe.each(['appointment', 'message', 'contact'])('with %s parameter', (view: string) => {
+describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parameter', (view) => {
 	test('on first render it will call refresh', async () => {
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));

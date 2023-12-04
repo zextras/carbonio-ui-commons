@@ -26,7 +26,7 @@ beforeEach(() => {
 });
 
 const getRandomWord = (used: Array<string>): string => {
-	const word = faker.random.word();
+	const word = faker.lorem.word();
 	const isAlreadyUsed = find(used, word);
 	return isAlreadyUsed ? getRandomWord(used) : word;
 };

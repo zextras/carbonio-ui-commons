@@ -69,7 +69,7 @@ const generateSharedAccountRoot = (
 			rev: 7036,
 			rgb: undefined,
 			rid: '1',
-			ruuid: faker.datatype.uuid(),
+			ruuid: faker.string.uuid(),
 			s: 0,
 			u: undefined,
 			url: undefined,

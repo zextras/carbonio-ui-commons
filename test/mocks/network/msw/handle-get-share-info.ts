@@ -12,9 +12,9 @@ import { getRandomView } from '../../folders/soap-roots-generator';
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export const getMSWShareInfo = (context?: any) => {
-	const firstName = faker.name.firstName();
-	const lastName = faker.name.lastName();
-	const ownerEmail = faker.internet.email(firstName, lastName);
+	const firstName = faker.person.firstName();
+	const lastName = faker.person.lastName();
+	const ownerEmail = faker.internet.email({ firstName, lastName });
 	const fakeMid = faker.number.int();
 	const fakeId = faker.number.int();
 	return {

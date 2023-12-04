@@ -17,7 +17,7 @@ import { find, map, maxBy } from 'lodash';
 import { getMocksContext } from '../utils/mocks-context';
 
 const userAgent = faker.internet.userAgent();
-const fullName = faker.name.fullName();
+const fullName = faker.person.fullName();
 const identities = getMocksContext();
 
 const useNetworkStore = {

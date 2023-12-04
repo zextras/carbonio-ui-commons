@@ -86,7 +86,7 @@ type MocksContextGenerationParams = {
  * Generate a signature
  */
 const generateSignature = (): SignItemType => {
-	const title = faker.name.jobTitle();
+	const title = faker.person.jobTitle();
 	return {
 		name: title,
 		id: faker.string.uuid(),
@@ -95,7 +95,7 @@ const generateSignature = (): SignItemType => {
 		content: [
 			{
 				type: 'text/html',
-				_content: `<div>${title}</div>\n<div><span style="color: #ff0000;"><em>${faker.name.jobType()}</em></span></div>\n<div>&nbsp;</div>`
+				_content: `<div>${title}</div>\n<div><span style="color: #ff0000;"><em>${faker.person.jobType()}</em></span></div>\n<div>&nbsp;</div>`
 			}
 		]
 	};

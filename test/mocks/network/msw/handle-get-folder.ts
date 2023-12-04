@@ -16,7 +16,7 @@ type Response = { Header: any; Body: any };
 
 const _id = faker.number.int({ min: 1, max: 99999 });
 const isSystemFolder = (): boolean => _id > 0 && _id <= 20;
-const name = faker.random.word();
+const name = faker.lorem.word();
 const _view = 'appointment';
 
 const defaultFolder = {

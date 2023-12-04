@@ -67,7 +67,7 @@ const generateSharedAccountSystemFolders = (
 		return [];
 	}
 
-	return [
+	const result = [
 		{
 			id: `${contextIdentity.identity.id}:${FOLDERS.INBOX}`,
 			uuid: faker.string.uuid(),
@@ -203,6 +203,7 @@ const generateSharedAccountSystemFolders = (
 			depth: 1
 		}
 	];
+	return result;
 };
 
 /**

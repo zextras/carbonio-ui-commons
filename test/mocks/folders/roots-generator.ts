@@ -21,63 +21,66 @@ let rootIdCounter = 100;
 const generateSharedAccountRoot = (
 	primaryContextIdentity: MocksContextIdentity,
 	sharedContextIdentity: MocksContextIdentity
-): Record<string, Folder> => ({
-	[sharedContextIdentity.identity.email]: {
-		absFolderPath: `/${sharedContextIdentity.identity.email}`,
-		acl: undefined,
-		activesyncdisabled: false,
-		broken: false,
-		checked: false,
-		children: [],
-		color: undefined,
-		deletable: true,
-		depth: 1,
-		f: '*',
-		i4ms: undefined,
-		i4n: undefined,
-		i4next: undefined,
-		i4u: undefined,
-		id: `${(rootIdCounter = +1)}`,
-		isLink: true,
-		l: '1',
-		luuid: primaryContextIdentity.userRootId,
-		md: undefined,
-		meta: undefined,
-		ms: 7037,
-		n: 0,
-		name: sharedContextIdentity.identity.email,
-		oname: 'USER_ROOT',
-		owner: sharedContextIdentity.identity.email,
-		// parent
-		// 	:
-		// {
-		// 	id: '1', uuid
-		// :
-		// 	primaryContextIdentityidentity.id , name
-		// :
-		// 	'USER_ROOT', absFolderPath
-		// :
-		// 	'/', l
-		// :
-		// 	'11'
-		// }
-		perm: 'rwidxc',
-		recursive: false,
-		reminder: false,
-		retentionPolicy: undefined,
-		rev: 7036,
-		rgb: undefined,
-		rid: '1',
-		ruuid: faker.datatype.uuid(),
-		s: 0,
-		u: undefined,
-		url: undefined,
-		uuid: sharedContextIdentity.userRootId ?? '',
-		view: undefined,
-		webOfflineSyncDays: 0,
-		zid: sharedContextIdentity.identity.id
-	}
-});
+): Record<string, Folder> => {
+	const result = {
+		[sharedContextIdentity.identity.email]: {
+			absFolderPath: `/${sharedContextIdentity.identity.email}`,
+			acl: undefined,
+			activesyncdisabled: false,
+			broken: false,
+			checked: false,
+			children: [],
+			color: undefined,
+			deletable: true,
+			depth: 1,
+			f: '*',
+			i4ms: undefined,
+			i4n: undefined,
+			i4next: undefined,
+			i4u: undefined,
+			id: `${(rootIdCounter = +1)}`,
+			isLink: true,
+			l: '1',
+			luuid: primaryContextIdentity.userRootId,
+			md: undefined,
+			meta: undefined,
+			ms: 7037,
+			n: 0,
+			name: sharedContextIdentity.identity.email,
+			oname: 'USER_ROOT',
+			owner: sharedContextIdentity.identity.email,
+			// parent
+			// 	:
+			// {
+			// 	id: '1', uuid
+			// :
+			// 	primaryContextIdentityidentity.id , name
+			// :
+			// 	'USER_ROOT', absFolderPath
+			// :
+			// 	'/', l
+			// :
+			// 	'11'
+			// }
+			perm: 'rwidxc',
+			recursive: false,
+			reminder: false,
+			retentionPolicy: undefined,
+			rev: 7036,
+			rgb: undefined,
+			rid: '1',
+			ruuid: faker.datatype.uuid(),
+			s: 0,
+			u: undefined,
+			url: undefined,
+			uuid: sharedContextIdentity.userRootId ?? '',
+			view: undefined,
+			webOfflineSyncDays: 0,
+			zid: sharedContextIdentity.identity.id
+		}
+	};
+	return result;
+};
 
 /**
  *

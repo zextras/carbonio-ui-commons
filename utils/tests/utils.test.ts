@@ -5,9 +5,10 @@
  */
 
 import { faker } from '@faker-js/faker';
-import { allowedActionOnSharedAccount, isValidFolderName } from '../utils';
+
 import { FOLDERS } from '../../test/mocks/carbonio-shell-ui-constants';
 import { Folder } from '../../types/folder';
+import { allowedActionOnSharedAccount, isValidFolderName } from '../utils';
 
 const generateWordsWithLength = (length: number): string => {
 	const alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890';
@@ -46,11 +47,11 @@ describe(`Shared account's folder has access for actions`, () => {
 	test(`should return true for 'NEW' action with "rwidx"(Manager) permission`, () => {
 		const folder: Folder = {
 			id: '106',
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Confluence',
 			absFolderPath: '/Inbox/Confluence',
 			l: FOLDERS.INBOX,
-			luuid: faker.datatype.uuid(),
+			luuid: faker.string.uuid(),
 			checked: false,
 			f: 'u',
 			u: 25,
@@ -79,11 +80,11 @@ describe(`Shared account's folder has access for actions`, () => {
 	test(`should return true for 'NEW' action without permission`, () => {
 		const folder: Folder = {
 			id: '106',
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Confluence',
 			absFolderPath: '/Inbox/Confluence',
 			l: FOLDERS.INBOX,
-			luuid: faker.datatype.uuid(),
+			luuid: faker.string.uuid(),
 			checked: false,
 			f: 'u',
 			u: 25,
@@ -111,11 +112,11 @@ describe(`Shared account's folder has access for actions`, () => {
 	test(`should return false for 'NEW' action with "r" permission`, () => {
 		const folder: Folder = {
 			id: '106',
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Confluence',
 			absFolderPath: '/Inbox/Confluence',
 			l: FOLDERS.INBOX,
-			luuid: faker.datatype.uuid(),
+			luuid: faker.string.uuid(),
 			checked: false,
 			f: 'u',
 			u: 25,
@@ -144,11 +145,11 @@ describe(`Shared account's folder has access for actions`, () => {
 	test(`should return true for 'NEW' action with "rwidxa"(Admin) permission`, () => {
 		const folder: Folder = {
 			id: '106',
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Confluence',
 			absFolderPath: '/Inbox/Confluence',
 			l: FOLDERS.INBOX,
-			luuid: faker.datatype.uuid(),
+			luuid: faker.string.uuid(),
 			checked: false,
 			f: 'u',
 			u: 25,
@@ -177,11 +178,11 @@ describe(`Shared account's folder has access for actions`, () => {
 	test(`should return true for 'SHARE' action with "rwidxa"(Admin) permission`, () => {
 		const folder: Folder = {
 			id: '106',
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Confluence',
 			absFolderPath: '/Inbox/Confluence',
 			l: FOLDERS.INBOX,
-			luuid: faker.datatype.uuid(),
+			luuid: faker.string.uuid(),
 			checked: false,
 			f: 'u',
 			u: 25,
@@ -210,11 +211,11 @@ describe(`Shared account's folder has access for actions`, () => {
 	test(`should return true for 'SHARE' action without permission`, () => {
 		const folder: Folder = {
 			id: '106',
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Confluence',
 			absFolderPath: '/Inbox/Confluence',
 			l: FOLDERS.INBOX,
-			luuid: faker.datatype.uuid(),
+			luuid: faker.string.uuid(),
 			checked: false,
 			f: 'u',
 			u: 25,
@@ -242,11 +243,11 @@ describe(`Shared account's folder has access for actions`, () => {
 	test(`should return false for 'SHARE' action with "r" permission`, () => {
 		const folder: Folder = {
 			id: '106',
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Confluence',
 			absFolderPath: '/Inbox/Confluence',
 			l: FOLDERS.INBOX,
-			luuid: faker.datatype.uuid(),
+			luuid: faker.string.uuid(),
 			checked: false,
 			f: 'u',
 			u: 25,
@@ -274,11 +275,11 @@ describe(`Shared account's folder has access for actions`, () => {
 	test('should return false for NEW action with "rwidx"(Manager) permission', () => {
 		const folder: Folder = {
 			id: '106',
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Confluence',
 			absFolderPath: '/Inbox/Confluence',
 			l: FOLDERS.INBOX,
-			luuid: faker.datatype.uuid(),
+			luuid: faker.string.uuid(),
 			checked: false,
 			f: 'u',
 			u: 25,

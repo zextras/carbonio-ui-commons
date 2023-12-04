@@ -6,6 +6,7 @@
 
 import { faker } from '@faker-js/faker';
 import { cloneDeep, floor, merge, times } from 'lodash';
+
 import { createFakeIdentity, FakeIdentity } from '../accounts/fakeAccounts';
 
 /**
@@ -88,7 +89,7 @@ const generateSignature = (): SignItemType => {
 	const title = faker.name.jobTitle();
 	return {
 		name: title,
-		id: faker.datatype.uuid(),
+		id: faker.string.uuid(),
 		label: title,
 		description: title,
 		content: [
@@ -119,7 +120,7 @@ const generateDefaultContext = ({
 		identities: {
 			primary: {
 				identity: primary,
-				userRootId: faker.datatype.uuid(),
+				userRootId: faker.string.uuid(),
 				...(generateSignatures && {
 					signatures: {
 						newEmailSignature: generateSignature(),
@@ -138,7 +139,7 @@ const generateDefaultContext = ({
 			})),
 			sendAs: times(sendAsIdentitiesCount, () => ({
 				identity: createFakeIdentity(),
-				userRootId: faker.datatype.uuid(),
+				userRootId: faker.string.uuid(),
 				...(generateSignatures && {
 					signatures: {
 						newEmailSignature: generateSignature(),
@@ -148,7 +149,7 @@ const generateDefaultContext = ({
 			})),
 			sendOnBehalf: times(sendOnBehalfIdentitiesCount, () => ({
 				identity: createFakeIdentity(),
-				userRootId: faker.datatype.uuid(),
+				userRootId: faker.string.uuid(),
 				...(generateSignatures && {
 					signatures: {
 						newEmailSignature: generateSignature(),

@@ -5,6 +5,7 @@
  */
 import { faker } from '@faker-js/faker';
 import { filter } from 'lodash';
+
 import { BaseFolder, FolderView } from '../../../../types/folder';
 import { generateSoapRoot } from '../../folders/soap-roots-generator';
 import { getRandomFolderFlags } from '../../utils/folder';
@@ -13,14 +14,14 @@ import { getMocksContext } from '../../utils/mocks-context';
 // todo: create getFolder return type
 type Response = { Header: any; Body: any };
 
-const _id = faker.datatype.number({ min: 1, max: 99999 });
+const _id = faker.number.int({ min: 1, max: 99999 });
 const isSystemFolder = (): boolean => _id > 0 && _id <= 20;
 const name = faker.random.word();
 const _view = 'appointment';
 
 const defaultFolder = {
 	id: `${_id}`,
-	uuid: faker.datatype.uuid(),
+	uuid: faker.string.uuid(),
 	deletable: !isSystemFolder,
 	name,
 	isLink: false,
@@ -29,17 +30,17 @@ const defaultFolder = {
 	recursive: false,
 	absFolderPath: `/${name}`,
 	l: '1',
-	luuid: faker.datatype.uuid(),
+	luuid: faker.string.uuid(),
 	f: getRandomFolderFlags(_view),
 	view: _view,
-	rev: faker.datatype.number({ min: 1, max: 99999 }),
-	ms: faker.datatype.number({ min: 1, max: 99999 }),
+	rev: faker.number.int({ min: 1, max: 99999 }),
+	ms: faker.number.int({ min: 1, max: 99999 }),
 	webOfflineSyncDays: 0,
 	activesyncdisabled: false,
 	n: 1,
 	s: 0,
-	i4ms: faker.datatype.number({ min: 1, max: 99999 }),
-	i4next: faker.datatype.number({ min: 1, max: 99999 })
+	i4ms: faker.number.int({ min: 1, max: 99999 }),
+	i4next: faker.number.int({ min: 1, max: 99999 })
 } as BaseFolder;
 
 const defaultFolders = [defaultFolder];
@@ -155,8 +156,8 @@ const getFolderResponse = (
 	Header: {
 		context: {
 			session: {
-				id: faker.datatype.number({ min: 1, max: 999999 }),
-				_content: faker.datatype.number({ min: 1, max: 999999 })
+				id: faker.number.int({ min: 1, max: 999999 }),
+				_content: faker.number.int({ min: 1, max: 999999 })
 			}
 		}
 	},

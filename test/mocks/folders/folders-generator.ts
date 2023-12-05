@@ -6,7 +6,14 @@
 
 import { faker } from '@faker-js/faker';
 import { Grant } from '@zextras/carbonio-shell-ui';
-import type { Folder, FolderView, Folders, LinkFolder } from '../../../types/folder';
+
+import type {
+	Folder,
+	FolderView,
+	Folders,
+	LinkFolder,
+	PopulateFoldersStoreOptions
+} from '../../../types/folder';
 import { FakeIdentity } from '../accounts/fakeAccounts';
 import { FOLDERS } from '../carbonio-shell-ui-constants';
 import {
@@ -61,12 +68,12 @@ const getFlatChildren = (children: Array<Folder>): Folders => {
  */
 const generateSharedAccountSystemFolders = (
 	contextIdentity: MocksContextIdentity
-): Array<Folder> => {
+): Array<LinkFolder> => {
 	if (!contextIdentity) {
 		return [];
 	}
 
-	const result = [
+	return [
 		{
 			id: `${contextIdentity.identity.id}:${FOLDERS.INBOX}`,
 			uuid: faker.datatype.uuid(),
@@ -93,7 +100,7 @@ const generateSharedAccountSystemFolders = (
 			acl: {
 				grant: []
 			},
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -119,7 +126,7 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -145,7 +152,7 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -170,7 +177,7 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -196,14 +203,12 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
 		}
 	];
-
-	return result;
 };
 
 /**
@@ -263,7 +268,7 @@ const generateSharedAccountRoot = (
 	sharedContextIdentity: MocksContextIdentity
 ): Record<string, Folder> => {
 	const id = `${sharedContextIdentity.identity.id}:${FOLDERS.USER_ROOT}`;
-	const result = {
+	return {
 		[id]: {
 			// absFolderPath: `/${sharedContextIdentity.identity.email}`,
 			// acl: undefined,
@@ -308,8 +313,6 @@ const generateSharedAccountRoot = (
 			zid: sharedContextIdentity.identity.id
 		}
 	};
-
-	return result;
 };
 
 /**
@@ -337,7 +340,10 @@ const generateSharedAccountsRoot = (
  * Generate a semi-fixed folders structure mock
  * TODO make it more flexible
  */
-export const generateFolders = (view?: FolderView): Folders => {
+export const generateFolders = ({
+	view,
+	noSharedAccounts
+}: PopulateFoldersStoreOptions = {}): Folders => {
 	const mockContext = getMocksContext();
 	const rootUuid = mockContext.identities.primary.userRootId;
 	const inboxUuid = faker.datatype.uuid();
@@ -944,11 +950,13 @@ export const generateFolders = (view?: FolderView): Folders => {
 			parent: undefined,
 			depth: 0
 		},
-		...generateSharedAccountsRoot(mockContext.identities.primary, mockContext.identities.sendAs),
-		...generateSharedAccountsRoot(
-			mockContext.identities.primary,
-			mockContext.identities.sendOnBehalf
-		)
+		...(!noSharedAccounts &&
+			generateSharedAccountsRoot(mockContext.identities.primary, mockContext.identities.sendAs)),
+		...(!noSharedAccounts &&
+			generateSharedAccountsRoot(
+				mockContext.identities.primary,
+				mockContext.identities.sendOnBehalf
+			))
 	} as Folders;
 
 	// Add any child folder to the first level

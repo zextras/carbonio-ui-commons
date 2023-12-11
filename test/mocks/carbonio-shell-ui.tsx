@@ -49,7 +49,6 @@ export const getIntegratedFunction = jest.fn(() => [
 	filesSelectDestinationFunctionAvailable
 ]);
 export const useBoard = jest.fn();
-export const getBridgedFunctions = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
 export const minimizeBoards = jest.fn();

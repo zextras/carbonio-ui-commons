@@ -5,7 +5,7 @@
  */
 import { ComponentType } from 'react';
 
-import { Grant, Meta, SoapRetentionPolicy } from '@zextras/carbonio-shell-ui/types/misc';
+import { Meta, SoapRetentionPolicy } from '@zextras/carbonio-shell-ui/types/misc';
 
 export type FolderFields = {
 	// Additional Parameters
@@ -47,6 +47,34 @@ export type FolderView =
 	| 'wiki'
 	| 'task'
 	| 'chat';
+
+// Grants
+type Grant = {
+	// Rights - Some combination of (r)ead, (w)rite, (i)nsert, (d)elete, (a)dminister, workflow action (x), view (p)rivate, view (f)reebusy, (c)reate subfolder
+	perm: string;
+	/* The type of Grantee:
+	"usr",
+	"grp",
+	"dom" (domain),
+	"cos",
+	"all" (all authenticated users),
+	"pub" (public authenticated and unauthenticated access),
+	"guest" (non-Zimbra email address and password),
+	"key" (non-Zimbra email address and access key)
+	*/
+	gt: 'usr' | 'grp' | 'dom' | 'cos' | 'all' | 'guest' | 'key' | 'pub';
+	// Grantee ID
+	zid?: string;
+	// Time when this grant expires. For internal/guest grant: If this attribute is not specified, the expiry of the grant is derived from internalGrantExpiry/guestGrantExpiry of the ACL it is part of. If this attribute is specified (overridden), the expiry value can not be greater than the corresponding expiry value in the ACL. For public grant: If this attribute is not specified, defaults to the maximum allowed expiry for a public grant. If not specified in the response, defaults to 0. Value of 0 indicates that this grant never expires.
+	expiry?: string;
+	// Name or email address of the principal being granted rights. optional if {grantee-type} is "all"/"guest"/"pub". When specified in a request, this can be just the username portion of the address in the default domain.
+	d?: string;
+	// Optional argument. password when {grantee-type} is "guest"
+	pw?: string;
+	// Optional argument. Access key when {grantee-type} is "key"
+	key?: string;
+};
+
 export type BaseFolder = {
 	// Folder ID
 	id: string;

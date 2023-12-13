@@ -5,7 +5,6 @@
  */
 
 import { faker } from '@faker-js/faker';
-import { Grant } from '@zextras/carbonio-shell-ui';
 
 import type {
 	Folder,
@@ -409,7 +408,7 @@ export const generateFolders = ({
 						grant: [
 							{
 								zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
-								gt: 'usr' as Grant['gt'],
+								gt: 'usr',
 								perm: 'r'
 							}
 						]
@@ -468,12 +467,12 @@ export const generateFolders = ({
 						grant: [
 							{
 								zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
-								gt: 'usr' as Grant['gt'],
+								gt: 'usr',
 								perm: 'r'
 							},
 							{
 								zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
-								gt: 'usr' as Grant['gt'],
+								gt: 'usr',
 								perm: 'r'
 							}
 						]
@@ -703,12 +702,12 @@ export const generateFolders = ({
 								grant: [
 									{
 										zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
-										gt: 'usr' as Grant['gt'],
+										gt: 'usr',
 										perm: 'r'
 									},
 									{
 										zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
-										gt: 'usr' as Grant['gt'],
+										gt: 'usr',
 										perm: 'r'
 									}
 								]

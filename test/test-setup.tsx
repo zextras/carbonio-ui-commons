@@ -178,7 +178,7 @@ export function setupHook<TProps extends unknown[], TResult>(
 	const Wrapper = ({ children }: PropsWithChildren<unknown>): React.JSX.Element => (
 		<ProvidersWrapper {...providersProps}>{children}</ProvidersWrapper>
 	);
-	const { result, unmount, rerender } = renderHook((props) => hook(...props), {
+	const { result, unmount, rerender } = renderHook((props) => hook(...(props ?? [])), {
 		wrapper: Wrapper,
 		initialProps
 	});

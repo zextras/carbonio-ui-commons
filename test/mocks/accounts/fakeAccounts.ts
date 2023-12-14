@@ -26,7 +26,7 @@ const createFakeIdentity = (): FakeIdentity => {
 	const lastName = faker?.name?.lastName?.() ?? '';
 
 	return {
-		id: faker.datatype.uuid(),
+		id: faker.string.uuid(),
 		firstName,
 		lastName,
 		fullName: `${firstName} ${lastName}`,

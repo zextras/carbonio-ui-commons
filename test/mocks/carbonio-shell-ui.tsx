@@ -6,8 +6,7 @@
 
 import React, { FC, ReactNode } from 'react';
 
-import { Tags, SoapNotify, BoardHooksContext } from '@zextras/carbonio-shell-ui';
-import { noop } from 'lodash';
+import { Tags, SoapNotify } from '@zextras/carbonio-shell-ui';
 
 import { generateAccount } from './accounts/account-generator';
 import { getSoapFetch } from './network/fetch';
@@ -52,13 +51,7 @@ export const getIntegratedFunction = jest.fn(() => [
 export const useBoard = jest.fn();
 export const getBridgedFunctions = jest.fn();
 export const addBoard = jest.fn();
-export const useBoardHooks = (): BoardHooksContext => ({
-	closeBoard: noop,
-	updateBoard: noop,
-	setCurrentBoard: noop,
-	getBoard: jest.fn(),
-	getBoardContext: jest.fn()
-});
+export const useBoardHooks = jest.fn();
 export const minimizeBoards = jest.fn();
 export const getCurrentRoute = jest.fn();
 export const useTags = jest.fn(() => mockedTags);

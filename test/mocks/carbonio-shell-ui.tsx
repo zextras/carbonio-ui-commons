@@ -72,3 +72,4 @@ export const soapFetch = getSoapFetch('test-environment');
 export const useNotify = jest.fn(() => [] as SoapNotify[]);
 export const useLocalStorage = jest.fn();
 export const AppLink: FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;
+export const editSettings = jest.fn(() => Promise.resolve({ data: {} }));

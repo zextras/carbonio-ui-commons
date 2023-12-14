@@ -8,7 +8,10 @@ import { rest } from 'msw';
 
 import { getSetupServer } from '../../../jest-setup';
 
-export const createAPIInterceptor = <T>(apiAction: string): Promise<T> =>
+export const createAPIInterceptor = <T>(
+	apiAction: string,
+	extraParamProperty?: string
+): Promise<T> =>
 	new Promise<T>((resolve, reject) => {
 		// Register a handler for the REST call
 		getSetupServer().use(
@@ -18,7 +21,10 @@ export const createAPIInterceptor = <T>(apiAction: string): Promise<T> =>
 				}
 
 				const reqActionParamWrapper = `${apiAction}Request`;
-				const params = (await req.json()).Body?.[reqActionParamWrapper];
+				const response = await req.json();
+				const params = extraParamProperty
+					? response.Body?.[reqActionParamWrapper][extraParamProperty]
+					: response.Body?.[reqActionParamWrapper];
 				resolve(params);
 
 				// Don't care about the actual response

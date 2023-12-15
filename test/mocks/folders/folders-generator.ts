@@ -221,12 +221,12 @@ export const generateFolderLink = (
 	parentUuid: string,
 	ownerIdentity: FakeIdentity
 ): LinkFolder => {
-	const name = `${faker.datatype.string(16)} of ${ownerIdentity.fullName}`;
+	const name = `${faker.string.sample(16)} of ${ownerIdentity.fullName}`;
 
 	const result: LinkFolder = {
 		id: getNextFolderId(),
 		uuid: faker.string.uuid(),
-		name: faker.datatype.string(16),
+		name: faker.string.sample(16),
 		absFolderPath: `/${name}`,
 		l: parentId,
 		luuid: parentUuid,

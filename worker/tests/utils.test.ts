@@ -25,7 +25,7 @@ describe('folder worker', () => {
 			const link: SoapLink = {
 				id: `${faker.number.int()}`,
 				uuid: faker.string.uuid(),
-				name: faker.datatype.string(16),
+				name: faker.string.sample(16),
 				activesyncdisabled: true,
 				deletable: true,
 				recursive: true,
@@ -40,7 +40,7 @@ describe('folder worker', () => {
 			const link: SoapLink = {
 				id: `${faker.number.int()}`,
 				uuid: faker.string.uuid(),
-				name: faker.datatype.string(16),
+				name: faker.string.sample(16),
 				activesyncdisabled: true,
 				deletable: true,
 				recursive: true,
@@ -55,7 +55,7 @@ describe('folder worker', () => {
 			const link: SoapLink = {
 				id: `${faker.number.int()}`,
 				uuid: faker.string.uuid(),
-				name: faker.datatype.string(16),
+				name: faker.string.sample(16),
 				activesyncdisabled: true,
 				deletable: true,
 				recursive: true,

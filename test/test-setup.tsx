@@ -27,7 +27,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, MemoryRouterProps, Route, RouteProps } from 'react-router-dom';
 import { Store } from 'redux';
 
-import I18nTestFactory from './i18n/i18n-test-factory';
+import { getAppI18n } from './i18n/i18n-test-factory';
 import { previewContextMock, PreviewsManagerContext } from './mocks/carbonio-ui-preview';
 
 type ByRoleWithIconOptions = ByRoleOptions & {
@@ -106,10 +106,7 @@ export const ProvidersWrapper = ({
 	initialEntries = ['/'],
 	path = '/'
 }: PropsWithChildren<ProvidersWrapperProps>): React.JSX.Element => {
-	const i18n = useMemo(() => {
-		const i18nFactory = new I18nTestFactory();
-		return i18nFactory.getAppI18n();
-	}, []);
+	const i18n = useMemo(() => getAppI18n(), []);
 
 	return (
 		<ThemeProvider>
@@ -169,12 +166,15 @@ export function setupTest(
 
 type SetupHookOptions<TProps extends unknown[]> = {
 	initialProps?: RenderHookOptions<TProps>['initialProps'];
+	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
 } & ProvidersWrapperProps;
 
 export function setupHook<TProps extends unknown[], TResult>(
 	hook: (...args: TProps) => TResult,
-	{ initialProps, ...providersProps }: SetupHookOptions<TProps> = {}
-): Pick<ReturnType<typeof renderHook<TProps, TResult>>, 'result' | 'unmount' | 'rerender'> {
+	{ initialProps, setupOptions, ...providersProps }: SetupHookOptions<TProps> = {}
+): Pick<ReturnType<typeof renderHook<TProps, TResult>>, 'result' | 'unmount' | 'rerender'> & {
+	user: ReturnType<(typeof userEvent)['setup']>;
+} {
 	const Wrapper = ({ children }: PropsWithChildren<unknown>): React.JSX.Element => (
 		<ProvidersWrapper {...providersProps}>{children}</ProvidersWrapper>
 	);
@@ -183,7 +183,12 @@ export function setupHook<TProps extends unknown[], TResult>(
 		initialProps
 	});
 
-	return { result, unmount, rerender };
+	return {
+		result,
+		unmount,
+		rerender,
+		user: userEvent.setup({ advanceTimers: jest.advanceTimersByTime, ...setupOptions })
+	};
 }
 
 export function makeListItemsVisible(): void {

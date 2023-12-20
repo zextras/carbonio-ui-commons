@@ -4,9 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useCallback } from 'react';
 
-import { Tags, SoapNotify } from '@zextras/carbonio-shell-ui';
+import { Tags, SoapNotify, HistoryParams } from '@zextras/carbonio-shell-ui';
+import { trimStart } from 'lodash';
+import { useHistory } from 'react-router-dom';
 
 import { generateAccount } from './accounts/account-generator';
 import { getSoapFetch } from './network/fetch';
@@ -64,3 +66,43 @@ export const soapFetch = getSoapFetch('test-environment');
 export const useNotify = jest.fn(() => [] as SoapNotify[]);
 export const useLocalStorage = jest.fn();
 export const AppLink: FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;
+
+function parsePath(path: string): string {
+	return `/${trimStart(path, '/')}`;
+}
+function usePushHistoryMock(): (params: HistoryParams) => void {
+	const history = useHistory();
+
+	return useCallback(
+		(location: string | HistoryParams) => {
+			if (typeof location === 'string') {
+				history.push(parsePath(location));
+			} else if (typeof location.path === 'string') {
+				history.push(parsePath(location.path));
+			} else {
+				history.push(location.path);
+			}
+		},
+		[history]
+	);
+}
+
+function useReplaceHistoryMock(): (params: HistoryParams) => void {
+	const history = useHistory();
+
+	return useCallback(
+		(location: string | HistoryParams) => {
+			if (typeof location === 'string') {
+				history.replace(parsePath(location));
+			} else if (typeof location.path === 'string') {
+				history.replace(parsePath(location.path));
+			} else {
+				history.replace(location.path);
+			}
+		},
+		[history]
+	);
+}
+
+export const usePushHistoryCallback = usePushHistoryMock;
+export const useReplaceHistoryCallback = useReplaceHistoryMock;

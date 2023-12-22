@@ -5,6 +5,7 @@
  */
 import { faker } from '@faker-js/faker';
 import { SoapLink } from '@zextras/carbonio-shell-ui';
+
 import { getLinkIdMapKey } from '../utils';
 
 describe('folder worker', () => {
@@ -22,39 +23,39 @@ describe('folder worker', () => {
 
 		test('returns null if the link zid is undefined', () => {
 			const link: SoapLink = {
-				id: `${faker.datatype.number()}`,
-				uuid: faker.datatype.uuid(),
-				name: faker.datatype.string(16),
+				id: `${faker.number.int()}`,
+				uuid: faker.string.uuid(),
+				name: faker.string.sample(16),
 				activesyncdisabled: true,
 				deletable: true,
 				recursive: true,
 				reminder: false,
 				broken: false,
-				rid: `${faker.datatype.number()}`
+				rid: `${faker.number.int()}`
 			};
 			expect(getLinkIdMapKey(link)).toBeNull();
 		});
 
 		test('returns null if the link rid is undefined', () => {
 			const link: SoapLink = {
-				id: `${faker.datatype.number()}`,
-				uuid: faker.datatype.uuid(),
-				name: faker.datatype.string(16),
+				id: `${faker.number.int()}`,
+				uuid: faker.string.uuid(),
+				name: faker.string.sample(16),
 				activesyncdisabled: true,
 				deletable: true,
 				recursive: true,
 				reminder: false,
 				broken: false,
-				zid: `${faker.datatype.uuid()}`
+				zid: `${faker.string.uuid()}`
 			};
 			expect(getLinkIdMapKey(link)).toBeNull();
 		});
 
 		test('returns ABC:DEF if the link zid is ABC and the rid is DEF', () => {
 			const link: SoapLink = {
-				id: `${faker.datatype.number()}`,
-				uuid: faker.datatype.uuid(),
-				name: faker.datatype.string(16),
+				id: `${faker.number.int()}`,
+				uuid: faker.string.uuid(),
+				name: faker.string.sample(16),
 				activesyncdisabled: true,
 				deletable: true,
 				recursive: true,

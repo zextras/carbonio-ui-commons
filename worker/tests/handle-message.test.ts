@@ -26,7 +26,7 @@ beforeEach(() => {
 });
 
 const getRandomWord = (used: Array<string>): string => {
-	const word = faker.random.word();
+	const word = faker.lorem.word();
 	const isAlreadyUsed = find(used, word);
 	return isAlreadyUsed ? getRandomWord(used) : word;
 };
@@ -89,7 +89,7 @@ const getNormalizedCreatedFolder = (folder: BaseFolder, parent: string): UserFol
 describe('folders web worker', () => {
 	describe('refresh', () => {
 		test('on refresh view is set to currentView', () => {
-			const tree = generateSoapRoot(true, true, faker.datatype.uuid());
+			const tree = generateSoapRoot(true, true, faker.string.uuid());
 			const data = {
 				op: 'refresh',
 				currentView: 'appointment',
@@ -108,7 +108,7 @@ describe('folders web worker', () => {
 		});
 		test('postMessage is called with normalized folders', () => {
 			const workerSpy = jest.spyOn(window, 'postMessage');
-			const tree = generateSoapRoot(true, true, faker.datatype.uuid());
+			const tree = generateSoapRoot(true, true, faker.string.uuid());
 			const data = {
 				op: 'refresh',
 				currentView: 'appointment',
@@ -893,14 +893,14 @@ describe('folders web worker', () => {
 				const primaryAccount = getNormalizedPrimaryAccount();
 				const firstGrantMail = faker.internet.email();
 				const firstGrant = {
-					zid: faker.datatype.uuid(),
+					zid: faker.string.uuid(),
 					gt: 'usr',
 					perm: 'r',
 					d: firstGrantMail
 				};
 				const secondGrantMail = faker.internet.email();
 				const secondGrant = {
-					zid: faker.datatype.uuid(),
+					zid: faker.string.uuid(),
 					gt: 'usr',
 					perm: 'r',
 					d: secondGrantMail
@@ -971,7 +971,7 @@ describe('folders web worker', () => {
 				const primaryAccount = getNormalizedPrimaryAccount();
 				const grantMail = faker.internet.email();
 				const grant = {
-					zid: faker.datatype.uuid(),
+					zid: faker.string.uuid(),
 					gt: 'usr',
 					perm: 'r',
 					d: grantMail

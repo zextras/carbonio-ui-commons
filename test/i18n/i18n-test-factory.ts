@@ -14,6 +14,7 @@ export default class I18nTestFactory {
 			// init i18next
 			// for all options read: https://www.i18next.com/overview/configuration-options
 			.init({
+				compatibilityJSON: 'v3',
 				lng: 'en',
 				fallbackLng: 'en',
 				debug: false,

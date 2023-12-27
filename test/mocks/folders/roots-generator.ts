@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
+
 import { Folder } from '../../../types/folder';
 import { getMocksContext, MocksContextIdentity } from '../utils/mocks-context';
 
@@ -68,7 +69,7 @@ const generateSharedAccountRoot = (
 			rev: 7036,
 			rgb: undefined,
 			rid: '1',
-			ruuid: faker.datatype.uuid(),
+			ruuid: faker.string.uuid(),
 			s: 0,
 			u: undefined,
 			url: undefined,
@@ -78,7 +79,6 @@ const generateSharedAccountRoot = (
 			zid: sharedContextIdentity.identity.id
 		}
 	};
-
 	return result;
 };
 
@@ -109,7 +109,7 @@ const generateSharedAccountsRoot = (
 export const generateRoots = (): Record<string, Folder> => {
 	const { identities } = getMocksContext();
 
-	const result = {
+	return {
 		USER: {
 			id: '1',
 			uuid: identities.primary.userRootId,
@@ -135,6 +135,4 @@ export const generateRoots = (): Record<string, Folder> => {
 		...generateSharedAccountsRoot(identities.primary, identities.sendAs),
 		...generateSharedAccountsRoot(identities.primary, identities.sendOnBehalf)
 	} as Record<string, Folder>;
-
-	return result;
 };

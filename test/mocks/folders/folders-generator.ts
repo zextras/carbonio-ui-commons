@@ -5,8 +5,14 @@
  */
 
 import { faker } from '@faker-js/faker';
-import { Grant } from '@zextras/carbonio-shell-ui';
-import type { Folder, FolderView, Folders, LinkFolder } from '../../../types/folder';
+
+import type {
+	Folder,
+	FolderView,
+	Folders,
+	LinkFolder,
+	PopulateFoldersStoreOptions
+} from '../../../types/folder';
 import { FakeIdentity } from '../accounts/fakeAccounts';
 import { FOLDERS } from '../carbonio-shell-ui-constants';
 import {
@@ -61,15 +67,15 @@ const getFlatChildren = (children: Array<Folder>): Folders => {
  */
 const generateSharedAccountSystemFolders = (
 	contextIdentity: MocksContextIdentity
-): Array<Folder> => {
+): Array<LinkFolder> => {
 	if (!contextIdentity) {
 		return [];
 	}
 
-	const result = [
+	return [
 		{
 			id: `${contextIdentity.identity.id}:${FOLDERS.INBOX}`,
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Inbox',
 			absFolderPath: '/Inbox',
 			l: `${contextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
@@ -93,14 +99,14 @@ const generateSharedAccountSystemFolders = (
 			acl: {
 				grant: []
 			},
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
 		},
 		{
 			id: `${contextIdentity.identity.id}:${FOLDERS.SPAM}`,
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Junk',
 			absFolderPath: '/Junk',
 			l: `${contextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
@@ -119,14 +125,14 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
 		},
 		{
 			id: `${contextIdentity.identity.id}:${FOLDERS.SENT}`,
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Sent',
 			absFolderPath: '/Sent',
 			l: `${contextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
@@ -145,14 +151,14 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
 		},
 		{
 			id: `${contextIdentity.identity.id}:${FOLDERS.TRASH}`,
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Trash',
 			absFolderPath: '/Trash',
 			l: `${contextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
@@ -170,14 +176,14 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
 		},
 		{
 			id: `${contextIdentity.identity.id}:${FOLDERS.DRAFTS}`,
-			uuid: faker.datatype.uuid(),
+			uuid: faker.string.uuid(),
 			name: 'Drafts',
 			absFolderPath: '/Drafts',
 			l: `${contextIdentity.identity.id}:${FOLDERS.USER_ROOT}`,
@@ -196,14 +202,12 @@ const generateSharedAccountSystemFolders = (
 			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: false,
+			isLink: true,
 			children: [],
 			parent: undefined,
 			depth: 1
 		}
 	];
-
-	return result;
 };
 
 /**
@@ -217,12 +221,12 @@ export const generateFolderLink = (
 	parentUuid: string,
 	ownerIdentity: FakeIdentity
 ): LinkFolder => {
-	const name = `${faker.datatype.string(16)} of ${ownerIdentity.fullName}`;
+	const name = `${faker.string.alpha(16)} of ${ownerIdentity.fullName}`;
 
 	const result: LinkFolder = {
 		id: getNextFolderId(),
-		uuid: faker.datatype.uuid(),
-		name: faker.datatype.string(16),
+		uuid: faker.string.uuid(),
+		name: faker.string.alpha(16),
 		absFolderPath: `/${name}`,
 		l: parentId,
 		luuid: parentUuid,
@@ -240,7 +244,7 @@ export const generateFolderLink = (
 		owner: ownerIdentity.email,
 		zid: ownerIdentity.id,
 		rid: getNextFolderId(),
-		ruuid: faker.datatype.uuid(),
+		ruuid: faker.string.uuid(),
 		oname: name,
 		reminder: false,
 		broken: false,
@@ -263,7 +267,7 @@ const generateSharedAccountRoot = (
 	sharedContextIdentity: MocksContextIdentity
 ): Record<string, Folder> => {
 	const id = `${sharedContextIdentity.identity.id}:${FOLDERS.USER_ROOT}`;
-	const result = {
+	return {
 		[id]: {
 			// absFolderPath: `/${sharedContextIdentity.identity.email}`,
 			// acl: undefined,
@@ -298,7 +302,7 @@ const generateSharedAccountRoot = (
 			rev: 7036,
 			rgb: undefined,
 			rid: '1',
-			ruuid: faker.datatype.uuid(),
+			ruuid: faker.string.uuid(),
 			s: 0,
 			u: undefined,
 			url: undefined,
@@ -308,8 +312,6 @@ const generateSharedAccountRoot = (
 			zid: sharedContextIdentity.identity.id
 		}
 	};
-
-	return result;
 };
 
 /**
@@ -337,10 +339,13 @@ const generateSharedAccountsRoot = (
  * Generate a semi-fixed folders structure mock
  * TODO make it more flexible
  */
-export const generateFolders = (view?: FolderView): Folders => {
+export const generateFolders = ({
+	view,
+	noSharedAccounts
+}: PopulateFoldersStoreOptions = {}): Folders => {
 	const mockContext = getMocksContext();
 	const rootUuid = mockContext.identities.primary.userRootId;
-	const inboxUuid = faker.datatype.uuid();
+	const inboxUuid = faker.string.uuid();
 
 	const [calendarsRandomUser1, calendarsRandomUser2] = getRandomIdentities(
 		mockContext.viewFreeBusyIdentities,
@@ -381,7 +386,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 			children: [
 				{
 					id: getNextFolderId(),
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: 'blacklisted',
 					absFolderPath: '/blacklisted',
 					l: FOLDERS.USER_ROOT,
@@ -403,7 +408,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 						grant: [
 							{
 								zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
-								gt: 'usr' as Grant['gt'],
+								gt: 'usr',
 								perm: 'r'
 							}
 						]
@@ -415,7 +420,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: FOLDERS.BRIEFCASE,
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: 'Briefcase',
 					absFolderPath: '/Briefcase',
 					l: FOLDERS.USER_ROOT,
@@ -439,7 +444,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: FOLDERS.CALENDAR,
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: 'Calendar',
 					absFolderPath: '/Calendar',
 					l: FOLDERS.USER_ROOT,
@@ -462,12 +467,12 @@ export const generateFolders = (view?: FolderView): Folders => {
 						grant: [
 							{
 								zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
-								gt: 'usr' as Grant['gt'],
+								gt: 'usr',
 								perm: 'r'
 							},
 							{
 								zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
-								gt: 'usr' as Grant['gt'],
+								gt: 'usr',
 								perm: 'r'
 							}
 						]
@@ -479,7 +484,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: FOLDERS.CONTACTS,
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: 'Contacts',
 					absFolderPath: '/Contacts',
 					l: FOLDERS.USER_ROOT,
@@ -503,7 +508,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: FOLDERS.DRAFTS,
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: 'Drafts',
 					absFolderPath: '/Drafts',
 					l: FOLDERS.USER_ROOT,
@@ -527,7 +532,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: FOLDERS.AUTO_CONTACTS,
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: 'Emailed Contacts',
 					absFolderPath: '/Emailed Contacts',
 					l: FOLDERS.USER_ROOT,
@@ -575,7 +580,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 					children: [
 						{
 							id: getNextFolderId(),
-							uuid: faker.datatype.uuid(),
+							uuid: faker.string.uuid(),
 							name: 'Confluence',
 							absFolderPath: '/Inbox/Confluence',
 							l: FOLDERS.INBOX,
@@ -601,7 +606,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 						},
 						{
 							id: getNextFolderId(),
-							uuid: faker.datatype.uuid(),
+							uuid: faker.string.uuid(),
 							name: 'GitHub',
 							absFolderPath: '/Inbox/GitHub',
 							l: FOLDERS.INBOX,
@@ -625,7 +630,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 						},
 						{
 							id: getNextFolderId(),
-							uuid: faker.datatype.uuid(),
+							uuid: faker.string.uuid(),
 							name: 'HR',
 							absFolderPath: '/Inbox/HR',
 							l: FOLDERS.INBOX,
@@ -649,7 +654,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 						},
 						{
 							id: getNextFolderId(),
-							uuid: faker.datatype.uuid(),
+							uuid: faker.string.uuid(),
 							name: 'Jenkins',
 							absFolderPath: '/Inbox/Jenkins',
 							l: FOLDERS.INBOX,
@@ -675,7 +680,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 						},
 						{
 							id: getNextFolderId(),
-							uuid: faker.datatype.uuid(),
+							uuid: faker.string.uuid(),
 							name: 'terzo livello',
 							absFolderPath: '/Inbox/terzo livello',
 							l: FOLDERS.INBOX,
@@ -697,12 +702,12 @@ export const generateFolders = (view?: FolderView): Folders => {
 								grant: [
 									{
 										zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
-										gt: 'usr' as Grant['gt'],
+										gt: 'usr',
 										perm: 'r'
 									},
 									{
 										zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
-										gt: 'usr' as Grant['gt'],
+										gt: 'usr',
 										perm: 'r'
 									}
 								]
@@ -719,7 +724,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: FOLDERS.SPAM,
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: 'Junk',
 					absFolderPath: '/Junk',
 					l: FOLDERS.USER_ROOT,
@@ -743,7 +748,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: FOLDERS.SENT,
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: 'Sent',
 					absFolderPath: '/Sent',
 					l: FOLDERS.USER_ROOT,
@@ -767,7 +772,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: FOLDERS.TRASH,
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: 'Trash',
 					absFolderPath: '/Trash',
 					l: FOLDERS.USER_ROOT,
@@ -787,7 +792,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 					children: [
 						{
 							id: getNextFolderId(),
-							uuid: faker.datatype.uuid(),
+							uuid: faker.string.uuid(),
 							name: 'Trashed folder',
 							absFolderPath: '/Trash/Trashed folder',
 							l: FOLDERS.INBOX,
@@ -817,7 +822,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: getNextFolderId(),
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: `${calendarsRandomUser1?.fullName}'s Calendar`,
 					absFolderPath: `/${calendarsRandomUser1?.fullName}'s Calendar`,
 					l: FOLDERS.USER_ROOT,
@@ -839,7 +844,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 					owner: calendarsRandomUser1?.email,
 					zid: calendarsRandomUser1?.id,
 					rid: FOLDERS.CALENDAR,
-					ruuid: faker.datatype.uuid(),
+					ruuid: faker.string.uuid(),
 					oname: 'Calendar',
 					reminder: false,
 					broken: false,
@@ -850,7 +855,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: getNextFolderId(),
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: `${calendarsRandomUser2?.fullName}'s Calendar`,
 					absFolderPath: `/${calendarsRandomUser2?.fullName}'s Calendar`,
 					l: FOLDERS.USER_ROOT,
@@ -872,7 +877,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 					owner: calendarsRandomUser2?.email,
 					zid: calendarsRandomUser2?.id,
 					rid: FOLDERS.CALENDAR,
-					ruuid: faker.datatype.uuid(),
+					ruuid: faker.string.uuid(),
 					oname: 'Calendar',
 					reminder: false,
 					broken: false,
@@ -883,7 +888,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: getNextFolderId(),
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: `${contactsRandomUser1?.fullName}'s Contacts`,
 					absFolderPath: `/${contactsRandomUser1?.fullName}'s Contacts`,
 					l: FOLDERS.USER_ROOT,
@@ -916,7 +921,7 @@ export const generateFolders = (view?: FolderView): Folders => {
 				},
 				{
 					id: getNextFolderId(),
-					uuid: faker.datatype.uuid(),
+					uuid: faker.string.uuid(),
 					name: `folder of ${mailsRandomUser1?.fullName}`,
 					absFolderPath: `/folder of ${mailsRandomUser1?.fullName}`,
 					l: FOLDERS.USER_ROOT,
@@ -944,11 +949,13 @@ export const generateFolders = (view?: FolderView): Folders => {
 			parent: undefined,
 			depth: 0
 		},
-		...generateSharedAccountsRoot(mockContext.identities.primary, mockContext.identities.sendAs),
-		...generateSharedAccountsRoot(
-			mockContext.identities.primary,
-			mockContext.identities.sendOnBehalf
-		)
+		...(!noSharedAccounts &&
+			generateSharedAccountsRoot(mockContext.identities.primary, mockContext.identities.sendAs)),
+		...(!noSharedAccounts &&
+			generateSharedAccountsRoot(
+				mockContext.identities.primary,
+				mockContext.identities.sendOnBehalf
+			))
 	} as Folders;
 
 	// Add any child folder to the first level

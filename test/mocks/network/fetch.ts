@@ -17,14 +17,14 @@ import { find, map, maxBy } from 'lodash';
 import { getMocksContext } from '../utils/mocks-context';
 
 const userAgent = faker.internet.userAgent();
-const fullName = faker.name.fullName();
+const fullName = faker.person.fullName();
 const identities = getMocksContext();
 
 const useNetworkStore = {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	getState: () => ({
 		session: {
-			id: faker.datatype.uuid()
+			id: faker.string.uuid()
 		},
 		noOpTimeout: 300,
 		pollingInterval: 30000,

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ReactElement } from 'react';
+import { ReactElement, SyntheticEvent } from 'react';
 
 import type { Folder } from '../folder';
 
@@ -79,15 +79,19 @@ export type SharedObject = {
 
 export type GroupedShare = Dictionary<SharedObject[]>;
 
+// FIXME: IRIS-4953 ModalProps is not imported, and so the type is not applied!
 export type EditPermissionsModalProps = ModalProps & {
 	editMode?: boolean;
+	// FIXME: IRIS-4953 Missing props
+	// goBack
+	// grant
 };
 
 export type FolderActionsProps = {
 	id: string;
 	icon: string;
 	label: string;
-	click: (e: SyntheticEvent<HTMLElement, Event> | KeyboardEvent) => void;
+	click: (e: SyntheticEvent<HTMLElement> | KeyboardEvent) => void;
 	disabled?: boolean;
 };
 
@@ -173,6 +177,7 @@ export type SidebarAccordionProps = {
 	accordions: Array<Folder>;
 	folderId: string;
 	localStorageName: string;
+	// FIXME: ComponentType is not imported, so the type is not applied!
 	AccordionCustomComponent: ComponentType;
 	setSelectedFolder?: (folderId: string) => void;
 	buttonFindShares?: ReactElement;

@@ -6,7 +6,7 @@
 
 import React, { FC, ReactNode } from 'react';
 
-import { Tags, SoapNotify } from '@zextras/carbonio-shell-ui';
+import shell from '@zextras/carbonio-shell-ui';
 
 import { generateAccount } from './accounts/account-generator';
 import { getSoapFetch } from './network/fetch';
@@ -15,16 +15,16 @@ import { tags } from './tags/tags';
 
 export { FOLDERS, ZIMBRA_STANDARD_COLORS } from './carbonio-shell-ui-constants';
 
-const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
+const FakeIntegration = (): React.JSX.Element => <div data-testid="fake-component" />;
 
-const mockedAccount = generateAccount();
+export const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();
-const mockedTags: Tags = tags;
+const mockedTags: shell.Tags = tags;
 
-export const getUserAccount = jest.fn(() => mockedAccount);
-export const useUserAccount = jest.fn(() => mockedAccount);
-export const useUserAccounts = jest.fn(() => mockedAccounts);
+export const getUserAccount: typeof shell.getUserAccount = () => mockedAccount;
+export const useUserAccount: typeof shell.useUserAccount = () => mockedAccount;
+export const useUserAccounts: typeof shell.useUserAccounts = () => mockedAccounts;
 export const useUserSettings = jest.fn(() => mockedSettings);
 export const getUserSettings = jest.fn(() => mockedSettings);
 export const useAppContext = jest.fn(() => mockedAccounts);
@@ -61,6 +61,16 @@ export const getTag = jest.fn((id: string) => mockedTags[id]);
 
 export * from './network/fetch';
 export const soapFetch = getSoapFetch('test-environment');
-export const useNotify = jest.fn(() => [] as SoapNotify[]);
+export const useNotify: jest.Mock<ReturnType<typeof shell.useNotify>> = jest.fn(() => []);
 export const useLocalStorage = jest.fn();
 export const AppLink: FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;
+export const registerComponents: typeof shell.registerComponents = jest.fn();
+export const registerActions: typeof shell.registerActions = jest.fn();
+export const useRefresh: typeof shell.useRefresh = jest.fn();
+export const addRoute: typeof shell.addRoute = jest.fn();
+export const addSettingsView: typeof shell.addSettingsView = jest.fn();
+export const addSearchView: typeof shell.addSearchView = jest.fn();
+export const addBoardView: typeof shell.addBoardView = jest.fn();
+export const ACTION_TYPES: typeof shell.ACTION_TYPES = {
+	NEW: 'new'
+};

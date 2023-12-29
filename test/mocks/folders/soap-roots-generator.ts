@@ -41,7 +41,7 @@ export const getUniqueID = (min?: number, max?: number): string => {
 };
 
 const getUniqueName = (): string => {
-	const name = faker.lorem.word();
+	const name = faker.word.noun();
 	if (names.includes(name)) {
 		return getUniqueName();
 	}

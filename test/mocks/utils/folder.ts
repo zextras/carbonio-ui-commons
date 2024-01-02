@@ -4,12 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
+
 import { FolderView } from '../../../types/folder';
 
 type RandomInRange = { min?: number; max?: number };
 
 export const getRandomInRange = ({ min = 1, max = 3 }: RandomInRange = {}): number =>
-	faker.datatype.number({ max, min });
+	faker.number.int({ max, min });
 
 export const getRandomFolderFlags = (view?: FolderView): string => {
 	const hasFlags = faker.datatype.boolean();

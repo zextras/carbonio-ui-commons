@@ -6,6 +6,7 @@
 
 import { faker } from '@faker-js/faker';
 import { cloneDeep, floor, merge, times } from 'lodash';
+
 import { createFakeIdentity, FakeIdentity } from '../accounts/fakeAccounts';
 
 /**
@@ -85,16 +86,16 @@ type MocksContextGenerationParams = {
  * Generate a signature
  */
 const generateSignature = (): SignItemType => {
-	const title = faker.name.jobTitle();
+	const title = faker.person.jobTitle();
 	return {
 		name: title,
-		id: faker.datatype.uuid(),
+		id: faker.string.uuid(),
 		label: title,
 		description: title,
 		content: [
 			{
 				type: 'text/html',
-				_content: `<div>${title}</div>\n<div><span style="color: #ff0000;"><em>${faker.name.jobType()}</em></span></div>\n<div>&nbsp;</div>`
+				_content: `<div>${title}</div>\n<div><span style="color: #ff0000;"><em>${faker.person.jobType()}</em></span></div>\n<div>&nbsp;</div>`
 			}
 		]
 	};
@@ -119,7 +120,7 @@ const generateDefaultContext = ({
 		identities: {
 			primary: {
 				identity: primary,
-				userRootId: faker.datatype.uuid(),
+				userRootId: faker.string.uuid(),
 				...(generateSignatures && {
 					signatures: {
 						newEmailSignature: generateSignature(),
@@ -138,7 +139,7 @@ const generateDefaultContext = ({
 			})),
 			sendAs: times(sendAsIdentitiesCount, () => ({
 				identity: createFakeIdentity(),
-				userRootId: faker.datatype.uuid(),
+				userRootId: faker.string.uuid(),
 				...(generateSignatures && {
 					signatures: {
 						newEmailSignature: generateSignature(),
@@ -148,7 +149,7 @@ const generateDefaultContext = ({
 			})),
 			sendOnBehalf: times(sendOnBehalfIdentitiesCount, () => ({
 				identity: createFakeIdentity(),
-				userRootId: faker.datatype.uuid(),
+				userRootId: faker.string.uuid(),
 				...(generateSignatures && {
 					signatures: {
 						newEmailSignature: generateSignature(),

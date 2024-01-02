@@ -5,28 +5,29 @@
  */
 import { faker } from '@faker-js/faker';
 import { map } from 'lodash';
+
 import { getRandomView } from '../../folders/soap-roots-generator';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export const getMSWShareInfo = (context?: any) => {
-	const firstName = faker.name.firstName();
-	const lastName = faker.name.lastName();
-	const ownerEmail = faker.internet.email(firstName, lastName);
-	const fakeMid = faker.datatype.number();
-	const fakeId = faker.datatype.number();
+	const firstName = faker.person.firstName();
+	const lastName = faker.person.lastName();
+	const ownerEmail = faker.internet.email({ firstName, lastName });
+	const fakeMid = faker.number.int();
+	const fakeId = faker.number.int();
 	return {
-		ownerId: faker.datatype.uuid(),
+		ownerId: faker.string.uuid(),
 		ownerEmail,
 		ownerName: `${firstName} ${lastName}`,
 		folderId: fakeId,
-		folderUuid: faker.datatype.uuid(),
+		folderUuid: faker.string.uuid(),
 		folderPath: '/',
 		view: getRandomView(),
 		rights: 'rwidx',
 		granteeType: 'grp',
-		granteeId: faker.datatype.uuid(),
+		granteeId: faker.string.uuid(),
 		granteeName: `_grp_rw_${ownerEmail}`,
 		mid: `${fakeMid}`,
 		...(context ?? {})
@@ -43,7 +44,7 @@ const getShareInfoResponse = () => {
 		view: 'unknown',
 		granteeType: 'grp'
 	});
-	const randomLength = faker.datatype.number({ min: 50, max: 200 });
+	const randomLength = faker.number.int({ min: 50, max: 200 });
 	const randomShares = [
 		sharedAccount,
 		...map(Array.from({ length: randomLength }), () => getMSWShareInfo())
@@ -52,8 +53,8 @@ const getShareInfoResponse = () => {
 		Header: {
 			context: {
 				session: {
-					id: faker.datatype.number({ min: 1, max: 999999 }),
-					_content: faker.datatype.number({ min: 1, max: 999999 })
+					id: faker.number.int({ min: 1, max: 999999 }),
+					_content: faker.number.int({ min: 1, max: 999999 })
 				}
 			}
 		},
@@ -70,14 +71,14 @@ const getShareInfoResponse = () => {
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export const getEmptyMSWShareInfoResponse = () => {
-	const randomLength = faker.datatype.number({ min: 50, max: 200 });
+	const randomLength = faker.number.int({ min: 50, max: 200 });
 	const randomShares = map(Array.from({ length: randomLength }), getMSWShareInfo);
 	return {
 		Header: {
 			context: {
 				session: {
-					id: faker.datatype.number({ min: 1, max: 999999 }),
-					_content: faker.datatype.number({ min: 1, max: 999999 })
+					id: faker.number.int({ min: 1, max: 999999 }),
+					_content: faker.number.int({ min: 1, max: 999999 })
 				}
 			}
 		},

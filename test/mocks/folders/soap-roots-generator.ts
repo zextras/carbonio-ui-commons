@@ -7,6 +7,7 @@ import { faker } from '@faker-js/faker';
 import { SoapLink } from '@zextras/carbonio-shell-ui';
 import { SoapFolder } from '@zextras/carbonio-shell-ui/types/network/soap';
 import { map, orderBy } from 'lodash';
+
 import { BaseFolder, FolderView } from '../../../types/folder';
 import { getMocksContext } from '../utils/mocks-context';
 
@@ -31,7 +32,7 @@ type SystemFolderRequiredType = {
 };
 
 export const getUniqueID = (min?: number, max?: number): string => {
-	const id = faker.datatype.number({ min: min ?? 200, max: max ?? 99999 });
+	const id = faker.number.int({ min: min ?? 200, max: max ?? 99999 });
 	if (ids.includes(id)) {
 		return getUniqueID();
 	}
@@ -40,7 +41,7 @@ export const getUniqueID = (min?: number, max?: number): string => {
 };
 
 const getUniqueName = (): string => {
-	const name = faker.random.word();
+	const name = faker.word.noun();
 	if (names.includes(name)) {
 		return getUniqueName();
 	}
@@ -50,7 +51,7 @@ const getUniqueName = (): string => {
 
 export const getRandomView = (): FolderView => {
 	const views = ['search folder', 'message', 'contact', 'appointment'] as FolderView[];
-	const randomNumber = faker.datatype.number({ min: 0, max: views.length });
+	const randomNumber = faker.number.int({ min: 0, max: views.length });
 	return views[randomNumber];
 };
 
@@ -62,7 +63,7 @@ export const generateSoapCustomChild = (parent: BaseFolder | SoapLink): BaseFold
 	const name = getUniqueName();
 	return {
 		id,
-		uuid: faker.datatype.uuid(),
+		uuid: faker.string.uuid(),
 		deletable: true,
 		name,
 		absFolderPath: `${parent && parent.absFolderPath === '/' ? '' : parent.absFolderPath}/${name}`,
@@ -70,17 +71,17 @@ export const generateSoapCustomChild = (parent: BaseFolder | SoapLink): BaseFold
 		luuid,
 		f: '',
 		recursive: true,
-		color: faker.datatype.number({ min: 1, max: 7 }),
-		u: faker.datatype.number({ min: 0, max: 5 }),
+		color: faker.number.int({ min: 1, max: 7 }),
+		u: faker.number.int({ min: 0, max: 5 }),
 		view: parent?.view ?? getRandomView(),
 		rev: 1,
-		ms: faker.datatype.number({ min: 1, max: 99999 }),
+		ms: faker.number.int({ min: 1, max: 99999 }),
 		webOfflineSyncDays: 30,
 		activesyncdisabled: false,
-		n: faker.datatype.number({ min: 1, max: 99999 }),
-		s: faker.datatype.number({ min: 1, max: 99999 }),
-		i4ms: faker.datatype.number({ min: 1, max: 99999 }),
-		i4next: faker.datatype.number({ min: 1, max: 99999 }),
+		n: faker.number.int({ min: 1, max: 99999 }),
+		s: faker.number.int({ min: 1, max: 99999 }),
+		i4ms: faker.number.int({ min: 1, max: 99999 }),
+		i4next: faker.number.int({ min: 1, max: 99999 }),
 		acl: {
 			grant: []
 		}
@@ -97,9 +98,9 @@ export const generateSoapLink = (parent: SoapLink | BaseFolder): SoapLink => {
 		perm: 'r',
 		broken: false,
 		owner: faker.internet.email(),
-		rid: `${faker.datatype.number({ min: 300, max: 900 })}`,
-		ruuid: faker.datatype.uuid(),
-		zid: faker.datatype.uuid(),
+		rid: `${faker.number.int({ min: 300, max: 900 })}`,
+		ruuid: faker.string.uuid(),
+		zid: faker.string.uuid(),
 		reminder: false
 	} as SoapLink;
 };
@@ -110,7 +111,7 @@ const generateSoapNodes = (
 	isLink: boolean,
 	traverse: boolean
 ): SoapFolder[] | SoapLink[] => {
-	const childrenNumber = faker.datatype.number({ min: 0, max });
+	const childrenNumber = faker.number.int({ min: 0, max });
 	const hasChildren = childrenNumber > 0;
 	if (hasChildren) {
 		return map(Array.from({ length: childrenNumber }), () => {
@@ -145,25 +146,25 @@ export const generateSoapSystemFolder = ({
 	view
 }: SystemFolderRequiredType): BaseFolder => ({
 	id,
-	uuid: faker.datatype.uuid(),
+	uuid: faker.string.uuid(),
 	deletable: false,
 	name,
 	absFolderPath,
 	l,
 	luuid,
 	f: 'i',
-	color: faker.datatype.number({ min: 0, max: 7 }),
-	u: faker.datatype.number({ min: 0, max: 5 }),
+	color: faker.number.int({ min: 0, max: 7 }),
+	u: faker.number.int({ min: 0, max: 5 }),
 	view: view ?? getRandomView(),
 	rev: 1,
 	recursive: true,
-	ms: faker.datatype.number({ min: 1, max: 99999 }),
+	ms: faker.number.int({ min: 1, max: 99999 }),
 	webOfflineSyncDays: 30,
 	activesyncdisabled: false,
-	n: faker.datatype.number({ min: 1, max: 99999 }),
-	s: faker.datatype.number({ min: 1, max: 99999 }),
-	i4ms: faker.datatype.number({ min: 1, max: 99999 }),
-	i4next: faker.datatype.number({ min: 1, max: 99999 }),
+	n: faker.number.int({ min: 1, max: 99999 }),
+	s: faker.number.int({ min: 1, max: 99999 }),
+	i4ms: faker.number.int({ min: 1, max: 99999 }),
+	i4next: faker.number.int({ min: 1, max: 99999 }),
 	acl: {
 		grant: []
 	}
@@ -220,7 +221,7 @@ const generateSoapSystemFolders = (
  * */
 export const getAccountSoapRoot = (isPrimaryAccount: boolean): BaseFolder => ({
 	id: isPrimaryAccount ? '1' : `${luuid}:1`,
-	uuid: faker.datatype.uuid(),
+	uuid: faker.string.uuid(),
 	deletable: false,
 	recursive: true,
 	name: 'USER_ROOT',
@@ -229,13 +230,13 @@ export const getAccountSoapRoot = (isPrimaryAccount: boolean): BaseFolder => ({
 	luuid,
 	f: 'i',
 	rev: 1,
-	ms: faker.datatype.number({ min: 1, max: 99999 }),
+	ms: faker.number.int({ min: 1, max: 99999 }),
 	webOfflineSyncDays: 0,
 	activesyncdisabled: false,
 	n: 1,
 	s: 0,
-	i4ms: faker.datatype.number({ min: 1, max: 99999 }),
-	i4next: faker.datatype.number({ min: 1, max: 99999 }),
+	i4ms: faker.number.int({ min: 1, max: 99999 }),
+	i4next: faker.number.int({ min: 1, max: 99999 }),
 	acl: {
 		grant: []
 	}

@@ -22,16 +22,16 @@ type GetMockedAccountItemType = {
 };
 
 const createFakeIdentity = (): FakeIdentity => {
-	const firstName = faker?.name?.firstName?.() ?? '';
-	const lastName = faker?.name?.lastName?.() ?? '';
+	const firstName = faker.person.firstName() ?? '';
+	const lastName = faker.person.lastName() ?? '';
 
 	return {
-		id: faker.datatype.uuid(),
+		id: faker.string.uuid(),
 		firstName,
 		lastName,
 		fullName: `${firstName} ${lastName}`,
 		userName: `${firstName}.${lastName}`,
-		email: faker?.internet?.email?.(firstName, lastName) ?? ''
+		email: faker.internet.email({ firstName, lastName }) ?? ''
 	};
 };
 

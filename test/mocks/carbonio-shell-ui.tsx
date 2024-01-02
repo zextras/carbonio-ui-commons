@@ -7,7 +7,6 @@
 import React, { FC, ReactNode } from 'react';
 
 import { Tags, SoapNotify } from '@zextras/carbonio-shell-ui';
-import { noop } from 'lodash';
 
 import { generateAccount } from './accounts/account-generator';
 import { getSoapFetch } from './network/fetch';
@@ -21,13 +20,6 @@ const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
 const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();
-const mockedAppContext = {
-	isMessageView: true,
-	count: 100,
-	setCount: (arg: number): void => {
-		noop;
-	}
-};
 const mockedTags: Tags = tags;
 
 export const getUserAccount = jest.fn(() => mockedAccount);
@@ -35,7 +27,6 @@ export const useUserAccount = jest.fn(() => mockedAccount);
 export const useUserAccounts = jest.fn(() => mockedAccounts);
 export const useUserSettings = jest.fn(() => mockedSettings);
 export const getUserSettings = jest.fn(() => mockedSettings);
-export const useAppContext = jest.fn(() => mockedAppContext);
 export const t = jest.fn((key: string) => key);
 export const replaceHistory = jest.fn();
 export const pushHistory = jest.fn();
@@ -57,6 +48,7 @@ export const getIntegratedFunction = jest.fn(() => [
 	filesSelectDestinationFunctionAvailable
 ]);
 export const useBoard = jest.fn();
+export const useAppContext = jest.fn();
 export const getBridgedFunctions = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();

@@ -48,7 +48,8 @@ export const getIntegratedFunction = jest.fn(() => [
 	filesSelectDestinationFunctionAvailable
 ]);
 export const useBoard = jest.fn();
-export const useAppContext = jest.fn();
+
+export const useAppContext = jest.fn(() => mockedAccounts);
 export const getBridgedFunctions = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();

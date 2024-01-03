@@ -3,35 +3,110 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { act, render, RenderResult } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import React, { PropsWithChildren, ReactElement, useMemo } from 'react';
+
+import {
+	act,
+	ByRoleMatcher,
+	ByRoleOptions,
+	GetAllBy,
+	queries,
+	queryHelpers,
+	render,
+	RenderOptions,
+	RenderResult,
+	Screen,
+	screen as rtlScreen,
+	within as rtlWithin
+} from '@testing-library/react';
+import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
 import { ModalManager, SnackbarManager, ThemeProvider } from '@zextras/carbonio-design-system';
-import React, { useMemo } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { MemoryRouter, MemoryRouterProps, Route, RouteProps } from 'react-router-dom';
 import { Store } from 'redux';
-import I18nTestFactory from './i18n/i18n-test-factory';
+
+import { getAppI18n } from './i18n/i18n-test-factory';
 import { previewContextMock, PreviewsManagerContext } from './mocks/carbonio-ui-preview';
 
-interface ProvidersWrapperProps {
-	children?: React.ReactElement;
-	options?: any;
+type ByRoleWithIconOptions = ByRoleOptions & {
+	icon: string | RegExp;
+};
+
+/**
+ * Matcher function to search an icon button through the icon data-testid
+ */
+const queryAllByRoleWithIcon: GetAllBy<[ByRoleMatcher, ByRoleWithIconOptions]> = (
+	container,
+	role,
+	{ icon, ...options }
+) =>
+	rtlWithin(container)
+		.queryAllByRole(role, options)
+		.filter((element) => rtlWithin(element).queryByTestId(icon) !== null);
+const getByRoleWithIconMultipleError = (
+	_container: Element | null,
+	role: ByRoleMatcher,
+	options: ByRoleWithIconOptions
+): string => `Found multiple elements with role ${role} and icon ${options.icon}`;
+const getByRoleWithIconMissingError = (
+	_container: Element | null,
+	role: ByRoleMatcher,
+	options: ByRoleWithIconOptions
+): string => `Unable to find an element with role ${role} and icon ${options.icon}`;
+
+const [
+	queryByRoleWithIcon,
+	getAllByRoleWithIcon,
+	getByRoleWithIcon,
+	findAllByRoleWithIcon,
+	findByRoleWithIcon
+] = queryHelpers.buildQueries<[ByRoleMatcher, ByRoleWithIconOptions]>(
+	queryAllByRoleWithIcon,
+	getByRoleWithIconMultipleError,
+	getByRoleWithIconMissingError
+);
+
+const customQueries = {
+	queryByRoleWithIcon,
+	getAllByRoleWithIcon,
+	getByRoleWithIcon,
+	findAllByRoleWithIcon,
+	findByRoleWithIcon
+};
+
+const queriesExtended = { ...queries, ...customQueries };
+
+export function within(
+	element: Parameters<typeof rtlWithin<typeof queriesExtended>>[0]
+): ReturnType<typeof rtlWithin<typeof queriesExtended>> {
+	return rtlWithin(element, queriesExtended);
 }
-const StoreProvider = ({ store, children }: { store: Store; children: JSX.Element }): JSX.Element =>
-	store ? <Provider store={store}>{children}</Provider> : children;
+
+export const screen: Screen<typeof queriesExtended> = { ...rtlScreen, ...within(document.body) };
+
+interface ProvidersWrapperProps {
+	store?: Store;
+	initialEntries?: MemoryRouterProps['initialEntries'];
+	path?: RouteProps['path'];
+}
+
+const StoreProvider = ({
+	store,
+	children
+}: {
+	store?: Store;
+	children: React.JSX.Element;
+}): React.JSX.Element => (store ? <Provider store={store}>{children}</Provider> : children);
 
 export const ProvidersWrapper = ({
 	children,
-	options = {}
-}: ProvidersWrapperProps): JSX.Element => {
-	const { store, initialEntries = ['/'], path = '/' } = options;
-
-	const i18n = useMemo(() => {
-		const i18nFactory = new I18nTestFactory();
-		return i18nFactory.getAppI18n();
-	}, []);
+	store,
+	initialEntries = ['/'],
+	path = '/'
+}: PropsWithChildren<ProvidersWrapperProps>): React.JSX.Element => {
+	const i18n = useMemo(() => getAppI18n(), []);
 
 	return (
 		<ThemeProvider>
@@ -55,44 +130,65 @@ export const ProvidersWrapper = ({
 	);
 };
 
-function customRender(ui: React.ReactElement, options?: any): RenderResult {
-	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
-		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
+export type CustomRenderOptions = Omit<RenderOptions, 'queries' | 'wrapper'> &
+	ProvidersWrapperProps;
+
+function customRender(
+	ui: React.ReactElement,
+	{ store, initialEntries, path, ...renderOptions }: CustomRenderOptions = {}
+): RenderResult {
+	const Wrapper = ({ children }: PropsWithChildren<unknown>): React.JSX.Element => (
+		<ProvidersWrapper store={store} initialEntries={initialEntries} path={path}>
+			{children}
+		</ProvidersWrapper>
 	);
 	return render(ui, {
 		wrapper: Wrapper,
-		...options
+		queries: { ...queries, ...customQueries },
+		...renderOptions
 	});
 }
 
+type SetupOptions = {
+	renderOptions?: CustomRenderOptions;
+	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
+} & ProvidersWrapperProps;
+
 export function setupTest(
-	...args: Parameters<typeof customRender>
+	ui: ReactElement,
+	{ setupOptions, ...customRenderOptions }: SetupOptions = {}
 ): { user: ReturnType<(typeof userEvent)['setup']> } & ReturnType<typeof render> {
 	return {
-		user: userEvent.setup({ advanceTimers: jest.advanceTimersByTime }),
-		...customRender(...args)
+		user: userEvent.setup({ advanceTimers: jest.advanceTimersByTime, ...setupOptions }),
+		...customRender(ui, customRenderOptions)
 	};
 }
 
-type Options = {
-	initialEntries?: Array<string>;
-	initialProps?: any;
-	path?: string;
-	store?: Store;
-};
+type SetupHookOptions<TProps extends unknown[]> = {
+	initialProps?: RenderHookOptions<TProps>['initialProps'];
+	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
+} & ProvidersWrapperProps;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function setupHook(hook: any, options: Options = {}): any {
-	const Wrapper = ({ children }: ProvidersWrapperProps): JSX.Element => (
-		<ProvidersWrapper options={options}>{children}</ProvidersWrapper>
+export function setupHook<TProps extends unknown[], TResult>(
+	hook: (...args: TProps) => TResult,
+	{ initialProps, setupOptions, ...providersProps }: SetupHookOptions<TProps> = {}
+): Pick<ReturnType<typeof renderHook<TProps, TResult>>, 'result' | 'unmount' | 'rerender'> & {
+	user: ReturnType<(typeof userEvent)['setup']>;
+} {
+	const Wrapper = ({ children }: PropsWithChildren<unknown>): React.JSX.Element => (
+		<ProvidersWrapper {...providersProps}>{children}</ProvidersWrapper>
 	);
-	const { initialProps = [] } = options;
-	const { result, unmount, rerender } = renderHook((props) => hook(...props), {
+	const { result, unmount, rerender } = renderHook((props) => hook(...(props ?? [])), {
 		wrapper: Wrapper,
 		initialProps
 	});
 
-	return { result, unmount, rerender };
+	return {
+		result,
+		unmount,
+		rerender,
+		user: userEvent.setup({ advanceTimers: jest.advanceTimersByTime, ...setupOptions })
+	};
 }
 
 export function makeListItemsVisible(): void {

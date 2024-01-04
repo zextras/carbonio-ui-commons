@@ -145,7 +145,7 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 	const { pollingInterval, noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	clearTimeout(noOpTimeout);
-	if (res.Body.Fault) {
+	if (res?.Body?.Fault) {
 		if (
 			find(
 				['service.AUTH_REQUIRED', 'service.AUTH_EXPIRED'],
@@ -187,9 +187,11 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 		});
 	}
 
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	return res?.Body?.Fault ? (res.Body as ErrorSoapBodyResponse) : (res.Body[`${api}Response`] as R);
+	return res?.Body?.Fault
+		? (res?.Body as ErrorSoapBodyResponse)
+		: // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		  // @ts-ignore
+		  (res?.Body?.[`${api}Response`] as R);
 };
 export const getSoapFetch =
 	(app: string) =>

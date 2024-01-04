@@ -6,7 +6,7 @@
 
 import React, { FC, ReactNode, useCallback } from 'react';
 
-import { Tags, SoapNotify, HistoryParams } from '@zextras/carbonio-shell-ui';
+import shell from '@zextras/carbonio-shell-ui';
 import { trimStart } from 'lodash';
 import { useHistory } from 'react-router-dom';
 
@@ -17,19 +17,18 @@ import { tags } from './tags/tags';
 
 export { FOLDERS, ZIMBRA_STANDARD_COLORS } from './carbonio-shell-ui-constants';
 
-const FakeIntegration = (): JSX.Element => <div data-testid="fake-component" />;
+const FakeIntegration = (): React.JSX.Element => <div data-testid="fake-component" />;
 
-const mockedAccount = generateAccount();
+export const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();
-const mockedTags: Tags = tags;
+const mockedTags: shell.Tags = tags;
 
-export const getUserAccount = jest.fn(() => mockedAccount);
-export const useUserAccount = jest.fn(() => mockedAccount);
-export const useUserAccounts = jest.fn(() => mockedAccounts);
+export const getUserAccount: typeof shell.getUserAccount = () => mockedAccount;
+export const useUserAccount: typeof shell.useUserAccount = () => mockedAccount;
+export const useUserAccounts: typeof shell.useUserAccounts = () => mockedAccounts;
 export const useUserSettings = jest.fn(() => mockedSettings);
 export const getUserSettings = jest.fn(() => mockedSettings);
-export const useAppContext = jest.fn(() => mockedAccounts);
 export const t = jest.fn((key: string) => key);
 export const replaceHistory = jest.fn();
 export const pushHistory = jest.fn();
@@ -51,6 +50,8 @@ export const getIntegratedFunction = jest.fn(() => [
 	filesSelectDestinationFunctionAvailable
 ]);
 export const useBoard = jest.fn();
+
+export const useAppContext = jest.fn(() => mockedAccounts);
 export const getBridgedFunctions = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
@@ -63,18 +64,29 @@ export const getTag = jest.fn((id: string) => mockedTags[id]);
 
 export * from './network/fetch';
 export const soapFetch = getSoapFetch('test-environment');
-export const useNotify = jest.fn(() => [] as SoapNotify[]);
+export const useNotify: jest.Mock<ReturnType<typeof shell.useNotify>> = jest.fn(() => []);
 export const useLocalStorage = jest.fn();
 export const AppLink: FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;
+export const editSettings = jest.fn(() => Promise.resolve({ data: {} }));
+export const registerComponents: typeof shell.registerComponents = jest.fn();
+export const registerActions: typeof shell.registerActions = jest.fn();
+export const useRefresh: typeof shell.useRefresh = jest.fn();
+export const addRoute: typeof shell.addRoute = jest.fn();
+export const addSettingsView: typeof shell.addSettingsView = jest.fn();
+export const addSearchView: typeof shell.addSearchView = jest.fn();
+export const addBoardView: typeof shell.addBoardView = jest.fn();
+export const ACTION_TYPES: typeof shell.ACTION_TYPES = {
+	NEW: 'new'
+};
 
 function parsePath(path: string): string {
 	return `/${trimStart(path, '/')}`;
 }
-function usePushHistoryMock(): (params: HistoryParams) => void {
+function usePushHistoryMock(): (params: shell.HistoryParams) => void {
 	const history = useHistory();
 
 	return useCallback(
-		(location: string | HistoryParams) => {
+		(location: string | shell.HistoryParams) => {
 			if (typeof location === 'string') {
 				history.push(parsePath(location));
 			} else if (typeof location.path === 'string') {
@@ -87,11 +99,11 @@ function usePushHistoryMock(): (params: HistoryParams) => void {
 	);
 }
 
-function useReplaceHistoryMock(): (params: HistoryParams) => void {
+function useReplaceHistoryMock(): (params: shell.HistoryParams) => void {
 	const history = useHistory();
 
 	return useCallback(
-		(location: string | HistoryParams) => {
+		(location: string | shell.HistoryParams) => {
 			if (typeof location === 'string') {
 				history.replace(parsePath(location));
 			} else if (typeof location.path === 'string') {

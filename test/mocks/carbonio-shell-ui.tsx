@@ -27,7 +27,6 @@ export const useUserAccount: typeof shell.useUserAccount = () => mockedAccount;
 export const useUserAccounts: typeof shell.useUserAccounts = () => mockedAccounts;
 export const useUserSettings = jest.fn(() => mockedSettings);
 export const getUserSettings = jest.fn(() => mockedSettings);
-export const useAppContext = jest.fn(() => mockedAccounts);
 export const t = jest.fn((key: string) => key);
 export const replaceHistory = jest.fn();
 export const pushHistory = jest.fn();
@@ -49,6 +48,8 @@ export const getIntegratedFunction = jest.fn(() => [
 	filesSelectDestinationFunctionAvailable
 ]);
 export const useBoard = jest.fn();
+
+export const useAppContext = jest.fn(() => mockedAccounts);
 export const getBridgedFunctions = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
@@ -64,6 +65,7 @@ export const soapFetch = getSoapFetch('test-environment');
 export const useNotify: jest.Mock<ReturnType<typeof shell.useNotify>> = jest.fn(() => []);
 export const useLocalStorage = jest.fn();
 export const AppLink: FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;
+export const editSettings = jest.fn(() => Promise.resolve({ data: {} }));
 export const registerComponents: typeof shell.registerComponents = jest.fn();
 export const registerActions: typeof shell.registerActions = jest.fn();
 export const useRefresh: typeof shell.useRefresh = jest.fn();

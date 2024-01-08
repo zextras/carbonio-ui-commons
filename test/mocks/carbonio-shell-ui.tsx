@@ -6,7 +6,7 @@
 
 import React, { FC, ReactNode, useCallback } from 'react';
 
-import shell from '@zextras/carbonio-shell-ui';
+import shell, { HistoryParams } from '@zextras/carbonio-shell-ui';
 import { trimStart } from 'lodash';
 import { useHistory } from 'react-router-dom';
 

@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom/';
 
 jest.mock('./hooks/useResizeObserver', () => (): unknown => ({
 	__esModule: true,

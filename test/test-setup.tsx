@@ -155,12 +155,19 @@ type SetupOptions = {
 	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
 } & ProvidersWrapperProps;
 
+export type UserEvent = ReturnType<(typeof userEvent)['setup']> & {
+	readonly rightClick: (target: Element) => Promise<void>;
+};
+
 export function setupTest(
 	ui: ReactElement,
 	{ setupOptions, ...customRenderOptions }: SetupOptions = {}
-): { user: ReturnType<(typeof userEvent)['setup']> } & ReturnType<typeof render> {
+): { user: UserEvent } & ReturnType<typeof render> {
+	const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime, ...setupOptions });
+	const rightClick = (target: Element): Promise<void> =>
+		user.pointer({ target, keys: '[MouseRight]' });
 	return {
-		user: userEvent.setup({ advanceTimers: jest.advanceTimersByTime, ...setupOptions }),
+		user: { ...user, rightClick },
 		...customRender(ui, customRenderOptions)
 	};
 }

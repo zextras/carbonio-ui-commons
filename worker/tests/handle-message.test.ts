@@ -45,6 +45,8 @@ const getNormalizedPrimaryAccount = (): Folder => ({
 });
 
 const getNormalizedSharedAccount = (): LinkFolder => ({
+	// refs: SHELL-118
+	// todo: BaseFolder color type inside shell is still wrong. Wait for a fix before removing this ts-ignore
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	...normalize(getAccountSoapRoot(false)),

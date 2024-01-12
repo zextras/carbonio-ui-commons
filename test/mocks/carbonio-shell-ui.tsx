@@ -4,9 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useCallback } from 'react';
 
-import shell from '@zextras/carbonio-shell-ui';
+import shell, { HistoryParams } from '@zextras/carbonio-shell-ui';
+import { trimStart } from 'lodash';
+import { useHistory } from 'react-router-dom';
 
 import { generateAccount } from './accounts/account-generator';
 import { getSoapFetch } from './network/fetch';
@@ -76,3 +78,43 @@ export const addBoardView: typeof shell.addBoardView = jest.fn();
 export const ACTION_TYPES: typeof shell.ACTION_TYPES = {
 	NEW: 'new'
 };
+
+function parsePath(path: string): string {
+	return `/${trimStart(path, '/')}`;
+}
+function usePushHistoryMock(): (params: shell.HistoryParams) => void {
+	const history = useHistory();
+
+	return useCallback(
+		(location: string | shell.HistoryParams) => {
+			if (typeof location === 'string') {
+				history.push(parsePath(location));
+			} else if (typeof location.path === 'string') {
+				history.push(parsePath(location.path));
+			} else {
+				history.push(location.path);
+			}
+		},
+		[history]
+	);
+}
+
+function useReplaceHistoryMock(): (params: shell.HistoryParams) => void {
+	const history = useHistory();
+
+	return useCallback(
+		(location: string | shell.HistoryParams) => {
+			if (typeof location === 'string') {
+				history.replace(parsePath(location));
+			} else if (typeof location.path === 'string') {
+				history.replace(parsePath(location.path));
+			} else {
+				history.replace(location.path);
+			}
+		},
+		[history]
+	);
+}
+
+export const usePushHistoryCallback = usePushHistoryMock;
+export const useReplaceHistoryCallback = useReplaceHistoryMock;

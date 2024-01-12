@@ -7,6 +7,7 @@ import { faker } from '@faker-js/faker';
 import type { SoapLink } from '@zextras/carbonio-shell-ui';
 import { find } from 'lodash';
 
+import { FOLDER_VIEW } from '../../constants';
 import {
 	BASE_FOLDER_CALENDAR_ARGS,
 	generateSoapCustomChild,
@@ -32,15 +33,22 @@ const getRandomWord = (used: Array<string>): string => {
 };
 
 const getNormalizedPrimaryAccount = (): Folder => ({
-	// refs: SHELL-118
-	// todo: BaseFolder color type inside shell is still wrong. Wait for a fix before removing this ts-ignore
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
 	...normalize(getAccountSoapRoot(true)),
 	children: [],
 	isLink: false,
 	parent: '11',
 	depth: 0
+});
+
+const getNormalizedSharedAccount = (): LinkFolder => ({
+	...normalize(getAccountSoapRoot(false)),
+	children: [],
+	isLink: true,
+	parent: '1',
+	depth: 0,
+	broken: false,
+	reminder: false,
+	owner: faker.internet.email()
 });
 
 // refs: SHELL-118
@@ -92,7 +100,7 @@ describe('folders web worker', () => {
 			const tree = generateSoapRoot(true, true, faker.string.uuid());
 			const data = {
 				op: 'refresh',
-				currentView: 'appointment',
+				currentView: FOLDER_VIEW.appointment,
 				folder: [tree]
 			};
 
@@ -104,14 +112,14 @@ describe('folders web worker', () => {
 				data
 			});
 
-			expect(testUtils.getCurrentView()).toBe('appointment');
+			expect(testUtils.getCurrentView()).toBe(FOLDER_VIEW.appointment);
 		});
 		test('postMessage is called with normalized folders', () => {
 			const workerSpy = jest.spyOn(window, 'postMessage');
 			const tree = generateSoapRoot(true, true, faker.string.uuid());
 			const data = {
 				op: 'refresh',
-				currentView: 'appointment',
+				currentView: FOLDER_VIEW.appointment,
 				folder: [tree]
 			};
 
@@ -177,7 +185,7 @@ describe('folders web worker', () => {
 			};
 			const data = {
 				op: 'refresh',
-				currentView: 'appointment',
+				currentView: FOLDER_VIEW.appointment,
 				folder: [tree]
 			};
 			handleMessage({
@@ -225,7 +233,7 @@ describe('folders web worker', () => {
 			};
 			const data = {
 				op: 'refresh',
-				currentView: 'appointment',
+				currentView: FOLDER_VIEW.appointment,
 				folder: [tree]
 			};
 			handleMessage({
@@ -269,7 +277,7 @@ describe('folders web worker', () => {
 					const createdFolder = {
 						...generateSoapCustomChild({
 							...primaryAccount,
-							view: 'appointment'
+							view: FOLDER_VIEW.appointment
 						}),
 						name: 'aaa'
 					};
@@ -290,7 +298,7 @@ describe('folders web worker', () => {
 							...primaryAccount,
 							children: [
 								{
-									...generateSoapCustomChild({ ...primaryAccount, view: 'appointment' }),
+									...generateSoapCustomChild({ ...primaryAccount, view: FOLDER_VIEW.appointment }),
 									name: 'bbb'
 								}
 							]
@@ -298,7 +306,7 @@ describe('folders web worker', () => {
 					};
 
 					testUtils.setFolders(tree);
-					testUtils.setCurrentView('appointment');
+					testUtils.setCurrentView(FOLDER_VIEW.appointment);
 					handleMessage({
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
@@ -318,7 +326,10 @@ describe('folders web worker', () => {
 				});
 				test('when a new folder for a different view is notified, is not added or normalized', () => {
 					const primaryAccount = getNormalizedPrimaryAccount();
-					const createdFolder = generateSoapCustomChild({ ...primaryAccount, view: 'appointment' });
+					const createdFolder = generateSoapCustomChild({
+						...primaryAccount,
+						view: FOLDER_VIEW.appointment
+					});
 
 					const data = {
 						op: 'notify',
@@ -333,7 +344,7 @@ describe('folders web worker', () => {
 					};
 
 					testUtils.setFolders(tree);
-					testUtils.setCurrentView('message');
+					testUtils.setCurrentView(FOLDER_VIEW.message);
 					handleMessage({
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
@@ -348,7 +359,10 @@ describe('folders web worker', () => {
 				});
 				test('when a new folder is added, it will be available in the flat structure', () => {
 					const primaryAccount = getNormalizedPrimaryAccount();
-					const createdFolder = generateSoapCustomChild({ ...primaryAccount, view: 'appointment' });
+					const createdFolder = generateSoapCustomChild({
+						...primaryAccount,
+						view: FOLDER_VIEW.appointment
+					});
 					const normalizedCreatedFolder = getNormalizedCreatedFolder(
 						createdFolder as BaseFolder,
 						primaryAccount.id
@@ -366,7 +380,7 @@ describe('folders web worker', () => {
 					};
 
 					testUtils.setFolders(tree);
-					testUtils.setCurrentView('appointment');
+					testUtils.setCurrentView(FOLDER_VIEW.appointment);
 					handleMessage({
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
@@ -381,7 +395,7 @@ describe('folders web worker', () => {
 					const normalizedPrimaryAccount = getNormalizedPrimaryAccount();
 					const createdFolder = generateSoapCustomChild({
 						...normalizedPrimaryAccount,
-						view: 'appointment'
+						view: FOLDER_VIEW.appointment
 					});
 					const normalizedCreatedFolder = getNormalizedCreatedFolder(
 						createdFolder as BaseFolder,
@@ -400,7 +414,7 @@ describe('folders web worker', () => {
 					};
 
 					testUtils.setFolders(tree);
-					testUtils.setCurrentView('appointment');
+					testUtils.setCurrentView(FOLDER_VIEW.appointment);
 					handleMessage({
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
@@ -420,7 +434,7 @@ describe('folders web worker', () => {
 					const createdLink = {
 						...generateSoapLink({
 							...normalizedPrimaryAccount,
-							view: 'appointment'
+							view: FOLDER_VIEW.appointment
 						}),
 						name: 'aaa'
 					};
@@ -442,14 +456,17 @@ describe('folders web worker', () => {
 							...normalizedPrimaryAccount,
 							children: [
 								{
-									...generateSoapLink({ ...normalizedPrimaryAccount, view: 'appointment' }),
+									...generateSoapLink({
+										...normalizedPrimaryAccount,
+										view: FOLDER_VIEW.appointment
+									}),
 									name: 'bbb'
 								}
 							]
 						} as UserFolder
 					};
 					testUtils.setFolders(tree);
-					testUtils.setCurrentView('appointment');
+					testUtils.setCurrentView(FOLDER_VIEW.appointment);
 					handleMessage({
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
@@ -471,7 +488,7 @@ describe('folders web worker', () => {
 					const primaryAccount = getNormalizedPrimaryAccount();
 					const createdLink = generateSoapLink({
 						...primaryAccount,
-						view: 'appointment'
+						view: FOLDER_VIEW.appointment
 					});
 
 					const data = {
@@ -487,7 +504,7 @@ describe('folders web worker', () => {
 					};
 
 					testUtils.setFolders(tree);
-					testUtils.setCurrentView('message');
+					testUtils.setCurrentView(FOLDER_VIEW.message);
 					handleMessage({
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
@@ -504,7 +521,7 @@ describe('folders web worker', () => {
 					const primaryAccount = getNormalizedPrimaryAccount();
 					const createdLink = generateSoapLink({
 						...primaryAccount,
-						view: 'appointment'
+						view: FOLDER_VIEW.appointment
 					});
 					const normalizedCreatedLink = getNormalizedCreatedLink(createdLink, primaryAccount.id);
 					const data = {
@@ -520,7 +537,7 @@ describe('folders web worker', () => {
 					};
 
 					testUtils.setFolders(tree);
-					testUtils.setCurrentView('appointment');
+					testUtils.setCurrentView(FOLDER_VIEW.appointment);
 					handleMessage({
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
@@ -535,7 +552,7 @@ describe('folders web worker', () => {
 					const primaryAccount = getNormalizedPrimaryAccount();
 					const createdLink = generateSoapLink({
 						...primaryAccount,
-						view: 'appointment'
+						view: FOLDER_VIEW.appointment
 					});
 					const normalizedCreatedLink = getNormalizedCreatedLink(createdLink, primaryAccount.id);
 					const data = {
@@ -551,7 +568,7 @@ describe('folders web worker', () => {
 					};
 
 					testUtils.setFolders(tree);
-					testUtils.setCurrentView('appointment');
+					testUtils.setCurrentView(FOLDER_VIEW.appointment);
 					handleMessage({
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
@@ -570,7 +587,7 @@ describe('folders web worker', () => {
 				const calendar = generateSoapSystemFolder(BASE_FOLDER_CALENDAR_ARGS);
 				const folderToMove = generateSoapCustomChild({
 					...primaryAccount,
-					view: 'appointment'
+					view: FOLDER_VIEW.appointment
 				});
 
 				const normalizedCalendar = {
@@ -596,7 +613,7 @@ describe('folders web worker', () => {
 					[folderToMove.id]: normalizedFolderToMove as UserFolder
 				};
 				testUtils.setFolders(tree);
-				testUtils.setCurrentView('appointment');
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
 
 				const data = {
 					op: 'notify',
@@ -654,126 +671,260 @@ describe('folders web worker', () => {
 				]);
 				expect(folders[folderToMove.id].parent).toStrictEqual(calendar.id);
 			});
-			test("renaming a folder will update itself, its structure and parent's tree structure", () => {
-				const primaryAccount = getNormalizedPrimaryAccount();
-				const folderToRename = generateSoapCustomChild({
-					...primaryAccount,
-					view: 'appointment'
-				});
-
-				const childFolder = generateSoapCustomChild(folderToRename);
-				const childFolder2 = generateSoapCustomChild(folderToRename);
-				const subChildFolder = generateSoapCustomChild(childFolder);
-
-				const normalizedSubChildFolder = {
-					...subChildFolder,
-					children: [],
-					depth: 3,
-					isLink: false,
-					parent: subChildFolder.l
-				};
-
-				const normalizedChildFolder = {
-					...childFolder,
-					children: [normalizedSubChildFolder],
-					depth: 2,
-					isLink: false,
-					parent: childFolder.l
-				};
-
-				const normalizedChildFolder2 = {
-					...childFolder2,
-					children: [],
-					depth: 2,
-					isLink: false,
-					parent: childFolder2.l
-				};
-
-				const normalizedFolderToRename = {
-					...folderToRename,
-					children: [normalizedChildFolder, normalizedChildFolder2],
-					depth: 1,
-					isLink: false,
-					parent: folderToRename.l
-				};
-
-				const tree = {
-					[primaryAccount.id]: {
+			describe('renaming a folder', () => {
+				it("will update itself, its structure and parent's tree structure", () => {
+					const primaryAccount = getNormalizedPrimaryAccount();
+					const folderToRename = generateSoapCustomChild({
 						...primaryAccount,
-						children: [normalizedFolderToRename] as UserFolder[]
-					},
-					[folderToRename.id]: normalizedFolderToRename as UserFolder,
-					[childFolder.id]: normalizedChildFolder as UserFolder,
-					[childFolder2.id]: normalizedChildFolder2 as UserFolder,
-					[subChildFolder.id]: normalizedSubChildFolder as UserFolder
-				};
-				testUtils.setFolders(tree);
-				testUtils.setCurrentView('appointment');
+						view: FOLDER_VIEW.appointment
+					});
 
-				const name = getRandomWord([
-					primaryAccount.name,
-					normalizedChildFolder.name,
-					normalizedFolderToRename.name
-				]);
+					const childFolder = generateSoapCustomChild(folderToRename);
+					const childFolder2 = generateSoapCustomChild(folderToRename);
+					const subChildFolder = generateSoapCustomChild(childFolder);
 
-				const data = {
-					op: 'notify',
-					notify: {
-						modified: {
-							folder: [
-								{
-									id: folderToRename.id,
-									uuid: folderToRename.uuid,
-									deletable: true,
-									name,
-									absFolderPath: `${primaryAccount.absFolderPath}${name}`
-								}
-							]
+					const normalizedSubChildFolder = {
+						...subChildFolder,
+						children: [],
+						depth: 3,
+						isLink: false,
+						parent: subChildFolder.l
+					};
+
+					const normalizedChildFolder = {
+						...childFolder,
+						children: [normalizedSubChildFolder],
+						depth: 2,
+						isLink: false,
+						parent: childFolder.l
+					};
+
+					const normalizedChildFolder2 = {
+						...childFolder2,
+						children: [],
+						depth: 2,
+						isLink: false,
+						parent: childFolder2.l
+					};
+
+					const normalizedFolderToRename = {
+						...folderToRename,
+						children: [normalizedChildFolder, normalizedChildFolder2],
+						depth: 1,
+						isLink: false,
+						parent: folderToRename.l
+					};
+
+					const tree = {
+						[primaryAccount.id]: {
+							...primaryAccount,
+							children: [normalizedFolderToRename] as UserFolder[]
+						},
+						[folderToRename.id]: normalizedFolderToRename as UserFolder,
+						[childFolder.id]: normalizedChildFolder as UserFolder,
+						[childFolder2.id]: normalizedChildFolder2 as UserFolder,
+						[subChildFolder.id]: normalizedSubChildFolder as UserFolder
+					};
+					testUtils.setFolders(tree);
+					testUtils.setCurrentView(FOLDER_VIEW.appointment);
+
+					const name = getRandomWord([
+						primaryAccount.name,
+						normalizedChildFolder.name,
+						normalizedFolderToRename.name
+					]);
+
+					const data = {
+						op: 'notify',
+						notify: {
+							modified: {
+								folder: [
+									{
+										id: folderToRename.id,
+										uuid: folderToRename.uuid,
+										deletable: true,
+										name,
+										absFolderPath: `${primaryAccount.absFolderPath}${name}`
+									}
+								]
+							}
 						}
-					}
-				};
+					};
 
-				handleMessage({
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					data
-				});
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
 
-				const folders = testUtils.getFolders();
+					const folders = testUtils.getFolders();
 
-				// check over itself and its structure
-				expect(folders[folderToRename.id].name).toStrictEqual(name);
-				expect(folders[folderToRename.id].children[0].absFolderPath).toStrictEqual(
-					`/${name}/${childFolder.name}`
-				);
-				expect(folders[folderToRename.id].children[1].absFolderPath).toStrictEqual(
-					`/${name}/${childFolder2.name}`
-				);
-				expect(folders[folderToRename.id].children[0].children[0].absFolderPath).toStrictEqual(
-					`/${name}/${childFolder.name}/${subChildFolder.name}`
-				);
-
-				if (folderToRename.l) {
-					// check over its parent structure
-					expect(folders[folderToRename.l].children[0].name).toStrictEqual(name);
-					expect(folders[folderToRename.l].children[0].absFolderPath).toStrictEqual(`/${name}`);
-					expect(folders[folderToRename.l].children[0].children[0].absFolderPath).toStrictEqual(
+					// check over itself and its structure
+					expect(folders[folderToRename.id].name).toStrictEqual(name);
+					expect(folders[folderToRename.id].children[0].absFolderPath).toStrictEqual(
 						`/${name}/${childFolder.name}`
 					);
-					expect(
-						folders[folderToRename.l].children[0].children[0].children[0].absFolderPath
-					).toStrictEqual(`/${name}/${childFolder.name}/${subChildFolder.name}`);
-					expect(folders[folderToRename.l].children[0].children[1].absFolderPath).toStrictEqual(
+					expect(folders[folderToRename.id].children[1].absFolderPath).toStrictEqual(
 						`/${name}/${childFolder2.name}`
 					);
-				}
+					expect(folders[folderToRename.id].children[0].children[0].absFolderPath).toStrictEqual(
+						`/${name}/${childFolder.name}/${subChildFolder.name}`
+					);
+
+					if (folderToRename.l) {
+						// check over its parent structure
+						expect(folders[folderToRename.l].children[0].name).toStrictEqual(name);
+						expect(folders[folderToRename.l].children[0].absFolderPath).toStrictEqual(`/${name}`);
+						expect(folders[folderToRename.l].children[0].children[0].absFolderPath).toStrictEqual(
+							`/${name}/${childFolder.name}`
+						);
+						expect(
+							folders[folderToRename.l].children[0].children[0].children[0].absFolderPath
+						).toStrictEqual(`/${name}/${childFolder.name}/${subChildFolder.name}`);
+						expect(folders[folderToRename.l].children[0].children[1].absFolderPath).toStrictEqual(
+							`/${name}/${childFolder2.name}`
+						);
+					}
+				});
+				it('when the folder is in a shared account tree, it renames the folder in the shared account folder tree', () => {
+					const primaryAccount = getNormalizedPrimaryAccount();
+					const sharedAccount = getNormalizedSharedAccount();
+					const folderToRename = generateSoapCustomChild({
+						...sharedAccount,
+						view: FOLDER_VIEW.message
+					});
+
+					const normalizedFolderToRename = {
+						...folderToRename,
+						children: [],
+						depth: 1,
+						isLink: false,
+						parent: folderToRename.l
+					};
+
+					const tree = {
+						[primaryAccount.id]: {
+							...primaryAccount
+						},
+						[sharedAccount.id]: {
+							...sharedAccount,
+							children: [normalizedFolderToRename] as Array<UserFolder>
+						},
+						[folderToRename.id]: normalizedFolderToRename as UserFolder
+					};
+					testUtils.setFolders(tree);
+					testUtils.setCurrentView(FOLDER_VIEW.message);
+
+					const newFolderName = getRandomWord([
+						primaryAccount.name,
+						normalizedFolderToRename.name,
+						sharedAccount.name
+					]);
+
+					const data = {
+						op: 'notify',
+						notify: {
+							modified: {
+								folder: [
+									{
+										id: folderToRename.id,
+										uuid: folderToRename.uuid,
+										deletable: true,
+										name: newFolderName,
+										absFolderPath: `${sharedAccount.absFolderPath}${newFolderName}`
+									}
+								]
+							}
+						}
+					};
+
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
+
+					const folders = testUtils.getFolders();
+
+					expect(folders[sharedAccount.id].children[0].name).toStrictEqual(newFolderName);
+				});
+				it('when the folder modified is in the shared account folder tree, it does not renames the shared folder in the primary account tree', () => {
+					const primaryAccount = getNormalizedPrimaryAccount();
+					const sharedAccount = getNormalizedSharedAccount();
+					const folderToRename = generateSoapCustomChild({
+						...sharedAccount,
+						view: FOLDER_VIEW.message
+					});
+
+					const normalizedFolderToRename = {
+						...folderToRename,
+						children: [],
+						depth: 1,
+						isLink: false,
+						parent: folderToRename.l
+					};
+
+					const normalizedFolderNotToBeRenamed = {
+						...normalizedFolderToRename,
+						id: faker.string.uuid()
+					};
+
+					const tree = {
+						[primaryAccount.id]: {
+							...primaryAccount,
+							children: [normalizedFolderNotToBeRenamed] as Array<UserFolder>
+						},
+						[sharedAccount.id]: {
+							...sharedAccount,
+							children: [normalizedFolderToRename] as Array<UserFolder>
+						},
+						[folderToRename.id]: normalizedFolderToRename as UserFolder,
+						[normalizedFolderNotToBeRenamed.id]: normalizedFolderNotToBeRenamed as UserFolder
+					};
+					testUtils.setFolders(tree);
+					testUtils.setCurrentView(FOLDER_VIEW.message);
+
+					const newFolderName = getRandomWord([
+						primaryAccount.name,
+						normalizedFolderToRename.name,
+						sharedAccount.name
+					]);
+
+					const data = {
+						op: 'notify',
+						notify: {
+							modified: {
+								folder: [
+									{
+										id: folderToRename.id,
+										uuid: folderToRename.uuid,
+										deletable: true,
+										name: newFolderName,
+										absFolderPath: `${sharedAccount.absFolderPath}${newFolderName}`
+									}
+								]
+							}
+						}
+					};
+
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					});
+
+					const folders = testUtils.getFolders();
+
+					expect(folders[sharedAccount.id].children[0].name).toStrictEqual(newFolderName);
+					expect(folders[primaryAccount.id].children[0].name).not.toStrictEqual(newFolderName);
+				});
 			});
 			test("changing a folder color will update itself and the parent's tree structure", () => {
 				const primaryAccount = getNormalizedPrimaryAccount();
 				const folderWithNewColor = {
 					...generateSoapCustomChild({
 						...primaryAccount,
-						view: 'appointment'
+						view: FOLDER_VIEW.appointment
 					}),
 					color: 1
 				};
@@ -793,7 +944,7 @@ describe('folders web worker', () => {
 				};
 
 				testUtils.setFolders(tree);
-				testUtils.setCurrentView('appointment');
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
 
 				const data = {
 					op: 'notify',
@@ -837,7 +988,7 @@ describe('folders web worker', () => {
 						const primaryAccount = getNormalizedPrimaryAccount();
 						const folderToUpdate = generateSoapCustomChild({
 							...primaryAccount,
-							view: 'appointment',
+							view: FOLDER_VIEW.appointment,
 							f: action === 'adding' ? '' : flag
 						});
 						const normalizedFolderToUpdate = {
@@ -856,7 +1007,7 @@ describe('folders web worker', () => {
 						};
 
 						testUtils.setFolders(tree);
-						testUtils.setCurrentView('appointment');
+						testUtils.setCurrentView(FOLDER_VIEW.appointment);
 
 						const data = {
 							op: 'notify',
@@ -908,7 +1059,7 @@ describe('folders web worker', () => {
 				const folderWithNewGrant = {
 					...generateSoapCustomChild({
 						...primaryAccount,
-						view: 'appointment'
+						view: FOLDER_VIEW.appointment
 					}),
 					acl: {
 						grant: [firstGrant, secondGrant]
@@ -930,7 +1081,7 @@ describe('folders web worker', () => {
 				};
 
 				testUtils.setFolders(tree);
-				testUtils.setCurrentView('appointment');
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
 
 				const data = {
 					op: 'notify',
@@ -980,7 +1131,7 @@ describe('folders web worker', () => {
 				const folderWithoutGrant = {
 					...generateSoapCustomChild({
 						...primaryAccount,
-						view: 'appointment'
+						view: FOLDER_VIEW.appointment
 					}),
 					acl: {
 						grant: [grant]
@@ -1002,7 +1153,7 @@ describe('folders web worker', () => {
 				};
 
 				testUtils.setFolders(tree);
-				testUtils.setCurrentView('appointment');
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
 
 				const data = {
 					op: 'notify',
@@ -1043,7 +1194,7 @@ describe('folders web worker', () => {
 				const primaryAccount = getNormalizedPrimaryAccount();
 				const folderToDelete = generateSoapCustomChild({
 					...primaryAccount,
-					view: 'appointment'
+					view: FOLDER_VIEW.appointment
 				});
 				const normalizedFolderToDelete = {
 					...folderToDelete,
@@ -1061,7 +1212,7 @@ describe('folders web worker', () => {
 				};
 
 				testUtils.setFolders(tree);
-				testUtils.setCurrentView('appointment');
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
 
 				const data = {
 					op: 'notify',
@@ -1085,7 +1236,7 @@ describe('folders web worker', () => {
 				const primaryAccount = getNormalizedPrimaryAccount();
 				const linkToDelete = generateSoapLink({
 					...primaryAccount,
-					view: 'appointment'
+					view: FOLDER_VIEW.appointment
 				});
 				const normalizedLinkToDelete = getNormalizedCreatedLink(linkToDelete, primaryAccount.id);
 				const tree = {
@@ -1097,7 +1248,7 @@ describe('folders web worker', () => {
 				};
 
 				testUtils.setFolders(tree);
-				testUtils.setCurrentView('appointment');
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
 
 				const data = {
 					op: 'notify',
@@ -1117,11 +1268,54 @@ describe('folders web worker', () => {
 				expect(folders[linkToDelete.id]).toBeUndefined();
 				expect(folders[primaryAccount.id].children).toHaveLength(0);
 			});
+			test('When a link is deleted, the sharing account corresponding folder will not be deleted', () => {
+				const primaryAccount = getNormalizedPrimaryAccount();
+				const sharedAccount = getNormalizedSharedAccount();
+				const linkToDelete = generateSoapLink({
+					...primaryAccount,
+					view: FOLDER_VIEW.message
+				});
+				const normalizedLinkToDelete = getNormalizedCreatedLink(linkToDelete, primaryAccount.id);
+				const normalizedLinkNotToDelete = { ...normalizedLinkToDelete, id: faker.string.uuid() };
+				const tree = {
+					[primaryAccount.id]: {
+						...primaryAccount,
+						children: [normalizedLinkToDelete] as LinkFolder[]
+					},
+					[sharedAccount.id]: {
+						...sharedAccount,
+						children: [normalizedLinkNotToDelete] as LinkFolder[]
+					},
+					[linkToDelete.id]: normalizedLinkToDelete as LinkFolder,
+					[normalizedLinkNotToDelete.id]: normalizedLinkNotToDelete as LinkFolder
+				};
+
+				testUtils.setFolders(tree);
+				testUtils.setCurrentView(FOLDER_VIEW.message);
+
+				const data = {
+					op: 'notify',
+					notify: {
+						deleted: [linkToDelete.id]
+					}
+				};
+
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
+
+				const folders = testUtils.getFolders();
+
+				expect(folders[normalizedLinkNotToDelete.id]).not.toBeUndefined();
+				expect(folders[sharedAccount.id].children).toHaveLength(1);
+			});
 			test('when a different item is deleted, the folder structure stay the same', () => {
 				const primaryAccount = getNormalizedPrimaryAccount();
 				const folderToDelete = generateSoapCustomChild({
 					...primaryAccount,
-					view: 'appointment'
+					view: FOLDER_VIEW.appointment
 				});
 				const normalizedFolderToDelete = {
 					...folderToDelete,
@@ -1139,7 +1333,7 @@ describe('folders web worker', () => {
 				};
 
 				testUtils.setFolders(tree);
-				testUtils.setCurrentView('appointment');
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
 
 				const data = {
 					op: 'notify',

@@ -29,7 +29,6 @@ import { Store } from 'redux';
 
 import { getAppI18n } from './i18n/i18n-test-factory';
 import { previewContextMock, PreviewsManagerContext } from './mocks/carbonio-ui-preview';
-import { TESTID_SELECTORS } from '../../constants/tests';
 
 type ByRoleWithIconOptions = ByRoleOptions & {
 	icon: string | RegExp;
@@ -234,7 +233,7 @@ export function triggerLoadMore(): void {
 		onChange(
 			[
 				{
-					target: screen.getByTestId(TESTID_SELECTORS.listBottomElement),
+					target: screen.getByTestId('list-bottom-element'),
 					intersectionRatio: 0,
 					isIntersecting: true
 				} as unknown as IntersectionObserverEntry

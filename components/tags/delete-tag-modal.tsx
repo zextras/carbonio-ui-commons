@@ -4,15 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Container, SnackbarManagerContext, Text } from '@zextras/carbonio-design-system';
+import React, { FC, useCallback, useMemo } from 'react';
+
+import { Container, Text, useSnackbar } from '@zextras/carbonio-design-system';
 import { deleteTag, t } from '@zextras/carbonio-shell-ui';
-import React, { FC, useCallback, useContext, useMemo } from 'react';
+
 import type { DeleteTagModalPropsType } from '../../types/sidebar';
 import ModalFooter from '../modals/modal-footer';
 import ModalHeader from '../modals/modal-header';
 
 const DeleteTagModal: FC<DeleteTagModalPropsType> = ({ onClose, tag }) => {
-	const createSnackbar = useContext(SnackbarManagerContext);
+	const createSnackbar = useSnackbar();
 
 	const title = useMemo(
 		() =>

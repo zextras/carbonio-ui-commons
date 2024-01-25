@@ -75,6 +75,7 @@ export const addRoute: typeof shell.addRoute = jest.fn();
 export const addSettingsView: typeof shell.addSettingsView = jest.fn();
 export const addSearchView: typeof shell.addSearchView = jest.fn();
 export const addBoardView: typeof shell.addBoardView = jest.fn();
+export const getBoardById: typeof shell.getBoardById = jest.fn();
 export const ACTION_TYPES: typeof shell.ACTION_TYPES = {
 	NEW: 'new'
 };

@@ -15,7 +15,7 @@ import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
 import { tags } from './tags/tags';
 
-export { FOLDERS, ZIMBRA_STANDARD_COLORS } from './carbonio-shell-ui-constants';
+export { FOLDERS, ZIMBRA_STANDARD_COLORS, JSNS } from './carbonio-shell-ui-constants';
 
 const FakeIntegration = (): React.JSX.Element => <div data-testid="fake-component" />;
 

@@ -34,7 +34,7 @@ export const pushHistory = jest.fn();
 
 export const useBoard = jest.fn();
 
-export const useAppContext = jest.fn(() => mockedAccounts);
+export const useAppContext = jest.fn<unknown, []>(() => mockedAccounts);
 export const getBridgedFunctions = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();

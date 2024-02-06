@@ -59,6 +59,8 @@ export const addSettingsView: typeof shell.addSettingsView = jest.fn();
 export const addSearchView: typeof shell.addSearchView = jest.fn();
 export const addBoardView: typeof shell.addBoardView = jest.fn();
 export const getBoardById: typeof shell.getBoardById = jest.fn();
+export const setCurrentBoard: typeof shell.setCurrentBoard = jest.fn();
+export const reopenBoards: typeof shell.reopenBoards = jest.fn();
 export const ACTION_TYPES: typeof shell.ACTION_TYPES = {
 	NEW: 'new'
 };

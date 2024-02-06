@@ -6,6 +6,7 @@
 
 import React, { FC, ReactNode, useCallback } from 'react';
 
+import { Action } from '@zextras/carbonio-design-system';
 import shell, { HistoryParams } from '@zextras/carbonio-shell-ui';
 import { trimStart } from 'lodash';
 import { useHistory } from 'react-router-dom';
@@ -16,8 +17,6 @@ import { generateSettings } from './settings/settings-generator';
 import { tags } from './tags/tags';
 
 export { FOLDERS, ZIMBRA_STANDARD_COLORS, JSNS } from './carbonio-shell-ui-constants';
-
-const FakeIntegration = (): React.JSX.Element => <div data-testid="fake-component" />;
 
 export const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
@@ -32,23 +31,7 @@ export const getUserSettings = jest.fn(() => mockedSettings);
 export const t = jest.fn((key: string) => key);
 export const replaceHistory = jest.fn();
 export const pushHistory = jest.fn();
-const getLink = {};
-const getLinkAvailable = false;
-export const useIntegratedFunction = jest.fn(() => [getLink, getLinkAvailable]);
 
-const IntegrationComponent = jest.fn(FakeIntegration);
-const isIntegrationAvailable = false;
-export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
-export const getIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
-const getFilesAction = {};
-const getFilesActionAvailable = false;
-export const getAction = jest.fn(() => [getFilesAction, getFilesActionAvailable]);
-const filesSelectDestinationFunction = jest.fn();
-const filesSelectDestinationFunctionAvailable = false;
-export const getIntegratedFunction = jest.fn(() => [
-	filesSelectDestinationFunction,
-	filesSelectDestinationFunctionAvailable
-]);
 export const useBoard = jest.fn();
 
 export const useAppContext = jest.fn(() => mockedAccounts);
@@ -119,3 +102,44 @@ function useReplaceHistoryMock(): (params: shell.HistoryParams) => void {
 
 export const usePushHistoryCallback = usePushHistoryMock;
 export const useReplaceHistoryCallback = useReplaceHistoryMock;
+
+/*
+ * Integration mocks
+ */
+
+// Integrated components
+const FakeIntegrationComponent = (): React.JSX.Element => <div data-testid="fake-component" />;
+const IntegrationComponent = jest.fn(FakeIntegrationComponent);
+const isIntegrationAvailable = false;
+export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
+export const getIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
+
+// Files links
+// TODO set a generic empty mock here, and create a function to register on demand a mocked implementation that return
+// 		the Files action
+const getLink = undefined;
+const getLinkAvailable = false;
+export const useIntegratedFunction = jest.fn<
+	[((...args: Array<unknown>) => unknown) | undefined, boolean],
+	[string]
+>((id) => [getLink, getLinkAvailable]);
+
+// Files actions
+// TODO set a generic empty mock here, and create a function to register on demand a mocked implementation that return
+// 		the Files action
+const getFilesAction = undefined;
+const getFilesActionAvailable = false;
+export const getAction = jest.fn<[Action | undefined, boolean], [string, string]>((type, id) => [
+	getFilesAction,
+	getFilesActionAvailable
+]);
+
+// Files upload
+// TODO set a generic empty mock here, and create a function to register on demand a mocked implementation that return
+// 		the Files action
+const filesSelectDestinationFunction = undefined;
+const filesSelectDestinationFunctionAvailable = false;
+export const getIntegratedFunction = jest.fn<
+	[((...args: Array<unknown>) => unknown) | undefined, boolean],
+	[string]
+>((id) => [filesSelectDestinationFunction, filesSelectDestinationFunctionAvailable]);

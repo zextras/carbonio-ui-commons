@@ -8,11 +8,12 @@ import { rest } from 'msw';
 
 import { getSetupServer } from '../../../jest-setup';
 
-export const createAPIInterceptor = <T>(
+export const createAPIInterceptor = <RequestParamsType, ResponseType = never>(
 	apiAction: string,
-	extraParamProperty?: string
-): Promise<T> =>
-	new Promise<T>((resolve, reject) => {
+	extraParamProperty?: string,
+	response?: ResponseType
+): Promise<RequestParamsType> =>
+	new Promise<RequestParamsType>((resolve, reject) => {
 		// Register a handler for the REST call
 		getSetupServer().use(
 			rest.post(`/service/soap/${apiAction}Request`, async (req, res, ctx) => {
@@ -21,17 +22,16 @@ export const createAPIInterceptor = <T>(
 				}
 
 				const reqActionParamWrapper = `${apiAction}Request`;
-				const response = await req.json();
+				const request = await req.json();
 				const params = extraParamProperty
-					? response.Body?.[reqActionParamWrapper][extraParamProperty]
-					: response.Body?.[reqActionParamWrapper];
+					? request.Body?.[reqActionParamWrapper][extraParamProperty]
+					: request.Body?.[reqActionParamWrapper];
 				resolve(params);
 
-				// Don't care about the actual response
 				return res(
 					ctx.json({
 						Body: {
-							[`${apiAction}Response`]: {}
+							[`${apiAction}Response`]: response || {}
 						}
 					})
 				);

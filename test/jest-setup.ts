@@ -18,7 +18,7 @@ let server: SetupServer;
  */
 export const getFailOnConsoleDefaultConfig = (): failOnConsole.InitOptions => ({
 	shouldFailOnError: true,
-	shouldFailOnWarn: false
+	shouldFailOnWarn: true
 });
 
 /**

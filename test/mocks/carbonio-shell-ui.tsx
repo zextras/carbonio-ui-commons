@@ -23,9 +23,15 @@ const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();
 const mockedTags: shell.Tags = tags;
 
-export const getUserAccount: typeof shell.getUserAccount = () => mockedAccount;
-export const useUserAccount: typeof shell.useUserAccount = () => mockedAccount;
-export const useUserAccounts: typeof shell.useUserAccounts = () => mockedAccounts;
+export const getUserAccount: jest.Mock<ReturnType<typeof shell.getUserAccount>> = jest.fn(
+	() => mockedAccount
+);
+export const useUserAccount: jest.Mock<ReturnType<typeof shell.useUserAccount>> = jest.fn(
+	() => mockedAccount
+);
+export const useUserAccounts: jest.Mock<ReturnType<typeof shell.useUserAccounts>> = jest.fn(
+	() => mockedAccounts
+);
 export const useUserSettings = jest.fn(() => mockedSettings);
 export const getUserSettings = jest.fn(() => mockedSettings);
 export const t = jest.fn((key: string) => key);

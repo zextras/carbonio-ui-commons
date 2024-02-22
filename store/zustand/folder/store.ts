@@ -5,6 +5,7 @@
  */
 import produce from 'immer';
 import { create } from 'zustand';
+
 import { Folder, FolderState } from '../../../types/folder';
 import { folderWorker } from '../../../worker';
 

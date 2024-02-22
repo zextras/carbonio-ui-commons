@@ -3,6 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import React, { FC } from 'react';
+
 import {
 	Divider,
 	Text,
@@ -11,7 +13,6 @@ import {
 	Padding,
 	Container
 } from '@zextras/carbonio-design-system';
-import React, { FC } from 'react';
 
 const ModalHeader: FC<{ title: string; onClose?: () => void }> = ({ title, onClose }) => (
 	<Container mainAlignment="space-between" width="100%">

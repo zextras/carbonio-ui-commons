@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { AccountSettings } from '@zextras/carbonio-shell-ui';
+
 import defaultSettings from './default-settings';
 
 /**

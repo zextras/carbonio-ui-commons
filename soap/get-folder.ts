@@ -5,6 +5,7 @@
  */
 import { soapFetch } from '@zextras/carbonio-shell-ui';
 import { isNil, omitBy } from 'lodash';
+
 import { FolderView } from '../types/folder';
 
 export const getFolderRequest = async (

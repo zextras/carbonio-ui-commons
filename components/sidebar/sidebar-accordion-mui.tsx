@@ -4,10 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { FC, useCallback, useRef } from 'react';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Container } from '@mui/material';
 import { useLocalStorage } from '@zextras/carbonio-shell-ui';
-import React, { FC, useCallback, useRef } from 'react';
+
 import { theme } from '../../theme/theme-mui';
 import type { Folder } from '../../types/folder';
 import type { SidebarAccordionProps } from '../../types/sidebar';

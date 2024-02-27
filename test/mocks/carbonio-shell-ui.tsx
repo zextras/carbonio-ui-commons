@@ -6,7 +6,6 @@
 
 import React, { FC, ReactNode, useCallback } from 'react';
 
-import { Action } from '@zextras/carbonio-design-system';
 import shell, { HistoryParams } from '@zextras/carbonio-shell-ui';
 import { trimStart } from 'lodash';
 import { useHistory } from 'react-router-dom';
@@ -122,32 +121,19 @@ const isIntegrationAvailable = false;
 export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
 export const getIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
 
-// Files links
-// TODO set a generic empty mock here, and create a function to register on demand a mocked implementation that return
-// 		the Files action
-const getLink = undefined;
-const getLinkAvailable = false;
-export const useIntegratedFunction = jest.fn<
-	[((...args: Array<unknown>) => unknown) | undefined, boolean],
-	[string]
->((id) => [getLink, getLinkAvailable]);
+// Integrated actions
+export const getAction = jest.fn<
+	ReturnType<typeof shell.getAction>,
+	Parameters<typeof shell.getAction>
+>((type, id) => [undefined, false]);
 
-// Files actions
-// TODO set a generic empty mock here, and create a function to register on demand a mocked implementation that return
-// 		the Files action
-const getFilesAction = undefined;
-const getFilesActionAvailable = false;
-export const getAction = jest.fn<[Action | undefined, boolean], [string, string]>((type, id) => [
-	getFilesAction,
-	getFilesActionAvailable
-]);
-
-// Files upload
-// TODO set a generic empty mock here, and create a function to register on demand a mocked implementation that return
-// 		the Files action
-const filesSelectDestinationFunction = undefined;
-const filesSelectDestinationFunctionAvailable = false;
+// Integrated functions
 export const getIntegratedFunction = jest.fn<
-	[((...args: Array<unknown>) => unknown) | undefined, boolean],
-	[string]
->((id) => [filesSelectDestinationFunction, filesSelectDestinationFunctionAvailable]);
+	ReturnType<typeof shell.getIntegratedFunction>,
+	Parameters<typeof shell.getIntegratedFunction>
+>((id) => [jest.fn(), false]);
+
+export const useIntegratedFunction = jest.fn<
+	ReturnType<typeof shell.useIntegratedFunction>,
+	Parameters<typeof shell.useIntegratedFunction>
+>((id) => [jest.fn(), false]);

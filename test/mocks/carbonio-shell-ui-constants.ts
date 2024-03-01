@@ -43,3 +43,5 @@ export enum JSNS {
 	ALL = 'urn:zimbra',
 	SYNC = 'urn:zimbraSync'
 }
+
+export const ROOT_NAME = 'USER_ROOT';

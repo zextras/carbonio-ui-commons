@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { waitFor } from '@testing-library/react';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { useFoldersController } from './use-folders-controller';
 import { useFolderStore } from '../store/zustand/folder';
@@ -29,8 +29,8 @@ const getDifferentViewCreation = (view: FolderView): unknown => {
 describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parameter', (view) => {
 	test('on first render it will call refresh', async () => {
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
-		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
-		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
+		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
+		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 		await waitFor(() => setupHook(useFoldersController, { initialProps: [view] }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
@@ -43,8 +43,8 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		useFolderStore.setState({ folders: {} });
 		const notify = { deleted: ['1'], seq: 2 };
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
-		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
-		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
+		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
+		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 
 		shell.useNotify.mockReturnValueOnce([]).mockReturnValueOnce([notify]);
 		const { rerender } = await waitFor(() =>
@@ -66,8 +66,8 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		useFolderStore.setState({ folders: {} });
 		const notify = { created: getDifferentViewCreation(view as FolderView), seq: 2 };
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
-		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
-		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
+		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
+		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 
 		shell.useNotify.mockReturnValueOnce([]).mockReturnValueOnce([
 			// SoapNotify type inside shell is incomplete
@@ -90,8 +90,8 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 	test('If multiple accounts are available they will be on the same level of the main account', async () => {
 		useFolderStore.setState({ folders: {} });
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
-		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
-		getSetupServer().use(rest.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
+		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
+		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 		await waitFor(() => setupHook(useFoldersController, { initialProps: ['appointment'] }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
@@ -113,12 +113,15 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 	test('If only main account is available postMessage will be called with an array with 1 item', async () => {
 		useFolderStore.setState({ folders: {} });
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
-		getSetupServer().use(rest.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
+		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(
-			rest.post('/service/soap/GetShareInfoRequest', (req, res, ctx) => {
-				const response = getEmptyMSWShareInfoResponse();
-				return res(ctx.json(response));
-			})
+			http.post<never, never, ReturnType<typeof getEmptyMSWShareInfoResponse>>(
+				'/service/soap/GetShareInfoRequest',
+				({ request }) => {
+					const response = getEmptyMSWShareInfoResponse();
+					return HttpResponse.json(response);
+				}
+			)
 		);
 		await waitFor(() => setupHook(useFoldersController, { initialProps: ['appointment'] }));
 		expect(workerSpy).toHaveBeenCalled();

@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
+import { SoapHeader } from '@zextras/carbonio-shell-ui';
 import { filter } from 'lodash';
+import { HttpResponse, HttpResponseResolver } from 'msw';
 
 import { BaseFolder, FolderView } from '../../../../types/folder';
 import { generateSoapRoot } from '../../folders/soap-roots-generator';
@@ -164,12 +166,16 @@ const getFolderResponse = (
 	Body: getDefaultGetFolderResponse({ id, view, tr, context })
 });
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
-export const handleGetFolderRequest = (req, res, ctx) => {
-	const { view, id, tr } = req.body.Body.GetFolderRequest;
-	const { context } = req.body.Header;
+export const handleGetFolderRequest: HttpResponseResolver<
+	never,
+	{
+		Body: { GetFolderRequest: { id?: string; view?: FolderView; tr?: number; context?: any } };
+		Header: SoapHeader;
+	}
+> = async ({ request }) => {
+	const requestContent = await request.json();
+	const { view, id, tr } = requestContent.Body.GetFolderRequest;
+	const { context } = requestContent.Header;
 	const response = getFolderResponse({ view, id, tr, context });
-	return res(ctx.json(response));
+	return HttpResponse.json(response);
 };

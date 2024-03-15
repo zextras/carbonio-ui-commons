@@ -96,7 +96,10 @@ export const defaultConfig: Config = {
 	// A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
 	moduleNameMapper: {
 		'\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-			require.resolve('./mocks/file-mock.ts')
+			require.resolve('./mocks/file-mock.ts'),
+
+		// Force module uuid to resolve with the CJS entry point, because Jest does not support package.json.exports. See https://github.com/uuidjs/uuid/issues/451
+		uuid: require.resolve('uuid')
 	},
 
 	// An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

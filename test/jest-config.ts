@@ -156,10 +156,20 @@ export const defaultConfig: Config = {
 	// snapshotSerializers: [],
 
 	// The test environment that will be used for testing
-	testEnvironment: 'jsdom',
+	/**
+	 * @note Override test environment to set again Request, Response, TextEncoder and other
+	 * fields
+	 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#requestresponsetextencoder-is-not-defined-jest
+	 * @see https://github.com/mswjs/msw/issues/1916#issuecomment-1919965699
+	 */
+	testEnvironment: '<rootDir>/src/carbonio-ui-commons/test/jsdom-extended.ts',
 
-	// Options that will be passed to the testEnvironment
-	// testEnvironmentOptions: {},
+	/**
+	 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#cannot-find-module-mswnode-jsdom
+	 */
+	testEnvironmentOptions: {
+		customExportConditions: ['']
+	},
 
 	// Adds a location field to test results
 	// testLocationInResults: false,

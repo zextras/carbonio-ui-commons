@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { RequestHandler } from 'msw';
+import { DefaultBodyType, RequestHandler } from 'msw';
 import { RequestHandlerDefaultInfo } from 'msw/lib/core/handlers/RequestHandler';
 
 export interface CarbonioMailboxRestGenericRequest extends RequestHandlerDefaultInfo {
@@ -14,6 +14,10 @@ export interface CarbonioMailboxRestGenericResponse {
 	Body: any;
 	Header: any;
 }
+
+export type CarbonioMailboxRestHandlerRequest<T> = DefaultBodyType & {
+	Body: Record<string, T>;
+};
 
 const handlers: Array<RequestHandler> = [];
 

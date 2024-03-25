@@ -5,7 +5,6 @@
  */
 
 import failOnConsole from 'jest-fail-on-console';
-import fetchMock from 'jest-fetch-mock';
 import { noop } from 'lodash';
 import { setupServer, SetupServer } from 'msw/node';
 
@@ -46,7 +45,6 @@ export const defaultBeforeAllTests = (): void => {
 		})
 	});
 
-	fetchMock.doMock();
 	server = setupServer(...getRestHandlers());
 	server.listen({ onUnhandledRequest: 'warn' });
 };

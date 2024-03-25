@@ -96,7 +96,10 @@ export const defaultConfig: Config = {
 	// A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
 	moduleNameMapper: {
 		'\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-			require.resolve('./mocks/file-mock.ts')
+			require.resolve('./mocks/file-mock.ts'),
+
+		// Force module uuid to resolve with the CJS entry point, because Jest does not support package.json.exports. See https://github.com/uuidjs/uuid/issues/451
+		uuid: require.resolve('uuid')
 	},
 
 	// An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -153,10 +156,20 @@ export const defaultConfig: Config = {
 	// snapshotSerializers: [],
 
 	// The test environment that will be used for testing
-	testEnvironment: 'jsdom',
+	/**
+	 * @note Override test environment to set again Request, Response, TextEncoder and other
+	 * fields
+	 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#requestresponsetextencoder-is-not-defined-jest
+	 * @see https://github.com/mswjs/msw/issues/1916#issuecomment-1919965699
+	 */
+	testEnvironment: '<rootDir>/src/carbonio-ui-commons/test/jsdom-extended.ts',
 
-	// Options that will be passed to the testEnvironment
-	// testEnvironmentOptions: {},
+	/**
+	 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#cannot-find-module-mswnode-jsdom
+	 */
+	testEnvironmentOptions: {
+		customExportConditions: ['']
+	},
 
 	// Adds a location field to test results
 	// testLocationInResults: false,

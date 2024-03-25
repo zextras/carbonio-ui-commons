@@ -5,6 +5,7 @@
  */
 import { faker } from '@faker-js/faker';
 import { map } from 'lodash';
+import { HttpResponse, HttpResponseResolver } from 'msw';
 
 import { getRandomView } from '../../folders/soap-roots-generator';
 
@@ -91,10 +92,5 @@ export const getEmptyMSWShareInfoResponse = () => {
 	};
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
-export const handleGetShareInfoRequest = (req, res, ctx) => {
-	const response = getShareInfoResponse();
-	return res(ctx.json(response));
-};
+export const handleGetShareInfoRequest: HttpResponseResolver<never, any> = async ({ request }) =>
+	HttpResponse.json(getShareInfoResponse());

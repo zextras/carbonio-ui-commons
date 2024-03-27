@@ -190,8 +190,8 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 	return res?.Body?.Fault
 		? (res?.Body as ErrorSoapBodyResponse)
 		: // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		  // @ts-ignore
-		  (res?.Body?.[`${api}Response`] as R);
+			// @ts-ignore
+			(res?.Body?.[`${api}Response`] as R);
 };
 export const getSoapFetch =
 	(app: string) =>
@@ -215,7 +215,7 @@ export const getSoapFetch =
 						notify: notify?.[0]?.seq
 							? {
 									seq: notify?.[0]?.seq
-							  }
+								}
 							: undefined,
 						session: session ?? {},
 						account: acc,

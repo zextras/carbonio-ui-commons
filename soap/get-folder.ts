@@ -18,7 +18,7 @@ export const getFolderRequest = async (
 			folder: id
 				? {
 						l: id
-				  }
+					}
 				: undefined,
 			view,
 			tr: 1

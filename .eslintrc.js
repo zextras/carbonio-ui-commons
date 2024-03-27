@@ -74,6 +74,7 @@ module.exports = {
 		'sonarjs/no-identical-functions': 'warn',
 
 		'@typescript-eslint/no-shadow': 'warn',
+		'@typescript-eslint/no-explicit-any': 'warn',
 
 		'no-param-reassign': [
 			'warn',

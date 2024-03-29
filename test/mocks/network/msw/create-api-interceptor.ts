@@ -4,37 +4,46 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { rest } from 'msw';
+import { DefaultBodyType, http, HttpResponse } from 'msw';
 
 import { getSetupServer } from '../../../jest-setup';
 
+type HandlerRequest<T> = DefaultBodyType & {
+	Body: Record<string, T>;
+};
+
 export const createAPIInterceptor = <RequestParamsType, ResponseType = never>(
 	apiAction: string,
-	extraParamProperty?: string,
 	response?: ResponseType
 ): Promise<RequestParamsType> =>
 	new Promise<RequestParamsType>((resolve, reject) => {
 		// Register a handler for the REST call
 		getSetupServer().use(
-			rest.post(`/service/soap/${apiAction}Request`, async (req, res, ctx) => {
-				if (!req) {
-					reject(new Error('Empty request'));
-				}
+			http.post<never, HandlerRequest<RequestParamsType>>(
+				`/service/soap/${apiAction}Request`,
+				async ({ request }) => {
+					if (!request) {
+						reject(new Error('Empty request'));
+						return HttpResponse.json(
+							{},
+							{
+								status: 500,
+								statusText: 'Empty request'
+							}
+						);
+					}
 
-				const reqActionParamWrapper = `${apiAction}Request`;
-				const request = await req.json();
-				const params = extraParamProperty
-					? request.Body?.[reqActionParamWrapper][extraParamProperty]
-					: request.Body?.[reqActionParamWrapper];
-				resolve(params);
+					const reqActionParamWrapper = `${apiAction}Request`;
+					const requestContent = await request.json();
+					const params = requestContent?.Body?.[reqActionParamWrapper];
+					resolve(params);
 
-				return res(
-					ctx.json({
+					return HttpResponse.json({
 						Body: {
 							[`${apiAction}Response`]: response || {}
 						}
-					})
-				);
-			})
+					});
+				}
+			)
 		);
 	});

@@ -245,7 +245,7 @@ export const getAccountSoapRoot = (isPrimaryAccount: boolean): BaseFolder => ({
 				acl: {
 					grant: []
 				}
-		  }
+			}
 		: {})
 });
 

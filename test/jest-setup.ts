@@ -23,7 +23,12 @@ export const getFailOnConsoleDefaultConfig = (): failOnConsole.InitOptions => ({
 /**
  * Default logic to execute before all the tests
  */
-export const defaultBeforeAllTests = (): void => {
+type DefaultBeforeAllTestsProps = {
+	onUnhandledRequest: 'warn' | 'error';
+};
+export const defaultBeforeAllTests = (
+	{ onUnhandledRequest }: DefaultBeforeAllTestsProps = { onUnhandledRequest: 'warn' }
+): void => {
 	// Do not useFakeTimers with `whatwg-fetch` if using mocked server
 	// https://github.com/mswjs/msw/issues/448
 
@@ -45,8 +50,11 @@ export const defaultBeforeAllTests = (): void => {
 		})
 	});
 
+	fetchMock.doMock();
+	server?.close();
+
 	server = setupServer(...getRestHandlers());
-	server.listen({ onUnhandledRequest: 'warn' });
+	server.listen({ onUnhandledRequest });
 };
 
 /**

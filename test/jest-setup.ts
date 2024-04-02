@@ -50,7 +50,6 @@ export const defaultBeforeAllTests = (
 		})
 	});
 
-	fetchMock.doMock();
 	server?.close();
 
 	server = setupServer(...getRestHandlers());

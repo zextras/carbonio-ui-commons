@@ -3,6 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import React, { ReactElement } from 'react';
+
 import {
 	Container,
 	Icon,
@@ -13,8 +15,8 @@ import {
 	TextProps,
 	getColor
 } from '@zextras/carbonio-design-system';
-import React, { ReactElement } from 'react';
 import styled from 'styled-components';
+
 import { CustomLabelFactoryProps } from '../../types/select';
 
 export const Square = styled.div`
@@ -44,8 +46,8 @@ color: ${({ theme, disabled, $showPrimary }): string =>
 	disabled
 		? theme.palette.text.disabled
 		: $showPrimary
-		? theme.palette.primary.regular
-		: theme.palette.secondary.regular}};`;
+			? theme.palette.primary.regular
+			: theme.palette.secondary.regular}};`;
 
 export const StyledIcon = styled(Icon)<IconProps & { $showPrimary?: boolean }>`
 color: ${({ theme, disabled, $showPrimary }): string =>
@@ -53,8 +55,8 @@ color: ${({ theme, disabled, $showPrimary }): string =>
 	disabled
 		? theme.palette.text.disabled
 		: $showPrimary
-		? theme.palette.primary.regular
-		: theme.palette.secondary.regular}};`;
+			? theme.palette.primary.regular
+			: theme.palette.secondary.regular}};`;
 
 export const FolderSelectorLabelFactory = ({
 	selected,

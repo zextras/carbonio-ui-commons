@@ -138,6 +138,15 @@ export type BaseFolder = {
 	checked?: boolean;
 };
 
+export type SoapLink = SoapFolder & LinkFolderFields;
+export type SoapSearchFolder = SoapFolder & SearchFolderFields;
+
+export type SoapFolder = BaseFolder & {
+	folder?: Array<SoapFolder>;
+	link?: Array<SoapLink>;
+	search?: Array<SoapSearchFolder>;
+};
+
 export type LinkFolderFields = {
 	// Primary email address of the owner of the linked-to resource
 	owner?: string;

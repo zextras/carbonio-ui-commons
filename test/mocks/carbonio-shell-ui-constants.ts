@@ -35,3 +35,13 @@ export const ZIMBRA_STANDARD_COLORS = [
 	{ zValue: 8, hex: '#828282', zLabel: 'gray' },
 	{ zValue: 9, hex: '#ba8b00', zLabel: 'orange' }
 ];
+
+export enum JSNS {
+	ACCOUNT = 'urn:zimbraAccount',
+	ADMIN = 'urn:zimbraAdmin',
+	MAIL = 'urn:zimbraMail',
+	ALL = 'urn:zimbra',
+	SYNC = 'urn:zimbraSync'
+}
+
+export const ROOT_NAME = 'USER_ROOT';

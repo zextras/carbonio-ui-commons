@@ -3,6 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import React from 'react';
+
 import {
 	Breadcrumbs,
 	BreadcrumbsProps,
@@ -12,7 +14,6 @@ import {
 	TextProps,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import React from 'react';
 
 type StaticBreadcrumbsProps = BreadcrumbsProps & {
 	size?: TextProps['size'];

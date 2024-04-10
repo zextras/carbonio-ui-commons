@@ -7,8 +7,10 @@
 /* eslint-disable import/extensions */
 
 import React, { FC, ReactElement, useMemo } from 'react';
+
 import { Container, Button, Padding, Divider, Tooltip } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
+
 import type { ModalFooterProps } from '../../types';
 
 const ModalFooter: FC<ModalFooterProps> = ({

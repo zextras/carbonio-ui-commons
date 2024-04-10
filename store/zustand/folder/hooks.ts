@@ -5,7 +5,7 @@
  */
 
 import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
-import { filter, find, keyBy, values } from 'lodash';
+import { filter, find, keyBy, some, values } from 'lodash';
 
 import { useFolderStore } from './store';
 import { getFlatChildrenFolders } from './utils';
@@ -55,17 +55,17 @@ export const getLinksArray = (view?: string): Array<LinkFolder> =>
 	}) as Array<LinkFolder>;
 
 /**
- * Returns the root account id for a given folder
+ * Returns the root folder id for a given folder
  * @param folder a Folder or LinkFolder
- * @returns the root account id or null if the folder is not a link or the root folder
+ * @returns the root folder id or null if the folder is not a link or the root folder
  */
-function getRootAccountId(folder: Folder | LinkFolder): string {
+function getRootFolderId(folder: Folder | LinkFolder): string {
 	const parent = folder?.parent && getFolder(folder.parent);
 	if ('oname' in folder && folder?.oname === ROOT_NAME) {
 		return folder.id;
 	}
 	if (parent) {
-		return getRootAccountId(parent);
+		return getRootFolderId(parent);
 	}
 	return folder.id;
 }
@@ -79,7 +79,7 @@ export const useRoot = (id: string): Folder | undefined =>
 	useFolderStore((s) => {
 		const folder = s.folders?.[id];
 		if (folder) {
-			const rootFolderId = getRootAccountId(folder);
+			const rootFolderId = getRootFolderId(folder);
 			return s.folders?.[rootFolderId];
 		}
 		return undefined;
@@ -93,7 +93,7 @@ export const useRoot = (id: string): Folder | undefined =>
 export const getRoot = (id: string): Folder | undefined => {
 	const folder = useFolderStore.getState().folders?.[id];
 	if (folder) {
-		const rootFolderId = getRootAccountId(folder);
+		const rootFolderId = getRootFolderId(folder);
 		return useFolderStore.getState().folders?.[rootFolderId];
 	}
 	return undefined;
@@ -151,6 +151,18 @@ export const getRootByUser = (
 	const { folders } = useFolderStore.getState();
 	return find(folders, (f) => f.name === userId);
 };
+
+/**
+ * Returns the root account id for a given folder
+ * @param folder a Folder or LinkFolder
+ * @returns the root account id or null if the folder is not a link or the root folder
+ */
+export function getRootAccountId(id: string): string | undefined {
+	const roots = getRootsArray();
+	const root = find(roots, (r) => some(r.id?.split(':'), (v) => id?.split(':')?.includes(v)));
+
+	return root?.id;
+}
 
 /**
  * Return a flat array of folder that are children of the given root

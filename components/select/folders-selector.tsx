@@ -3,9 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { Container, Padding, Select, SelectItem, Text } from '@zextras/carbonio-design-system';
 import React, { ReactElement, useCallback, useMemo } from 'react';
+
+import { Container, Padding, Select, SelectItem, Text } from '@zextras/carbonio-design-system';
 import { find, map } from 'lodash';
+
 import { FolderSelectorLabelFactory, Square } from './select-label-factory';
 import type { FolderSelectorItem } from '../../types/select';
 

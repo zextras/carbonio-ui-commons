@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { SoapLink } from '@zextras/carbonio-shell-ui';
+import { FOLDERS, SoapLink } from '@zextras/carbonio-shell-ui';
 import { SoapFolder } from '@zextras/carbonio-shell-ui/types/network/soap';
 import { map, orderBy } from 'lodash';
 
@@ -59,7 +59,8 @@ export const getRandomView = (): FolderView => {
  * @param parent
  * */
 export const generateSoapCustomChild = (parent: BaseFolder | SoapLink): BaseFolder | SoapLink => {
-	const id = getUniqueID();
+	const parentIsSoapLink = 'owner' in parent;
+	const id = parentIsSoapLink ? `${parent.uuid}:${getUniqueID()}` : getUniqueID();
 	const name = getUniqueName();
 	return {
 		id,
@@ -82,6 +83,7 @@ export const generateSoapCustomChild = (parent: BaseFolder | SoapLink): BaseFold
 		s: faker.number.int({ min: 1, max: 99999 }),
 		i4ms: faker.number.int({ min: 1, max: 99999 }),
 		i4next: faker.number.int({ min: 1, max: 99999 }),
+		...(parentIsSoapLink ? { perm: 'rwidxc' } : {}),
 		acl: {
 			grant: []
 		}
@@ -224,9 +226,10 @@ export const getAccountSoapRoot = (isPrimaryAccount: boolean): BaseFolder => ({
 	uuid: faker.string.uuid(),
 	deletable: false,
 	recursive: true,
-	name: 'USER_ROOT',
+	name: isPrimaryAccount ? FOLDERS.USER_ROOT : faker.string.alpha(10),
+	...(isPrimaryAccount ? { oname: FOLDERS.USER_ROOT } : {}),
 	absFolderPath: '/',
-	l: isPrimaryAccount ? '11' : `${luuid}:11`,
+	...(isPrimaryAccount ? { l: '1' } : {}),
 	luuid,
 	f: 'i',
 	rev: 1,
@@ -237,9 +240,13 @@ export const getAccountSoapRoot = (isPrimaryAccount: boolean): BaseFolder => ({
 	s: 0,
 	i4ms: faker.number.int({ min: 1, max: 99999 }),
 	i4next: faker.number.int({ min: 1, max: 99999 }),
-	acl: {
-		grant: []
-	}
+	...(isPrimaryAccount
+		? {
+				acl: {
+					grant: []
+				}
+			}
+		: {})
 });
 
 const generateAccountSoapRoot = (traverse: boolean, isPrimaryAccount: boolean): SoapFolder => {

@@ -6,7 +6,8 @@
 import { FOLDERS, getUserAccount } from '@zextras/carbonio-shell-ui';
 import { find } from 'lodash';
 
-import type { Folders } from '../types/folder';
+import { useFolderStore } from '../store/zustand/folder';
+import type { Folder, Folders } from '../types/folder';
 
 const NO_ACCOUNT_NAME = 'No account';
 
@@ -122,3 +123,46 @@ export const isRoot = (folderId: string): boolean => isA(folderId, FOLDERS.USER_
 export function isSharedAccountFolder(folderId: string): boolean {
 	return getFolderIdParts(folderId).zid !== null;
 }
+
+/**
+ * Tells if a folder is a system one
+ * @param folderId
+ */
+export const isSystemFolder = (folderId: string): boolean => {
+	const { id } = getFolderIdParts(folderId);
+	if (!id) {
+		return false;
+	}
+	return Object.values(FOLDERS).includes(id);
+};
+
+/**
+ * Tells if a folder is a trashed folder
+ * @param folder
+ * @param folderId
+ */
+export const isTrashed = ({
+	folder,
+	folderId
+}: {
+	folder?: Folder;
+	folderId?: string;
+}): boolean => {
+	if (!folder && !folderId) {
+		return false;
+	}
+	const folderIdAbsPath = useFolderStore.getState()?.folders?.[folderId ?? '']?.absFolderPath;
+
+	const path = folder ? folder.absFolderPath : folderIdAbsPath;
+	if (!path) {
+		return false;
+	}
+
+	return path.toLowerCase().startsWith('/trash');
+};
+
+/**
+ * Tells if a folder with the given id is a trash folder
+ * @param folderId
+ */
+export const isTrash = (folderId: string): boolean => isA(folderId, FOLDERS.TRASH);

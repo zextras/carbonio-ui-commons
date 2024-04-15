@@ -5,8 +5,9 @@
  */
 import { getUserAccount } from '@zextras/carbonio-shell-ui';
 
-import { getFolderIdParts, getFolderOwnerAccountName, isRoot } from './folders';
+import { getFolderIdParts, getFolderOwnerAccountName, isRoot, isSystemFolder } from './folders';
 import { getRootsMap } from '../store/zustand/folder/hooks';
+import { FOLDERS_DESCRIPTORS } from '../test/constants';
 import { FOLDERS } from '../test/mocks/carbonio-shell-ui-constants';
 import { populateFoldersStore } from '../test/mocks/store/folders';
 import { getMocksContext } from '../test/mocks/utils/mocks-context';
@@ -98,5 +99,23 @@ describe('isRoot', () => {
 	test('A folder with a zid and an id != 1 is not recognized as a root', () => {
 		const folderId = 'anotherlonghash:99';
 		expect(isRoot(folderId)).toBe(false);
+	});
+});
+
+describe('isSystemFolder', () => {
+	test.each`
+		folder                              | result
+		${FOLDERS_DESCRIPTORS.userRoot}     | ${true}
+		${FOLDERS_DESCRIPTORS.inbox}        | ${true}
+		${FOLDERS_DESCRIPTORS.sent}         | ${true}
+		${FOLDERS_DESCRIPTORS.trash}        | ${true}
+		${FOLDERS_DESCRIPTORS.spam}         | ${true}
+		${FOLDERS_DESCRIPTORS.draft}        | ${true}
+		${FOLDERS_DESCRIPTORS.contacts}     | ${true}
+		${FOLDERS_DESCRIPTORS.autoContacts} | ${true}
+		${FOLDERS_DESCRIPTORS.calendar}     | ${true}
+		${FOLDERS_DESCRIPTORS.userDefined}  | ${false}
+	`(`returns $result if $folder.desc folder id is passed as parameter`, ({ folder, result }) => {
+		expect(isSystemFolder(folder.id)).toEqual(result);
 	});
 });

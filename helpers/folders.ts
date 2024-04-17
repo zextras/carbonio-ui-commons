@@ -122,3 +122,15 @@ export const isRoot = (folderId: string): boolean => isA(folderId, FOLDERS.USER_
 export function isSharedAccountFolder(folderId: string): boolean {
 	return getFolderIdParts(folderId).zid !== null;
 }
+
+/**
+ * Tells if a folder is a system one
+ * @param folderId
+ */
+export const isSystemFolder = (folderId: string): boolean => {
+	const { id } = getFolderIdParts(folderId);
+	if (!id) {
+		return false;
+	}
+	return Object.values(FOLDERS).includes(id);
+};

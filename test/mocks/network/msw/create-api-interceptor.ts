@@ -48,12 +48,13 @@ export const createSoapAPIInterceptor = <RequestParamsType, ResponseType = never
 	});
 
 export const createAPIInterceptor = (
+	method: 'get' | 'post',
 	url: string,
 	response: HttpResponse
 ): Promise<StrictRequest<DefaultBodyType>> =>
 	new Promise((resolve) => {
 		getSetupServer().use(
-			http.post(url, async ({ request }) => {
+			http[method](url, async ({ request }) => {
 				resolve(request);
 				return response;
 			})

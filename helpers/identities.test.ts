@@ -6,21 +6,24 @@
 
 import { http } from 'msw';
 
+import { getOrderedAccountIds } from './identities';
 import { getSetupServer } from '../test/jest-setup';
 import { handleGetShareInfoRequest } from '../test/mocks/network/msw/handle-get-share-info';
 import { getMocksContext } from '../test/mocks/utils/mocks-context';
 
 describe('Default account address', () => {
 	const mocksContext = getMocksContext();
-	test('returns the address if default account selected as a FROM', () => {
+	test('returns the address if default account selected as a FROM', async () => {
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		const inputAddress = mocksContext.identities.primary.identity.email;
-		// expect(getSharedAccountsIds(inputAddress)).toBe('');
+		const { identity } = mocksContext.identities.primary;
+		const orderedIds = await getOrderedAccountIds(identity.email);
+		expect(orderedIds.includes(identity.id));
 	});
 
-	test('returns the address if sendAs account selected as a FROM', () => {
+	test('returns the address if sendAs account selected as a FROM', async () => {
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		const inputAddress = mocksContext.identities.sendAs[0].identity.email;
-		// expect(getSharedAccountsIds(inputAddress)).toBe('');
+		const { identity } = mocksContext.identities.sendAs[0];
+		const orderedIds = await getOrderedAccountIds(identity.email);
+		expect(orderedIds.includes(identity.id));
 	});
 });

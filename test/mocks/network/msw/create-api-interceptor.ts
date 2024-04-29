@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { DefaultBodyType, http, HttpResponse } from 'msw';
+import { DefaultBodyType, http, HttpResponse, StrictRequest } from 'msw';
 
 import { getSetupServer } from '../../../jest-setup';
 
@@ -12,12 +12,11 @@ type HandlerRequest<T> = DefaultBodyType & {
 	Body: Record<string, T>;
 };
 
-export const createAPIInterceptor = <RequestParamsType, ResponseType = never>(
+export const createSoapAPIInterceptor = <RequestParamsType, ResponseType = never>(
 	apiAction: string,
 	response?: ResponseType
 ): Promise<RequestParamsType> =>
 	new Promise<RequestParamsType>((resolve, reject) => {
-		// Register a handler for the REST call
 		getSetupServer().use(
 			http.post<never, HandlerRequest<RequestParamsType>>(
 				`/service/soap/${apiAction}Request`,
@@ -45,5 +44,19 @@ export const createAPIInterceptor = <RequestParamsType, ResponseType = never>(
 					});
 				}
 			)
+		);
+	});
+
+export const createAPIInterceptor = (
+	method: 'get' | 'post',
+	url: string,
+	response: HttpResponse
+): Promise<StrictRequest<DefaultBodyType>> =>
+	new Promise((resolve) => {
+		getSetupServer().use(
+			http[method](url, async ({ request }) => {
+				resolve(request);
+				return response;
+			})
 		);
 	});

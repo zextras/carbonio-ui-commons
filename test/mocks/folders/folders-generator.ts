@@ -388,6 +388,8 @@ export const generateFolders = ({
 	const mockContext = getMocksContext();
 	const rootUuid = mockContext.identities.primary.userRootId;
 	const inboxUuid = faker.string.uuid();
+	const trashUuid = faker.string.uuid();
+	const contactsUuid = faker.string.uuid();
 
 	const [calendarsRandomUser1, calendarsRandomUser2] = getRandomIdentities(
 		mockContext.viewFreeBusyIdentities,
@@ -526,7 +528,7 @@ export const generateFolders = ({
 				},
 				{
 					id: FOLDERS.CONTACTS,
-					uuid: faker.string.uuid(),
+					uuid: contactsUuid,
 					name: 'Contacts',
 					absFolderPath: '/Contacts',
 					l: FOLDERS.USER_ROOT,
@@ -544,7 +546,33 @@ export const generateFolders = ({
 					recursive: false,
 					deletable: false,
 					isLink: false,
-					children: [],
+					children: [
+						{
+							id: getNextFolderId(),
+							uuid: faker.string.uuid(),
+							name: 'inner',
+							absFolderPath: '/Contacts/inner',
+							l: FOLDERS.CONTACTS,
+							luuid: contactsUuid,
+							checked: false,
+							f: 'i',
+							view: 'contact' as FolderView,
+							rev: 1378,
+							ms: 12599,
+							n: 0,
+							s: 0,
+							i4ms: 1378,
+							i4next: 684,
+							activesyncdisabled: false,
+							webOfflineSyncDays: 0,
+							recursive: false,
+							deletable: true,
+							isLink: false,
+							children: [],
+							parent: undefined,
+							depth: 2
+						}
+					],
 					parent: undefined,
 					depth: 1
 				},
@@ -837,8 +865,8 @@ export const generateFolders = ({
 							uuid: faker.string.uuid(),
 							name: 'Trashed folder',
 							absFolderPath: '/Trash/Trashed folder',
-							l: FOLDERS.INBOX,
-							luuid: inboxUuid,
+							l: FOLDERS.TRASH,
+							luuid: trashUuid,
 							checked: false,
 							f: 'u',
 							u: 1,
@@ -849,6 +877,31 @@ export const generateFolders = ({
 							s: 5550022,
 							i4ms: 33607,
 							i4next: 17183,
+							activesyncdisabled: false,
+							webOfflineSyncDays: 0,
+							recursive: false,
+							deletable: true,
+							isLink: false,
+							children: [],
+							parent: undefined,
+							depth: 2
+						},
+						{
+							id: getNextFolderId(),
+							uuid: faker.string.uuid(),
+							name: 'trashed address book',
+							absFolderPath: '/Trash/trashed address book',
+							l: FOLDERS.TRASH,
+							luuid: trashUuid,
+							checked: false,
+							f: 'i',
+							view: 'contact' as FolderView,
+							rev: 1378,
+							ms: 12599,
+							n: 0,
+							s: 0,
+							i4ms: 1378,
+							i4next: 684,
 							activesyncdisabled: false,
 							webOfflineSyncDays: 0,
 							recursive: false,

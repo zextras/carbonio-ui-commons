@@ -373,7 +373,8 @@ export const generateFolder = (model: Partial<Folder> = {}): Folder => {
 		parent: model.parent ?? undefined,
 		depth: model.depth ?? 1,
 		reminder: false,
-		broken: false
+		broken: false,
+		...(model.perm && { perm: model.perm })
 	};
 };
 

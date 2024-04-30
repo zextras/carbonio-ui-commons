@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { faker } from '@faker-js/faker';
 import { getUserAccount } from '@zextras/carbonio-shell-ui';
 import { values } from 'lodash';
 
@@ -12,12 +13,14 @@ import {
 	isRoot,
 	isSystemFolder,
 	isTrash,
-	isTrashed
+	isTrashed,
+	isWriteAllowed
 } from './folders';
 import { useFolderStore } from '../store/zustand/folder';
 import { getRootsMap } from '../store/zustand/folder/hooks';
 import { FOLDERS_DESCRIPTORS } from '../test/constants';
 import { FOLDERS } from '../test/mocks/carbonio-shell-ui-constants';
+import { generateFolder, generateFolderLink } from '../test/mocks/folders/folders-generator';
 import { populateFoldersStore } from '../test/mocks/store/folders';
 import { getMocksContext } from '../test/mocks/utils/mocks-context';
 
@@ -199,5 +202,34 @@ describe('isTrashed', () => {
 	test('The inbox folder (passed by id) is not recognized as trashed', () => {
 		populateFoldersStore();
 		expect(isTrashed({ folderId: FOLDERS.INBOX })).toBe(false);
+	});
+});
+
+describe('isWriteAllowed', () => {
+	it('should return true if the parameter is a regular folder', () => {
+		const folder = generateFolder();
+		expect(isWriteAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return true if the parameter is a linked folder with the 'w' perm", () => {
+		const mocksContext = getMocksContext();
+		const link = generateFolderLink(
+			FOLDERS.INBOX,
+			faker.string.uuid(),
+			mocksContext.otherUsersIdentities[0]
+		);
+		link.perm = 'w';
+		expect(isWriteAllowed(link)).toBeTruthy();
+	});
+
+	it("should return false if the parameter is a linked folder without the 'w' perm", () => {
+		const mocksContext = getMocksContext();
+		const link = generateFolderLink(
+			FOLDERS.INBOX,
+			faker.string.uuid(),
+			mocksContext.otherUsersIdentities[0]
+		);
+		link.perm = 'r';
+		expect(isWriteAllowed(link)).toBeFalsy();
 	});
 });

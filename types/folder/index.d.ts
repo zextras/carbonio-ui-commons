@@ -213,4 +213,5 @@ export type TreeNode<T> = T & {
 export type PopulateFoldersStoreOptions = {
 	view?: FolderView;
 	noSharedAccounts?: boolean;
+	customFolders?: Array<Folder>;
 };

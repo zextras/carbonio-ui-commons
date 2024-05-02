@@ -384,7 +384,8 @@ export const generateFolder = (model: Partial<Folder> = {}): Folder => {
  */
 export const generateFolders = ({
 	view,
-	noSharedAccounts
+	noSharedAccounts,
+	customFolders
 }: PopulateFoldersStoreOptions = {}): Folders => {
 	const mockContext = getMocksContext();
 	const rootUuid = mockContext.identities.primary.userRootId;
@@ -429,6 +430,7 @@ export const generateFolders = ({
 			deletable: false,
 			isLink: false,
 			children: [
+				...(customFolders ?? []),
 				{
 					id: getNextFolderId(),
 					uuid: faker.string.uuid(),

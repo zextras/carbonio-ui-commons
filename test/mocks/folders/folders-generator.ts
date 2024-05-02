@@ -335,6 +335,48 @@ const generateSharedAccountsRoot = (
 	return result;
 };
 
+export const generateFolder = (model: Partial<Folder> = {}): Folder => {
+	const mockContext = getMocksContext();
+	const rootUuid = mockContext.identities.primary.userRootId;
+	const name = faker.word.noun({ length: { min: 1, max: 2 } });
+	return {
+		id: model.id ?? getNextFolderId(),
+		uuid: model.uuid ?? faker.string.uuid(),
+		name: model.name ?? name,
+		absFolderPath: model.absFolderPath ?? `/${name}`,
+		l: model.l ?? FOLDERS.USER_ROOT,
+		luuid: model.luuid ?? rootUuid,
+		checked: model.checked ?? false,
+		f: model.f ?? 'i',
+		view: model.view ?? ('message' as FolderView),
+		rev: model.rev ?? 1378,
+		ms: model.ms ?? 12599,
+		n: model.n ?? 0,
+		s: model.s ?? 0,
+		i4ms: model.i4ms ?? 1378,
+		i4next: model.i4next ?? 684,
+		activesyncdisabled: model.activesyncdisabled ?? false,
+		webOfflineSyncDays: model.webOfflineSyncDays ?? 0,
+		recursive: model.recursive ?? false,
+		deletable: model.deletable ?? true,
+		acl: model.acl ?? {
+			grant: [
+				{
+					zid: getRandomIdentity(mockContext.otherUsersIdentities)?.id ?? '',
+					gt: 'usr',
+					perm: 'r'
+				}
+			]
+		},
+		isLink: model.isLink ?? false,
+		children: model.children ?? [],
+		parent: model.parent ?? undefined,
+		depth: model.depth ?? 1,
+		reminder: false,
+		broken: false
+	};
+};
+
 /**
  * Generate a semi-fixed folders structure mock
  * TODO make it more flexible

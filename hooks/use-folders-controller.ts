@@ -41,7 +41,7 @@ export const useFoldersController = (view: FolderView): null => {
 			setInitializing((previous) => !previous);
 			getFolderRequest({ view })
 				.then((rootFolders: { folder: any }) => {
-					getShareInfoRequest().then((sharedFolders: { folders: any }) => {
+					getShareInfoRequest().then((sharedFolders) => {
 						if (sharedFolders?.folders) {
 							const sharedAccounts = filter(sharedFolders.folders, ['folderId', 1]);
 							if (sharedAccounts.length) {

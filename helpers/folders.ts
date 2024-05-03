@@ -166,3 +166,10 @@ export const isTrashed = ({
  * @param folderId
  */
 export const isTrash = (folderId: string): boolean => isA(folderId, FOLDERS.TRASH);
+
+/**
+ * Tells if the current user has write permission on the given folder/link
+ * @param folder
+ */
+export const isWriteAllowed = (folder: Folder): boolean =>
+	folder.isLink && folder.perm ? folder.perm.includes('w') : true;

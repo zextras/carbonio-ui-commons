@@ -17,11 +17,13 @@ import { generateFolders } from '../folders/folders-generator';
 
 export const populateFoldersStore = ({
 	view,
-	noSharedAccounts
+	noSharedAccounts,
+	customFolders
 }: PopulateFoldersStoreOptions = {}): void => {
 	const folders = generateFolders({
 		view,
-		noSharedAccounts
+		noSharedAccounts,
+		customFolders
 	});
 	const links = filter(values(folders), ['isLink', true]) as Array<LinkFolder>;
 	const linksIdMap = links.reduce((result, link) => {

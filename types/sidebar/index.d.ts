@@ -6,10 +6,6 @@
 
 import React, { ComponentType, ReactElement, SyntheticEvent } from 'react';
 
-import { AccordionItemType, ModalProps } from '@zextras/carbonio-design-system';
-
-import { ItemType } from '../../../legacy/views/secondary-bar/parts/tags/types';
-import { ResFolder } from '../../utils';
 import type { Folder } from '../folder';
 
 type RegisterActionType = {

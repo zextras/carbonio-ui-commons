@@ -3,15 +3,36 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { soapFetch } from '@zextras/carbonio-shell-ui';
+import { ErrorSoapBodyResponse, soapFetch } from '@zextras/carbonio-shell-ui';
 import { isEmpty } from 'lodash';
 
-export const getShareInfoRequest = async (): Promise<any> => {
-	const result = await soapFetch('GetShareInfo', {
-		_jsns: 'urn:zimbraAccount',
-		includeSelf: 0
-	});
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
+import { ResFolder } from '../utils';
+
+type GetShareInfoRequest = {
+	_jsns: string;
+	includeSelf: number;
+};
+
+type GetShareInfoResponse = {
+	_jsns: string;
+	share: Array<ResFolder>;
+};
+
+export const getShareInfoRequest = async (): Promise<{
+	isFulfilled: boolean;
+	folders: Array<ResFolder>;
+}> => {
+	const result = await soapFetch<GetShareInfoRequest, GetShareInfoResponse | ErrorSoapBodyResponse>(
+		'GetShareInfo',
+		{
+			_jsns: 'urn:zimbraAccount',
+			includeSelf: 0
+		}
+	);
+
+	if ('Fault' in result) {
+		return Promise.reject(result.Fault);
+	}
+
 	return Promise.resolve({ isFulfilled: !isEmpty(result), folders: result?.share ?? [] });
 };

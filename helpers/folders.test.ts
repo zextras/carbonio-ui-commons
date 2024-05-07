@@ -10,6 +10,7 @@ import {
 	getFolderIdParts,
 	getFolderOwnerAccountName,
 	isAdministerAllowed,
+	isCreateAllowed,
 	isDeleteAllowed,
 	isInsertAllowed,
 	isReadAllowed,
@@ -241,6 +242,24 @@ describe('isWriteAllowed', () => {
 	it("should return false if the parameter without the 'w' perm", () => {
 		const folder = generateFolder({ perm: 'r' });
 		expect(isWriteAllowed(folder)).toBeFalsy();
+	});
+});
+
+describe('isCreateAllowed', () => {
+	it('should return true if the folder has no permissions set', () => {
+		const folder = generateFolder();
+		folder.perm = undefined;
+		expect(isCreateAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return true if the folder has the 'c' perm", () => {
+		const folder = generateFolder({ perm: 'rwc' });
+		expect(isCreateAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return false if the parameter without the 'c' perm", () => {
+		const folder = generateFolder({ perm: 'wr' });
+		expect(isCreateAllowed(folder)).toBeFalsy();
 	});
 });
 

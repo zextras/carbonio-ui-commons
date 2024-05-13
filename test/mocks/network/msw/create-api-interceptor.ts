@@ -47,16 +47,28 @@ export const createSoapAPIInterceptor = <RequestParamsType, ResponseType = never
 		);
 	});
 
+export type APIInterceptor = {
+	getLastRequest: () => StrictRequest<DefaultBodyType>;
+	getCalledTimes: () => number;
+};
 export const createAPIInterceptor = (
 	method: 'get' | 'post',
 	url: string,
 	response: HttpResponse
-): Promise<StrictRequest<DefaultBodyType>> =>
-	new Promise((resolve) => {
-		getSetupServer().use(
-			http[method](url, async ({ request }) => {
-				resolve(request);
-				return response;
-			})
-		);
-	});
+): APIInterceptor => {
+	let calledTimes = 0;
+	const requests: Array<StrictRequest<DefaultBodyType>> = [];
+
+	getSetupServer().use(
+		http[method](url, async ({ request }) => {
+			calledTimes += 1;
+			requests.push(request);
+			return response;
+		})
+	);
+
+	return {
+		getLastRequest: () => requests[requests.length - 1],
+		getCalledTimes: () => calledTimes
+	};
+};

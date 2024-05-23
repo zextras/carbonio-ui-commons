@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { faker } from '@faker-js/faker';
 import { getUserAccount } from '@zextras/carbonio-shell-ui';
 import { values } from 'lodash';
 
@@ -14,6 +15,7 @@ import {
 	isDefaultAccountRoot,
 	isDeleteAllowed,
 	isInsertAllowed,
+	isLink,
 	isReadAllowed,
 	isRoot,
 	isSystemFolder,
@@ -150,6 +152,39 @@ describe('isDefaultAccountRoot', () => {
 	test('A folder with a zid and an id != 1 is not recognized as the default account root', () => {
 		const folderId = 'anotherlonghash:99';
 		expect(isDefaultAccountRoot(folderId)).toBe(false);
+	});
+});
+
+describe('isLink', () => {
+	test('If no folderId is specified false is returned', () => {
+		expect(
+			isLink(
+				// Testing the case in which the parameter is undefined
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				undefined
+			)
+		).toBe(false);
+	});
+
+	test('A folder with isLink = true, a zid and an id != 1 is recognized as a link', () => {
+		const folder = generateFolder({ isLink: true, id: `${faker.string.uuid()}:921` });
+		expect(isLink(folder)).toBeTruthy();
+	});
+
+	test('A folder with a isLink = false is not recognized as a link', () => {
+		const folder = generateFolder({ isLink: false });
+		expect(isLink(folder)).toBeFalsy();
+	});
+
+	test('A folder with a id = 1 is not recognized as a link', () => {
+		const folder = generateFolder({ isLink: true, id: '1' });
+		expect(isLink(folder)).toBeFalsy();
+	});
+
+	test('A folder with a zid and an id = 1 is not recognized as a link', () => {
+		const folder = generateFolder({ isLink: true, id: `${faker.string.uuid()}:1` });
+		expect(isLink(folder)).toBeFalsy();
 	});
 });
 

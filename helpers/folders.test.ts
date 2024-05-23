@@ -11,6 +11,7 @@ import {
 	getFolderOwnerAccountName,
 	isAdministerAllowed,
 	isCreateAllowed,
+	isDefaultAccountRoot,
 	isDeleteAllowed,
 	isInsertAllowed,
 	isReadAllowed,
@@ -115,6 +116,40 @@ describe('isRoot', () => {
 	test('A folder with a zid and an id != 1 is not recognized as a root', () => {
 		const folderId = 'anotherlonghash:99';
 		expect(isRoot(folderId)).toBe(false);
+	});
+});
+
+describe('isDefaultAccountRoot', () => {
+	test('If no folderId is specified false is returned', () => {
+		const folderId = undefined;
+		expect(
+			isDefaultAccountRoot(
+				// Testing the case in which the parameter is undefined
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				folderId
+			)
+		).toBe(false);
+	});
+
+	test('A folder with a id = 1 is recognized as the default account root', () => {
+		const folderId = '1';
+		expect(isDefaultAccountRoot(folderId)).toBe(true);
+	});
+
+	test('A folder with a id != 1 is not recognized as the default account root', () => {
+		const folderId = '99';
+		expect(isDefaultAccountRoot(folderId)).toBe(false);
+	});
+
+	test('A folder with a zid and an id = 1 is not recognized as the default account root', () => {
+		const folderId = 'somelonghash:1';
+		expect(isDefaultAccountRoot(folderId)).toBe(false);
+	});
+
+	test('A folder with a zid and an id != 1 is not recognized as the default account root', () => {
+		const folderId = 'anotherlonghash:99';
+		expect(isDefaultAccountRoot(folderId)).toBe(false);
 	});
 });
 

@@ -3,13 +3,17 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { faker } from '@faker-js/faker';
 import { getUserAccount } from '@zextras/carbonio-shell-ui';
 import { values } from 'lodash';
 
 import {
 	getFolderIdParts,
 	getFolderOwnerAccountName,
+	isAdministerAllowed,
+	isCreateAllowed,
+	isDeleteAllowed,
+	isInsertAllowed,
+	isReadAllowed,
 	isRoot,
 	isSystemFolder,
 	isTrash,
@@ -20,7 +24,7 @@ import { useFolderStore } from '../store/zustand/folder';
 import { getRootsMap } from '../store/zustand/folder/hooks';
 import { FOLDERS_DESCRIPTORS } from '../test/constants';
 import { FOLDERS } from '../test/mocks/carbonio-shell-ui-constants';
-import { generateFolder, generateFolderLink } from '../test/mocks/folders/folders-generator';
+import { generateFolder } from '../test/mocks/folders/folders-generator';
 import { populateFoldersStore } from '../test/mocks/store/folders';
 import { getMocksContext } from '../test/mocks/utils/mocks-context';
 
@@ -205,31 +209,110 @@ describe('isTrashed', () => {
 	});
 });
 
-describe('isWriteAllowed', () => {
-	it('should return true if the parameter is a regular folder', () => {
+describe('isReadAllowed', () => {
+	it('should return true if the folder has no permissions set', () => {
 		const folder = generateFolder();
+		folder.perm = undefined;
+		expect(isReadAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return true if the folder has the 'r' perm", () => {
+		const folder = generateFolder({ perm: 'rwc' });
+		expect(isReadAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return false if the parameter without the 'r' perm", () => {
+		const folder = generateFolder({ perm: 'wc' });
+		expect(isReadAllowed(folder)).toBeFalsy();
+	});
+});
+
+describe('isWriteAllowed', () => {
+	it('should return true if the folder has no permissions set', () => {
+		const folder = generateFolder();
+		folder.perm = undefined;
 		expect(isWriteAllowed(folder)).toBeTruthy();
 	});
 
-	it("should return true if the parameter is a linked folder with the 'w' perm", () => {
-		const mocksContext = getMocksContext();
-		const link = generateFolderLink(
-			FOLDERS.INBOX,
-			faker.string.uuid(),
-			mocksContext.otherUsersIdentities[0]
-		);
-		link.perm = 'w';
-		expect(isWriteAllowed(link)).toBeTruthy();
+	it("should return true if the folder has the 'w' perm", () => {
+		const folder = generateFolder({ perm: 'rwc' });
+		expect(isWriteAllowed(folder)).toBeTruthy();
 	});
 
-	it("should return false if the parameter is a linked folder without the 'w' perm", () => {
-		const mocksContext = getMocksContext();
-		const link = generateFolderLink(
-			FOLDERS.INBOX,
-			faker.string.uuid(),
-			mocksContext.otherUsersIdentities[0]
-		);
-		link.perm = 'r';
-		expect(isWriteAllowed(link)).toBeFalsy();
+	it("should return false if the parameter without the 'w' perm", () => {
+		const folder = generateFolder({ perm: 'r' });
+		expect(isWriteAllowed(folder)).toBeFalsy();
+	});
+});
+
+describe('isCreateAllowed', () => {
+	it('should return true if the folder has no permissions set', () => {
+		const folder = generateFolder();
+		folder.perm = undefined;
+		expect(isCreateAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return true if the folder has the 'c' perm", () => {
+		const folder = generateFolder({ perm: 'rwc' });
+		expect(isCreateAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return false if the parameter without the 'c' perm", () => {
+		const folder = generateFolder({ perm: 'wr' });
+		expect(isCreateAllowed(folder)).toBeFalsy();
+	});
+});
+
+describe('isInsertAllowed', () => {
+	it('should return true if the folder has no permissions set', () => {
+		const folder = generateFolder();
+		folder.perm = undefined;
+		expect(isInsertAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return true if the folder has the 'i' perm", () => {
+		const folder = generateFolder({ perm: 'riwc' });
+		expect(isInsertAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return false if the parameter without the 'i' perm", () => {
+		const folder = generateFolder({ perm: 'xrwc' });
+		expect(isInsertAllowed(folder)).toBeFalsy();
+	});
+});
+
+describe('isDeleteAllowed', () => {
+	it('should return true if the folder has no permissions set', () => {
+		const folder = generateFolder();
+		folder.perm = undefined;
+		expect(isDeleteAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return true if the folder has the 'd' perm", () => {
+		const folder = generateFolder({ perm: 'rid' });
+		expect(isDeleteAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return false if the parameter without the 'd' perm", () => {
+		const folder = generateFolder({ perm: 'xrwc' });
+		expect(isDeleteAllowed(folder)).toBeFalsy();
+	});
+});
+
+describe('isAdministerAllowed', () => {
+	it('should return true if the folder has no permissions set', () => {
+		const folder = generateFolder();
+		folder.perm = undefined;
+		expect(isAdministerAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return true if the folder has the 'a' perm", () => {
+		const folder = generateFolder({ perm: 'rad' });
+		expect(isAdministerAllowed(folder)).toBeTruthy();
+	});
+
+	it("should return false if the parameter without the 'a' perm", () => {
+		const folder = generateFolder({ perm: 'xrwc' });
+		expect(isAdministerAllowed(folder)).toBeFalsy();
 	});
 });

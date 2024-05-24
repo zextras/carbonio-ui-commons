@@ -127,8 +127,7 @@ export const isRoot = (folderId: string): boolean => isA(folderId, FOLDERS.USER_
  * @param folder
  */
 export const isLink = (folder: Folder): boolean =>
-	(folder && folder.isLink && getFolderIdParts(folder.id).zid !== null && !isRoot(folder.id)) ??
-	false;
+	(folder && folder.isLink && getFolderIdParts(folder.id).zid === null) ?? false;
 
 /**
  * Tells if a folder is a folder of a shared account

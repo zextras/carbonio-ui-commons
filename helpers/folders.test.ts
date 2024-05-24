@@ -167,8 +167,8 @@ describe('isLink', () => {
 		).toBe(false);
 	});
 
-	test('A folder with isLink = true, a zid and an id != 1 is recognized as a link', () => {
-		const folder = generateFolder({ isLink: true, id: `${faker.string.uuid()}:921` });
+	test('A folder with isLink = true and without a zid is recognized as a link', () => {
+		const folder = generateFolder({ isLink: true });
 		expect(isLink(folder)).toBeTruthy();
 	});
 
@@ -177,12 +177,7 @@ describe('isLink', () => {
 		expect(isLink(folder)).toBeFalsy();
 	});
 
-	test('A folder with a id = 1 is not recognized as a link', () => {
-		const folder = generateFolder({ isLink: true, id: '1' });
-		expect(isLink(folder)).toBeFalsy();
-	});
-
-	test('A folder with a zid and an id = 1 is not recognized as a link', () => {
+	test('A folder with a zid is not recognized as a link', () => {
 		const folder = generateFolder({ isLink: true, id: `${faker.string.uuid()}:1` });
 		expect(isLink(folder)).toBeFalsy();
 	});

@@ -67,7 +67,7 @@ const getFlatChildren = (children: Array<Folder>): Folders => {
  */
 const generateSharedAccountSystemFolders = (
 	contextIdentity: MocksContextIdentity
-): Array<LinkFolder> => {
+): Array<Folder> => {
 	if (!contextIdentity) {
 		return [];
 	}
@@ -93,13 +93,11 @@ const generateSharedAccountSystemFolders = (
 			activesyncdisabled: false,
 			webOfflineSyncDays: 30,
 			recursive: false,
-			reminder: false,
-			broken: false,
 			deletable: false,
 			acl: {
 				grant: []
 			},
-			isLink: true,
+			isLink: false,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -121,11 +119,9 @@ const generateSharedAccountSystemFolders = (
 			i4next: 17084,
 			activesyncdisabled: false,
 			webOfflineSyncDays: 0,
-			reminder: false,
-			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: true,
+			isLink: false,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -147,11 +143,9 @@ const generateSharedAccountSystemFolders = (
 			i4next: 17208,
 			activesyncdisabled: false,
 			webOfflineSyncDays: 30,
-			reminder: false,
-			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: true,
+			isLink: false,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -172,11 +166,9 @@ const generateSharedAccountSystemFolders = (
 			i4next: 17212,
 			activesyncdisabled: false,
 			webOfflineSyncDays: 30,
-			reminder: false,
-			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: true,
+			isLink: false,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -198,11 +190,9 @@ const generateSharedAccountSystemFolders = (
 			i4next: 17212,
 			activesyncdisabled: false,
 			webOfflineSyncDays: 30,
-			reminder: false,
-			broken: false,
 			recursive: false,
 			deletable: false,
-			isLink: true,
+			isLink: false,
 			children: [],
 			parent: undefined,
 			depth: 1
@@ -576,6 +566,31 @@ export const generateFolders = ({
 							depth: 2
 						}
 					],
+					parent: undefined,
+					depth: 1
+				},
+				{
+					id: getNextFolderId(),
+					uuid: faker.string.uuid(),
+					name: `Contacts addressbook of ${getRandomIdentity(mockContext.otherUsersIdentities)?.fullName}`,
+					absFolderPath: `/Contacts addressbook of ${getRandomIdentity(mockContext.otherUsersIdentities)?.fullName}`,
+					l: FOLDERS.USER_ROOT,
+					luuid: rootUuid,
+					checked: false,
+					f: 'i',
+					view: 'contact' as FolderView,
+					rev: 1378,
+					ms: 12599,
+					n: 0,
+					s: 0,
+					i4ms: 1378,
+					i4next: 684,
+					activesyncdisabled: false,
+					webOfflineSyncDays: 0,
+					recursive: false,
+					deletable: true,
+					isLink: true,
+					children: [],
 					parent: undefined,
 					depth: 1
 				},

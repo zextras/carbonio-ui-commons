@@ -7,3 +7,4 @@
 export * from './modals';
 export * from './user-accounts.d.ts';
 export * from './soap';
+export * from './folder';

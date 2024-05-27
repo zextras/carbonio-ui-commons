@@ -180,6 +180,16 @@ export const useFoldersArrayByRoot = (rootId: string): Array<Folder> => {
 };
 
 /**
+ * Return a folder map that are children of the given root
+ * @param rootId
+ */
+export const useFoldersMapByRoot = (rootId: string): Folders => {
+	const root = useRoot(rootId);
+
+	return useMemo(() => getFlatChildrenFolders(root?.children ?? []), [root?.children]);
+};
+
+/**
  * Return a flat array of folder that are children of the given root
  * @param rootId
  */

@@ -165,29 +165,29 @@ export function getRootAccountId(id: string): string | undefined {
 }
 
 /**
- * Return a flat array of folder that are children of the given root
+ * Return a folder map that are children of the given root
  * @param rootId
  */
-export const useFoldersArrayByRoot = (rootId: string): Array<Folder> => {
+export const useFoldersByRoot = (rootId: string): Folders => {
 	const root = useRoot(rootId);
 	if (!root) {
-		return [];
+		return {};
 	}
 
-	return Object.values(getFlatChildrenFolders(root.children));
+	return getFlatChildrenFolders(root.children);
 };
 
 /**
- * Return a flat array of folder that are children of the given root
+ * Return a folder map that are children of the given root
  * @param rootId
  */
-export const getFoldersArrayByRoot = (rootId: string): Array<Folder> => {
+export const getFoldersByRoot = (rootId: string): Folders => {
 	const root = getRoot(rootId);
 	if (!root) {
-		return [];
+		return {};
 	}
 
-	return Object.values(getFlatChildrenFolders(root.children));
+	return getFlatChildrenFolders(root.children);
 };
 
 // SEARCHES

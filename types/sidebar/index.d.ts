@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ReactElement, SyntheticEvent } from 'react';
+import React, { ComponentType, ReactElement, SyntheticEvent } from 'react';
 
 import type { Folder } from '../folder';
 
@@ -101,10 +101,10 @@ export type DragEnterAction =
 			success: false;
 	  };
 
-export type OnDropActionProps = {
+export type OnDropActionProps<T = DataProps> = {
 	event: React.DragEvent;
-	type: string;
-	data: DataProps;
+	type: string | undefined;
+	data: T;
 };
 
 export type DeleteTagModalPropsType = {
@@ -177,8 +177,7 @@ export type SidebarAccordionProps = {
 	accordions: Array<Folder>;
 	folderId: string;
 	localStorageName: string;
-	// FIXME: ComponentType is not imported, so the type is not applied!
-	AccordionCustomComponent: ComponentType;
+	AccordionCustomComponent: ComponentType<{ item: Folder }>;
 	setSelectedFolder?: (folderId: string) => void;
 	buttonFindShares?: ReactElement;
 	initialExpanded?: string[];

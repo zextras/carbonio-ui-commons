@@ -166,3 +166,45 @@ export const isTrashed = ({
  * @param folderId
  */
 export const isTrash = (folderId: string): boolean => isA(folderId, FOLDERS.TRASH);
+
+/**
+ * Tells if the current user has read permission on the given folder/link
+ * @param folder
+ */
+export const isReadAllowed = (folder: Folder): boolean => !folder.perm || folder.perm.includes('r');
+
+/**
+ * Tells if the current user has write permission on the given folder/link
+ * @param folder
+ */
+export const isWriteAllowed = (folder: Folder): boolean =>
+	!folder.perm || folder.perm.includes('w');
+
+/**
+ * Tells if the current user has insertion permission on the given folder/link
+ * @param folder
+ */
+export const isInsertAllowed = (folder: Folder): boolean =>
+	!folder.perm || folder.perm.includes('i');
+
+/**
+ * Tells if the current user has subfolder creation permission on the given folder/link
+ * @param folder
+ */
+export const isCreateAllowed = (folder: Folder): boolean =>
+	!folder.perm || folder.perm.includes('c');
+
+/**
+ * Tells if the current user has deletion permission on the given folder/link
+ * @param folder
+ */
+export const isDeleteAllowed = (folder: Folder): boolean =>
+	!folder.perm || folder.perm.includes('d');
+
+/**
+ * Tells if the current user has administration permission on the given folder/link
+ * @param folder
+ */
+export const isAdministerAllowed = (folder: Folder): boolean =>
+	!folder.perm || folder.perm.includes('a');
+('');

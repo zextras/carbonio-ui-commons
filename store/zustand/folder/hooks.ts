@@ -104,12 +104,6 @@ export const getRoot = (id: string): Folder | undefined => {
 /**
  * Returns a roots' array. Each root has its own tree structure included inside its children
  */
-export const useRootsArray = (): Array<Folder> =>
-	useFolderStore((s) => filter(s.folders, (f) => f.id?.split(':')?.includes(FOLDERS.USER_ROOT)));
-
-/**
- * Returns a roots' array. Each root has its own tree structure included inside its children
- */
 export const getRootsArray = (): Array<Folder> =>
 	filter(useFolderStore.getState().folders, (f) => f.id?.split(':')?.includes(FOLDERS.USER_ROOT));
 

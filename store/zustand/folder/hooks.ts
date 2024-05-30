@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { useMemo } from 'react';
+
 import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
 import { filter, find, keyBy, some, values } from 'lodash';
 
@@ -102,12 +104,6 @@ export const getRoot = (id: string): Folder | undefined => {
 /**
  * Returns a roots' array. Each root has its own tree structure included inside its children
  */
-export const useRootsArray = (): Array<Folder> =>
-	useFolderStore((s) => filter(s.folders, (f) => f.id?.split(':')?.includes(FOLDERS.USER_ROOT)));
-
-/**
- * Returns a roots' array. Each root has its own tree structure included inside its children
- */
 export const getRootsArray = (): Array<Folder> =>
 	filter(useFolderStore.getState().folders, (f) => f.id?.split(':')?.includes(FOLDERS.USER_ROOT));
 
@@ -170,11 +166,21 @@ export function getRootAccountId(id: string): string | undefined {
  */
 export const useFoldersArrayByRoot = (rootId: string): Array<Folder> => {
 	const root = useRoot(rootId);
-	if (!root) {
-		return [];
-	}
 
-	return Object.values(getFlatChildrenFolders(root.children));
+	return useMemo(
+		() => Object.values(getFlatChildrenFolders(root?.children ?? [])),
+		[root?.children]
+	);
+};
+
+/**
+ * Return a folder map that are children of the given root
+ * @param rootId
+ */
+export const useFoldersMapByRoot = (rootId: string): Folders => {
+	const root = useRoot(rootId);
+
+	return useMemo(() => getFlatChildrenFolders(root?.children ?? []), [root?.children]);
 };
 
 /**

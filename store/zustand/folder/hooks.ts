@@ -28,19 +28,9 @@ export const getFolder = (id: string): Folder | undefined =>
 export const useFoldersMap = (): Folders => useFolderStore((s) => s.folders);
 
 /**
- * Returns a folders' array including roots and links. Each folder has its own tree structure included inside its children
- */
-export const useFoldersArray = (): Array<Folder> => useFolderStore((s) => values(s.folders));
-
-/**
  * Returns a folders' map including roots and links. Each folder has its own tree structure included inside its children
  */
 export const getFoldersMap = (): Folders => useFolderStore.getState().folders;
-
-/**
- * Returns a folders' array including roots and links. Each folder has its own tree structure included inside its children
- */
-export const getFoldersArray = (): Array<Folder> => values(useFolderStore.getState().folders);
 
 /**
  * Returns a folders' array including only links. Each folder has its own tree structure included inside its children

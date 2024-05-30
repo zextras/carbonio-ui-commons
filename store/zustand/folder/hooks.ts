@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { useMemo } from 'react';
+
 import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
 import { filter, find, keyBy, some, values } from 'lodash';
 
@@ -160,11 +162,11 @@ export function getRootAccountId(id: string): string | undefined {
  */
 export const useFoldersArrayByRoot = (rootId: string): Array<Folder> => {
 	const root = useRoot(rootId);
-	if (!root) {
-		return [];
-	}
 
-	return Object.values(getFlatChildrenFolders(root.children));
+	return useMemo(
+		() => Object.values(getFlatChildrenFolders(root?.children ?? [])),
+		[root?.children]
+	);
 };
 
 /**

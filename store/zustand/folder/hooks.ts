@@ -160,13 +160,10 @@ export function getRootAccountId(id: string): string | undefined {
  * Return a flat array of folder that are children of the given root
  * @param rootId
  */
-export const useFoldersArrayByRoot = (rootId: string): Array<Folder> => {
+export const useFoldersMapByRoot = (rootId: string): Folders => {
 	const root = useRoot(rootId);
 
-	return useMemo(
-		() => Object.values(getFlatChildrenFolders(root?.children ?? [])),
-		[root?.children]
-	);
+	return useMemo(() => getFlatChildrenFolders(root?.children ?? []), [root?.children]);
 };
 
 /**

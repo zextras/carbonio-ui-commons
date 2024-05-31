@@ -14,7 +14,11 @@ import {
 	Container
 } from '@zextras/carbonio-design-system';
 
-const ModalHeader: FC<{ title: string; onClose?: () => void }> = ({ title, onClose }) => (
+const ModalHeader: FC<{ title: string; onClose?: () => void; showCloseIcon?: boolean }> = ({
+	title,
+	onClose,
+	showCloseIcon = true
+}) => (
 	<Container mainAlignment="space-between" width="100%">
 		<Row takeAvailableSpace mainAlignment="space-between" width="100%">
 			<Row width="calc(100% - 1.5rem)" takeAvailableSpace mainAlignment="flex-start">
@@ -22,7 +26,7 @@ const ModalHeader: FC<{ title: string; onClose?: () => void }> = ({ title, onClo
 					{title}
 				</Text>
 			</Row>
-			{onClose && (
+			{onClose && showCloseIcon && (
 				<Row mainAlignment="flex-start">
 					<IconButton
 						size="medium"

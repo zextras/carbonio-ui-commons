@@ -13,7 +13,8 @@ export async function apiWrapper<T, K>(
 ): Promise<DataResponse<T> | ErrorResponse<K>> {
 	return Promise.allSettled([promise]).then(async ([result]) => {
 		if (result.status === 'fulfilled') {
-			return { data: (await result.value.json()) as T };
+			const responseBody = await result.value.text();
+			return responseBody ? { data: JSON.parse(responseBody) as T } : { data: {} as T };
 		}
 		return { error: result.reason };
 	});

@@ -12,6 +12,7 @@ describe('Api Wrapper', () => {
 	beforeEach(() => {
 		createAPIInterceptor('post', '/myApi', HttpResponse.json({ data: 'success' }, { status: 200 }));
 		createAPIInterceptor('post', '/myApiEmptyBody', new HttpResponse(null, { status: 200 }));
+		createAPIInterceptor('post', '/myApi207', new HttpResponse(null, { status: 207 }));
 		createAPIInterceptor(
 			'post',
 			'/myApiError',
@@ -55,5 +56,14 @@ describe('Api Wrapper', () => {
 			})
 		);
 		expect(response).toHaveProperty('error');
+	});
+
+	it('should not fail with 207', async () => {
+		const response = await apiWrapper<string, string>(
+			fetch(`/myApi207`, {
+				method: 'POST'
+			})
+		);
+		expect(response).toHaveProperty('data');
 	});
 });

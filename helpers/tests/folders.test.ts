@@ -19,14 +19,14 @@ import {
 	isTrash,
 	isTrashed,
 	isWriteAllowed
-} from './folders';
-import { useFolderStore } from '../store/zustand/folder';
-import { getRootsMap } from '../store/zustand/folder/hooks';
-import { FOLDERS_DESCRIPTORS } from '../test/constants';
-import { FOLDERS } from '../test/mocks/carbonio-shell-ui-constants';
-import { generateFolder } from '../test/mocks/folders/folders-generator';
-import { populateFoldersStore } from '../test/mocks/store/folders';
-import { getMocksContext } from '../test/mocks/utils/mocks-context';
+} from '../folders';
+import { useFolderStore } from '../../store/zustand/folder';
+import { getRootsMap } from '../../store/zustand/folder/hooks';
+import { FOLDERS_DESCRIPTORS } from '../../test/constants';
+import { FOLDERS } from '../../test/mocks/carbonio-shell-ui-constants';
+import { generateFolder } from '../../test/mocks/folders/folders-generator';
+import { populateFoldersStore } from '../../test/mocks/store/folders';
+import { getMocksContext } from '../../test/mocks/utils/mocks-context';
 
 describe('Folder id', () => {
 	test('with zid', () => {

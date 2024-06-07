@@ -11,7 +11,7 @@ import { filter, find, keyBy, some, values } from 'lodash';
 
 import { useFolderStore } from './store';
 import { getFlatChildrenFolders } from './utils';
-import type { Folder, Folders, LinkFolder, SearchFolder, Searches } from '../../../types/folder';
+import type { Folder, Folders, LinkFolder, SearchFolder, Searches } from '../../../types';
 
 /**
  * Returns the folder with given ID or undefined

@@ -36,7 +36,8 @@ const ModalFooter: FC<ModalFooterProps> = ({
 	additionalAction,
 	additionalBtnType = 'outlined',
 	additionalColor = 'secondary',
-	additionalLabel
+	additionalLabel,
+	primaryButtonIcon
 }): ReactElement => {
 	const [t] = useTranslation();
 
@@ -120,6 +121,8 @@ const ModalFooter: FC<ModalFooterProps> = ({
 									type={primaryBtnType}
 									disabled={disabled}
 									backgroundColor={color || background}
+									icon={primaryButtonIcon}
+									iconPlacement="left"
 								/>
 							</Tooltip>
 						) : (
@@ -131,6 +134,8 @@ const ModalFooter: FC<ModalFooterProps> = ({
 								type={primaryBtnType}
 								disabled={disabled}
 								backgroundColor={color || background}
+								icon={primaryButtonIcon}
+								iconPlacement="left"
 							/>
 						)}
 					</Padding>

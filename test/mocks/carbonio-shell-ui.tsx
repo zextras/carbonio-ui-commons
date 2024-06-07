@@ -40,6 +40,7 @@ export const pushHistory = jest.fn();
 export const useBoard = jest.fn();
 
 export const useAppContext = jest.fn<unknown, []>(() => mockedAccounts);
+export const setAppContext = jest.fn();
 export const getBridgedFunctions = jest.fn();
 export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
@@ -60,6 +61,7 @@ export const registerComponents: typeof shell.registerComponents = jest.fn();
 export const registerActions: typeof shell.registerActions = jest.fn();
 export const useRefresh: typeof shell.useRefresh = jest.fn();
 export const addRoute: typeof shell.addRoute = jest.fn();
+export const removeRoute: typeof shell.removeRoute = jest.fn();
 export const addSettingsView: typeof shell.addSettingsView = jest.fn();
 export const addSearchView: typeof shell.addSearchView = jest.fn();
 export const addBoardView: typeof shell.addBoardView = jest.fn();

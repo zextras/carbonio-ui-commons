@@ -31,6 +31,8 @@ export const useUserAccount: jest.Mock<ReturnType<typeof shell.useUserAccount>> 
 export const useUserAccounts: jest.Mock<ReturnType<typeof shell.useUserAccounts>> = jest.fn(
 	() => mockedAccounts
 );
+export const getFolder: jest.Mock<ReturnType<typeof shell.getFolder>> = jest.fn();
+
 export const useUserSettings = jest.fn(() => mockedSettings);
 export const getUserSettings = jest.fn(() => mockedSettings);
 export const t = jest.fn((key: string) => key);

@@ -5,7 +5,7 @@
  */
 import { useEffect, useState } from 'react';
 
-import { useNotify } from '@zextras/carbonio-shell-ui';
+import { useCurrentRoute, useNotify } from '@zextras/carbonio-shell-ui';
 import { filter, forEach, isEmpty, map, reject, sortBy } from 'lodash';
 
 import { getFolderRequest } from '../soap/get-folder';
@@ -30,14 +30,16 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 		})
 	);
 
-export const useFoldersController = (view: FolderView): null => {
+export const useFoldersController = (view: FolderView, appId?: string): null => {
 	const [initializing, setInitializing] = useState(true);
 	const [seq, setSeq] = useState(-1);
 
 	const notify = useNotify();
+	const activeRoute = useCurrentRoute();
 
 	useEffect(() => {
-		if (initializing && view) {
+		console.log('[useFoldersController]==>>', { initializing, view, activeRoute, appId });
+		if (initializing && view && (appId ? activeRoute?.app === appId : true)) {
 			setInitializing((previous) => !previous);
 			getFolderRequest({ view })
 				.then((rootFolders: { folder: any }) => {
@@ -88,7 +90,7 @@ export const useFoldersController = (view: FolderView): null => {
 					setInitializing(true);
 				});
 		}
-	}, [initializing, view]);
+	}, [activeRoute, appId, initializing, view]);
 
 	useEffect(() => {
 		if (!initializing && notify.length > 0) {

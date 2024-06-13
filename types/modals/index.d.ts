@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ButtonProps, ContainerProps } from '@zextras/carbonio-design-system';
+import { ButtonProps, ContainerProps, IconComponent } from '@zextras/carbonio-design-system';
 
 export type ModalFooterProps = {
 	mainAlignment?: ContainerProps['mainAlignment'] | undefined;
@@ -31,4 +31,5 @@ export type ModalFooterProps = {
 	additionalBtnType?: ButtonProps['type'];
 	additionalColor?: string;
 	additionalLabel?: string;
+	primaryButtonIcon?: IconComponent;
 };

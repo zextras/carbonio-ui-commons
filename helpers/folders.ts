@@ -111,10 +111,23 @@ export const isA = (folderId: string, folderType: keyof Folders): boolean => {
 };
 
 /**
+ * Tells if a folder with the given id is the default account root folder
+ * @param folderId
+ */
+export const isDefaultAccountRoot = (folderId: string): boolean => folderId === FOLDERS.USER_ROOT;
+
+/**
  * Tells if a folder with the given id is a root folder
  * @param folderId
  */
 export const isRoot = (folderId: string): boolean => isA(folderId, FOLDERS.USER_ROOT);
+
+/**
+ * Tells if the given folder is a link to a folder shared by another user
+ * @param folder
+ */
+export const isLink = (folder: Folder): boolean =>
+	(folder && folder.isLink && getFolderIdParts(folder.id).zid === null) ?? false;
 
 /**
  * Tells if a folder is a folder of a shared account

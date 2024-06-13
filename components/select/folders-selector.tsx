@@ -3,12 +3,15 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { ReactElement, useCallback, useMemo } from 'react';
+import React, { FC, ReactElement, useCallback, useMemo } from 'react';
 
-import { Container, Padding, Select, SelectItem, Text } from '@zextras/carbonio-design-system';
+import { Padding, Row, Select, SelectItem } from '@zextras/carbonio-design-system';
+import { FOLDERS } from '@zextras/carbonio-shell-ui';
 import { find, map } from 'lodash';
 
+import { TextUpperCase } from './color-select';
 import { FolderSelectorLabelFactory, Square } from './select-label-factory';
+import { useRoot } from '../../store/zustand/folder';
 import type { FolderSelectorItem } from '../../types/select';
 
 type FolderSelectorProps = {
@@ -17,6 +20,27 @@ type FolderSelectorProps = {
 	label?: string;
 	folderItems: FolderSelectorItem[];
 	disabled?: boolean;
+};
+
+const FolderNameRender: FC<{ folder: FolderSelectorItem }> = ({ folder }) => {
+	const root = useRoot(folder.value ?? '');
+	return (
+		<>
+			<Row wrap={'nowrap'}>
+				<Padding right="small">
+					<Square color={folder.color} />
+				</Padding>
+				<TextUpperCase>{folder.label}</TextUpperCase>
+				<Row takeAvailableSpace>
+					{root && root.id !== FOLDERS.USER_ROOT && (
+						<Padding left="small" style={{ overflow: 'hidden' }}>
+							<TextUpperCase color={'gray1'}>{`(${root.name})`}</TextUpperCase>
+						</Padding>
+					)}
+				</Row>
+			</Row>
+		</>
+	);
 };
 
 export const FoldersSelector = ({
@@ -32,14 +56,7 @@ export const FoldersSelector = ({
 				label: item.label,
 				value: item.value,
 				color: item.color,
-				customComponent: (
-					<Container width="fit" mainAlignment="flex-start" orientation="horizontal">
-						<Square color={item.color} />
-						<Padding left="small">
-							<Text>{item.label}</Text>
-						</Padding>
-					</Container>
-				)
+				customComponent: <FolderNameRender folder={item}></FolderNameRender>
 			})),
 		[folderItems]
 	);

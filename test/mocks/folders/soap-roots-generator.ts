@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { FOLDERS, SoapLink } from '@zextras/carbonio-shell-ui';
-import { SoapFolder } from '@zextras/carbonio-shell-ui/types/network/soap';
+import { FOLDERS, SoapFolder, SoapLink } from '@zextras/carbonio-shell-ui';
 import { map, orderBy } from 'lodash';
 
 import { BaseFolder, FolderView } from '../../../types/folder';

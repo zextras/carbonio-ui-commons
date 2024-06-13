@@ -3,12 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import {
-	ErrorSoapBodyResponse,
-	JSNS,
-	soapFetch,
-	SuccessSoapResponse
-} from '@zextras/carbonio-shell-ui';
+
+import { ErrorSoapBodyResponse, soapFetch, SuccessSoapResponse } from '@zextras/carbonio-shell-ui';
+import { JSNS } from '../test/mocks/carbonio-shell-ui-constants';
 
 type NoOpRequest = {
 	_jsns: JSNS.MAIL;

@@ -5,7 +5,7 @@
  */
 import { ComponentType } from 'react';
 
-import { Meta, SoapRetentionPolicy } from '@zextras/carbonio-shell-ui/types/misc';
+import { Meta, SoapRetentionPolicy } from '@zextras/carbonio-shell-ui';
 
 export type FolderFields = {
 	// Additional Parameters

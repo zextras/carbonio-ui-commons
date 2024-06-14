@@ -4,14 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ErrorSoapBodyResponse, soapFetch, SuccessSoapResponse } from '@zextras/carbonio-shell-ui';
+import { ErrorSoapBodyResponse, soapFetch } from '@zextras/carbonio-shell-ui';
+
 import { JSNS } from '../test/mocks/carbonio-shell-ui-constants';
 
 type NoOpRequest = {
 	_jsns: JSNS.MAIL;
 };
 
-type NoOpResponse = SuccessSoapResponse<{ _jsns: JSNS.MAIL }> | ErrorSoapBodyResponse;
+type NoOpResponse = NoOpRequest | ErrorSoapBodyResponse;
 
 export const NoOp = async (): Promise<void> => {
 	const request = {

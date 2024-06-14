@@ -12,7 +12,7 @@ type NoOpRequest = {
 	_jsns: JSNS.MAIL;
 };
 
-type NoOpResponse = NoOpRequest | ErrorSoapBodyResponse;
+type NoOpResponse = { _jsns: JSNS.MAIL } | ErrorSoapBodyResponse;
 
 export const NoOp = async (): Promise<void> => {
 	const request = {

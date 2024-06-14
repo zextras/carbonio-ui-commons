@@ -146,7 +146,8 @@ export const isSystemFolder = (folderId: string): boolean => {
 	if (!id) {
 		return false;
 	}
-	return Object.values(FOLDERS).includes(id);
+	const systemFoldersIds: readonly string[] = Object.values(FOLDERS);
+	return systemFoldersIds.includes(folderId);
 };
 
 /**

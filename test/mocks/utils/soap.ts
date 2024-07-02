@@ -15,15 +15,20 @@ export const buildSoapResponse = <T>(responseData: Record<string, T>): SuccessSo
 
 export const buildSoapErrorResponseBody = ({
 	code = faker.number.int().toString(),
-	detail = faker.word.preposition(2),
-	reason = faker.word.preposition()
+	detailCode = faker.word.noun().toUpperCase(),
+	reason = faker.word.preposition(),
+	trace = faker.word.preposition()
 }: {
 	code?: string;
-	detail?: string;
+	detailCode?: string;
 	reason?: string;
+	trace?: string;
 } = {}): ErrorSoapBodyResponse => ({
 	Fault: {
-		Detail: { Error: { Code: code, Detail: detail } },
-		Reason: { Text: reason }
+		Detail: { Error: { Code: detailCode, Trace: trace } },
+		Reason: { Text: reason },
+		Code: {
+			Value: code
+		}
 	}
 });

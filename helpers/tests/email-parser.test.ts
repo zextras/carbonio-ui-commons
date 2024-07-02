@@ -34,6 +34,14 @@ describe('email-parser', () => {
 		it('valid email is valid', () => {
 			expect(isValidEmail('e@mail.it')).toBe(true);
 		});
+
+		it('valid email with cyrillic characters is valid', () => {
+			expect(isValidEmail('почта@домен.рф')).toBe(true);
+		});
+
+		it('email with a single char as first level domain is not valid', () => {
+			expect(isValidEmail('почта@домен.p')).toBe(false);
+		});
 	});
 
 	describe('parseEmail', () => {

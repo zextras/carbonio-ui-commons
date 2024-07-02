@@ -12,7 +12,7 @@ export function parseEmail(input: string): string | undefined {
 
 export function isValidEmail(email: string | undefined): boolean {
 	// eslint-disable-next-line max-len, prettier/prettier, no-useless-escape
-	const validEmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	const validEmailRegex = /^[\p{L}\p{N}.-_]+@[\p{L}\p{N}][\p{L}\p{N}-]*[\p{L}\p{N}]+\.[\p{L}\p{N}]{2,}$/u;
 	return validEmailRegex.test(String(email).toLowerCase());
 }
 

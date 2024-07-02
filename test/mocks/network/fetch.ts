@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+
 import { faker } from '@faker-js/faker';
 import {
 	Account,
@@ -17,7 +18,6 @@ import { find, map, maxBy } from 'lodash';
 import { getMocksContext } from '../utils/mocks-context';
 
 const userAgent = faker.internet.userAgent();
-const fullName = faker.person.fullName();
 const identities = getMocksContext();
 
 const useNetworkStore = {
@@ -160,7 +160,7 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 		}
 		console.warn(
 			new Error(
-				`${(<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Detail}: ${
+				`${(<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code}: ${
 					(<ErrorSoapResponse>res).Body.Fault.Reason?.Text
 				}`
 			)

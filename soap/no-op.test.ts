@@ -8,23 +8,12 @@ import { ErrorSoapBodyResponse } from '@zextras/carbonio-shell-ui';
 
 import { NoOp } from './no-op';
 import { createSoapAPIInterceptor } from '../test/mocks/network/msw/create-api-interceptor';
+import { buildSoapErrorResponseBody } from '../test/mocks/utils/soap';
 
 describe('NoOp', () => {
 	it('should raise an error if the API returns a fault', async () => {
 		const reason = faker.word.preposition(8);
-		const response: ErrorSoapBodyResponse = {
-			Fault: {
-				Detail: {
-					Error: {
-						Detail: faker.word.preposition(5),
-						Code: faker.string.uuid()
-					}
-				},
-				Reason: {
-					Text: reason
-				}
-			}
-		};
+		const response: ErrorSoapBodyResponse = buildSoapErrorResponseBody({ reason });
 		createSoapAPIInterceptor('NoOp', response);
 		await expect(NoOp).rejects.toThrowError(reason);
 	});

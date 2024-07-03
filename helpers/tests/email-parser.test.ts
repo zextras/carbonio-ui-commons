@@ -42,6 +42,54 @@ describe('email-parser', () => {
 		it('email with a single char as first level domain is not valid', () => {
 			expect(isValidEmail('почта@домен.p')).toBe(false);
 		});
+
+		it('email with underscore or dash is valid', () => {
+			expect(isValidEmail('Bret_Cruickshank-OConnell13@hotmail.com')).toBe(true);
+		});
+
+		it('should validate an email with a long TLD', () => {
+			expect(isValidEmail('email@domain.engineering')).toBe(true);
+		});
+
+		it('should validate an email with subdomain', () => {
+			expect(isValidEmail('user@sub.domain.com')).toBe(true);
+		});
+
+		it('email with international characters in local part is valid', () => {
+			expect(isValidEmail('ñoñó@example.com')).toBe(true);
+		});
+
+		it('email with emoji is not valid', () => {
+			expect(isValidEmail('😊@example.com')).toBe(false);
+		});
+
+		it('email with quoted local part is not valid', () => {
+			expect(isValidEmail('"john.doe"@example.com')).toBe(false);
+		});
+
+		it('email with valid characters but in wrong order is not valid', () => {
+			expect(isValidEmail('.user@example.com')).toBe(false);
+		});
+
+		it('email with only domain part is not valid', () => {
+			expect(isValidEmail('@example.com')).toBe(false);
+		});
+
+		it('email with missing @ symbol is not valid', () => {
+			expect(isValidEmail('userexample.com')).toBe(false);
+		});
+
+		it('email with port number in domain is not valid', () => {
+			expect(isValidEmail('user@example.com:8080')).toBe(false);
+		});
+
+		it('email with spaces is not valid', () => {
+			expect(isValidEmail('john doe@example.com')).toBe(false);
+		});
+
+		it('email with special characters in domain is not valid', () => {
+			expect(isValidEmail('user@domain!com')).toBe(false);
+		});
 	});
 
 	describe('parseEmail', () => {

@@ -6,7 +6,7 @@
 
 import { faker } from '@faker-js/faker';
 
-import { FOLDERS } from '../../test/mocks/carbonio-shell-ui-constants';
+import { FOLDERS } from '../../constants/folders';
 import { Folder } from '../../types/folder';
 import { allowedActionOnSharedAccount, isValidFolderName } from '../utils';
 

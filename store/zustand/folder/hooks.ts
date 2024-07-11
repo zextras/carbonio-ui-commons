@@ -6,12 +6,13 @@
 
 import { useMemo } from 'react';
 
-import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
 import { filter, find, keyBy, some, values } from 'lodash';
 
 import { useFolderStore } from './store';
 import { getFlatChildrenFolders } from './utils';
 import type { Folder, Folders, LinkFolder, SearchFolder, Searches } from '../../../types';
+import { ROOT_NAME } from '../../../constants';
+import { FOLDERS } from '../../../constants/folders';
 
 /**
  * Returns the folder with given ID or undefined

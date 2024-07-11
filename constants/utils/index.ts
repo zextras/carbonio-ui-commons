@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export const FOLDER_VIEW = {
+export const FOLDER_VIEW: FolderViewType = {
 	search_folder: 'search folder',
 	tag: 'tag',
 	conversation: 'conversation',
@@ -18,6 +18,21 @@ export const FOLDER_VIEW = {
 	task: 'task',
 	chat: 'chat'
 } as const;
+
+type FolderViewType = {
+	search_folder: 'search folder';
+	tag: 'tag';
+	conversation: 'conversation';
+	message: 'message';
+	contact: 'contact';
+	document: 'document';
+	appointment: 'appointment';
+	virtual_conversation: 'virtual conversation';
+	remote_folder: 'remote folder';
+	wiki: 'wiki';
+	task: 'task';
+	chat: 'chat';
+};
 
 // eslint-disable-next-line no-shadow
 export enum TagsActionsType {
@@ -33,3 +48,26 @@ export const DRAG_DATA_TYPE = {
 	FOLDER: 'folder',
 	CONTACT: 'contact'
 } as const;
+
+export const ZIMBRA_STANDARD_COLORS = [
+	{ zValue: 0, hex: '#000000', zLabel: 'black' },
+	{ zValue: 1, hex: '#2b73d2', zLabel: 'blue' },
+	{ zValue: 2, hex: '#2196d3', zLabel: 'cyan' },
+	{ zValue: 3, hex: '#639030', zLabel: 'green' },
+	{ zValue: 4, hex: '#1a75a7', zLabel: 'purple' },
+	{ zValue: 5, hex: '#d74942', zLabel: 'red' },
+	{ zValue: 6, hex: '#ffc107', zLabel: 'yellow' },
+	{ zValue: 7, hex: '#edaeab', zLabel: 'pink' },
+	{ zValue: 8, hex: '#828282', zLabel: 'gray' },
+	{ zValue: 9, hex: '#ba8b00', zLabel: 'orange' }
+];
+
+export enum JSNS {
+	ACCOUNT = 'urn:zimbraAccount',
+	ADMIN = 'urn:zimbraAdmin',
+	MAIL = 'urn:zimbraMail',
+	ALL = 'urn:zimbra',
+	SYNC = 'urn:zimbraSync'
+}
+
+export const ROOT_NAME = 'USER_ROOT';

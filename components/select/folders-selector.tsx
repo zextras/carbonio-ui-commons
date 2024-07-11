@@ -6,13 +6,13 @@
 import React, { FC, ReactElement, useCallback, useMemo } from 'react';
 
 import { Padding, Row, Select, SelectItem } from '@zextras/carbonio-design-system';
-import { FOLDERS } from '@zextras/carbonio-shell-ui';
 import { find, map } from 'lodash';
 
 import { TextUpperCase } from './color-select';
 import { FolderSelectorLabelFactory, Square } from './select-label-factory';
 import { useRoot } from '../../store/zustand/folder';
 import type { FolderSelectorItem } from '../../types/select';
+import { FOLDERS } from '../../constants/folders';
 
 type FolderSelectorProps = {
 	defaultFolderId: string;

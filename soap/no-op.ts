@@ -5,8 +5,7 @@
  */
 
 import { ErrorSoapBodyResponse, soapFetch } from '@zextras/carbonio-shell-ui';
-
-import { JSNS } from '../test/mocks/carbonio-shell-ui-constants';
+import { JSNS } from '../constants/utils';
 
 type NoOpRequest = {
 	_jsns: JSNS.MAIL;

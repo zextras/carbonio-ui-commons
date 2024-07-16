@@ -3,9 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { FOLDERS, getUserAccount } from '@zextras/carbonio-shell-ui';
+import { getUserAccount } from '@zextras/carbonio-shell-ui';
 import { find } from 'lodash';
 
+import { FOLDERS } from '../constants/folders';
 import { useFolderStore } from '../store/zustand/folder';
 import type { Folder, Folders } from '../types/folder';
 

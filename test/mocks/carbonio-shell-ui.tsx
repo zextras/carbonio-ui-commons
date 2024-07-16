@@ -15,8 +15,6 @@ import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
 import { tags } from './tags/tags';
 
-export { FOLDERS, ZIMBRA_STANDARD_COLORS, JSNS, ROOT_NAME } from './carbonio-shell-ui-constants';
-
 export const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();

@@ -3,7 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { FOLDERS } from '@zextras/carbonio-shell-ui';
+
+import { FOLDERS } from '../constants/folders';
 
 export const FOLDERS_DESCRIPTORS = {
 	userRoot: {

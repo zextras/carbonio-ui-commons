@@ -7,6 +7,13 @@ import { faker } from '@faker-js/faker';
 import { getUserAccount } from '@zextras/carbonio-shell-ui';
 import { values } from 'lodash';
 
+import { FOLDERS } from '../../constants/folders';
+import { useFolderStore } from '../../store/zustand/folder';
+import { getRootsMap } from '../../store/zustand/folder/hooks';
+import { FOLDERS_DESCRIPTORS } from '../../test/constants';
+import { generateFolder } from '../../test/mocks/folders/folders-generator';
+import { populateFoldersStore } from '../../test/mocks/store/folders';
+import { getMocksContext } from '../../test/mocks/utils/mocks-context';
 import {
 	getFolderIdParts,
 	getFolderOwnerAccountName,
@@ -23,13 +30,6 @@ import {
 	isTrashed,
 	isWriteAllowed
 } from '../folders';
-import { useFolderStore } from '../../store/zustand/folder';
-import { getRootsMap } from '../../store/zustand/folder/hooks';
-import { FOLDERS_DESCRIPTORS } from '../../test/constants';
-import { FOLDERS } from '../../test/mocks/carbonio-shell-ui-constants';
-import { generateFolder } from '../../test/mocks/folders/folders-generator';
-import { populateFoldersStore } from '../../test/mocks/store/folders';
-import { getMocksContext } from '../../test/mocks/utils/mocks-context';
 
 describe('Folder id', () => {
 	test('with zid', () => {

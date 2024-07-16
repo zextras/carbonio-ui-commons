@@ -5,7 +5,6 @@
  */
 import { Account } from '@zextras/carbonio-shell-ui';
 
-import { Signature } from '../../../../types';
 import { getMocksContext } from '../utils/mocks-context';
 
 /**
@@ -28,14 +27,11 @@ const defaultAccount = (): Account => {
 				: [])
 		];
 		allSignatures.push(
-			...combinedSignatures.map(
-				(signature) =>
-					({
-						name: signature.name,
-						id: signature.id,
-						content: signature.content
-					}) as Signature
-			)
+			...combinedSignatures.map((signature) => ({
+				name: signature.name,
+				id: signature.id,
+				content: signature.content
+			}))
 		);
 	});
 

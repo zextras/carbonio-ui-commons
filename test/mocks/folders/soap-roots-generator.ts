@@ -7,8 +7,8 @@ import { faker } from '@faker-js/faker';
 import { SoapFolder, SoapLink } from '@zextras/carbonio-shell-ui';
 import { map, orderBy } from 'lodash';
 
+import { FOLDERS } from '../../../constants/folders';
 import { BaseFolder, FolderView } from '../../../types/folder';
-import { FOLDERS } from '../carbonio-shell-ui';
 import { getMocksContext } from '../utils/mocks-context';
 
 let luuid: string | undefined = '';

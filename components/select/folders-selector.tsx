@@ -10,9 +10,9 @@ import { find, map } from 'lodash';
 
 import { TextUpperCase } from './color-select';
 import { FolderSelectorLabelFactory, Square } from './select-label-factory';
+import { FOLDERS } from '../../constants/folders';
 import { useRoot } from '../../store/zustand/folder';
 import type { FolderSelectorItem } from '../../types/select';
-import { FOLDERS } from '../../constants/folders';
 
 type FolderSelectorProps = {
 	defaultFolderId: string;

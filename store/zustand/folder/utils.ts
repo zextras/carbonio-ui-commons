@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { FOLDERS, ROOT_NAME } from '@zextras/carbonio-shell-ui';
 import { sortBy } from 'lodash';
 
+import { ROOT_NAME } from '../../../constants';
+import { FOLDERS } from '../../../constants/folders';
 import { Folders } from '../../../types/folder';
 import type { Folder, FolderView, LinkFolder, TreeNode } from '../../../types/folder';
 

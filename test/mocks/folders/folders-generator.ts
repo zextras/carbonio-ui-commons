@@ -6,6 +6,7 @@
 
 import { faker } from '@faker-js/faker';
 
+import { FOLDERS } from '../../../constants/folders';
 import type {
 	Folder,
 	FolderView,
@@ -14,7 +15,6 @@ import type {
 	PopulateFoldersStoreOptions
 } from '../../../types/folder';
 import { FakeIdentity } from '../accounts/fakeAccounts';
-import { FOLDERS } from '../carbonio-shell-ui-constants';
 import {
 	getMocksContext,
 	getRandomIdentities,

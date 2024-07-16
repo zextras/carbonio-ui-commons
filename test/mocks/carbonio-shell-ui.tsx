@@ -15,6 +15,9 @@ import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
 import { tags } from './tags/tags';
 
+export { ZIMBRA_STANDARD_COLORS, JSNS, ROOT_NAME } from '../../constants/utils';
+export { FOLDERS } from '../../constants/folders';
+
 export const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();

@@ -6,7 +6,7 @@
 
 import React, { FC, ReactNode, useCallback } from 'react';
 
-import shell, { HistoryParams } from '@zextras/carbonio-shell-ui';
+import shell from '@zextras/carbonio-shell-ui';
 import { trimStart } from 'lodash';
 import { useHistory } from 'react-router-dom';
 
@@ -15,8 +15,7 @@ import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
 import { tags } from './tags/tags';
 
-export { ZIMBRA_STANDARD_COLORS, JSNS, ROOT_NAME } from '../../constants/utils';
-export { FOLDERS } from '../../constants/folders';
+export { JSNS } from '../../constants/utils';
 
 export const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];

@@ -7,10 +7,10 @@ import React, { useMemo } from 'react';
 
 import type { SelectProps, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
 import { Container, Icon, Padding, Row, Select, Text } from '@zextras/carbonio-design-system';
-import { ZIMBRA_STANDARD_COLORS } from '@zextras/carbonio-shell-ui';
 import { useTranslation } from 'react-i18next';
 import styled, { SimpleInterpolation } from 'styled-components';
 
+import { ZIMBRA_STANDARD_COLORS } from '../../constants/utils';
 import { CustomLabelFactoryProps } from '../../types/select';
 
 export const Square = styled.div`

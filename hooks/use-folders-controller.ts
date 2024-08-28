@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useNotify } from '@zextras/carbonio-shell-ui';
 import { filter, forEach, isEmpty, map, reject, sortBy } from 'lodash';
@@ -31,26 +31,33 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 	);
 
 export const useFoldersController = (view: FolderView): null => {
-	const [initializing, setInitializing] = useState(true);
-	const [seq, setSeq] = useState(-1);
+	const initializing = useRef(true);
+	const seq = useRef(-1);
+	const failedGetFolderCalls = useRef(0);
 
 	const notify = useNotify();
 
 	useEffect(() => {
-		if (initializing && view) {
-			setInitializing((previous) => !previous);
+		if (view && failedGetFolderCalls.current < 4) {
+			console.log('@@@@@initializing', view, failedGetFolderCalls.current);
+			initializing.current = false;
 			getFolderRequest({ view })
-				.then((rootFolders: { folder: any }) => {
+				.then((getFolderResponse: { folder: any }) => {
+					if ('Fault' in getFolderResponse) {
+						failedGetFolderCalls.current += 1;
+					} else {
+						failedGetFolderCalls.current = 0;
+					}
 					getShareInfoRequest().then((sharedFolders) => {
 						if (sharedFolders?.folders) {
 							const sharedAccounts = filter(sharedFolders.folders, ['folderId', 1]);
 							if (sharedAccounts.length) {
-								const filteredLinks = reject(rootFolders.folder[0].link, ['rid', 1]);
+								const filteredLinks = reject(getFolderResponse.folder[0].link, ['rid', 1]);
 								getFoldersByAccounts(sharedAccounts, view).then((response) => {
 									if (!response.Fault) {
 										const folders = [
 											{
-												...rootFolders.folder[0],
+												...response.folder[0],
 												link: filteredLinks
 											},
 											...response
@@ -63,7 +70,7 @@ export const useFoldersController = (view: FolderView): null => {
 									} else {
 										const folders = [
 											{
-												...rootFolders.folder[0],
+												...response.folder[0],
 												link: filteredLinks
 											}
 										];
@@ -78,22 +85,22 @@ export const useFoldersController = (view: FolderView): null => {
 								folderWorker.postMessage({
 									op: 'refresh',
 									currentView: view,
-									folder: rootFolders?.folder ?? []
+									folder: getFolderResponse?.folder ?? []
 								});
 							}
 						}
 					});
 				})
 				.catch(() => {
-					setInitializing(true);
+					failedGetFolderCalls.current += 1;
 				});
 		}
-	}, [initializing, view]);
+	}, [view]);
 
 	useEffect(() => {
-		if (!initializing && notify.length > 0) {
+		if (!initializing.current && notify.length > 0) {
 			forEach(sortBy(notify, 'seq'), (item) => {
-				if (!isEmpty(notify) && (item.seq > seq || (seq > 1 && item.seq === 1))) {
+				if (!isEmpty(notify) && (item.seq > seq.current || (seq.current > 1 && item.seq === 1))) {
 					const isNotifyRelatedToFolders =
 						!isEmpty(notify) &&
 						(item?.created?.folder ||
@@ -109,7 +116,7 @@ export const useFoldersController = (view: FolderView): null => {
 							state: useFolderStore.getState().folders
 						});
 					}
-					setSeq(item.seq);
+					seq.current = item.seq;
 				}
 			});
 		}

@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useNotify } from '@zextras/carbonio-shell-ui';
 import { filter, forEach, isEmpty, map, reject, sortBy } from 'lodash';
@@ -38,7 +38,7 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 
 export const useFoldersController = (view: FolderView): null => {
 	const isLoading = useRef(false);
-	const [seq, setSeq] = useState(-1);
+	const seq = useRef(-1);
 
 	const notify = useNotify();
 
@@ -89,12 +89,12 @@ export const useFoldersController = (view: FolderView): null => {
 		if (!isLoading.current && view) {
 			fetchData();
 		}
-	}, [isLoading, view]);
+	}, [view]);
 
 	useEffect(() => {
 		if (!isLoading.current && notify.length > 0) {
 			forEach(sortBy(notify, 'seq'), (item) => {
-				if (!isEmpty(notify) && (item.seq > seq || (seq > 1 && item.seq === 1))) {
+				if (!isEmpty(notify) && (item.seq > seq.current || (seq.current > 1 && item.seq === 1))) {
 					const isNotifyRelatedToFolders =
 						!isEmpty(notify) &&
 						(item?.created?.folder ||
@@ -110,10 +110,10 @@ export const useFoldersController = (view: FolderView): null => {
 							state: useFolderStore.getState().folders
 						});
 					}
-					setSeq(item.seq);
+					seq.current = item.seq;
 				}
 			});
 		}
-	}, [isLoading, notify, seq, view]);
+	}, [notify, view]);
 	return null;
 };

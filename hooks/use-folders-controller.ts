@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { useNotify } from '@zextras/carbonio-shell-ui';
 import { filter, forEach, isEmpty, map, reject, sortBy } from 'lodash';
@@ -42,54 +42,54 @@ export const useFoldersController = (view: FolderView): null => {
 
 	const notify = useNotify();
 
-	useEffect(() => {
-		const fetchData = async (): Promise<void> => {
-			try {
-				isLoading.current = true;
-				const rootFolders = await getFolderRequest({ view });
-				const sharedFolders = await getShareInfoRequest();
-				if (sharedFolders?.folders) {
-					const sharedAccounts = filter(sharedFolders.folders, ['folderId', 1]);
-					const filteredLinks = reject(rootFolders.folder[0].link, ['rid', 1]);
+	const fetchFolders = useCallback(async (): Promise<void> => {
+		try {
+			isLoading.current = true;
+			const folderResponse = await getFolderRequest({ view });
+			const shareInfoResponse = await getShareInfoRequest();
+			if (shareInfoResponse?.folders) {
+				const sharedAccounts = filter(shareInfoResponse.folders, ['folderId', 1]);
+				const filteredLinks = reject(folderResponse.folder[0].link, ['rid', 1]);
 
-					const folders = sharedAccounts.length
-						? [
-								{
-									...rootFolders.folder[0],
-									link: filteredLinks
-								},
-								...(await getFoldersByAccounts(sharedAccounts, view))
-							]
-						: [
-								{
-									...rootFolders.folder[0],
-									link: filteredLinks
-								}
-							];
+				const folders = sharedAccounts.length
+					? [
+							{
+								...folderResponse.folder[0],
+								link: filteredLinks
+							},
+							...(await getFoldersByAccounts(sharedAccounts, view))
+						]
+					: [
+							{
+								...folderResponse.folder[0],
+								link: filteredLinks
+							}
+						];
 
-					folderWorker.postMessage({
-						op: 'refresh',
-						currentView: view,
-						folder: folders ?? []
-					});
-				} else {
-					folderWorker.postMessage({
-						op: 'refresh',
-						currentView: view,
-						folder: rootFolders?.folder ?? []
-					});
-				}
-			} catch (error) {
-				console.error('Error in fetching folder data:', error);
-			} finally {
-				isLoading.current = false;
+				folderWorker.postMessage({
+					op: 'refresh',
+					currentView: view,
+					folder: folders ?? []
+				});
+			} else {
+				folderWorker.postMessage({
+					op: 'refresh',
+					currentView: view,
+					folder: folderResponse?.folder ?? []
+				});
 			}
-		};
-
-		if (!isLoading.current && view) {
-			fetchData();
+		} catch (error) {
+			console.error('Error in fetching folder data:', error);
+		} finally {
+			isLoading.current = false;
 		}
 	}, [view]);
+
+	useEffect(() => {
+		if (!isLoading.current && view) {
+			fetchFolders();
+		}
+	}, [fetchFolders, view]);
 
 	useEffect(() => {
 		if (!isLoading.current && notify.length > 0) {

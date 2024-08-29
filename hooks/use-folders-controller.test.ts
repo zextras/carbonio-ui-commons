@@ -6,7 +6,7 @@
 import { waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 
-import { useFoldersController } from './use-folders-controller';
+import { useInitializeFolders } from './use-initialize-folders';
 import { useFolderStore } from '../store/zustand/folder';
 import { getSetupServer } from '../test/jest-setup';
 import * as shell from '../test/mocks/carbonio-shell-ui';
@@ -31,7 +31,7 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		await waitFor(() => setupHook(useFoldersController, { initialProps: [view] }));
+		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
@@ -48,7 +48,7 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 
 		shell.useNotify.mockReturnValueOnce([]).mockReturnValueOnce([notify]);
 		const { rerender } = await waitFor(() =>
-			setupHook(useFoldersController, { initialProps: [view] })
+			setupHook(useInitializeFolders, { initialProps: [view] })
 		);
 		rerender();
 
@@ -76,7 +76,7 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 			notify
 		]);
 		const { rerender } = await waitFor(() =>
-			setupHook(useFoldersController, { initialProps: [view] })
+			setupHook(useInitializeFolders, { initialProps: [view] })
 		);
 		rerender();
 
@@ -92,7 +92,7 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		await waitFor(() => setupHook(useFoldersController, { initialProps: ['appointment'] }));
+		await waitFor(() => setupHook(useInitializeFolders, { initialProps: ['appointment'] }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
@@ -115,15 +115,12 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(
-			http.post<never, never, ReturnType<typeof getEmptyMSWShareInfoResponse>>(
-				'/service/soap/GetShareInfoRequest',
-				({ request }) => {
-					const response = getEmptyMSWShareInfoResponse();
-					return HttpResponse.json(response);
-				}
-			)
+			http.post('/service/soap/GetShareInfoRequest', ({ request }) => {
+				const response = getEmptyMSWShareInfoResponse();
+				return HttpResponse.json(response);
+			})
 		);
-		await waitFor(() => setupHook(useFoldersController, { initialProps: ['appointment'] }));
+		await waitFor(() => setupHook(useInitializeFolders, { initialProps: ['appointment'] }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);

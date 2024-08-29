@@ -36,7 +36,7 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 	}
 };
 
-export const useFoldersController = (view: FolderView): null => {
+export const useFoldersController = (view: FolderView): void => {
 	const isLoading = useRef(false);
 	const seq = useRef(-1);
 
@@ -115,5 +115,4 @@ export const useFoldersController = (view: FolderView): null => {
 			});
 		}
 	}, [notify, view]);
-	return null;
 };

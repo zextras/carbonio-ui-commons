@@ -5,12 +5,10 @@
  */
 import { useCallback, useEffect, useRef } from 'react';
 
-import { useNotify } from '@zextras/carbonio-shell-ui';
-import { filter, forEach, isEmpty, map, reject, sortBy } from 'lodash';
+import { filter, map, reject } from 'lodash';
 
 import { getFolderRequest } from '../soap/get-folder';
 import { getShareInfoRequest } from '../soap/get-share-info';
-import { useFolderStore } from '../store/zustand/folder';
 import { FolderView } from '../types';
 import { folderWorker } from '../worker';
 
@@ -36,11 +34,8 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 	}
 };
 
-export const useFoldersController = (view: FolderView): void => {
+export const useInitializeFolders = (view: FolderView): void => {
 	const isLoading = useRef(false);
-	const seq = useRef(-1);
-
-	const notify = useNotify();
 
 	const fetchFolders = useCallback(async (): Promise<void> => {
 		try {
@@ -90,29 +85,4 @@ export const useFoldersController = (view: FolderView): void => {
 			fetchFolders();
 		}
 	}, [fetchFolders, view]);
-
-	useEffect(() => {
-		if (!isLoading.current && notify.length > 0) {
-			forEach(sortBy(notify, 'seq'), (item) => {
-				if (!isEmpty(notify) && (item.seq > seq.current || (seq.current > 1 && item.seq === 1))) {
-					const isNotifyRelatedToFolders =
-						!isEmpty(notify) &&
-						(item?.created?.folder ||
-							item?.modified?.folder ||
-							item.deleted ||
-							item?.created?.link ||
-							item?.modified?.link);
-
-					if (isNotifyRelatedToFolders) {
-						folderWorker.postMessage({
-							op: 'notify',
-							notify: item,
-							state: useFolderStore.getState().folders
-						});
-					}
-					seq.current = item.seq;
-				}
-			});
-		}
-	}, [notify, view]);
 };

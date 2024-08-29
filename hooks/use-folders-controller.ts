@@ -33,67 +33,56 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 export const useFoldersController = (view: FolderView): null => {
 	const initializing = useRef(true);
 	const seq = useRef(-1);
-	const failedGetFolderCalls = useRef(0);
 
 	const notify = useNotify();
 
 	useEffect(() => {
-		if (view && failedGetFolderCalls.current < 4) {
-			console.log('@@@@@initializing', view, failedGetFolderCalls.current);
+		if (view) {
 			initializing.current = false;
-			getFolderRequest({ view })
-				.then((getFolderResponse: { folder: any }) => {
-					if ('Fault' in getFolderResponse) {
-						failedGetFolderCalls.current += 1;
-					} else {
-						failedGetFolderCalls.current = 0;
-					}
-					getShareInfoRequest().then((sharedFolders) => {
-						if (sharedFolders?.folders) {
-							const sharedAccounts = filter(sharedFolders.folders, ['folderId', 1]);
-							if (sharedAccounts.length) {
-								const filteredLinks = reject(getFolderResponse.folder[0].link, ['rid', 1]);
-								getFoldersByAccounts(sharedAccounts, view).then((response) => {
-									if (!response.Fault) {
-										const folders = [
-											{
-												...response.folder[0],
-												link: filteredLinks
-											},
-											...response
-										];
-										folderWorker.postMessage({
-											op: 'refresh',
-											currentView: view,
-											folder: folders ?? []
-										});
-									} else {
-										const folders = [
-											{
-												...response.folder[0],
-												link: filteredLinks
-											}
-										];
-										folderWorker.postMessage({
-											op: 'refresh',
-											currentView: view,
-											folder: folders ?? []
-										});
-									}
-								});
-							} else {
-								folderWorker.postMessage({
-									op: 'refresh',
-									currentView: view,
-									folder: getFolderResponse?.folder ?? []
-								});
-							}
+			getFolderRequest({ view }).then((getFolderResponse: { folder: any }) => {
+				getShareInfoRequest().then((sharedFolders) => {
+					if (sharedFolders?.folders) {
+						const sharedAccounts = filter(sharedFolders.folders, ['folderId', 1]);
+						if (sharedAccounts.length) {
+							const filteredLinks = reject(getFolderResponse.folder[0].link, ['rid', 1]);
+							getFoldersByAccounts(sharedAccounts, view).then((response) => {
+								if (!response.Fault) {
+									const folders = [
+										{
+											...response.folder[0],
+											link: filteredLinks
+										},
+										...response
+									];
+									folderWorker.postMessage({
+										op: 'refresh',
+										currentView: view,
+										folder: folders ?? []
+									});
+								} else {
+									const folders = [
+										{
+											...response.folder[0],
+											link: filteredLinks
+										}
+									];
+									folderWorker.postMessage({
+										op: 'refresh',
+										currentView: view,
+										folder: folders ?? []
+									});
+								}
+							});
+						} else {
+							folderWorker.postMessage({
+								op: 'refresh',
+								currentView: view,
+								folder: getFolderResponse?.folder ?? []
+							});
 						}
-					});
-				})
-				.catch(() => {
-					failedGetFolderCalls.current += 1;
+					}
 				});
+			});
 		}
 	}, [view]);
 

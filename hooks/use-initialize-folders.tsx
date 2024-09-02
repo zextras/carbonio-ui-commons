@@ -8,7 +8,6 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useModal } from '@zextras/carbonio-design-system';
 import { filter, map, reject } from 'lodash';
 
-import { StoreProvider } from '../../store/redux';
 import { FolderInitializationErrorModal } from '../components/modals/folder-initialization-error-modal';
 import { getFolderRequest } from '../soap/get-folder';
 import { getShareInfoRequest } from '../soap/get-share-info';
@@ -31,7 +30,13 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 		})
 	);
 
-export const useInitializeFolders = (view: FolderView): void => {
+export const useInitializeFolders = ({
+	view,
+	StoreProvider
+}: {
+	view: FolderView;
+	StoreProvider: any;
+}): void => {
 	const isLoading = useRef(false);
 	const { createModal, closeModal } = useModal();
 
@@ -88,7 +93,7 @@ export const useInitializeFolders = (view: FolderView): void => {
 		} finally {
 			isLoading.current = false;
 		}
-	}, [closeModal, createModal, view]);
+	}, [StoreProvider, closeModal, createModal, view]);
 
 	useEffect(() => {
 		if (!isLoading.current && view) {

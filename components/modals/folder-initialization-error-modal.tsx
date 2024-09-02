@@ -6,7 +6,7 @@
 
 import React, { useCallback } from 'react';
 
-import { Container, Text } from '@zextras/carbonio-design-system';
+import { Row, Text } from '@zextras/carbonio-design-system';
 import { t } from '@zextras/carbonio-shell-ui';
 
 import ModalFooter from './modal-footer';
@@ -18,8 +18,8 @@ export const FolderInitializationErrorModal = ({
 	onClose: () => void;
 }): React.JSX.Element => {
 	const title = t('modal.initializeError.title', 'Oops!…Something went wrong');
-	const body = t('modal.initializeError.content', 'Please refresh the page or try again later');
-	const onConfirmLabel = t('modal.initializeError.buttonConfirm', 'Refresh');
+	const body = t('modal.initializeError.content', 'Please reload the page or try again later');
+	const onConfirmLabel = t('modal.initializeError.buttonConfirm', 'Reload');
 
 	const onConfirm = useCallback(() => {
 		window.location.reload();
@@ -28,9 +28,9 @@ export const FolderInitializationErrorModal = ({
 	return (
 		<>
 			<ModalHeader onClose={onClose} title={title} />
-			<Container padding={{ horizontal: 'large' }}>
+			<Row>
 				<Text>{body}</Text>
-			</Container>
+			</Row>
 			<ModalFooter onConfirm={onConfirm} label={onConfirmLabel} disabled={false} />
 		</>
 	);

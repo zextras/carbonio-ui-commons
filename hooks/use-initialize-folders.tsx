@@ -3,10 +3,13 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
+import { useModal } from '@zextras/carbonio-design-system';
 import { filter, map, reject } from 'lodash';
 
+import { StoreProvider } from '../../store/redux';
+import { FolderInitializationErrorModal } from '../components/modals/folder-initialization-error-modal';
 import { getFolderRequest } from '../soap/get-folder';
 import { getShareInfoRequest } from '../soap/get-share-info';
 import { FolderView } from '../types';
@@ -30,6 +33,7 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 
 export const useInitializeFolders = (view: FolderView): void => {
 	const isLoading = useRef(false);
+	const { createModal, closeModal } = useModal();
 
 	const fetchFolders = useCallback(async (): Promise<void> => {
 		try {
@@ -68,11 +72,23 @@ export const useInitializeFolders = (view: FolderView): void => {
 				});
 			}
 		} catch (error) {
-			console.error('Error in fetching folder data:', error);
+			const id = 'eror-initialize-modal';
+			createModal(
+				{
+					id,
+					children: (
+						<StoreProvider>
+							<FolderInitializationErrorModal onClose={(): void => closeModal(id)} />
+						</StoreProvider>
+					)
+				},
+				true
+			);
+			console.error('Error fetching folders:', error);
 		} finally {
 			isLoading.current = false;
 		}
-	}, [view]);
+	}, [closeModal, createModal, view]);
 
 	useEffect(() => {
 		if (!isLoading.current && view) {

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { SoapHeader } from '@zextras/carbonio-shell-ui';
+import { ErrorSoapResponse, SoapHeader } from '@zextras/carbonio-shell-ui';
 import { filter } from 'lodash';
 import { HttpResponse, HttpResponseResolver } from 'msw';
 
@@ -179,3 +179,6 @@ export const handleGetFolderRequest: HttpResponseResolver<
 	const response = getFolderResponse({ view, id, tr, context });
 	return HttpResponse.json(response);
 };
+
+export const handleFailedRequest: HttpResponseResolver<never, ErrorSoapResponse> = async () =>
+	HttpResponse.json({}, { type: 'error', status: 500, statusText: 'Failed' });

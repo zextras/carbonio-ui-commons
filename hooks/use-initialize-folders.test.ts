@@ -9,7 +9,10 @@ import { http, HttpResponse } from 'msw';
 import { useInitializeFolders } from './use-initialize-folders';
 import { useFolderStore } from '../store/zustand/folder';
 import { getSetupServer } from '../test/jest-setup';
-import { handleGetFolderRequest } from '../test/mocks/network/msw/handle-get-folder';
+import {
+	handleFailedRequest,
+	handleGetFolderRequest
+} from '../test/mocks/network/msw/handle-get-folder';
 import {
 	getEmptyMSWShareInfoResponse,
 	handleGetShareInfoRequest
@@ -19,7 +22,7 @@ import { FolderView } from '../types/folder';
 import { folderWorker } from '../worker';
 
 describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parameter', (view) => {
-	test('on first render it will call refresh', async () => {
+	test('it will call refresh', async () => {
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
@@ -30,6 +33,24 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		expect(workerSpy).toHaveBeenCalledWith(
 			expect.objectContaining({ op: 'refresh', currentView: view, folder: expect.any(Object) })
 		);
+	});
+	test('it will call console error when GetFolderRequest fails', async () => {
+		jest.spyOn(console, 'error').mockImplementation();
+		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
+		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleFailedRequest));
+		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
+		expect(workerSpy).toHaveBeenCalledTimes(0);
+		expect(console.error).toHaveBeenCalledWith('Error fetching folders:', expect.anything());
+	});
+
+	test('it will call console error when GetShareInfoRequest fails', async () => {
+		jest.spyOn(console, 'error').mockImplementation();
+		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
+		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
+		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleFailedRequest));
+		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
+		expect(workerSpy).toHaveBeenCalledTimes(0);
+		expect(console.error).toHaveBeenCalledWith('Error fetching folders:', expect.anything());
 	});
 
 	test('If multiple accounts are available they will be on the same level of the main account', async () => {

@@ -5,6 +5,7 @@
  */
 import { waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
+import { Provider } from 'react-redux';
 
 import { useInitializeFolders } from './use-initialize-folders';
 import { useFolderStore } from '../store/zustand/folder';
@@ -26,7 +27,9 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
+		await waitFor(() =>
+			setupHook(useInitializeFolders, { initialProps: [{ view, StoreProvider: Provider }] })
+		);
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
@@ -38,7 +41,9 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		jest.spyOn(console, 'error').mockImplementation();
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleFailedRequest));
-		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
+		await waitFor(() =>
+			setupHook(useInitializeFolders, { initialProps: [{ view, StoreProvider: Provider }] })
+		);
 		expect(workerSpy).toHaveBeenCalledTimes(0);
 		expect(console.error).toHaveBeenCalledWith('Error fetching folders:', expect.anything());
 	});
@@ -48,7 +53,9 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleFailedRequest));
-		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
+		await waitFor(() =>
+			setupHook(useInitializeFolders, { initialProps: [{ view, StoreProvider: Provider }] })
+		);
 		expect(workerSpy).toHaveBeenCalledTimes(0);
 		expect(console.error).toHaveBeenCalledWith('Error fetching folders:', expect.anything());
 	});
@@ -58,7 +65,11 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		await waitFor(() => setupHook(useInitializeFolders, { initialProps: ['appointment'] }));
+		await waitFor(() =>
+			setupHook(useInitializeFolders, {
+				initialProps: [{ view: 'appointment', StoreProvider: Provider }]
+			})
+		);
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
@@ -86,7 +97,11 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 				return HttpResponse.json(response);
 			})
 		);
-		await waitFor(() => setupHook(useInitializeFolders, { initialProps: ['appointment'] }));
+		await waitFor(() =>
+			setupHook(useInitializeFolders, {
+				initialProps: [{ view: 'appointment', StoreProvider: Provider }]
+			})
+		);
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);

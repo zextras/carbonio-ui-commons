@@ -6,11 +6,13 @@
 import { waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 
-import { useFoldersController } from './use-folders-controller';
+import { useInitializeFolders } from './use-initialize-folders';
 import { useFolderStore } from '../store/zustand/folder';
 import { getSetupServer } from '../test/jest-setup';
-import * as shell from '../test/mocks/carbonio-shell-ui';
-import { handleGetFolderRequest } from '../test/mocks/network/msw/handle-get-folder';
+import {
+	handleFailedRequest,
+	handleGetFolderRequest
+} from '../test/mocks/network/msw/handle-get-folder';
 import {
 	getEmptyMSWShareInfoResponse,
 	handleGetShareInfoRequest
@@ -19,19 +21,12 @@ import { setupHook } from '../test/test-setup';
 import { FolderView } from '../types/folder';
 import { folderWorker } from '../worker';
 
-const getDifferentViewCreation = (view: FolderView): unknown => {
-	if (view === 'appointment' || view === 'contact') {
-		return { m: [] };
-	}
-	return { appt: {} };
-};
-
 describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parameter', (view) => {
-	test('on first render it will call refresh', async () => {
+	test('it will call refresh', async () => {
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		await waitFor(() => setupHook(useFoldersController, { initialProps: [view] }));
+		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
@@ -39,60 +34,31 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 			expect.objectContaining({ op: 'refresh', currentView: view, folder: expect.any(Object) })
 		);
 	});
-	test('on rerender it will not call refresh but will call notify', async () => {
-		useFolderStore.setState({ folders: {} });
-		const notify = { deleted: ['1'], seq: 2 };
+	test('it will call console error when GetFolderRequest fails', async () => {
+		jest.spyOn(console, 'error').mockImplementation();
+		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
+		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleFailedRequest));
+		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
+		expect(workerSpy).toHaveBeenCalledTimes(0);
+		expect(console.error).toHaveBeenCalledWith('Error fetching folders:', expect.anything());
+	});
+
+	test('it will call console error when GetShareInfoRequest fails', async () => {
+		jest.spyOn(console, 'error').mockImplementation();
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
-		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-
-		shell.useNotify.mockReturnValueOnce([]).mockReturnValueOnce([notify]);
-		const { rerender } = await waitFor(() =>
-			setupHook(useFoldersController, { initialProps: [view] })
-		);
-		rerender();
-
-		expect(workerSpy).toHaveBeenCalled();
-		expect(workerSpy).toHaveBeenCalledTimes(2);
-		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
-		expect(workerSpy).toHaveBeenCalledWith(
-			expect.objectContaining({ op: 'refresh', currentView: view, folder: expect.any(Object) })
-		);
-		expect(workerSpy).toHaveBeenCalledWith(
-			expect.objectContaining({ op: 'notify', notify, state: expect.any(Object) })
-		);
+		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleFailedRequest));
+		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
+		expect(workerSpy).toHaveBeenCalledTimes(0);
+		expect(console.error).toHaveBeenCalledWith('Error fetching folders:', expect.anything());
 	});
-	test('if notify is related to another view it wont call the notify', async () => {
-		useFolderStore.setState({ folders: {} });
-		const notify = { created: getDifferentViewCreation(view as FolderView), seq: 2 };
-		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
-		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
-		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 
-		shell.useNotify.mockReturnValueOnce([]).mockReturnValueOnce([
-			// SoapNotify type inside shell is incomplete
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			notify
-		]);
-		const { rerender } = await waitFor(() =>
-			setupHook(useFoldersController, { initialProps: [view] })
-		);
-		rerender();
-
-		expect(workerSpy).toHaveBeenCalled();
-		expect(workerSpy).toHaveBeenCalledTimes(1);
-		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
-		expect(workerSpy).not.toHaveBeenCalledWith(
-			expect.objectContaining({ op: 'notify', notify, state: expect.any(Object) })
-		);
-	});
 	test('If multiple accounts are available they will be on the same level of the main account', async () => {
 		useFolderStore.setState({ folders: {} });
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
-		await waitFor(() => setupHook(useFoldersController, { initialProps: ['appointment'] }));
+		await waitFor(() => setupHook(useInitializeFolders, { initialProps: ['appointment'] }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
@@ -115,15 +81,12 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(
-			http.post<never, never, ReturnType<typeof getEmptyMSWShareInfoResponse>>(
-				'/service/soap/GetShareInfoRequest',
-				({ request }) => {
-					const response = getEmptyMSWShareInfoResponse();
-					return HttpResponse.json(response);
-				}
-			)
+			http.post('/service/soap/GetShareInfoRequest', () => {
+				const response = getEmptyMSWShareInfoResponse();
+				return HttpResponse.json(response);
+			})
 		);
-		await waitFor(() => setupHook(useFoldersController, { initialProps: ['appointment'] }));
+		await waitFor(() => setupHook(useInitializeFolders, { initialProps: ['appointment'] }));
 		expect(workerSpy).toHaveBeenCalled();
 		expect(workerSpy).toHaveBeenCalledTimes(1);
 		expect(workerSpy).not.toHaveBeenCalledWith(undefined);

@@ -30,13 +30,7 @@ const getFoldersByAccounts = async (sharedAccounts: unknown[], view: FolderView)
 		})
 	);
 
-export const useInitializeFolders = ({
-	view,
-	StoreProvider
-}: {
-	view: FolderView;
-	StoreProvider: any;
-}): void => {
+export const useInitializeFolders = (view: FolderView): void => {
 	const isLoading = useRef(false);
 	const { createModal, closeModal } = useModal();
 
@@ -81,11 +75,7 @@ export const useInitializeFolders = ({
 			createModal(
 				{
 					id,
-					children: (
-						<StoreProvider>
-							<FolderInitializationErrorModal onClose={(): void => closeModal(id)} />
-						</StoreProvider>
-					)
+					children: <FolderInitializationErrorModal onClose={(): void => closeModal(id)} />
 				},
 				true
 			);
@@ -93,7 +83,7 @@ export const useInitializeFolders = ({
 		} finally {
 			isLoading.current = false;
 		}
-	}, [StoreProvider, closeModal, createModal, view]);
+	}, [closeModal, createModal, view]);
 
 	useEffect(() => {
 		if (!isLoading.current && view) {

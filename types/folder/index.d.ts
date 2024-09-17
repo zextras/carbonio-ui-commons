@@ -144,6 +144,8 @@ export type BaseFolder = {
 	retentionPolicy?: SoapRetentionPolicy;
 	// indicates whether this folder is displayed in Calendars
 	checked?: boolean;
+	// indicates whether this folder have an icon
+	noIcon?: boolean;
 };
 
 export type SoapLink = SoapFolder & LinkFolderFields;

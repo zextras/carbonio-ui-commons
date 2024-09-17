@@ -31,8 +31,16 @@ export type FolderState = {
 	folders: Folders;
 	linksIdMap: LinksIdMap;
 	searches: Searches;
+	groups: CalendarGroups;
 	updateFolder: (id: string, opt: Partial<Folder>) => void;
+	updateGroups: (groups: CalendarGroups) => void;
 };
+export type CalendarGroup = {
+	id: string;
+	name: string;
+	carlendarId: string[];
+};
+export type CalendarGroups = CalendarGroup[];
 
 export type FolderView =
 	| 'search folder'

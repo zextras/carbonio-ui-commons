@@ -12,7 +12,7 @@ import { useFolderStore } from './store';
 import { getFlatChildrenFolders } from './utils';
 import { ROOT_NAME } from '../../../constants';
 import { FOLDERS } from '../../../constants/folders';
-import type { Folder, Folders, LinkFolder, SearchFolder, Searches } from '../../../types';
+import type { Folder, Folders, LinkFolder, SearchFolder, Searches, CalendarGroups } from '../../../types';
 
 /**
  * Returns the folder with given ID or undefined
@@ -205,3 +205,6 @@ export const useUpdateFolder = (): ((id: string, opt: Partial<Folder>) => void) 
  */
 export const getUpdateFolder = (): ((id: string, opt: Partial<Folder>) => void) =>
 	useFolderStore.getState().updateFolder;
+
+export const useUpdateGroups = (): ((groups: CalendarGroups) => void) =>
+	useFolderStore((s) => s.updateGroups);

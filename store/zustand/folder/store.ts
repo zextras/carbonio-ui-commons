@@ -7,7 +7,7 @@
 import produce from 'immer';
 import { create } from 'zustand';
 
-import { Folder, FolderState } from '../../../types/folder';
+import { CalendarGroups, Folder, FolderState } from '../../../types';
 import { folderWorker } from '../../../worker';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
@@ -15,6 +15,7 @@ export const useFolderStore = create<FolderState>()((set) => ({
 	folders: {},
 	linksIdMap: {},
 	searches: {},
+	groups: [],
 	updateFolder: (id: string, opt: Partial<Folder>): void => {
 		set(
 			produce((state) => {
@@ -24,6 +25,13 @@ export const useFolderStore = create<FolderState>()((set) => ({
 						...opt
 					};
 				}
+			})
+		);
+	},
+	updateGroups: (groups: CalendarGroups): void => {
+		set(
+			produce((state) => {
+				state.groups = groups;
 			})
 		);
 	}

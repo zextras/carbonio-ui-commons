@@ -35,6 +35,8 @@ export const useFoldersMap = (): Folders => useFolderStore((s) => s.folders);
  */
 export const getFoldersMap = (): Folders => useFolderStore.getState().folders;
 
+export const getCalendarGroups = (): CalendarGroups => useFolderStore.getState().groups;
+
 /**
  * Returns a folders' array including only links. Each folder has its own tree structure included inside its children
  */

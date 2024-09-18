@@ -21,6 +21,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 	AccordionCustomComponent,
 	setSelectedFolder,
 	buttonFindShares,
+	buttonCreateGroup,
 	initialExpanded
 }) => {
 	const [openIds, setOpenIds] = useLocalStorage<Array<string>>(
@@ -41,67 +42,71 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 		[setOpenIds]
 	);
 
+	const customComponents: { [key: string]: any } = {
+		create_group: buttonCreateGroup,
+		find_shares: buttonFindShares
+	};
+
 	return (
 		<Container ref={sidebarRef} disableGutters>
-			{accordions.map((accordion) =>
-				accordion.id === 'find_shares' ? (
-					buttonFindShares
-				) : (
-					<Accordion
-						disableGutters
-						TransitionProps={{ unmountOnExit: true }}
-						expanded={openIds.includes(accordion.id)}
-						key={accordion.id}
-					>
-						<AccordionSummary
-							onClick={(): void => {
-								setSelectedFolder && setSelectedFolder(accordion.id);
-							}}
-							expandIcon={
-								accordion?.children?.length > 0 &&
-								!accordion.noExpandChildren && (
-									<ExpandMoreIcon
-										color="primary"
-										onClick={(e): void => {
-											e.preventDefault();
-											onClick({ accordion, expanded: !openIds.includes(accordion.id) });
-										}}
-									/>
-								)
-							}
-							aria-controls="panel1a-content"
-							id={accordion.id}
-							sx={{
-								backgroundColor:
-									accordion.id === folderId
-										? theme.palette.highlight.hover
-										: theme.palette.gray5.regular,
-								'&:hover': {
+			{accordions.map(
+				(accordion) =>
+					customComponents[accordion.id] || (
+						<Accordion
+							disableGutters
+							TransitionProps={{ unmountOnExit: true }}
+							expanded={openIds.includes(accordion.id)}
+							key={accordion.id}
+						>
+							<AccordionSummary
+								onClick={(): void => {
+									setSelectedFolder && setSelectedFolder(accordion.id);
+								}}
+								expandIcon={
+									accordion?.children?.length > 0 &&
+									!accordion.noExpandChildren && (
+										<ExpandMoreIcon
+											color="primary"
+											onClick={(e): void => {
+												e.preventDefault();
+												onClick({ accordion, expanded: !openIds.includes(accordion.id) });
+											}}
+										/>
+									)
+								}
+								aria-controls="panel1a-content"
+								id={accordion.id}
+								sx={{
 									backgroundColor:
 										accordion.id === folderId
-											? theme.palette.highlight.active
-											: theme.palette.gray5.hover
-								}
-							}}
-						>
-							<AccordionCustomComponent item={accordion} />
-						</AccordionSummary>
-						{accordion?.children?.length > 0 && (
-							<AccordionDetails>
-								<SidebarAccordionMui
-									accordions={accordion.children}
-									folderId={folderId}
-									key={accordion.id}
-									localStorageName={localStorageName}
-									AccordionCustomComponent={AccordionCustomComponent}
-									setSelectedFolder={setSelectedFolder}
-									buttonFindShares={buttonFindShares}
-									initialExpanded={initialExpanded}
-								/>
-							</AccordionDetails>
-						)}
-					</Accordion>
-				)
+											? theme.palette.highlight.hover
+											: theme.palette.gray5.regular,
+									'&:hover': {
+										backgroundColor:
+											accordion.id === folderId
+												? theme.palette.highlight.active
+												: theme.palette.gray5.hover
+									}
+								}}
+							>
+								<AccordionCustomComponent item={accordion} />
+							</AccordionSummary>
+							{accordion?.children?.length > 0 && (
+								<AccordionDetails>
+									<SidebarAccordionMui
+										accordions={accordion.children}
+										folderId={folderId}
+										key={accordion.id}
+										localStorageName={localStorageName}
+										AccordionCustomComponent={AccordionCustomComponent}
+										setSelectedFolder={setSelectedFolder}
+										buttonFindShares={buttonFindShares}
+										initialExpanded={initialExpanded}
+									/>
+								</AccordionDetails>
+							)}
+						</Accordion>
+					)
 			)}
 		</Container>
 	);

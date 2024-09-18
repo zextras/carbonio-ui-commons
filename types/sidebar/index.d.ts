@@ -180,6 +180,7 @@ export type SidebarAccordionProps = {
 	AccordionCustomComponent: ComponentType<{ item: Folder }>;
 	setSelectedFolder?: (folderId: string) => void;
 	buttonFindShares?: ReactElement;
+	buttonCreateGroup?: ReactElement;
 	initialExpanded?: string[];
 };
 

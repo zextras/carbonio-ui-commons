@@ -146,6 +146,8 @@ export type BaseFolder = {
 	checked?: boolean;
 	// indicates whether this folder have an icon
 	noIcon?: boolean;
+	// indicates whether this folder should not be expandable
+	noExpandChildren?: boolean;
 };
 
 export type SoapLink = SoapFolder & LinkFolderFields;

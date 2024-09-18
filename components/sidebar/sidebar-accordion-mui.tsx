@@ -13,7 +13,6 @@ import { useLocalStorage } from '@zextras/carbonio-shell-ui';
 import { theme } from '../../theme/theme-mui';
 import type { Folder } from '../../types';
 import type { SidebarAccordionProps } from '../../types/sidebar';
-import { hasId } from '../../worker/handle-message';
 
 export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 	accordions,
@@ -60,7 +59,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 							}}
 							expandIcon={
 								accordion?.children?.length > 0 &&
-								!hasId(accordion, 'all') && (
+								!accordion.noExpandChildren && (
 									<ExpandMoreIcon
 										color="primary"
 										onClick={(e): void => {

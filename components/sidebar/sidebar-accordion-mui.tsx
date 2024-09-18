@@ -11,7 +11,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Container } from '@mui/m
 import { useLocalStorage } from '@zextras/carbonio-shell-ui';
 
 import { theme } from '../../theme/theme-mui';
-import type { Folder } from '../../types/folder';
+import type { Folder } from '../../types';
 import type { SidebarAccordionProps } from '../../types/sidebar';
 import { hasId } from '../../worker/handle-message';
 

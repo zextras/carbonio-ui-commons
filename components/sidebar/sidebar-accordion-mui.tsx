@@ -101,6 +101,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 										AccordionCustomComponent={AccordionCustomComponent}
 										setSelectedFolder={setSelectedFolder}
 										buttonFindShares={buttonFindShares}
+										buttonCreateGroup={buttonCreateGroup}
 										initialExpanded={initialExpanded}
 									/>
 								</AccordionDetails>

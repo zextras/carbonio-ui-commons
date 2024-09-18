@@ -50,13 +50,13 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 				) : (
 					<Accordion
 						disableGutters
-						TransitionProps={{ unmountOnExit: true }}
+						slotProps={{ transition: { unmountOnExit: true } }}
 						expanded={openIds.includes(accordion.id)}
 						key={accordion.id}
 					>
 						<AccordionSummary
 							onClick={(): void => {
-								setSelectedFolder && setSelectedFolder(accordion.id);
+								setSelectedFolder?.(accordion.id);
 							}}
 							expandIcon={
 								accordion?.children?.length > 0 &&

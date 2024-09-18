@@ -12,7 +12,14 @@ import { useFolderStore } from './store';
 import { getFlatChildrenFolders } from './utils';
 import { ROOT_NAME } from '../../../constants';
 import { FOLDERS } from '../../../constants/folders';
-import type { Folder, Folders, LinkFolder, SearchFolder, Searches, CalendarGroups } from '../../../types';
+import type {
+	Folder,
+	Folders,
+	LinkFolder,
+	SearchFolder,
+	Searches,
+	CalendarGroups
+} from '../../../types';
 
 /**
  * Returns the folder with given ID or undefined

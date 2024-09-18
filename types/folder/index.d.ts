@@ -38,7 +38,7 @@ export type FolderState = {
 export type CalendarGroup = {
 	id: string;
 	name: string;
-	carlendarId: string[];
+	calendarId: string[];
 };
 export type CalendarGroups = CalendarGroup[];
 

@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import type { SoapLink } from '@zextras/carbonio-shell-ui';
 import { find } from 'lodash';
 
 import { FOLDER_VIEW } from '../../constants';
@@ -17,7 +16,7 @@ import {
 	getAccountSoapRoot
 } from '../../test/mocks/folders/soap-roots-generator';
 import { BaseFolder, Folder } from '../../types/folder';
-import type { LinkFolder, UserFolder } from '../../types/folder';
+import type { LinkFolder, SoapLink, UserFolder } from '../../types/folder';
 import { handleMessage, normalize, testUtils } from '../handle-message';
 
 beforeEach(() => {

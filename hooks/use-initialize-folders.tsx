@@ -71,7 +71,7 @@ export const useInitializeFolders = (view: FolderView): void => {
 				});
 			}
 		} catch (error) {
-			const id = 'eror-initialize-modal';
+			const id = 'error-initialize-modal';
 			createModal(
 				{
 					id,
@@ -79,7 +79,6 @@ export const useInitializeFolders = (view: FolderView): void => {
 				},
 				true
 			);
-			console.error('Error fetching folders:', error);
 		} finally {
 			isLoading.current = false;
 		}

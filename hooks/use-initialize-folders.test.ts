@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { waitFor } from '@testing-library/react';
+import { useModal } from '@zextras/carbonio-design-system';
 import { http, HttpResponse } from 'msw';
 
 import { useInitializeFolders } from './use-initialize-folders';
@@ -21,8 +22,14 @@ import { setupHook } from '../test/test-setup';
 import { FolderView } from '../types/folder';
 import { folderWorker } from '../worker';
 
+jest.mock('@zextras/carbonio-design-system', () => ({
+	...jest.requireActual('@zextras/carbonio-design-system'),
+	useModal: jest.fn()
+}));
+
 describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parameter', (view) => {
 	test('it will call refresh', async () => {
+		(useModal as jest.Mock).mockImplementation(() => ({ createModal: jest.fn() }));
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
@@ -34,23 +41,31 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 			expect.objectContaining({ op: 'refresh', currentView: view, folder: expect.any(Object) })
 		);
 	});
-	test('it will call console error when GetFolderRequest fails', async () => {
-		jest.spyOn(console, 'error').mockImplementation();
+	test('it will open error-initialize-modal when GetFolderRequest fails', async () => {
+		const createModalSpy = jest.fn();
+		(useModal as jest.Mock).mockImplementation(() => ({ createModal: createModalSpy }));
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleFailedRequest));
 		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
 		expect(workerSpy).toHaveBeenCalledTimes(0);
-		expect(console.error).toHaveBeenCalledWith('Error fetching folders:', expect.anything());
+		expect(createModalSpy).toHaveBeenCalledWith(
+			expect.objectContaining({ id: 'error-initialize-modal' }),
+			true
+		);
 	});
 
-	test('it will call console error when GetShareInfoRequest fails', async () => {
-		jest.spyOn(console, 'error').mockImplementation();
+	test('it will open error-initialize-modal  when GetShareInfoRequest fails', async () => {
+		const createModalSpy = jest.fn();
+		(useModal as jest.Mock).mockImplementation(() => ({ createModal: createModalSpy }));
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleFailedRequest));
 		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
 		expect(workerSpy).toHaveBeenCalledTimes(0);
-		expect(console.error).toHaveBeenCalledWith('Error fetching folders:', expect.anything());
+		expect(createModalSpy).toHaveBeenCalledWith(
+			expect.objectContaining({ id: 'error-initialize-modal' }),
+			true
+		);
 	});
 
 	test('If multiple accounts are available they will be on the same level of the main account', async () => {

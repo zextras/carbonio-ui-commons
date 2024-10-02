@@ -17,9 +17,10 @@ import {
 	RenderResult,
 	Screen,
 	screen as rtlScreen,
-	within as rtlWithin
+	within as rtlWithin,
+	renderHook,
+	RenderHookOptions
 } from '@testing-library/react';
-import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
 import { ModalManager, SnackbarManager, ThemeProvider } from '@zextras/carbonio-design-system';
 import { I18nextProvider } from 'react-i18next';

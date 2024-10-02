@@ -3,10 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { act } from 'react';
+
 import { StateCreator, UseBoundStore, StoreApi } from 'zustand';
 
 const { create: actualCreate } = jest.requireActual<typeof import('zustand')>('zustand');
-import { act } from 'react-dom/test-utils';
 
 // a variable to hold reset functions for all stores declared in the app
 const storeResetFns = new Set<() => void>();

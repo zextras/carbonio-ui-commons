@@ -16,6 +16,7 @@ import {
 } from '../test/mocks/network/msw/handle-get-folder';
 import {
 	getEmptyMSWShareInfoResponse,
+	handleEmptyGetShareInfoRequest,
 	handleGetShareInfoRequest
 } from '../test/mocks/network/msw/handle-get-share-info';
 import { setupHook } from '../test/test-setup';
@@ -67,7 +68,20 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 			true
 		);
 	});
-
+	it('should not open the error modal when getShareInfo returns an empty array', async () => {
+		const createModalSpy = jest.fn();
+		useFolderStore.setState({ folders: {} });
+		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
+		getSetupServer().use(
+			http.post('/service/soap/GetShareInfoRequest', handleEmptyGetShareInfoRequest)
+		);
+		await waitFor(() =>
+			setupHook(useInitializeFolders, {
+				initialProps: ['message']
+			})
+		);
+		expect(createModalSpy).not.toHaveBeenCalled();
+	});
 	test('If multiple accounts are available they will be on the same level of the main account', async () => {
 		useFolderStore.setState({ folders: {} });
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');

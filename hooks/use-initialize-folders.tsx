@@ -35,53 +35,54 @@ export const useInitializeFolders = (view: FolderView): void => {
 	const { createModal, closeModal } = useModal();
 
 	const fetchFolders = useCallback(async (): Promise<void> => {
-		try {
-			isLoading.current = true;
-			const folderResponse = await getFolderRequest({ view });
-			const shareInfoResponse = await getShareInfoRequest();
-			if (shareInfoResponse?.folders) {
-				const sharedAccounts = filter(shareInfoResponse.folders, ['folderId', 1]);
-				const filteredLinks = reject(folderResponse.folder[0].link, ['rid', 1]);
+		Promise.all([getFolderRequest({ view }), getShareInfoRequest()])
+			.then(async ([getFolderResponse, getShareInfoResponse]): Promise<void> => {
+				isLoading.current = true;
+				if (getShareInfoResponse.folders) {
+					const sharedAccounts = filter(getShareInfoResponse.folders, ['folderId', 1]);
+					const filteredLinks = reject(getFolderResponse.folder[0].link, ['rid', 1]);
 
-				const folders = sharedAccounts.length
-					? [
-							{
-								...folderResponse.folder[0],
-								link: filteredLinks
-							},
-							...(await getFoldersByAccounts(sharedAccounts, view))
-						]
-					: [
-							{
-								...folderResponse.folder[0],
-								link: filteredLinks
-							}
-						];
+					const folders = sharedAccounts.length
+						? [
+								{
+									...getFolderResponse.folder[0],
+									link: filteredLinks
+								},
+								...(await getFoldersByAccounts(sharedAccounts, view))
+							]
+						: [
+								{
+									...getFolderResponse.folder[0],
+									link: filteredLinks
+								}
+							];
 
-				folderWorker.postMessage({
-					op: 'refresh',
-					currentView: view,
-					folder: folders ?? []
-				});
-			} else {
-				folderWorker.postMessage({
-					op: 'refresh',
-					currentView: view,
-					folder: folderResponse?.folder ?? []
-				});
-			}
-		} catch (error) {
-			const id = 'error-initialize-modal';
-			createModal(
-				{
-					id,
-					children: <FolderInitializationErrorModal onClose={(): void => closeModal(id)} />
-				},
-				true
-			);
-		} finally {
-			isLoading.current = false;
-		}
+					folderWorker.postMessage({
+						op: 'refresh',
+						currentView: view,
+						folder: folders ?? []
+					});
+				} else {
+					folderWorker.postMessage({
+						op: 'refresh',
+						currentView: view,
+						folder: getFolderResponse.folder ?? []
+					});
+				}
+			})
+			.catch(() => {
+				const id = 'error-initialize-modal';
+				createModal(
+					{
+						id,
+						children: <FolderInitializationErrorModal onClose={(): void => closeModal(id)} />
+					},
+					true
+				);
+			})
+			.finally(() => {
+				isLoading.current = false;
+			});
 	}, [closeModal, createModal, view]);
 
 	useEffect(() => {

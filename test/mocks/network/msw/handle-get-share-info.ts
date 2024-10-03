@@ -71,6 +71,25 @@ const getShareInfoResponse = () => {
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
+const getEmptyShareInfoResponse = () => ({
+	Header: {
+		context: {
+			session: {
+				id: faker.number.int({ min: 1, max: 999999 }),
+				_content: faker.number.int({ min: 1, max: 999999 })
+			}
+		}
+	},
+	Body: {
+		GetShareInfoResponse: {
+			share: [],
+			_jsns: 'urn:zimbraAccount'
+		}
+	}
+});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export const getEmptyMSWShareInfoResponse = () => {
 	const randomLength = faker.number.int({ min: 50, max: 200 });
 	const randomShares = map(Array.from({ length: randomLength }), getMSWShareInfo);
@@ -94,3 +113,7 @@ export const getEmptyMSWShareInfoResponse = () => {
 
 export const handleGetShareInfoRequest: HttpResponseResolver<never, any> = async ({ request }) =>
 	HttpResponse.json(getShareInfoResponse());
+
+export const handleEmptyGetShareInfoRequest: HttpResponseResolver<never, any> = async ({
+	request
+}) => HttpResponse.json(getEmptyShareInfoResponse());

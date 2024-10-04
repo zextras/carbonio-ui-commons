@@ -16,11 +16,7 @@ describe('Api Wrapper', () => {
 		createAPIInterceptor(
 			'post',
 			'/myApiError',
-<<<<<<< Updated upstream
 			HttpResponse.json({}, { type: 'error', status: 500, statusText: 'Failed' })
-=======
-			HttpResponse.json({ severity: 'error' }, { status: 500, statusText: 'Failed' })
->>>>>>> Stashed changes
 		);
 	});
 
@@ -59,8 +55,7 @@ describe('Api Wrapper', () => {
 				method: 'POST'
 			})
 		);
-
-		expect(response).toHaveProperty('data.severity', 'error');
+		expect(response).toHaveProperty('error');
 	});
 
 	it('should not fail with 207', async () => {

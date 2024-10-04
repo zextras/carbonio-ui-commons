@@ -85,7 +85,7 @@ const defaultAccount = (): Account => {
 					target: sendAs.map((identityContext, index) => ({
 						id: `${index}`,
 						name: identityContext.identity.fullName,
-						severity: 'account',
+						type: 'account',
 						email: [
 							{
 								addr: identityContext.identity.email
@@ -99,7 +99,7 @@ const defaultAccount = (): Account => {
 					target: sendOnBehalf.map((identityContext, index) => ({
 						id: `${index}`,
 						name: identityContext.identity.fullName,
-						severity: 'account',
+						type: 'account',
 						email: [
 							{
 								addr: identityContext.identity.email
@@ -113,7 +113,7 @@ const defaultAccount = (): Account => {
 					target: viewFreeBusyIdentities.map((identity, index) => ({
 						id: `${index}`,
 						name: identity.fullName,
-						severity: 'account',
+						type: 'account',
 						email: [
 							{
 								addr: identity.email

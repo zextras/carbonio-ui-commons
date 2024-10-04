@@ -21,7 +21,7 @@ import {
 	renderHook,
 	RenderHookOptions
 } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import userEvent, { UserEvent as RTLUserEvent } from '@testing-library/user-event';
 import { ModalManager, SnackbarManager, ThemeProvider } from '@zextras/carbonio-design-system';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
@@ -177,12 +177,14 @@ type SetupHookOptions<TProps extends unknown[]> = {
 	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
 } & ProvidersWrapperProps;
 
+type SetupHookReturnType<TResult, TProps> = ReturnType<typeof renderHook<TResult, TProps>> & {
+	user: RTLUserEvent;
+};
+
 export function setupHook<TProps extends unknown[], TResult>(
 	hook: (...args: TProps) => TResult,
 	{ initialProps, setupOptions, ...providersProps }: SetupHookOptions<TProps> = {}
-): Pick<ReturnType<typeof renderHook<TProps, TResult>>, 'result' | 'unmount' | 'rerender'> & {
-	user: ReturnType<(typeof userEvent)['setup']>;
-} {
+): SetupHookReturnType<TResult, TProps> {
 	const Wrapper = ({ children }: PropsWithChildren<unknown>): React.JSX.Element => (
 		<ProvidersWrapper {...providersProps}>{children}</ProvidersWrapper>
 	);

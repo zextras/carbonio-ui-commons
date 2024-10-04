@@ -16,7 +16,7 @@ describe('Api Wrapper', () => {
 		createAPIInterceptor(
 			'post',
 			'/myApiError',
-			HttpResponse.json({}, { type: 'error', status: 500, statusText: 'Failed' })
+			HttpResponse.json({}, { severity: 'error', status: 500, statusText: 'Failed' })
 		);
 	});
 

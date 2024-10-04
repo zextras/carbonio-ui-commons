@@ -21,7 +21,6 @@ import type { LinkFolder, UserFolder } from '../../types/folder';
 import { handleMessage, normalize, testUtils } from '../handle-message';
 
 beforeEach(() => {
-	jest.restoreAllMocks();
 	testUtils.resetFolders();
 	window.postMessage = jest.fn();
 });

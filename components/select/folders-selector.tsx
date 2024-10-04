@@ -12,7 +12,7 @@ import { TextUpperCase } from './color-select';
 import { FolderSelectorLabelFactory, Square } from './select-label-factory';
 import { FOLDERS } from '../../constants/folders';
 import { useRoot } from '../../store/zustand/folder';
-import type { FolderSelectorItem } from '../../types/select';
+import type { FolderSelectorItem, OnChangeSelect } from '../../types/select';
 
 type FolderSelectorProps = {
 	defaultFolderId: string;

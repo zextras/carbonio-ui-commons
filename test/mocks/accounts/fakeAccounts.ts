@@ -121,7 +121,7 @@ const getMockedAccountItem = (context?: GetMockedAccountItemType): any => {
 					right: 'sendAs',
 					target: [
 						{
-							severity: 'account',
+							type: 'account',
 							email: [
 								{
 									addr: identity3.email
@@ -135,7 +135,7 @@ const getMockedAccountItem = (context?: GetMockedAccountItemType): any => {
 					right: 'viewFreeBusy',
 					target: [
 						{
-							severity: 'account',
+							type: 'account',
 							id: '1',
 							name: identity1.email,
 							d: identity1.fullName
@@ -146,7 +146,7 @@ const getMockedAccountItem = (context?: GetMockedAccountItemType): any => {
 					right: 'sendOnBehalfOf',
 					target: [
 						{
-							severity: 'account',
+							type: 'account',
 							email: [
 								{
 									addr: identity2.email

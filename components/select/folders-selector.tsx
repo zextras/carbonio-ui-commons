@@ -16,7 +16,7 @@ import type { FolderSelectorItem } from '../../types/select';
 
 type FolderSelectorProps = {
 	defaultFolderId: string;
-	onChange: (value: string | Array<SelectItem> | null) => void;
+	onChange: OnChangeSelect;
 	label?: string;
 	folderItems: FolderSelectorItem[];
 	disabled?: boolean;

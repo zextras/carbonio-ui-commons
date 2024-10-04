@@ -181,4 +181,4 @@ export const handleGetFolderRequest: HttpResponseResolver<
 };
 
 export const handleFailedRequest: HttpResponseResolver<never, ErrorSoapResponse> = async () =>
-	HttpResponse.json({}, { severity: 'error', status: 500, statusText: 'Failed' });
+	HttpResponse.json({}, { type: 'error', status: 500, statusText: 'Failed' });

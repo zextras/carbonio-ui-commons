@@ -16,7 +16,7 @@ import type { FolderSelectorItem } from '../../types/select';
 
 type FolderSelectorProps = {
 	defaultFolderId: string;
-	onChange: (selectedItem: SelectItem) => void;
+	onChange: (value: string | Array<SelectItem> | null) => void;
 	label?: string;
 	folderItems: FolderSelectorItem[];
 	disabled?: boolean;
@@ -71,7 +71,10 @@ export const FoldersSelector = ({
 		return find(items, ['value', defaultFolderId]) ?? defaultFolder;
 	}, [items, defaultFolderId]);
 
-	const onSelectedFolderChange = useCallback((id) => onChange(id), [onChange]);
+	const onSelectedFolderChange = useCallback(
+		(id: string | null | Array<SelectItem>) => onChange(id),
+		[onChange]
+	);
 
 	return items && defaultFolderSelection ? (
 		<Select

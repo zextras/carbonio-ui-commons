@@ -56,11 +56,15 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleFailedRequest));
 		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
-		expect(workerSpy).toHaveBeenCalledTimes(0);
-		expect(createModalSpy).toHaveBeenCalledWith(
-			expect.objectContaining({ id: 'error-initialize-modal' }),
-			true
-		);
+		await waitFor(() => {
+			expect(workerSpy).toHaveBeenCalledTimes(0);
+		});
+		await waitFor(() => {
+			expect(createModalSpy).toHaveBeenCalledWith(
+				expect.objectContaining({ id: 'error-initialize-modal' }),
+				true
+			);
+		});
 	});
 
 	test('it will open error-initialize-modal  when GetShareInfoRequest fails', async () => {
@@ -70,11 +74,15 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleFailedRequest));
 		setupHook(useInitializeFolders, { initialProps: [view] });
-		expect(workerSpy).toHaveBeenCalledTimes(0);
-		expect(createModalSpy).toHaveBeenCalledWith(
-			expect.objectContaining({ id: 'error-initialize-modal' }),
-			true
-		);
+		await waitFor(() => {
+			expect(workerSpy).toHaveBeenCalledTimes(0);
+		});
+		await waitFor(() => {
+			expect(createModalSpy).toHaveBeenCalledWith(
+				expect.objectContaining({ id: 'error-initialize-modal' }),
+				true
+			);
+		});
 	});
 	it('should not open the error modal when getShareInfo returns an empty array', async () => {
 		const createModalSpy = jest.fn();

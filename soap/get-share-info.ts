@@ -8,12 +8,12 @@ import { isEmpty } from 'lodash';
 
 import { ResFolder } from '../utils';
 
-type GetShareInfoRequest = {
+export type GetShareInfoRequest = {
 	_jsns: string;
 	includeSelf: number;
 };
 
-type GetShareInfoResponse = {
+export type GetShareInfoResponse = {
 	_jsns: string;
 	share: Array<ResFolder>;
 };

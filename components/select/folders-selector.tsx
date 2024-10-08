@@ -12,11 +12,11 @@ import { TextUpperCase } from './color-select';
 import { FolderSelectorLabelFactory, Square } from './select-label-factory';
 import { FOLDERS } from '../../constants/folders';
 import { useRoot } from '../../store/zustand/folder';
-import type { FolderSelectorItem } from '../../types/select';
+import type { FolderSelectorItem, OnChangeSelect } from '../../types/select';
 
 type FolderSelectorProps = {
 	defaultFolderId: string;
-	onChange: (selectedItem: SelectItem) => void;
+	onChange: OnChangeSelect;
 	label?: string;
 	folderItems: FolderSelectorItem[];
 	disabled?: boolean;
@@ -71,7 +71,10 @@ export const FoldersSelector = ({
 		return find(items, ['value', defaultFolderId]) ?? defaultFolder;
 	}, [items, defaultFolderId]);
 
-	const onSelectedFolderChange = useCallback((id) => onChange(id), [onChange]);
+	const onSelectedFolderChange = useCallback(
+		(id: string | null | Array<SelectItem>) => onChange(id),
+		[onChange]
+	);
 
 	return items && defaultFolderSelection ? (
 		<Select

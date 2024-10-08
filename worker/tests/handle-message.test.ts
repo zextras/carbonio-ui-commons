@@ -20,7 +20,6 @@ import type { LinkFolder, SoapLink, UserFolder } from '../../types/folder';
 import { handleMessage, normalize, testUtils } from '../handle-message';
 
 beforeEach(() => {
-	jest.restoreAllMocks();
 	testUtils.resetFolders();
 	window.postMessage = jest.fn();
 });

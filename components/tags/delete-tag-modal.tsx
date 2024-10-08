@@ -32,7 +32,7 @@ const DeleteTagModal: FC<DeleteTagModalPropsType> = ({ onClose, tag }) => {
 					createSnackbar({
 						key: `delete-tag`,
 						replace: true,
-						type: 'success',
+						severity: 'success',
 						label: t('messages.snackbar.tag_deleted', {
 							name: tag?.name,
 							defaultValue: '{{name}} Tag deleted successfully'

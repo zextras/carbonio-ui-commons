@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { waitFor } from '@testing-library/react';
+import { useModal } from '@zextras/carbonio-design-system';
 import { http, HttpResponse } from 'msw';
 
 import { useInitializeFolders } from './use-initialize-folders';
@@ -15,44 +16,88 @@ import {
 } from '../test/mocks/network/msw/handle-get-folder';
 import {
 	getEmptyMSWShareInfoResponse,
+	handleEmptyGetShareInfoRequest,
 	handleGetShareInfoRequest
 } from '../test/mocks/network/msw/handle-get-share-info';
 import { setupHook } from '../test/test-setup';
 import { FolderView } from '../types/folder';
 import { folderWorker } from '../worker';
 
+jest.mock('@zextras/carbonio-design-system', () => ({
+	...jest.requireActual('@zextras/carbonio-design-system'),
+	useModal: jest.fn()
+}));
+
 describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parameter', (view) => {
 	test('it will call refresh', async () => {
+		(useModal as jest.Mock).mockImplementation(() => ({ createModal: jest.fn() }));
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
-		expect(workerSpy).toHaveBeenCalled();
-		expect(workerSpy).toHaveBeenCalledTimes(1);
-		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
-		expect(workerSpy).toHaveBeenCalledWith(
-			expect.objectContaining({ op: 'refresh', currentView: view, folder: expect.any(Object) })
-		);
+		await waitFor(() => {
+			expect(workerSpy).toHaveBeenCalled();
+		});
+		await waitFor(() => {
+			expect(workerSpy).toHaveBeenCalledTimes(1);
+		});
+		await waitFor(() => {
+			expect(workerSpy).not.toHaveBeenCalledWith(undefined);
+		});
+		await waitFor(() => {
+			expect(workerSpy).toHaveBeenCalledWith(
+				expect.objectContaining({ op: 'refresh', currentView: view, folder: expect.any(Object) })
+			);
+		});
 	});
-	test('it will call console error when GetFolderRequest fails', async () => {
-		jest.spyOn(console, 'error').mockImplementation();
+	test('it will open error-initialize-modal when GetFolderRequest fails', async () => {
+		const createModalSpy = jest.fn();
+		(useModal as jest.Mock).mockImplementation(() => ({ createModal: createModalSpy }));
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleFailedRequest));
 		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
-		expect(workerSpy).toHaveBeenCalledTimes(0);
-		expect(console.error).toHaveBeenCalledWith('Error fetching folders:', expect.anything());
+		await waitFor(() => {
+			expect(workerSpy).toHaveBeenCalledTimes(0);
+		});
+		await waitFor(() => {
+			expect(createModalSpy).toHaveBeenCalledWith(
+				expect.objectContaining({ id: 'error-initialize-modal' }),
+				true
+			);
+		});
 	});
 
-	test('it will call console error when GetShareInfoRequest fails', async () => {
-		jest.spyOn(console, 'error').mockImplementation();
+	test('it will open error-initialize-modal  when GetShareInfoRequest fails', async () => {
+		const createModalSpy = jest.fn();
+		(useModal as jest.Mock).mockImplementation(() => ({ createModal: createModalSpy }));
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleFailedRequest));
-		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
-		expect(workerSpy).toHaveBeenCalledTimes(0);
-		expect(console.error).toHaveBeenCalledWith('Error fetching folders:', expect.anything());
+		setupHook(useInitializeFolders, { initialProps: [view] });
+		await waitFor(() => {
+			expect(workerSpy).toHaveBeenCalledTimes(0);
+		});
+		await waitFor(() => {
+			expect(createModalSpy).toHaveBeenCalledWith(
+				expect.objectContaining({ id: 'error-initialize-modal' }),
+				true
+			);
+		});
 	});
-
+	it('should not open the error modal when getShareInfo returns an empty array', async () => {
+		const createModalSpy = jest.fn();
+		useFolderStore.setState({ folders: {} });
+		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
+		getSetupServer().use(
+			http.post('/service/soap/GetShareInfoRequest', handleEmptyGetShareInfoRequest)
+		);
+		await waitFor(() =>
+			setupHook(useInitializeFolders, {
+				initialProps: ['message']
+			})
+		);
+		expect(createModalSpy).not.toHaveBeenCalled();
+	});
 	test('If multiple accounts are available they will be on the same level of the main account', async () => {
 		useFolderStore.setState({ folders: {} });
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
@@ -63,20 +108,22 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 				initialProps: ['appointment']
 			})
 		);
-		expect(workerSpy).toHaveBeenCalled();
-		expect(workerSpy).toHaveBeenCalledTimes(1);
-		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
-		expect(workerSpy).toHaveBeenCalledWith(
-			expect.objectContaining({
-				op: 'refresh',
-				currentView: 'appointment',
-				folder: expect.arrayContaining([
-					// main account id
-					expect.objectContaining({ id: '1' }),
-					// shared account id
-					expect.objectContaining({ id: expect.stringContaining(':1') })
-				])
-			})
+		await waitFor(() => expect(workerSpy).toHaveBeenCalled());
+		await waitFor(() => expect(workerSpy).toHaveBeenCalledTimes(1));
+		await waitFor(() => expect(workerSpy).not.toHaveBeenCalledWith(undefined));
+		await waitFor(() =>
+			expect(workerSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					op: 'refresh',
+					currentView: 'appointment',
+					folder: expect.arrayContaining([
+						// main account id
+						expect.objectContaining({ id: '1' }),
+						// shared account id
+						expect.objectContaining({ id: expect.stringContaining(':1') })
+					])
+				})
+			)
 		);
 	});
 
@@ -95,15 +142,17 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 				initialProps: ['appointment']
 			})
 		);
-		expect(workerSpy).toHaveBeenCalled();
-		expect(workerSpy).toHaveBeenCalledTimes(1);
-		expect(workerSpy).not.toHaveBeenCalledWith(undefined);
-		expect(workerSpy).toHaveBeenCalledWith(
-			expect.objectContaining({
-				op: 'refresh',
-				currentView: 'appointment',
-				folder: [expect.objectContaining({ id: '1' })]
-			})
+		await waitFor(() => expect(workerSpy).toHaveBeenCalled());
+		await waitFor(() => expect(workerSpy).toHaveBeenCalledTimes(1));
+		await waitFor(() => expect(workerSpy).not.toHaveBeenCalledWith(undefined));
+		await waitFor(() =>
+			expect(workerSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					op: 'refresh',
+					currentView: 'appointment',
+					folder: [expect.objectContaining({ id: '1' })]
+				})
+			)
 		);
 	});
 });

@@ -20,3 +20,5 @@ interface CustomSelectItem extends SelectItem {
 export interface CustomLabelFactoryProps extends LabelFactoryProps {
 	selected: CustomSelectItem[];
 }
+
+export type OnChangeSelect = (value: string | Array<SelectItem> | null) => void;

@@ -54,7 +54,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 					customComponents[accordion.id] || (
 						<Accordion
 							disableGutters
-							TransitionProps={{ unmountOnExit: true }}
+							slotProps={{ transition: { unmountOnExit: true } }}
 							expanded={openIds.includes(accordion.id)}
 							key={accordion.id}
 						>

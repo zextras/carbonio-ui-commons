@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { waitFor } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import { useModal } from '@zextras/carbonio-design-system';
 import { http, HttpResponse } from 'msw';
 
@@ -96,6 +96,9 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 				initialProps: ['message']
 			})
 		);
+		await act(async () => {
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		expect(createModalSpy).not.toHaveBeenCalled();
 	});
 	test('If multiple accounts are available they will be on the same level of the main account', async () => {

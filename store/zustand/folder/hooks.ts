@@ -12,14 +12,7 @@ import { useFolderStore } from './store';
 import { getFlatChildrenFolders } from './utils';
 import { ROOT_NAME } from '../../../constants';
 import { FOLDERS } from '../../../constants/folders';
-import type {
-	Folder,
-	Folders,
-	LinkFolder,
-	SearchFolder,
-	Searches,
-	CalendarGroups
-} from '../../../types';
+import type { Folder, Folders, LinkFolder, SearchFolder, Searches } from '../../../types';
 
 /**
  * Returns the folder with given ID or undefined
@@ -41,8 +34,6 @@ export const useFoldersMap = (): Folders => useFolderStore((s) => s.folders);
  * Returns a folders' map including roots and links. Each folder has its own tree structure included inside its children
  */
 export const getFoldersMap = (): Folders => useFolderStore.getState().folders;
-
-export const getCalendarGroups = (): CalendarGroups => useFolderStore.getState().groups;
 
 /**
  * Returns a folders' array including only links. Each folder has its own tree structure included inside its children
@@ -214,6 +205,3 @@ export const useUpdateFolder = (): ((id: string, opt: Partial<Folder>) => void) 
  */
 export const getUpdateFolder = (): ((id: string, opt: Partial<Folder>) => void) =>
 	useFolderStore.getState().updateFolder;
-
-export const useUpdateGroups = (): ((groups: CalendarGroups) => void) =>
-	useFolderStore((s) => s.updateGroups);

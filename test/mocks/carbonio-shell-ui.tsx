@@ -136,8 +136,14 @@ export const useReplaceHistoryCallback = useReplaceHistoryMock;
 const FakeIntegrationComponent = (): React.JSX.Element => <div data-testid="fake-component" />;
 const IntegrationComponent = jest.fn(FakeIntegrationComponent);
 const isIntegrationAvailable = false;
-export const useIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
-export const getIntegratedComponent = jest.fn(() => [IntegrationComponent, isIntegrationAvailable]);
+export const useIntegratedComponent = jest.fn((id: string) => [
+	IntegrationComponent,
+	isIntegrationAvailable
+]);
+export const getIntegratedComponent = jest.fn((id: string) => [
+	IntegrationComponent,
+	isIntegrationAvailable
+]);
 
 // Integrated actions
 export const getAction = jest.fn<

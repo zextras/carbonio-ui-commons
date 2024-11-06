@@ -7,6 +7,7 @@
 import React, { FC, ReactNode, useCallback } from 'react';
 
 import shell from '@zextras/carbonio-shell-ui';
+import { useActions as realUseActions } from '@zextras/carbonio-shell-ui/lib/store/integrations/hooks';
 import { trimStart } from 'lodash';
 import { useHistory } from 'react-router-dom';
 
@@ -150,6 +151,10 @@ export const getAction = jest.fn<
 	ReturnType<typeof shell.getAction>,
 	Parameters<typeof shell.getAction>
 >((type, id) => [undefined, false]);
+
+export const useActions = jest
+	.fn<ReturnType<typeof realUseActions>, Parameters<typeof realUseActions>>()
+	.mockImplementation(() => []);
 
 // Integrated functions
 export const getIntegratedFunction = jest.fn<

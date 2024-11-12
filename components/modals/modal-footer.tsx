@@ -3,19 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable import/extensions */
 
 import React, { FC, ReactElement, useMemo } from 'react';
 
-import {
-	Container,
-	Button,
-	Padding,
-	Divider,
-	Tooltip,
-	AnyColor
-} from '@zextras/carbonio-design-system';
+import { Container, Button, Padding, Divider, Tooltip } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
 import type { ModalFooterProps } from '../../types';
@@ -50,16 +41,15 @@ const ModalFooter: FC<ModalFooterProps> = ({
 
 	const cancelLabel = useMemo(() => t('label.cancel', 'cancel'), [t]);
 
-	const secondaryTypeAndColor = useMemo<
-		| { type: 'ghost'; color: AnyColor }
-		| {
-				type: 'default' | 'outlined';
-				backgroundColor: AnyColor | undefined;
-				labelColor: AnyColor;
-		  }
-	>(() => {
+	const secondaryTypeAndColor = useMemo(() => {
 		if (secondaryBtnType === 'ghost') {
 			return { type: secondaryBtnType, color: secondaryColor };
+		}
+		if (secondaryBtnType === 'default') {
+			return {
+				type: secondaryBtnType,
+				backgroundColor: secondaryColor || secondarybackground
+			};
 		}
 		return {
 			type: secondaryBtnType,
@@ -68,18 +58,14 @@ const ModalFooter: FC<ModalFooterProps> = ({
 		};
 	}, [secondaryBtnType, secondaryColor, secondarybackground]);
 
-	const primaryTypeAndColor = useMemo<
-		| { type: 'ghost'; color: AnyColor }
-		| {
-				type: 'default' | 'outlined';
-				backgroundColor: AnyColor;
-				labelColor: AnyColor;
-		  }
-	>(() => {
+	const primaryTypeAndColor = useMemo(() => {
 		if (primaryBtnType === 'ghost') {
 			return { type: primaryBtnType, color };
 		}
-		return { type: primaryBtnType, backgroundColor: color || background, labelColor: color };
+		if (primaryBtnType === 'default') {
+			return { type: primaryBtnType, backgroundColor: color || background };
+		}
+		return { type: primaryBtnType, backgroundColor: background, labelColor: color };
 	}, [background, color, primaryBtnType]);
 
 	return (

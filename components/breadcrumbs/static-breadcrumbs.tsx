@@ -21,14 +21,12 @@ type StaticBreadcrumbsProps = BreadcrumbsProps & {
 };
 
 const StaticBreadcrumbs = React.forwardRef<HTMLDivElement, StaticBreadcrumbsProps>(
-	function BreadcrumbsFn(
-		{ crumbs, collapserProps, dropdownProps, size = 'large', tooltipLabel, ...rest },
-		ref
-	) {
+	function BreadcrumbsFn({ crumbs, size = 'large', tooltipLabel }) {
 		const crumbsCount = crumbs.length;
 		const tooltip =
 			tooltipLabel ?? crumbs.reduce<string>((result, crumb) => `${result}/${crumb.label}`, '');
-		const firstCrumb = crumbs.shift();
+		const firstCrumb = crumbs[0];
+		const restCrumbs = crumbs.slice(1);
 
 		return (
 			<Tooltip label={tooltip}>
@@ -44,7 +42,7 @@ const StaticBreadcrumbs = React.forwardRef<HTMLDivElement, StaticBreadcrumbsProp
 					</Container>
 					{/* FIXME the width/maxWidth */}
 					<Row mainAlignment="flex-start" maxWidth="70%">
-						<Breadcrumbs crumbs={crumbs} dropdownProps={{ disabled: true }}></Breadcrumbs>
+						<Breadcrumbs crumbs={restCrumbs} dropdownProps={{ disabled: true }}></Breadcrumbs>
 					</Row>
 				</Row>
 			</Tooltip>

@@ -52,6 +52,9 @@ export const useTags = jest.fn(() => mockedTags);
 export const getTags = jest.fn(() => mockedTags);
 export const useTag = jest.fn((id: string) => mockedTags[id]);
 export const getTag = jest.fn((id: string) => mockedTags[id]);
+export const useIsCarbonioCE: jest.Mock<ReturnType<typeof shell.useIsCarbonioCE>> = jest.fn(
+	() => false
+);
 
 export * from './network/fetch';
 export const soapFetch = getSoapFetch('test-environment');

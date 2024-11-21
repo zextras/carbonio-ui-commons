@@ -7,7 +7,21 @@
 import React, { ComponentType, SyntheticEvent } from 'react';
 
 import { ItemType as AccordionItemType } from '@zextras/carbonio-design-system';
-import { Tag } from '@zextras/carbonio-shell-ui';
+
+export type Tag = {
+	color?: number;
+	id: string;
+	name: string;
+	rgb?: string;
+	u?: number;
+	n?: number;
+};
+
+export type Tags = Record<string, Tag>;
+
+export type TagState = {
+	tags: Tags;
+};
 
 export type ReturnType = {
 	id: string;
@@ -52,3 +66,5 @@ export type TagsAccordionItems = {
 	onClick: (e: SyntheticEvent<Element, Event> | KeyboardEvent) => void;
 	CustomComponent: ComponentType<any>;
 };
+
+export type TagMessage = WorkerMessage<{ state: Tags }>;

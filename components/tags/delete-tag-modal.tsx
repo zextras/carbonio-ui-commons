@@ -9,7 +9,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { Container, Text, useSnackbar } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
-import { deleteTag } from '../../../api/tags';
+import { deleteTag } from '../../soap/tags';
 import type { DeleteTagModalPropsType } from '../../types/sidebar';
 import ModalFooter from '../modals/modal-footer';
 import ModalHeader from '../modals/modal-header';

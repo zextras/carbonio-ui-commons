@@ -14,14 +14,12 @@ import { useHistory } from 'react-router-dom';
 import { generateAccount } from './accounts/account-generator';
 import { getSoapFetch } from './network/fetch';
 import { generateSettings } from './settings/settings-generator';
-import { tags } from './tags/tags';
 
 export { JSNS } from '../../constants/utils';
 
 export const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
 const mockedSettings = generateSettings();
-const mockedTags: shell.Tags = tags;
 
 export const getUserAccount: jest.Mock<ReturnType<typeof shell.getUserAccount>> = jest.fn(
 	() => mockedAccount
@@ -48,10 +46,6 @@ export const addBoard = jest.fn();
 export const useBoardHooks = jest.fn();
 export const minimizeBoards = jest.fn();
 export const getCurrentRoute = jest.fn();
-export const useTags = jest.fn(() => mockedTags);
-export const getTags = jest.fn(() => mockedTags);
-export const useTag = jest.fn((id: string) => mockedTags[id]);
-export const getTag = jest.fn((id: string) => mockedTags[id]);
 export const useIsCarbonioCE: jest.Mock<ReturnType<typeof shell.useIsCarbonioCE>> = jest.fn(
 	() => false
 );

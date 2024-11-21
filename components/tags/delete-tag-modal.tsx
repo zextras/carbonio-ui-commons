@@ -7,13 +7,15 @@
 import React, { FC, useCallback, useMemo } from 'react';
 
 import { Container, Text, useSnackbar } from '@zextras/carbonio-design-system';
-import { deleteTag, t } from '@zextras/carbonio-shell-ui';
+import { useTranslation } from 'react-i18next';
 
+import { deleteTag } from '../../../api/tags';
 import type { DeleteTagModalPropsType } from '../../types/sidebar';
 import ModalFooter from '../modals/modal-footer';
 import ModalHeader from '../modals/modal-header';
 
 const DeleteTagModal: FC<DeleteTagModalPropsType> = ({ onClose, tag }) => {
+	const [t] = useTranslation();
 	const createSnackbar = useSnackbar();
 
 	const title = useMemo(
@@ -22,7 +24,7 @@ const DeleteTagModal: FC<DeleteTagModalPropsType> = ({ onClose, tag }) => {
 				name: tag?.name,
 				defaultValue: 'Delete "{{name}}" tag'
 			}),
-		[tag?.name]
+		[tag?.name, t]
 	);
 
 	const onConfirm = useCallback(() => {
@@ -43,7 +45,7 @@ const DeleteTagModal: FC<DeleteTagModalPropsType> = ({ onClose, tag }) => {
 				}
 				onClose();
 			});
-	}, [createSnackbar, onClose, tag]);
+	}, [createSnackbar, onClose, t, tag]);
 
 	return (
 		<>

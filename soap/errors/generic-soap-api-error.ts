@@ -5,12 +5,12 @@
  */
 import { TFunction } from 'i18next';
 
-import { ApiError } from './api-error';
+import { SoapApiError } from './soap-api-error';
 
 /**
  * Implements a generic API error which can be used when no specific error is available
  */
-export class GenericApiError extends ApiError {
+export class GenericSoapApiError extends SoapApiError {
 	/**
 	 * Returns the generic localized message for the error
 	 * @param t - The translation function

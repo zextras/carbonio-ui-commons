@@ -8,16 +8,16 @@ import { SoapFault } from '@zextras/carbonio-shell-ui';
 import { useTranslation } from 'react-i18next';
 
 import { setupHook } from '../../../test/test-setup';
-import { GenericApiError } from '../generic-api-error';
+import { GenericSoapApiError } from '../generic-soap-api-error';
 
-describe('GenericApiError', () => {
+describe('Soap	GenericApiError', () => {
 	it('should be an instance of Error', () => {
 		const fault: SoapFault = {
 			Code: { Value: faker.string.uuid() },
 			Detail: { Error: { Code: faker.string.uuid(), Trace: faker.string.alphanumeric() } },
 			Reason: { Text: faker.lorem.sentence() }
 		};
-		const error = new GenericApiError(fault);
+		const error = new GenericSoapApiError(fault);
 		expect(error).toBeInstanceOf(Error);
 	});
 
@@ -27,7 +27,7 @@ describe('GenericApiError', () => {
 			Detail: { Error: { Code: faker.string.uuid(), Trace: faker.string.alphanumeric() } },
 			Reason: { Text: faker.lorem.sentence() }
 		};
-		const error = new GenericApiError(fault);
+		const error = new GenericSoapApiError(fault);
 		expect(error.message).toBe(fault.Reason.Text);
 	});
 
@@ -37,7 +37,7 @@ describe('GenericApiError', () => {
 			Detail: { Error: { Code: faker.string.uuid(), Trace: faker.string.alphanumeric() } },
 			Reason: { Text: faker.lorem.sentence() }
 		};
-		const error = new GenericApiError(fault);
+		const error = new GenericSoapApiError(fault);
 
 		const {
 			result: {

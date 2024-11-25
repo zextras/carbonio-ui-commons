@@ -6,7 +6,7 @@
 import { SoapFault } from '@zextras/carbonio-shell-ui';
 import { TFunction } from 'i18next';
 
-export abstract class ApiError extends Error {
+export abstract class SoapApiError extends Error {
 	constructor(protected fault: SoapFault) {
 		super(fault.Reason.Text);
 	}

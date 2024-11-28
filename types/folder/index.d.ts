@@ -6,6 +6,7 @@
 import { ComponentType } from 'react';
 
 import { Meta, SoapRetentionPolicy } from '@zextras/carbonio-shell-ui';
+import { WorkerMessage } from '@zextras/carbonio-shell-ui/lib/types/workers';
 
 export type FolderFields = {
 	// Additional Parameters
@@ -215,3 +216,8 @@ export type PopulateFoldersStoreOptions = {
 	noSharedAccounts?: boolean;
 	customFolders?: Array<Folder>;
 };
+
+/**
+ * Message to notify the worker of a folder change
+ */
+export type FolderMessage = WorkerMessage<Record<string, never>>;

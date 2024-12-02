@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ChipItem } from '@zextras/carbonio-design-system';
+import { ChipInputProps, ChipItem } from '@zextras/carbonio-design-system';
 
 type RequiredEmailLabelChipItem<T> = Required<Pick<ChipItem<T>, 'value'>> &
 	Required<Pick<ChipItem<T>, 'label'>> &
@@ -36,3 +36,23 @@ export type UserDistributionList = {
 export type UserOrDL = UserContact | UserDistributionList;
 
 export type ContactInputItem = RequiredEmailLabelChipItem<UserOrDL>;
+
+export type ContactInputOnChange = ((items: ContactInputItem[]) => void) | undefined;
+
+export type ContactInputProps = Pick<
+	ChipInputProps,
+	| 'icon'
+	| 'iconAction'
+	| 'placeholder'
+	| 'background'
+	| 'iconDisabled'
+	| 'description'
+	| 'hasError'
+	| 'inputRef'
+	| 'disabled'
+> & {
+	onChange?: ContactInputOnChange;
+	defaultValue: Array<ContactInputItem>;
+	dragAndDropEnabled?: boolean;
+	orderedAccountIds?: Array<string>;
+};

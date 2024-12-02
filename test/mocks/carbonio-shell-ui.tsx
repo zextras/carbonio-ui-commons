@@ -83,7 +83,8 @@ export const ACTION_TYPES: typeof shell.ACTION_TYPES = {
 	FOLDER_lIST: 'folder_list',
 	CALENDAR: 'calendar',
 	CALENDAR_lIST: 'calendar_list',
-	NEW: 'new'
+	NEW: 'new',
+	ACCOUNT_MENU: 'account_menu'
 };
 
 function parsePath(path: string): string {

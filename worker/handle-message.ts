@@ -20,8 +20,8 @@ import type {
 	SoapLink,
 	SoapSearchFolder,
 	UserFolder
-} from '../types/folder';
-import { FolderView, LinksIdMap } from '../types/folder';
+} from '../types';
+import { FolderView, LinksIdMap } from '../types';
 
 const IM_LOGS = '14';
 const USER_ROOT = '1';

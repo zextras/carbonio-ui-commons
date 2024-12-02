@@ -13,3 +13,7 @@ export type SoapFolderAction = {
 	f?: string;
 	zid?: string;
 };
+
+export type ZimbraRequest = {
+	_jsns: 'urn:zimbraMail';
+};

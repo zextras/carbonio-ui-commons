@@ -50,6 +50,7 @@ export type ContactInputProps = Pick<
 	| 'hasError'
 	| 'inputRef'
 	| 'disabled'
+	| 'maxChips'
 > & {
 	onChange?: ContactInputOnChange;
 	defaultValue: Array<ContactInputItem>;

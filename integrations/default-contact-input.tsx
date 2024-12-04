@@ -9,17 +9,16 @@ import React from 'react';
 import { ChipInput, ChipItem } from '@zextras/carbonio-design-system';
 
 import { USER_TYPES_CONST } from './constants';
-import { ContactInputItem, ContactInputProps, UserContact, UserOrDL } from './types';
+import { ContactInputItem, ContactInputProps, UserOrDL } from './types';
 
 export const DefaultContactInput = ({
 	onChange,
 	...rest
 }: ContactInputProps): React.JSX.Element => {
 	const internalOnChange = (items: ChipItem<UserOrDL>[]): void => {
-		const newItems = items.filter((item: ChipItem<UserOrDL>) => item.value && item.label);
-		onChange?.(newItems as Array<ContactInputItem>);
+		onChange?.(items as Array<ContactInputItem>);
 	};
-	const internalOnAdd = (email: unknown): ChipItem<UserContact> => {
+	const internalOnAdd = (email: unknown): ContactInputItem => {
 		if (typeof email === 'string') {
 			return {
 				id: email,

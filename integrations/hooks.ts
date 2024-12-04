@@ -7,9 +7,13 @@ import { FC } from 'react';
 
 import { useIntegratedComponent } from '@zextras/carbonio-shell-ui';
 
+import { DefaultContactInput } from './default-contact-input';
 import { ContactInputProps } from './types';
 
-export const useContactInput = (): [FC<ContactInputProps>, boolean] => {
+export const useContactInput = (): FC<ContactInputProps> => {
 	const [ContactInput, integrationAvailable] = useIntegratedComponent('contact-input');
-	return [ContactInput as FC<ContactInputProps>, integrationAvailable];
+	if (integrationAvailable) {
+		return ContactInput;
+	}
+	return DefaultContactInput;
 };

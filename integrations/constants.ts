@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { USER_TYPES } from './types';
+import { ContactType } from './types';
 
-export const USER_TYPES_CONST: USER_TYPES = {
+export const CONTACT_TYPES: ContactType = {
 	GROUP: 'CONTACT_GROUP',
 	DISTRIBUTION_LIST: 'DISTRIBUTION_LIST',
 	CONTACT: 'CONTACT'

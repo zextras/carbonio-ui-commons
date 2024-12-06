@@ -10,7 +10,7 @@ type RequiredEmailLabelChipItem<T> = Required<Pick<ChipItem<T>, 'value'>> &
 	Required<Pick<ChipItem<T>, 'label'>> &
 	Omit<ChipItem<T>, 'label' | 'value'>;
 
-export type USER_TYPES = {
+export type ContactType = {
 	GROUP: 'CONTACT_GROUP';
 	DISTRIBUTION_LIST: 'DISTRIBUTION_LIST';
 	CONTACT: 'CONTACT';
@@ -24,16 +24,16 @@ export type UserContact = {
 	fullName?: string;
 	company?: string;
 	email: string;
-	type: USER_TYPES['CONTACT'];
+	type: ContactType['CONTACT'];
 };
 
-export type UserDistributionList = {
+export type DistributionListContact = {
 	id: string;
 	email: string;
-	type: USER_TYPES['DISTRIBUTION_LIST'];
+	type: ContactType['DISTRIBUTION_LIST'];
 };
 
-export type UserOrDL = UserContact | UserDistributionList;
+export type UserOrDL = UserContact | DistributionListContact;
 export type ContactInputItem = RequiredEmailLabelChipItem<UserOrDL>;
 
 export type ContactInputValue = Array<ContactInputItem>;

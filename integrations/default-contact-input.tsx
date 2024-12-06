@@ -8,7 +8,7 @@ import React from 'react';
 
 import { ChipInput, ChipItem } from '@zextras/carbonio-design-system';
 
-import { USER_TYPES_CONST } from './constants';
+import { CONTACT_TYPES } from './constants';
 import { ContactInputItem, ContactInputProps, UserOrDL } from './types';
 import { parseEmail } from '../helpers/email-parser';
 
@@ -30,7 +30,7 @@ export const DefaultContactInput = ({
 				value: {
 					id: finalEmail,
 					email,
-					type: USER_TYPES_CONST.CONTACT
+					type: CONTACT_TYPES.CONTACT
 				},
 				error: !validEmail
 			};

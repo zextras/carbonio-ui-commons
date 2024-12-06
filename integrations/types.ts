@@ -34,8 +34,9 @@ export type UserDistributionList = {
 };
 
 export type UserOrDL = UserContact | UserDistributionList;
-
 export type ContactInputItem = RequiredEmailLabelChipItem<UserOrDL>;
+
+export type ContactInputValue = Array<ContactInputItem>;
 
 export type ContactInputOnChange = ((items: ContactInputItem[]) => void) | undefined;
 

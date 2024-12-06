@@ -42,6 +42,7 @@ export const DefaultContactInput = ({
 			{...rest}
 			pasteSeparators={[',', ';', '\n']}
 			createChipOnPaste
+			defaultValue={defaultValue}
 			separators={[
 				{ code: 'Enter', ctrlKey: false },
 				{ code: 'NumpadEnter', ctrlKey: false },

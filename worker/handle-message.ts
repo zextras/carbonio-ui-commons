@@ -4,12 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FolderMessage, SoapNotify } from '@zextras/carbonio-shell-ui';
+import { SoapNotify } from '@zextras/carbonio-shell-ui';
 
 import { getLinkIdMapKey } from './utils';
 import type {
 	BaseFolder,
 	Folder,
+	FolderMessage,
 	Folders,
 	LinkFolder,
 	LinkFolderFields,
@@ -19,8 +20,8 @@ import type {
 	SoapLink,
 	SoapSearchFolder,
 	UserFolder
-} from '../types/folder';
-import { FolderView, LinksIdMap } from '../types/folder';
+} from '../types';
+import { FolderView, LinksIdMap } from '../types';
 
 const IM_LOGS = '14';
 const USER_ROOT = '1';

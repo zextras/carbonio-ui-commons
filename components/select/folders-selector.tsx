@@ -25,21 +25,19 @@ type FolderSelectorProps = {
 const FolderNameRender: FC<{ folder: FolderSelectorItem }> = ({ folder }) => {
 	const root = useRoot(folder.value ?? '');
 	return (
-		<>
-			<Row wrap={'nowrap'}>
-				<Padding right="small">
-					<Square color={folder.color} />
-				</Padding>
-				<TextUpperCase>{folder.label}</TextUpperCase>
-				<Row takeAvailableSpace>
-					{root && root.id !== FOLDERS.USER_ROOT && (
-						<Padding left="small" style={{ overflow: 'hidden' }}>
-							<TextUpperCase color={'gray1'}>{`(${root.name})`}</TextUpperCase>
-						</Padding>
-					)}
-				</Row>
+		<Row wrap={'nowrap'}>
+			<Padding right="small">
+				<Square $color={folder.color} />
+			</Padding>
+			<TextUpperCase>{folder.label}</TextUpperCase>
+			<Row takeAvailableSpace>
+				{root && root.id !== FOLDERS.USER_ROOT && (
+					<Padding left="small" style={{ overflow: 'hidden' }}>
+						<TextUpperCase color={'gray1'}>{`(${root.name})`}</TextUpperCase>
+					</Padding>
+				)}
 			</Row>
-		</>
+		</Row>
 	);
 };
 

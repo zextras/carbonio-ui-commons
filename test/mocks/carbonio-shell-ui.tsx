@@ -68,6 +68,7 @@ export const getBoardById: typeof shell.getBoardById = jest.fn();
 export const setCurrentBoard: typeof shell.setCurrentBoard = jest.fn();
 export const reopenBoards: typeof shell.reopenBoards = jest.fn();
 export const registerFunctions: typeof shell.registerFunctions = jest.fn();
+export const upsertApp: typeof shell.upsertApp = jest.fn();
 export const ACTION_TYPES: typeof shell.ACTION_TYPES = {
 	CONVERSATION: 'conversation',
 	CONVERSATION_lIST: 'conversation_list',

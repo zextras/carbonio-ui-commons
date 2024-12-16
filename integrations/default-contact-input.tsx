@@ -15,6 +15,8 @@ import { parseEmail } from '../helpers/email-parser';
 export const DefaultContactInput = ({
 	onChange,
 	defaultValue,
+	dragAndDropEnabled: _dragAndDropEnabled,
+	orderedAccountIds: _orderedAccountIds,
 	...rest
 }: ContactInputProps): React.JSX.Element => {
 	const internalOnChange = (items: ChipItem<UserOrDL>[]): void => {

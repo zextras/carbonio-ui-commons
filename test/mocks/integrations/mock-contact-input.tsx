@@ -19,6 +19,8 @@ function generateMockedContactInput(
 	function MockedContactInput({
 		onChange,
 		defaultValue,
+		dragAndDropEnabled: _dragAndDropEnabled,
+		orderedAccountIds: _orderedAccountIds,
 		...rest
 	}: ContactInputProps): ReactElement {
 		const onInputChange = useCallback(() => {

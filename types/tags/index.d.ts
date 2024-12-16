@@ -8,6 +8,8 @@ import React, { ComponentType, SyntheticEvent } from 'react';
 
 import { ItemType as AccordionItemType } from '@zextras/carbonio-design-system';
 
+import { WorkerMessage } from '../workers';
+
 export type Tag = {
 	color?: number;
 	id: string;

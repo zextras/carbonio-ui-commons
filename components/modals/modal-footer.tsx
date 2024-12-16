@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable import/extensions */
 
 import React, { FC, ReactElement, useMemo } from 'react';
 
@@ -42,6 +40,33 @@ const ModalFooter: FC<ModalFooterProps> = ({
 	const [t] = useTranslation();
 
 	const cancelLabel = useMemo(() => t('label.cancel', 'cancel'), [t]);
+
+	const secondaryTypeAndColor = useMemo(() => {
+		if (secondaryBtnType === 'ghost') {
+			return { type: secondaryBtnType, color: secondaryColor };
+		}
+		if (secondaryBtnType === 'default') {
+			return {
+				type: secondaryBtnType,
+				backgroundColor: secondaryColor || secondarybackground
+			};
+		}
+		return {
+			type: secondaryBtnType,
+			backgroundColor: secondarybackground,
+			labelColor: secondaryColor
+		};
+	}, [secondaryBtnType, secondaryColor, secondarybackground]);
+
+	const primaryTypeAndColor = useMemo(() => {
+		if (primaryBtnType === 'ghost') {
+			return { type: primaryBtnType, color };
+		}
+		if (primaryBtnType === 'default') {
+			return { type: primaryBtnType, backgroundColor: color || background };
+		}
+		return { type: primaryBtnType, backgroundColor: background, labelColor: color };
+	}, [background, color, primaryBtnType]);
 
 	return (
 		<Container
@@ -87,9 +112,7 @@ const ModalFooter: FC<ModalFooterProps> = ({
 							{secondaryTooltip ? (
 								<Tooltip label={secondaryTooltip} placement="top" maxWidth="fit">
 									<Button
-										backgroundColor={secondarybackground}
-										color={secondaryColor}
-										type={secondaryBtnType}
+										{...secondaryTypeAndColor}
 										onClick={secondaryAction}
 										label={secondaryLabel ?? cancelLabel}
 										disabled={secondaryDisabled}
@@ -98,9 +121,7 @@ const ModalFooter: FC<ModalFooterProps> = ({
 								</Tooltip>
 							) : (
 								<Button
-									backgroundColor={secondarybackground}
-									color={secondaryColor}
-									type={secondaryBtnType}
+									{...secondaryTypeAndColor}
 									onClick={secondaryAction}
 									label={secondaryLabel ?? cancelLabel}
 									disabled={secondaryDisabled}
@@ -115,27 +136,23 @@ const ModalFooter: FC<ModalFooterProps> = ({
 							<Tooltip label={tooltip} placement="top" maxWidth="fit">
 								<Button
 									size={size}
-									color={color}
 									onClick={onConfirm}
 									label={label}
-									type={primaryBtnType}
 									disabled={disabled}
-									backgroundColor={color || background}
 									icon={primaryButtonIcon}
 									iconPlacement="left"
+									{...primaryTypeAndColor}
 								/>
 							</Tooltip>
 						) : (
 							<Button
 								size={size}
-								color={color}
 								onClick={onConfirm}
 								label={label}
-								type={primaryBtnType}
 								disabled={disabled}
-								backgroundColor={color || background}
 								icon={primaryButtonIcon}
 								iconPlacement="left"
+								{...primaryTypeAndColor}
 							/>
 						)}
 					</Padding>

@@ -5,26 +5,17 @@
  */
 import React, { ReactElement } from 'react';
 
-import {
-	Container,
-	Icon,
-	IconProps,
-	Padding,
-	Row,
-	Text,
-	TextProps,
-	getColor
-} from '@zextras/carbonio-design-system';
+import { Container, Icon, Padding, Row, Text, getColor } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 
 import { CustomLabelFactoryProps } from '../../types/select';
 
-export const Square = styled.div`
+export const Square = styled.div<{ $disabled?: boolean; $color: string | undefined }>`
 	width: 1rem;
 	height: 1rem;
-	background: ${({ color }): string | undefined => color};
+	background: ${({ $color }): string | undefined => $color};
 	border-radius: 0.25rem;
-	opacity: ${({ disabled }: { disabled?: boolean }): number => (disabled ? 0.5 : 1)};
+	opacity: ${({ $disabled }): number => ($disabled ? 0.5 : 1)};
 `;
 
 export const ColorContainer = styled(Container)`
@@ -40,23 +31,6 @@ export const TextUpperCase = styled(Text)`
 	color: ${({ theme, disabled }): string =>
 		disabled ? theme.palette.text.disabled : theme.palette.text.regular};
 `;
-export const LabelText = styled(Text)<TextProps & { $showPrimary?: boolean }>`
-color: ${({ theme, disabled, $showPrimary }): string =>
-	// eslint-disable-next-line no-nested-ternary
-	disabled
-		? theme.palette.text.disabled
-		: $showPrimary
-			? theme.palette.primary.regular
-			: theme.palette.secondary.regular}};`;
-
-export const StyledIcon = styled(Icon)<IconProps & { $showPrimary?: boolean }>`
-color: ${({ theme, disabled, $showPrimary }): string =>
-	// eslint-disable-next-line no-nested-ternary
-	disabled
-		? theme.palette.text.disabled
-		: $showPrimary
-			? theme.palette.primary.regular
-			: theme.palette.secondary.regular}};`;
 
 export const FolderSelectorLabelFactory = ({
 	selected,
@@ -84,22 +58,26 @@ export const FolderSelectorLabelFactory = ({
 				mainAlignment="flex-start"
 				padding={{ left: 'small' }}
 			>
-				<LabelText size="small" disabled={disabled} $showPrimary={open || focus}>
+				<Text
+					size="small"
+					disabled={disabled}
+					color={(disabled && 'text.disabled') || ((open || focus) && 'primary') || 'secondary'}
+				>
 					{label}
-				</LabelText>
+				</Text>
 				<Row>
 					<Padding right="small">
-						<Square color={selected[0].color} disabled={disabled} />
+						<Square $color={selected[0].color} $disabled={disabled} />
 					</Padding>
 					<TextUpperCase disabled={disabled}>{selected[0].label}</TextUpperCase>
 				</Row>
 			</Row>
 		</Row>
-		<StyledIcon
+		<Icon
 			size="large"
 			icon={open ? 'ChevronUpOutline' : 'ChevronDownOutline'}
 			disabled={disabled}
-			$showPrimary={open || focus}
+			color={(disabled && 'text.disabled') || ((open || focus) && 'primary') || 'secondary'}
 			style={{ alignSelf: 'center' }}
 		/>
 	</ColorContainer>

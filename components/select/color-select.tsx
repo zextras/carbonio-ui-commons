@@ -8,22 +8,22 @@ import React, { useMemo } from 'react';
 import type { SelectProps, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
 import { Container, Icon, Padding, Row, Select, Text } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import styled, { SimpleInterpolation } from 'styled-components';
+import styled from 'styled-components';
 
 import { ZIMBRA_STANDARD_COLORS } from '../../constants/utils';
 import { CustomLabelFactoryProps } from '../../types/select';
 
-export const Square = styled.div`
+export const Square = styled.div<{ $color: string }>`
 	width: 1.125rem;
 	height: 1.125rem;
 	position: relative;
 	top: -0.1875rem;
-	border: 0.0625rem solid ${({ theme }): SimpleInterpolation => theme.palette.gray2.regular};
-	background: ${({ color }): SimpleInterpolation => color};
+	border: 0.0625rem solid ${({ theme }): string => theme.palette.gray2.regular};
+	background: ${({ $color }): string | undefined => $color};
 	border-radius: 0.25rem;
 `;
 export const ColorContainer = styled(Container)`
-	border-bottom: 0.0625rem solid ${({ theme }): SimpleInterpolation => theme.palette.gray2.regular};
+	border-bottom: 0.0625rem solid ${({ theme }): string => theme.palette.gray2.regular};
 	cursor: 'pointer';
 `;
 
@@ -61,7 +61,7 @@ const LabelFactory = ({
 				<TextUpperCase>{selected[0].label}</TextUpperCase>
 			</Row>
 			<Padding right="small">
-				<Square color={ZIMBRA_STANDARD_COLORS[parseInt(selected[0].value, 10)].hex} />
+				<Square $color={ZIMBRA_STANDARD_COLORS[parseInt(selected[0].value, 10)].hex} />
 			</Padding>
 		</Row>
 		<Icon
@@ -108,7 +108,7 @@ export const ColorSelect = ({
 							<Padding left="small">
 								<TextUpperCase>{colorLabel}</TextUpperCase>
 							</Padding>
-							<Square color={el.hex} />
+							<Square $color={el.hex} />
 						</Container>
 					)
 				};

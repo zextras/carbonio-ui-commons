@@ -161,4 +161,4 @@ const getMockedAccountItem = (context?: GetMockedAccountItemType): any => {
 	};
 };
 
-export { FakeIdentity, createFakeIdentity, getMockedAccountItem };
+export { type FakeIdentity, createFakeIdentity, getMockedAccountItem };

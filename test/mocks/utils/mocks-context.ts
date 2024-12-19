@@ -209,8 +209,8 @@ const getRandomIdentities = (
 };
 
 export {
-	MocksContext,
-	MocksContextIdentity,
+	type MocksContext,
+	type MocksContextIdentity,
 	getMocksContext,
 	setMocksContext,
 	updateMocksContext,

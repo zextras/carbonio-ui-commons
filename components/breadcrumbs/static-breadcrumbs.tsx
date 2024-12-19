@@ -52,4 +52,4 @@ const StaticBreadcrumbs: FC<StaticBreadcrumbsProps> = ({
 	);
 };
 
-export { StaticBreadcrumbsProps, StaticBreadcrumbs };
+export { type StaticBreadcrumbsProps, StaticBreadcrumbs };

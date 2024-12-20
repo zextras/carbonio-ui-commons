@@ -6,8 +6,8 @@
 
 import React, { FC, ReactNode, useCallback } from 'react';
 
-import shell from '@zextras/carbonio-shell-ui';
-import { useActions as realUseActions } from '@zextras/carbonio-shell-ui/lib/store/integrations/hooks';
+import * as shell from '@zextras/carbonio-shell-ui';
+import { useActions as realUseActions } from '@zextras/carbonio-shell-ui';
 import { trimStart } from 'lodash';
 import { useHistory } from 'react-router-dom';
 
@@ -62,7 +62,6 @@ export const useRefresh: typeof shell.useRefresh = jest.fn();
 export const addRoute: typeof shell.addRoute = jest.fn();
 export const removeRoute: typeof shell.removeRoute = jest.fn();
 export const addSettingsView: typeof shell.addSettingsView = jest.fn();
-export const addSearchView: typeof shell.addSearchView = jest.fn();
 export const addBoardView: typeof shell.addBoardView = jest.fn();
 export const getBoardById: typeof shell.getBoardById = jest.fn();
 export const setCurrentBoard: typeof shell.setCurrentBoard = jest.fn();

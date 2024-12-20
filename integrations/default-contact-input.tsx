@@ -15,7 +15,11 @@ import { parseEmail } from '../helpers/email-parser';
 export const DefaultContactInput = ({
 	onChange,
 	defaultValue,
+	// The following props are not used in this component, but are passed to the ChipInput component
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	dragAndDropEnabled: _dragAndDropEnabled,
+	// The following props are not used in this component, but are passed to the ChipInput component
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	orderedAccountIds: _orderedAccountIds,
 	...rest
 }: ContactInputProps): React.JSX.Element => {

@@ -11,7 +11,8 @@ import { DefaultContactInput } from './default-contact-input';
 import { ContactInputProps } from './types';
 
 export const useContactInput = (): FC<ContactInputProps> => {
-	const [ContactInput, integrationAvailable] = useIntegratedComponent('contact-input');
+	const [ContactInput, integrationAvailable] =
+		useIntegratedComponent<FC<ContactInputProps>>('contact-input');
 	if (integrationAvailable) {
 		return ContactInput;
 	}

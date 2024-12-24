@@ -4,9 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { DefaultBodyType, RequestHandler } from 'msw';
-import { RequestHandlerDefaultInfo } from 'msw/lib/core/handlers/RequestHandler';
 
-export interface CarbonioMailboxRestGenericRequest extends RequestHandlerDefaultInfo {
+export interface CarbonioMailboxRestGenericRequest {
 	Body: any;
 }
 

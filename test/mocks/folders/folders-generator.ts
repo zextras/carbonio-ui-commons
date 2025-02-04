@@ -325,7 +325,7 @@ const generateSharedAccountsRoot = (
 	return result;
 };
 
-export const generateFolder = (model: Partial<Folder> = {}): Folder => {
+export const generateFolder = (model: Partial<Folder & { oname: string }> = {}): Folder => {
 	const mockContext = getMocksContext();
 	const rootUuid = mockContext.identities.primary.userRootId;
 	const name = faker.word.noun({ length: { min: 1, max: 2 } });
@@ -349,6 +349,7 @@ export const generateFolder = (model: Partial<Folder> = {}): Folder => {
 		webOfflineSyncDays: model.webOfflineSyncDays ?? 0,
 		recursive: model.recursive ?? false,
 		deletable: model.deletable ?? true,
+		...((model as LinkFolder).oname && { oname: (model as LinkFolder).oname }),
 		acl: model.acl ?? {
 			grant: [
 				{

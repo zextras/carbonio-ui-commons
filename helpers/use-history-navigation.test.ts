@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { useNavigation } from './use-navigation';
+import { useHistoryNavigation } from './use-history-navigation';
 import { setupHook } from '../test/test-setup';
 
-describe('useNavigation', () => {
+describe('useHistoryNavigation', () => {
 	it('should return an object with two functions', () => {
 		const {
 			result: { current: navigation }
-		} = setupHook(useNavigation);
+		} = setupHook(useHistoryNavigation);
 
 		expect(navigation).toEqual({
 			replaceHistory: expect.any(Function),

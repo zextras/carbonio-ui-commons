@@ -12,7 +12,7 @@ type Navigation = {
 	pushHistory: (path: string) => void;
 };
 
-export const useNavigation = (): Navigation => {
+export const useHistoryNavigation = (): Navigation => {
 	const navigate = useNavigate();
 
 	const replaceHistory = useCallback(

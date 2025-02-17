@@ -7,12 +7,12 @@ import { useCallback, useMemo } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-type Navigation = {
+export type HistoryNavigation = {
 	replaceHistory: (path: string) => void;
 	pushHistory: (path: string) => void;
 };
 
-export const useHistoryNavigation = (): Navigation => {
+export const useHistoryNavigation = (): HistoryNavigation => {
 	const navigate = useNavigate();
 
 	const replaceHistory = useCallback(
@@ -29,7 +29,7 @@ export const useHistoryNavigation = (): Navigation => {
 		[navigate]
 	);
 
-	return useMemo<Navigation>(
+	return useMemo<HistoryNavigation>(
 		() => ({
 			replaceHistory,
 			pushHistory

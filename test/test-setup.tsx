@@ -130,7 +130,7 @@ export const ProvidersWrapper = ({
 								</I18nextProvider>
 							</StoreProvider>
 						}
-					></Route>
+					/>
 				</Routes>
 			</MemoryRouter>
 		</ThemeProvider>

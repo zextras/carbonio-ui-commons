@@ -291,7 +291,7 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 	// @ts-ignore
 	modified.forEach((val: Partial<SoapFolder>): void => {
 		if (!val.id) return;
-		const mountPointId = val.id.includes(':') ? val.id : getKeyByValue(folders, val);
+		const mountPointId = val.id.includes(':') ? getKeyByValue(folders, val) : val.id;
 		const parentMountPointId = getKeyByValue(folders, { id: val.l });
 		const isSharedWithMe = folderIsSharedWithMe(mountPointId);
 		const parentIsSharedWithMe = folderIsSharedWithMe(parentMountPointId);

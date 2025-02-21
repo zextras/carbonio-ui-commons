@@ -25,7 +25,7 @@ import userEvent, { UserEvent as RTLUserEvent } from '@testing-library/user-even
 import { ModalManager, SnackbarManager, ThemeProvider } from '@zextras/carbonio-design-system';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
-import { MemoryRouter, MemoryRouterProps, Route, RouteProps, Routes } from 'react-router-dom';
+import { MemoryRouter, MemoryRouterProps, Route, RouteProps } from 'react-router-dom';
 import { Store } from 'redux';
 
 import { getAppI18n } from './i18n/i18n-test-factory';
@@ -112,26 +112,20 @@ export const ProvidersWrapper = ({
 	return (
 		<ThemeProvider>
 			<MemoryRouter
-				future={{ v7_startTransition: false, v7_relativeSplatPath: false }}
 				initialEntries={initialEntries}
 				initialIndex={(initialEntries?.length || 1) - 1}
 			>
-				<Routes>
-					<Route
-						path={path}
-						element={
-							<StoreProvider store={store}>
-								<I18nextProvider i18n={i18n}>
-									<SnackbarManager>
-										<PreviewsManagerContext.Provider value={previewContextMock}>
-											<ModalManager>{children}</ModalManager>
-										</PreviewsManagerContext.Provider>
-									</SnackbarManager>
-								</I18nextProvider>
-							</StoreProvider>
-						}
-					/>
-				</Routes>
+				<Route path={path}>
+					<StoreProvider store={store}>
+						<I18nextProvider i18n={i18n}>
+							<SnackbarManager>
+								<PreviewsManagerContext.Provider value={previewContextMock}>
+									<ModalManager>{children}</ModalManager>
+								</PreviewsManagerContext.Provider>
+							</SnackbarManager>
+						</I18nextProvider>
+					</StoreProvider>
+				</Route>
 			</MemoryRouter>
 		</ThemeProvider>
 	);

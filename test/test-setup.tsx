@@ -105,7 +105,7 @@ export const ProvidersWrapper = ({
 	children,
 	store,
 	initialEntries = ['/'],
-	path = '/'
+	path = '/*'
 }: PropsWithChildren<ProvidersWrapperProps>): React.JSX.Element => {
 	const i18n = useMemo(() => getAppI18n(), []);
 

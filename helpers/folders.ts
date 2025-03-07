@@ -27,7 +27,7 @@ type FolderIdType = { zid: string | null; id: string | null };
  * Parse the given folder id and returns on object with the composing parts of the folder id
  * @param folderId
  */
-export const getFolderIdParts = (folderId?: string): FolderIdType => {
+export const getFolderIdParts = (folderId: string): FolderIdType => {
 	const result: FolderIdType = { zid: null, id: null };
 
 	if (!folderId || !folderId.match(FOLDERID_REGEX)) {

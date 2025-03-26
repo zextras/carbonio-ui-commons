@@ -66,24 +66,6 @@ export const setCurrentBoard: typeof shell.setCurrentBoard = jest.fn();
 export const reopenBoards: typeof shell.reopenBoards = jest.fn();
 export const registerFunctions: typeof shell.registerFunctions = jest.fn();
 export const upsertApp: typeof shell.upsertApp = jest.fn();
-export const ACTION_TYPES: typeof shell.ACTION_TYPES = {
-	CONVERSATION: 'conversation',
-	CONVERSATION_lIST: 'conversation_list',
-	MESSAGE: 'message',
-	MESSAGE_lIST: 'message_list',
-	CONTACT: 'contact',
-	CONTACT_lIST: 'contact_list',
-	INVITE: 'invite',
-	INVITE_lIST: 'invite_list',
-	APPOINTMENT: 'appointment',
-	APPOINTMENT_lIST: 'appointment_list',
-	FOLDER: 'folder',
-	FOLDER_lIST: 'folder_list',
-	CALENDAR: 'calendar',
-	CALENDAR_lIST: 'calendar_list',
-	NEW: 'new',
-	ACCOUNT_MENU: 'account_menu'
-};
 
 /*
  * Integration mocks

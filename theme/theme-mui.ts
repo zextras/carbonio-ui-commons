@@ -225,7 +225,7 @@ export const themeMui = createTheme({
 		MuiAccordionDetails: {
 			styleOverrides: {
 				root: {
-					background: theme.palette.gray5.regular,
+					background: 'transparent',
 					padding: '0 0 0 0.5rem',
 					margin: '0'
 				}
@@ -264,7 +264,7 @@ export const themeMui = createTheme({
 						borderTopRightRadius: '0'
 					},
 					boxShadow: 'none',
-					background: theme.palette.gray5.highlight,
+					background: 'transparent',
 					'&.MuiAccordion-root:before': {
 						top: '0'
 					}

@@ -13,11 +13,19 @@ describe('useSortedTagsArray', () => {
 	it('should return the sorted tags array', () => {
 		const tagA = { id: '2', name: 'a' };
 		const tagB = { id: '3', name: 'b' };
-		const tagC = { id: '1', name: 'c' };
+		const tagCUpperCase = { id: '1', name: 'C' };
+		const tagCLowerCase = { id: '4', name: 'c' };
 
-		useTagStore.setState({ tags: { [tagB.id]: tagB, [tagC.id]: tagC, [tagA.id]: tagA } });
+		useTagStore.setState({
+			tags: {
+				[tagB.id]: tagB,
+				[tagCUpperCase.id]: tagCUpperCase,
+				[tagA.id]: tagA,
+				[tagCLowerCase.id]: tagCLowerCase
+			}
+		});
 		const { result } = renderHook(() => useSortedTagsArray());
 
-		expect(result.current).toEqual([tagA, tagB, tagC]);
+		expect(result.current).toEqual([tagA, tagB, tagCUpperCase, tagCLowerCase]);
 	});
 });

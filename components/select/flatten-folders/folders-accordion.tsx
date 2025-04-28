@@ -13,6 +13,7 @@ import {
 	AccordionSummary as MUIAccordionSummary,
 	AccordionDetails as MUIAccordionDetails
 } from '@mui/material';
+import { filter } from 'lodash';
 
 import { FOLDERS } from '../../../constants/folders';
 import { theme } from '../../../theme/theme-mui';
@@ -25,6 +26,7 @@ type FolderAccordionProps = {
 	selectedFolderId?: string;
 	allowRootSelection: boolean;
 	FolderAccordionCustomComponent: React.FC<{ folder: Folder }>;
+	filterChildren?: (folder: Folder) => boolean;
 };
 
 export const FoldersAccordion = ({
@@ -32,12 +34,12 @@ export const FoldersAccordion = ({
 	onFolderSelected,
 	FolderAccordionCustomComponent,
 	selectedFolderId,
-	allowRootSelection
+	allowRootSelection,
+	filterChildren
 }: FolderAccordionProps): React.JSX.Element => {
-	// TODO: filter out children based on condition (spam, trash)
 	const filteredFolders = folders.map((root) => ({
 		...root,
-		children: root.children
+		children: filter(root.children, filterChildren)
 	}));
 
 	const [openIds, setOpenIds] = useState<Array<string>>([FOLDERS.USER_ROOT]);
@@ -102,6 +104,7 @@ export const FoldersAccordion = ({
 								allowRootSelection={allowRootSelection}
 								FolderAccordionCustomComponent={FolderAccordionCustomComponent}
 								onFolderSelected={onFolderSelected}
+								filterChildren={filterChildren}
 							/>
 						</MUIAccordionDetails>
 					)}

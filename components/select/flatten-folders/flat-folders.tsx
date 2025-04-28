@@ -14,37 +14,43 @@ import { flattenAndFilterFoldersWithCap, getSystemFolderTranslatedName } from '.
 import { Folder } from '../../../types';
 
 type FlatFoldersProps = {
-	folders: Array<Folder>;
+	rootFolders: Array<Folder>;
 	searchString: string;
 	selectedFolderId?: string;
 	onFolderSelected?: (folder: Folder) => void;
 	allowRootSelection?: boolean;
+	filterChildren?: (folder: Folder) => boolean;
 };
 
 export const FlatFolders = ({
-	folders,
+	rootFolders,
 	searchString,
 	onFolderSelected,
 	selectedFolderId,
-	allowRootSelection
+	allowRootSelection,
+	filterChildren
 }: FlatFoldersProps): React.JSX.Element => {
 	const [hasMoreResults, setHasMoreResults] = React.useState(false);
 	const [t] = useTranslation();
 	const flatFilteredFolders = useMemo(() => {
 		let remaining = 100;
 
-		return folders
-			.map((folder) => {
+		return rootFolders
+			.map((rootFolder) => {
 				if (remaining <= 0) {
-					return { ...folder, children: [] };
+					return { ...rootFolder, children: [] };
 				}
-
 				const currentFolder = {
-					...folder,
-					name: getSystemFolderTranslatedName({ folderName: folder.name }),
+					...rootFolder,
+					name: getSystemFolderTranslatedName({ folderName: rootFolder.name }),
 					children: []
 				};
-				const children = flattenAndFilterFoldersWithCap(folder.children, searchString, remaining);
+				const children = flattenAndFilterFoldersWithCap(
+					rootFolder.children,
+					searchString,
+					remaining,
+					filterChildren
+				);
 				remaining -= children.length;
 				if (remaining <= 0) {
 					setHasMoreResults(true);
@@ -55,7 +61,7 @@ export const FlatFolders = ({
 				return { ...currentFolder, children };
 			})
 			.filter((folder): folder is Folder => folder !== null);
-	}, [folders, searchString]);
+	}, [filterChildren, rootFolders, searchString]);
 
 	const hasMoreResultsWarningLabel = t(
 		'modal.messageFilteringList',

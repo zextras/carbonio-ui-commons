@@ -6,6 +6,7 @@
 
 import { AccordionItemType } from '@zextras/carbonio-design-system';
 import { t } from '@zextras/carbonio-shell-ui';
+import { filter } from 'lodash';
 
 import { FOLDER_VIEW, ROOT_NAME, ZIMBRA_STANDARD_COLORS } from '../../../constants';
 import { FOLDERS } from '../../../constants/folders';
@@ -15,14 +16,15 @@ import { Folder } from '../../../types';
 export function flattenAndFilterFoldersWithCap(
 	folders: Array<Folder>,
 	search: string,
-	limit: number
+	limit: number,
+	filterFolders?: ((folder: Folder) => boolean) | undefined
 ): Array<Folder> {
 	if (limit <= 0) return [];
 
 	const lowerCaseSearch = search.toLowerCase();
 
 	const flattenAndFilter = (foldersToProcess: Array<Folder>): Array<Folder> =>
-		foldersToProcess.flatMap((folder) => {
+		filter(foldersToProcess, filterFolders).flatMap((folder) => {
 			const isMatch = folder.name.toLowerCase().includes(lowerCaseSearch);
 			const matched = isMatch ? [{ ...folder, children: [] }] : [];
 			return [...matched, ...flattenAndFilter(folder.children)];
@@ -30,14 +32,6 @@ export function flattenAndFilterFoldersWithCap(
 
 	return flattenAndFilter(folders).slice(0, limit);
 }
-
-export const capitalise = (word: string): string => {
-	const asciiRef = word?.charCodeAt(0);
-	const newAsciiRef = asciiRef - 32;
-	const newChar = String.fromCharCode(newAsciiRef);
-	return word ? newChar + word.substring(1) : '';
-};
-
 export const getFolderIconColor = (f: Folder | AccordionItemType): string => {
 	if ('color' in f && f?.color) {
 		return Number(f.color) < 10
@@ -86,15 +80,6 @@ export const getFolderIconName = (folder: Folder | AccordionItemType): string | 
 	}
 	return folderDefaultIcon;
 };
-
-export const translatedSystemFolders = (): Array<string> => [
-	t('folders.inbox', 'Inbox'),
-	t('folders.sent', 'Sent'),
-	t('folders.drafts', 'Drafts'),
-	t('folders.trash', 'Trash'),
-	t('folders.spam', 'Spam'),
-	t('folders.junk', 'Junk')
-];
 
 type GetSystemFolderProps = {
 	folderId?: string;

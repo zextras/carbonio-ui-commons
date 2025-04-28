@@ -26,6 +26,7 @@ export type FolderSelectorProps = {
 	onFolderSelected: (arg: Folder) => void;
 	showSharedAccounts: boolean;
 	allowRootSelection: boolean;
+	filterChildren?: (folder: Folder) => boolean;
 };
 
 export const FolderSelector = ({
@@ -34,7 +35,8 @@ export const FolderSelector = ({
 	selectedFolderId,
 	onFolderSelected,
 	allowRootSelection,
-	showSharedAccounts
+	showSharedAccounts,
+	filterChildren
 }: FolderSelectorProps): ReactElement => {
 	const [inputValue, setInputValue] = useState('');
 	const selectedFolder = selectedFolderId && getFolder(selectedFolderId);
@@ -66,11 +68,12 @@ export const FolderSelector = ({
 			>
 				{inputValue.length > 0 ? (
 					<FlatFolders
-						folders={rootFolders}
+						rootFolders={rootFolders}
 						searchString={inputValue}
 						onFolderSelected={onFolderSelected}
 						selectedFolderId={selectedFolderId}
 						allowRootSelection={allowRootSelection}
+						filterChildren={filterChildren}
 					/>
 				) : (
 					<ThemeProvider theme={themeMui}>
@@ -81,6 +84,7 @@ export const FolderSelector = ({
 							selectedFolderId={selectedFolderId}
 							allowRootSelection={allowRootSelection}
 							FolderAccordionCustomComponent={FolderAccordionCustomComponent}
+							filterChildren={filterChildren}
 						/>
 					</ThemeProvider>
 				)}

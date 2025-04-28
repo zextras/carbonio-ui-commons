@@ -5,7 +5,6 @@
  */
 
 type ErrorResponse<K> = { error: K };
-
 type DataResponse<T> = { data: T };
 
 export async function apiWrapper<T, K>(
@@ -13,9 +12,15 @@ export async function apiWrapper<T, K>(
 ): Promise<DataResponse<T> | ErrorResponse<K>> {
 	return Promise.allSettled([promise]).then(async ([result]) => {
 		if (result.status === 'fulfilled') {
-			const responseBody = await result.value.text();
-			return responseBody ? { data: JSON.parse(responseBody) as T } : { data: {} as T };
+			const response = result.value;
+			try {
+				const responseBody = await response.json();
+				return { data: responseBody as T };
+			} catch {
+				return { data: {} as T };
+			}
+		} else {
+			return { error: result.reason as K };
 		}
-		return { error: result.reason };
 	});
 }

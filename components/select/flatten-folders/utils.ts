@@ -7,7 +7,7 @@
 import { AccordionItemType } from '@zextras/carbonio-design-system';
 import { t } from '@zextras/carbonio-shell-ui';
 
-import { ROOT_NAME, ZIMBRA_STANDARD_COLORS } from '../../../constants';
+import { FOLDER_VIEW, ROOT_NAME, ZIMBRA_STANDARD_COLORS } from '../../../constants';
 import { FOLDERS } from '../../../constants/folders';
 import { getFolderIdParts, isSystemFolder } from '../../../helpers/folders';
 import { Folder } from '../../../types';
@@ -47,6 +47,16 @@ export const getFolderIconColor = (f: Folder | AccordionItemType): string => {
 	return ZIMBRA_STANDARD_COLORS[0].hex;
 };
 
+const getFolderDefaultIcon = (folder: Folder | AccordionItemType): string => {
+	const folderView = 'view' in folder && folder.view;
+	switch (folderView) {
+		case FOLDER_VIEW.appointment:
+			return 'Calendar2';
+		default:
+			return 'FolderOutline';
+	}
+};
+
 export const getFolderIconName = (folder: Folder | AccordionItemType): string | null => {
 	const { id } = getFolderIdParts(folder.id);
 	if (
@@ -55,6 +65,8 @@ export const getFolderIconName = (folder: Folder | AccordionItemType): string | 
 	) {
 		return null;
 	}
+
+	const folderDefaultIcon = getFolderDefaultIcon(folder);
 
 	if (id && isSystemFolder(id)) {
 		switch (id) {
@@ -69,10 +81,10 @@ export const getFolderIconName = (folder: Folder | AccordionItemType): string | 
 			case FOLDERS.TRASH:
 				return 'Trash2Outline';
 			default:
-				return 'FolderOutline';
+				return folderDefaultIcon;
 		}
 	}
-	return 'FolderOutline';
+	return folderDefaultIcon;
 };
 
 export const translatedSystemFolders = (): Array<string> => [

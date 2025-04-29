@@ -93,7 +93,6 @@ export const FlatRoot = ({
 			style={{
 				cursor: 'pointer'
 			}}
-			data-testid={`folder-flat-root-${folder.id}`}
 		>
 			<CustomContainer
 				orientation="horizontal"
@@ -102,6 +101,7 @@ export const FlatRoot = ({
 				mainAlignment="space-between"
 				padding={'small'}
 				onClick={onClick}
+				data-testid={`folder-flat-root-${folder.id}`}
 				background={selectedFolderId === folder.id ? 'highlight.active' : 'gray6'}
 				$active={selectedFolderId === folder.id}
 			>

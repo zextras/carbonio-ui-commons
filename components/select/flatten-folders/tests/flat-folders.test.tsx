@@ -58,4 +58,46 @@ describe('flattenFolders', () => {
 		expect(await screen.findByTestId(`folder-flat-item-trash`)).toBeVisible();
 		expect(screen.queryByTestId(`folder-flat-item-TRASH`)).not.toBeInTheDocument();
 	});
+
+	it('should prevent click on root folders when allowRootSelection is false', async () => {
+		const root = generateFolder({
+			id: '1',
+			children: []
+		});
+		const onSelect = jest.fn();
+
+		const { user } = setupTest(
+			<FlatFolders
+				rootFolders={[root]}
+				searchString={'trash'}
+				onFolderSelected={onSelect}
+				allowRootSelection={false}
+			/>
+		);
+
+		const rootFlatItem = await screen.findByTestId(`folder-flat-root-${root.id}`);
+		await user.click(rootFlatItem);
+		expect(onSelect).not.toHaveBeenCalled();
+	});
+
+	it('should call onFolderSelected when clicking a root folder and allowRootSelection is true', async () => {
+		const root = generateFolder({
+			id: '1',
+			children: []
+		});
+		const onSelect = jest.fn();
+
+		const { user } = setupTest(
+			<FlatFolders
+				rootFolders={[root]}
+				searchString={'trash'}
+				onFolderSelected={onSelect}
+				allowRootSelection
+			/>
+		);
+
+		const rootFlatItem = await screen.findByTestId(`folder-flat-root-${root.id}`);
+		await user.click(rootFlatItem);
+		expect(onSelect).toHaveBeenCalledWith(root);
+	});
 });

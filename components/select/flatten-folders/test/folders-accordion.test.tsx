@@ -10,6 +10,7 @@ import { within } from '@testing-library/react';
 
 import { generateFolder } from '../../../../test/mocks/folders/folders-generator';
 import { setupTest, screen } from '../../../../test/test-setup';
+import { Folder } from '../../../../types';
 import { FolderAccordionCustomComponent } from '../folder-accordions-custom-component';
 import { FoldersAccordion } from '../folders-accordion';
 
@@ -67,5 +68,28 @@ describe('FlattenFoldersAccordion', () => {
 
 		await user.click(await within(accordionItemRoot2).findByTestId('ExpandMoreIcon'));
 		expect(await screen.findByTestId(`folder-accordion-item-${root2Child1.id}`)).toBeVisible();
+	});
+
+	it('should include only children with matching filter condition', async () => {
+		const root = generateFolder({
+			id: '1',
+			children: [
+				generateFolder({ id: 'trash', name: 'Trash', children: [] }),
+				generateFolder({ id: 'inbox', name: 'Inbox', children: [] })
+			]
+		});
+		setupTest(
+			<FoldersAccordion
+				folders={[root]}
+				onFolderSelected={onFolderSelected}
+				allowRootSelection={false}
+				filterChildren={(folder: Folder): boolean => folder.name === 'Trash'}
+				FolderAccordionCustomComponent={FolderAccordionCustomComponent}
+			/>
+		);
+
+		expect(await screen.findByTestId(`folder-accordion-item-${root.id}`)).toBeVisible();
+		expect(await screen.findByTestId(`folder-accordion-item-trash`)).toBeVisible();
+		expect(screen.queryByTestId(`folder-accordion-item-inbox`)).not.toBeInTheDocument();
 	});
 });

@@ -80,7 +80,11 @@ export const FlatFolders = ({
 				</Padding>
 			)}
 			{!hasMoreResults && <Padding vertical="medium" />}
-			<Container orientation={'vertical'} style={{ overflowY: 'auto' }}>
+			<Container
+				data-testid={'flat-folders-selector'}
+				orientation={'vertical'}
+				style={{ overflowY: 'auto' }}
+			>
 				{flatFilteredFolders.map<ReactElement>((folder) => (
 					<FlatRoot
 						key={folder.id}

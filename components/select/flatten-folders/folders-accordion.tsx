@@ -52,7 +52,7 @@ export const FoldersAccordion = ({
 			state.includes(folderId) ? state.filter((id) => id !== folderId) : [...state, folderId]
 		);
 	return (
-		<MUIContainer disableGutters>
+		<MUIContainer disableGutters data-testid={'accordion-folders-selector'}>
 			{filteredFolders.map((folder) => (
 				<MUIAccordion
 					disableGutters

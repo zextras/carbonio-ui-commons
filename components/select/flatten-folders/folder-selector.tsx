@@ -45,6 +45,9 @@ export const FolderSelector = ({
 		() => (showSharedAccounts ? folders : folders.filter((root) => root.id === FOLDERS.USER_ROOT)),
 		[folders, showSharedAccounts]
 	);
+	const disabledFolderIdsSelection = allowRootSelection
+		? []
+		: rootFolders.map((folder) => folder.id);
 
 	const inputName = selectedFolder ? selectedFolder.name : '';
 	return (
@@ -82,7 +85,7 @@ export const FolderSelector = ({
 							folders={rootFolders}
 							onFolderSelected={onFolderSelected}
 							selectedFolderId={selectedFolderId}
-							allowRootSelection={allowRootSelection}
+							disabledFolderIds={disabledFolderIdsSelection}
 							FolderAccordionCustomComponent={FolderAccordionCustomComponent}
 							filterChildren={filterChildren}
 						/>

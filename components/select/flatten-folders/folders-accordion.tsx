@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
@@ -24,7 +24,7 @@ type FolderAccordionProps = {
 	folders: Array<Folder>;
 	onFolderSelected: (arg: Folder) => void;
 	selectedFolderId?: string;
-	allowRootSelection: boolean;
+	disabledFolderIds?: Array<string>;
 	FolderAccordionCustomComponent: React.FC<{ folder: Folder }>;
 	filterChildren?: (folder: Folder) => boolean;
 };
@@ -34,7 +34,7 @@ export const FoldersAccordion = ({
 	onFolderSelected,
 	FolderAccordionCustomComponent,
 	selectedFolderId,
-	allowRootSelection,
+	disabledFolderIds,
 	filterChildren
 }: FolderAccordionProps): React.JSX.Element => {
 	const filteredFolders = folders.map((root) => ({
@@ -62,7 +62,11 @@ export const FoldersAccordion = ({
 				>
 					<MUIAccordionSummary
 						data-testid={`folder-accordion-item-${folder.id}`}
-						onClick={(): void => {
+						onClick={(e: SyntheticEvent): void => {
+							if (disabledFolderIds?.includes(folder.id)) {
+								e.preventDefault();
+								return;
+							}
 							onFolderSelected?.(folder);
 						}}
 						expandIcon={
@@ -101,7 +105,7 @@ export const FoldersAccordion = ({
 								folders={folder.children}
 								selectedFolderId={selectedFolderId}
 								key={folder.id}
-								allowRootSelection={allowRootSelection}
+								disabledFolderIds={disabledFolderIds}
 								FolderAccordionCustomComponent={FolderAccordionCustomComponent}
 								onFolderSelected={onFolderSelected}
 								filterChildren={filterChildren}

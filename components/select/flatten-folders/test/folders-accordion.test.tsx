@@ -31,7 +31,6 @@ describe('FlattenFoldersAccordion', () => {
 			<FoldersAccordion
 				folders={[rootFolder1, rootFolder2]}
 				onFolderSelected={onFolderSelected}
-				allowRootSelection={false}
 				FolderAccordionCustomComponent={FolderAccordionCustomComponent}
 			/>
 		);
@@ -45,7 +44,6 @@ describe('FlattenFoldersAccordion', () => {
 			<FoldersAccordion
 				folders={[rootFolder1, rootFolder2]}
 				onFolderSelected={onFolderSelected}
-				allowRootSelection={false}
 				FolderAccordionCustomComponent={FolderAccordionCustomComponent}
 			/>
 		);
@@ -59,7 +57,6 @@ describe('FlattenFoldersAccordion', () => {
 			<FoldersAccordion
 				folders={[rootFolder1, rootFolder2]}
 				onFolderSelected={onFolderSelected}
-				allowRootSelection={false}
 				FolderAccordionCustomComponent={FolderAccordionCustomComponent}
 			/>
 		);
@@ -82,7 +79,6 @@ describe('FlattenFoldersAccordion', () => {
 			<FoldersAccordion
 				folders={[root]}
 				onFolderSelected={onFolderSelected}
-				allowRootSelection={false}
 				filterChildren={(folder: Folder): boolean => folder.name === 'Trash'}
 				FolderAccordionCustomComponent={FolderAccordionCustomComponent}
 			/>
@@ -91,5 +87,46 @@ describe('FlattenFoldersAccordion', () => {
 		expect(await screen.findByTestId(`folder-accordion-item-${root.id}`)).toBeVisible();
 		expect(await screen.findByTestId(`folder-accordion-item-trash`)).toBeVisible();
 		expect(screen.queryByTestId(`folder-accordion-item-inbox`)).not.toBeInTheDocument();
+	});
+
+	it('should prevent click on disabled folder ids', async () => {
+		const root = generateFolder({
+			id: '1',
+			children: []
+		});
+		const onSelect = jest.fn();
+
+		const { user } = setupTest(
+			<FoldersAccordion
+				folders={[root]}
+				onFolderSelected={onFolderSelected}
+				disabledFolderIds={[root.id]}
+				FolderAccordionCustomComponent={FolderAccordionCustomComponent}
+			/>
+		);
+
+		const rootAccordion = await screen.findByTestId(`folder-accordion-item-${root.id}`);
+		await user.click(rootAccordion);
+		expect(onSelect).not.toHaveBeenCalled();
+	});
+
+	it('should call onFolderSelected with the given Folder when clicking a folder', async () => {
+		const root = generateFolder({
+			id: '1',
+			children: []
+		});
+		const onSelect = jest.fn();
+
+		const { user } = setupTest(
+			<FoldersAccordion
+				folders={[root]}
+				onFolderSelected={onSelect}
+				FolderAccordionCustomComponent={FolderAccordionCustomComponent}
+			/>
+		);
+
+		const rootAccordion = await screen.findByTestId(`folder-accordion-item-${root.id}`);
+		await user.click(rootAccordion);
+		expect(onSelect).toHaveBeenCalledWith(root);
 	});
 });

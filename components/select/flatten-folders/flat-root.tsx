@@ -93,7 +93,7 @@ export const FlatRoot = ({
 			style={{
 				cursor: 'pointer'
 			}}
-			data-testid={`folder-accordion-root-${folder.id}`}
+			data-testid={`folder-flat-root-${folder.id}`}
 		>
 			<CustomContainer
 				orientation="horizontal"
@@ -133,7 +133,7 @@ export const FlatRoot = ({
 							{(visible: boolean): ReactElement =>
 								visible ? (
 									<FlatFolder
-										data-testid={`folder-accordion-item-${childFolder.id}`}
+										data-testid={`folder-flat-item-${childFolder.id}`}
 										folder={childFolder}
 										onFolderSelected={onFolderSelected}
 									/>

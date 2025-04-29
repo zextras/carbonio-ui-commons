@@ -8,10 +8,11 @@ import React from 'react';
 
 import { generateFolder } from '../../../../test/mocks/folders/folders-generator';
 import { makeListItemsVisible, screen, setupTest } from '../../../../test/test-setup';
+import { Folder } from '../../../../types';
 import { FlatFolders } from '../flat-folders';
 
 describe('flattenFolders', () => {
-	it('should include only children matching the search criteria', async () => {
+	it('should include only children matching the search criteria (case-insensitive)', async () => {
 		const root = generateFolder({
 			id: '1',
 			children: [
@@ -22,7 +23,7 @@ describe('flattenFolders', () => {
 		setupTest(
 			<FlatFolders
 				rootFolders={[root]}
-				searchString={'Trash'}
+				searchString={'trash'}
 				onFolderSelected={jest.fn()}
 				allowRootSelection={false}
 			/>
@@ -32,5 +33,29 @@ describe('flattenFolders', () => {
 		makeListItemsVisible();
 		expect(await screen.findByTestId(`folder-flat-item-trash`)).toBeVisible();
 		expect(screen.queryByTestId(`folder-flat-item-inbox`)).not.toBeInTheDocument();
+	});
+
+	it('should include only children matching the search criteria and filter condition', async () => {
+		const root = generateFolder({
+			id: '1',
+			children: [
+				generateFolder({ id: 'TRASH', name: 'TRASH', children: [] }),
+				generateFolder({ id: 'trash', name: 'trash', children: [] })
+			]
+		});
+		setupTest(
+			<FlatFolders
+				rootFolders={[root]}
+				searchString={'trash'}
+				onFolderSelected={jest.fn()}
+				filterChildren={(folder: Folder): boolean => folder.name === 'trash'}
+				allowRootSelection={false}
+			/>
+		);
+
+		expect(await screen.findByTestId(`folder-flat-root-${root.id}`)).toBeVisible();
+		makeListItemsVisible();
+		expect(await screen.findByTestId(`folder-flat-item-trash`)).toBeVisible();
+		expect(screen.queryByTestId(`folder-flat-item-TRASH`)).not.toBeInTheDocument();
 	});
 });

@@ -9,8 +9,7 @@ import React, { useCallback } from 'react';
 import { Container, Row, Icon } from '@zextras/carbonio-design-system';
 import { noop } from 'lodash';
 
-import { getFolderIconName, getSystemFolderTranslatedName } from './utils';
-import { getFolderIconColor } from '../../../../commons/utilities';
+import { getFolderIconColor, getFolderIconName, getSystemFolderTranslatedName } from './utils';
 import { isRoot } from '../../../helpers/folders';
 import { Folder } from '../../../types';
 import { StaticBreadcrumbs } from '../../breadcrumbs/static-breadcrumbs';

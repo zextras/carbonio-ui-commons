@@ -160,6 +160,7 @@ export type RetentionPoliciesProps = {
 	dspRange: string;
 };
 
+// TODO: remove me, used only in mails
 export type NameInputRowProps = {
 	setInputValue: (value: string) => void;
 	inputValue: string;
@@ -169,6 +170,7 @@ export type NameInputRowProps = {
 	setFolderColor: (value: string) => void;
 };
 
+// TODO: remove me, used only in mails
 export type MainEditModalPropType = ModalProps & {
 	setActiveModal: (modal: string) => void;
 };

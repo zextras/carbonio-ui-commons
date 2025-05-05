@@ -160,19 +160,6 @@ export type RetentionPoliciesProps = {
 	dspRange: string;
 };
 
-export type NameInputRowProps = {
-	setInputValue: (value: string) => void;
-	inputValue: string;
-	showWarning: boolean;
-	inpDisable: boolean;
-	folderColor: string | undefined;
-	setFolderColor: (value: string) => void;
-};
-
-export type MainEditModalPropType = ModalProps & {
-	setActiveModal: (modal: string) => void;
-};
-
 export type SidebarAccordionProps = {
 	accordions: Array<Folder>;
 	folderId: string;

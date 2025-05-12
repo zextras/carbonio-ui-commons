@@ -41,7 +41,15 @@ export const useAppContext = jest.fn<unknown, []>(() => mockedAccounts);
 export const setAppContext = jest.fn();
 export const getBridgedFunctions = jest.fn();
 export const addBoard = jest.fn();
-export const useBoardHooks = jest.fn();
+export const closeBoard = jest.fn();
+export const updateBoardContext = jest.fn();
+export const useBoardHooks = jest.fn().mockReturnValue({
+	closeBoard: jest.fn(),
+	updateBoard: jest.fn(),
+	setCurrentBoard: jest.fn(),
+	getBoardContext: jest.fn(),
+	getBoard: jest.fn()
+});
 export const minimizeBoards = jest.fn();
 export const getCurrentRoute = jest.fn();
 export const useIsCarbonioCE: jest.Mock<ReturnType<typeof shell.useIsCarbonioCE>> = jest.fn(

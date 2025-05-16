@@ -12,6 +12,8 @@ const WHOLE_QUERY_REGEX = new RegExp(
 	'im'
 );
 
+const QUOTED_TERM_REGEX = /^"([^"]+)"$/im;
+
 const MULTIWORD_TERM_REGEX = /^(\S+\s+\S+.*)$/im;
 
 export const convertSearchChipToString = (chip: QueryChip): string => {
@@ -24,7 +26,8 @@ export const convertSearchChipToString = (chip: QueryChip): string => {
 
 	const prefixAndColon = match[1] ? `${match[1]}:` : '';
 	const term = match[2].trim();
-	const isMultiword = MULTIWORD_TERM_REGEX.test(term);
+	const isQuoted = QUOTED_TERM_REGEX.test(term);
+	const isMultiword = !isQuoted && MULTIWORD_TERM_REGEX.test(term);
 
 	return isMultiword ? `${prefixAndColon}"${term}"` : `${prefixAndColon}${term}`;
 };

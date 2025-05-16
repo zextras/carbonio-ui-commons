@@ -31,6 +31,20 @@ describe('search', () => {
 			expect(result).toBe(value);
 		});
 
+		it("should return trimmed value of the 'value' field if it contains a space at the beginning or at end", () => {
+			const value = ` ${faker.word.noun()} `;
+			const chip = { value };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe(value.trim());
+		});
+
+		it("should return the original value of the 'value' field if it is wrapped in double quotes", () => {
+			const value = `"${faker.word.words(2)}"`;
+			const chip = { value };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe(value);
+		});
+
 		it('should return a string wrapped in double quotes if the chip value contains spaces and there is no known prefix', () => {
 			const value = faker.word.words(2);
 			const chip = { value };
@@ -49,6 +63,16 @@ describe('search', () => {
 		);
 
 		it.each(Object.values(SEARCH_QUERY_PREFIXES))(
+			"should return '%s:' followed by the chip value it contains that known prefix and the term is already wrapped in double quotes",
+			(prefix: string) => {
+				const term = `"${faker.word.words(3)}"`;
+				const chip = { value: `${prefix}:${term}` };
+				const result = convertSearchChipToString(chip);
+				expect(result).toBe(`${prefix}:${term}`);
+			}
+		);
+
+		it.each(Object.values(SEARCH_QUERY_PREFIXES))(
 			"should return '%s:' followed by the chip value if it not contains spaces and that known prefix",
 			(prefix: string) => {
 				const term = faker.word.noun();
@@ -57,5 +81,21 @@ describe('search', () => {
 				expect(result).toBe(`${prefix}:${term}`);
 			}
 		);
+
+		it('should return the quoted chip whole value if it starts with an unknown prefix and contains spaces', () => {
+			const prefix = 'unknownPrefix';
+			const term = faker.word.words(3);
+			const chip = { value: `${prefix}:${term}` };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe(`"${prefix}:${term}"`);
+		});
+
+		it("should return the original chip whole value if it starts with an unknown prefix and doesn't contain spaces", () => {
+			const prefix = 'unknownPrefix';
+			const term = faker.word.noun();
+			const chip = { value: `${prefix}:${term}` };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe(`${prefix}:${term}`);
+		});
 	});
 });

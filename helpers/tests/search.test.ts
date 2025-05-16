@@ -9,13 +9,6 @@ import { SEARCH_QUERY_PREFIXES } from '../../constants/search';
 import { convertSearchChipToString } from '../search';
 
 describe('search', () => {
-	/**
-	 * 			const chipToString = (c: QueryChip): string => {
-	 * 				const chipString = (c.value ? c.value : c.label) ?? '';
-	 * 				const thereAreAnySpaces = chipString?.indexOf(' ') >= 0;
-	 * 				return thereAreAnySpaces ? `"${chipString}"` : `${chipString}`;
-	 * 			};
-	 */
 	describe('convertSearchChipToString', () => {
 		it('should return an empty string if the chip is empty', () => {
 			const chip = {};
@@ -38,7 +31,7 @@ describe('search', () => {
 			expect(result).toBe(value);
 		});
 
-		it('should return a string wrapped in double quotes if the chip value contains spaces and there is no prefix', () => {
+		it('should return a string wrapped in double quotes if the chip value contains spaces and there is no known prefix', () => {
 			const value = faker.word.words(2);
 			const chip = { value };
 			const result = convertSearchChipToString(chip);
@@ -46,7 +39,7 @@ describe('search', () => {
 		});
 
 		it.each(Object.values(SEARCH_QUERY_PREFIXES))(
-			"should return '%s:' followed by a string wrapped in double quotes if the chip value contains spaces and that prefix",
+			"should return '%s:' followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix",
 			(prefix: string) => {
 				const term = faker.word.words(3);
 				const chip = { value: `${prefix}:${term}` };
@@ -56,7 +49,7 @@ describe('search', () => {
 		);
 
 		it.each(Object.values(SEARCH_QUERY_PREFIXES))(
-			"should return '%s:' followed by the chip value if it not contains spaces and that prefix",
+			"should return '%s:' followed by the chip value if it not contains spaces and that known prefix",
 			(prefix: string) => {
 				const term = faker.word.noun();
 				const chip = { value: `${prefix}:${term}` };

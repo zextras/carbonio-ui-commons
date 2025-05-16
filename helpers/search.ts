@@ -5,8 +5,26 @@
  */
 import { QueryChip } from '@zextras/carbonio-search-ui';
 
+import { SEARCH_QUERY_PREFIXES } from '../constants/search';
+
+const WHOLE_QUERY_REGEX = new RegExp(
+	`^(?:(${Object.values(SEARCH_QUERY_PREFIXES).join('|')}):)?(.+)$`,
+	'im'
+);
+
+const MULTIWORD_TERM_REGEX = /^(\S+\s+\S+.*)$/im;
+
 export const convertSearchChipToString = (chip: QueryChip): string => {
-	const chipString = (chip.value ? chip.value : chip.label) ?? '';
-	const thereAreAnySpaces = chipString?.indexOf(' ') >= 0;
-	return thereAreAnySpaces ? `"${chipString}"` : `${chipString}`;
+	const chipString = chip.value || chip.label || '';
+	const match = chipString.match(WHOLE_QUERY_REGEX);
+
+	if (!match) {
+		return chipString;
+	}
+
+	const prefixAndColon = match[1] ? `${match[1]}:` : '';
+	const term = match[2].trim();
+	const isMultiword = MULTIWORD_TERM_REGEX.test(term);
+
+	return isMultiword ? `${prefixAndColon}"${term}"` : `${prefixAndColon}${term}`;
 };

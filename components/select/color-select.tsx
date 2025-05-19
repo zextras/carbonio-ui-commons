@@ -85,16 +85,10 @@ export const ColorSelect = ({
 	label
 }: ColorSelectProps): React.JSX.Element => {
 	const [t] = useTranslation();
-
 	const colors = useMemo<SelectProps['items']>(
 		() =>
 			ZIMBRA_STANDARD_COLORS.map((el, index) => {
-				const colorLabel = t(`color.${el.zLabel}`, '{{color}}', {
-					context: ZIMBRA_STANDARD_COLORS,
-					replace: {
-						color: el.zLabel
-					}
-				});
+				const colorLabel = t(`colors.${el.zLabel}`, el.zLabel);
 				return {
 					label: colorLabel,
 					value: index.toString(),

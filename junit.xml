@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="262" failures="0" errors="0" time="40.738">
+  <testsuite name="mocks-context" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:03" time="1.694" tests="3">
+    <testcase classname="mocks-context getRandomIdentities returns an array of valid identities" name="mocks-context getRandomIdentities returns an array of valid identities" time="0.006">
+    </testcase>
+    <testcase classname="mocks-context getRandomIdentities returns the required number of identity" name="mocks-context getRandomIdentities returns the required number of identity" time="0">
+    </testcase>
+    <testcase classname="mocks-context getRandomIdentities returns the whole provided list of identities if the required number is greater than the number of provided identities" name="mocks-context getRandomIdentities returns the whole provided list of identities if the required number is greater than the number of provided identities" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Errors" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:03" time="1.793" tests="2">
+    <testcase classname="Errors getErrorMessage should return the generic localized error message" name="Errors getErrorMessage should return the generic localized error message" time="0.021">
+    </testcase>
+    <testcase classname="Errors getErrorMessage should return the localized error message for a SoapApiError" name="Errors getErrorMessage should return the localized error message for a SoapApiError" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="folders web worker" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:03" time="1.858" tests="29">
+    <testcase classname="folders web worker refresh on refresh view is set to currentView" name="folders web worker refresh on refresh view is set to currentView" time="0.007">
+    </testcase>
+    <testcase classname="folders web worker refresh postMessage is called with normalized folders" name="folders web worker refresh postMessage is called with normalized folders" time="0.005">
+    </testcase>
+    <testcase classname="folders web worker refresh folders are flattened" name="folders web worker refresh folders are flattened" time="0.002">
+    </testcase>
+    <testcase classname="folders web worker refresh each folder has its own children structure" name="folders web worker refresh each folder has its own children structure" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle created folder when a new folder for the current view is notified, it is normalized, added and sorted" name="folders web worker notify handle created folder when a new folder for the current view is notified, it is normalized, added and sorted" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle created folder when a new folder for a different view is notified, is not added or normalized" name="folders web worker notify handle created folder when a new folder for a different view is notified, is not added or normalized" time="0">
+    </testcase>
+    <testcase classname="folders web worker notify handle created folder when a new folder is added, it will be available in the flat structure" name="folders web worker notify handle created folder when a new folder is added, it will be available in the flat structure" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle created folder when a new folder is added, it will be also added to the parent folder as children" name="folders web worker notify handle created folder when a new folder is added, it will be also added to the parent folder as children" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle created link when a new link for the current view is notified, it is normalized, added and sorted" name="folders web worker notify handle created link when a new link for the current view is notified, it is normalized, added and sorted" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle created link when a new link for a different view is notified, is not added or normalized" name="folders web worker notify handle created link when a new link for a different view is notified, is not added or normalized" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle created link when a new link is added, it will be available in the flat structure" name="folders web worker notify handle created link when a new link is added, it will be available in the flat structure" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle created link when a new link is added, it will be also added to the parent folder as children" name="folders web worker notify handle created link when a new link is added, it will be also added to the parent folder as children" time="0.002">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link moving a folder will update the old parent folder, the new parent folder and the moved folder" name="folders web worker notify handle modified folder/link moving a folder will update the old parent folder, the new parent folder and the moved folder" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link renaming a folder will update itself, its structure and parent&apos;s tree structure" name="folders web worker notify handle modified folder/link renaming a folder will update itself, its structure and parent&apos;s tree structure" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link renaming a folder when the folder is in a shared account tree, it renames the folder in the shared account folder tree" name="folders web worker notify handle modified folder/link renaming a folder when the folder is in a shared account tree, it renames the folder in the shared account folder tree" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link renaming a folder when the folder modified is in the shared account folder tree, it does not renames the shared folder in the primary account tree" name="folders web worker notify handle modified folder/link renaming a folder when the folder modified is in the shared account folder tree, it does not renames the shared folder in the primary account tree" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link changing a folder color will update itself and the parent&apos;s tree structure" name="folders web worker notify handle modified folder/link changing a folder color will update itself and the parent&apos;s tree structure" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link flags adding &apos;the checked flag&apos; of a folder will update itself and the parent&apos;s tree structure" name="folders web worker notify handle modified folder/link flags adding &apos;the checked flag&apos; of a folder will update itself and the parent&apos;s tree structure" time="0">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link flags adding &apos;the free/busy flag&apos; of a folder will update itself and the parent&apos;s tree structure" name="folders web worker notify handle modified folder/link flags adding &apos;the free/busy flag&apos; of a folder will update itself and the parent&apos;s tree structure" time="0">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link flags adding &apos;multiple flags&apos; of a folder will update itself and the parent&apos;s tree structure" name="folders web worker notify handle modified folder/link flags adding &apos;multiple flags&apos; of a folder will update itself and the parent&apos;s tree structure" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link flags removing &apos;the checked flag&apos; of a folder will update itself and the parent&apos;s tree structure" name="folders web worker notify handle modified folder/link flags removing &apos;the checked flag&apos; of a folder will update itself and the parent&apos;s tree structure" time="0">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link flags removing &apos;the free/busy flag&apos; of a folder will update itself and the parent&apos;s tree structure" name="folders web worker notify handle modified folder/link flags removing &apos;the free/busy flag&apos; of a folder will update itself and the parent&apos;s tree structure" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link flags removing &apos;multiple flags&apos; of a folder will update itself and the parent&apos;s tree structure" name="folders web worker notify handle modified folder/link flags removing &apos;multiple flags&apos; of a folder will update itself and the parent&apos;s tree structure" time="0">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link removing one of the grants of the folder will keep the remaining ones in itself and in the parent&apos;s tree structure" name="folders web worker notify handle modified folder/link removing one of the grants of the folder will keep the remaining ones in itself and in the parent&apos;s tree structure" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle modified folder/link removing the only grant of the folder will update itself and the parent&apos;s tree structure" name="folders web worker notify handle modified folder/link removing the only grant of the folder will update itself and the parent&apos;s tree structure" time="0">
+    </testcase>
+    <testcase classname="folders web worker notify handle deleted When a folder is deleted it will not be available on the first level neither inside its parent&apos;s structure" name="folders web worker notify handle deleted When a folder is deleted it will not be available on the first level neither inside its parent&apos;s structure" time="0.003">
+    </testcase>
+    <testcase classname="folders web worker notify handle deleted When a link is deleted it will not be available on the first level neither inside its parent&apos;s structure" name="folders web worker notify handle deleted When a link is deleted it will not be available on the first level neither inside its parent&apos;s structure" time="0">
+    </testcase>
+    <testcase classname="folders web worker notify handle deleted When a link is deleted, the sharing account corresponding folder will not be deleted" name="folders web worker notify handle deleted When a link is deleted, the sharing account corresponding folder will not be deleted" time="0.001">
+    </testcase>
+    <testcase classname="folders web worker notify handle deleted when a different item is deleted, the folder structure stay the same" name="folders web worker notify handle deleted when a different item is deleted, the folder structure stay the same" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Soap	GenericApiError" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:02" time="2.074" tests="3">
+    <testcase classname="Soap	GenericApiError should be an instance of Error" name="Soap	GenericApiError should be an instance of Error" time="0.004">
+    </testcase>
+    <testcase classname="Soap	GenericApiError should has the &apos;message&apos; attribute set with the reason text of the given fault" name="Soap	GenericApiError should has the &apos;message&apos; attribute set with the reason text of the given fault" time="0.001">
+    </testcase>
+    <testcase classname="Soap	GenericApiError should return the generic localized message" name="Soap	GenericApiError should return the generic localized message" time="0.019">
+    </testcase>
+  </testsuite>
+  <testsuite name="search" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:04" time="0.501" tests="68">
+    <testcase classname="search convertSearchChipToString should return an empty string if the chip is empty" name="search convertSearchChipToString should return an empty string if the chip is empty" time="0.002">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return value of the &apos;label&apos; field if it is set and &apos;value&apos; is not set" name="search convertSearchChipToString should return value of the &apos;label&apos; field if it is set and &apos;value&apos; is not set" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return value of the &apos;value&apos; field if it is set" name="search convertSearchChipToString should return value of the &apos;value&apos; field if it is set" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return trimmed value of the &apos;value&apos; field if it contains a space at the beginning or at end" name="search convertSearchChipToString should return trimmed value of the &apos;value&apos; field if it contains a space at the beginning or at end" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return the original value of the &apos;value&apos; field if it is wrapped in double quotes" name="search convertSearchChipToString should return the original value of the &apos;value&apos; field if it is wrapped in double quotes" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return a string wrapped in double quotes if the chip value contains spaces and there is no known prefix" name="search convertSearchChipToString should return a string wrapped in double quotes if the chip value contains spaces and there is no known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;content:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;content:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;from:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;from:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;to:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;to:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;cc:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;cc:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;subject:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;subject:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;in:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;in:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;has:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;has:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;filename:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;filename:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;type:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;type:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;attachment:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;attachment:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;is:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;is:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;date:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;date:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;after:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;after:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;before:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;before:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;size:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;size:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;larger:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;larger:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;smaller:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;smaller:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;solo:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;solo:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;tag:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;tag:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;priority:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;priority:&apos; followed by a string wrapped in double quotes if the chip value contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;content:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;content:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0.016">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;from:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;from:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;to:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;to:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;cc:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;cc:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;subject:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;subject:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;in:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;in:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;has:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;has:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;filename:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;filename:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;type:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;type:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;attachment:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;attachment:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;is:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;is:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;date:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;date:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;after:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;after:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;before:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;before:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;size:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;size:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;larger:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;larger:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;smaller:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;smaller:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;solo:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;solo:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;tag:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;tag:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;priority:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" name="search convertSearchChipToString should return &apos;priority:&apos; followed by the chip value it contains that known prefix and the term is already wrapped in double quotes" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;content:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;content:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;from:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;from:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;to:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;to:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;cc:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;cc:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;subject:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;subject:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;in:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;in:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;has:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;has:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;filename:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;filename:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;type:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;type:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;attachment:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;attachment:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;is:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;is:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;date:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;date:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;after:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;after:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;before:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;before:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;size:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;size:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;larger:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;larger:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;smaller:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;smaller:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;solo:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;solo:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;tag:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;tag:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return &apos;priority:&apos; followed by the chip value if it not contains spaces and that known prefix" name="search convertSearchChipToString should return &apos;priority:&apos; followed by the chip value if it not contains spaces and that known prefix" time="0">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return the quoted chip whole value if it starts with an unknown prefix and contains spaces" name="search convertSearchChipToString should return the quoted chip whole value if it starts with an unknown prefix and contains spaces" time="0.001">
+    </testcase>
+    <testcase classname="search convertSearchChipToString should return the original chip whole value if it starts with an unknown prefix and doesn&apos;t contain spaces" name="search convertSearchChipToString should return the original chip whole value if it starts with an unknown prefix and doesn&apos;t contain spaces" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Default account address" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:04" time="0.636" tests="2">
+    <testcase classname="Default account address returns the address if default account selected as a FROM" name="Default account address returns the address if default account selected as a FROM" time="0.037">
+    </testcase>
+    <testcase classname="Default account address returns the address if sendAs account selected as a FROM" name="Default account address returns the address if sendAs account selected as a FROM" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="folder worker" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:03" time="2.361" tests="4">
+    <testcase classname="folder worker getLinkIdMapKey returns null if the passed parameter is undefined" name="folder worker getLinkIdMapKey returns null if the passed parameter is undefined" time="0.007">
+    </testcase>
+    <testcase classname="folder worker getLinkIdMapKey returns null if the link zid is undefined" name="folder worker getLinkIdMapKey returns null if the link zid is undefined" time="0.002">
+    </testcase>
+    <testcase classname="folder worker getLinkIdMapKey returns null if the link rid is undefined" name="folder worker getLinkIdMapKey returns null if the link rid is undefined" time="0.006">
+    </testcase>
+    <testcase classname="folder worker getLinkIdMapKey returns ABC:DEF if the link zid is ABC and the rid is DEF" name="folder worker getLinkIdMapKey returns ABC:DEF if the link zid is ABC and the rid is DEF" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="FolderInitializationErrorModal" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:02" time="2.7" tests="3">
+    <testcase classname="FolderInitializationErrorModal it correctly renders the component" name="FolderInitializationErrorModal it correctly renders the component" time="0.128">
+    </testcase>
+    <testcase classname="FolderInitializationErrorModal calls onClose when the close button is clicked" name="FolderInitializationErrorModal calls onClose when the close button is clicked" time="0.173">
+    </testcase>
+    <testcase classname="FolderInitializationErrorModal refreshes the page when the confirm button is clicked" name="FolderInitializationErrorModal refreshes the page when the confirm button is clicked" time="0.163">
+    </testcase>
+  </testsuite>
+  <testsuite name="flattenFolders" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:05" time="0.832" tests="4">
+    <testcase classname="flattenFolders should include only children matching the search criteria (case-insensitive)" name="flattenFolders should include only children matching the search criteria (case-insensitive)" time="0.184">
+    </testcase>
+    <testcase classname="flattenFolders should include only children matching the search criteria and filter condition" name="flattenFolders should include only children matching the search criteria and filter condition" time="0.038">
+    </testcase>
+    <testcase classname="flattenFolders should prevent click on root folders when allowRootSelection is false" name="flattenFolders should prevent click on root folders when allowRootSelection is false" time="0.03">
+    </testcase>
+    <testcase classname="flattenFolders should call onFolderSelected when clicking a root folder and allowRootSelection is true" name="flattenFolders should call onFolderSelected when clicking a root folder and allowRootSelection is true" time="0.026">
+    </testcase>
+  </testsuite>
+  <testsuite name="Folder id" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:05" time="0.492" tests="58">
+    <testcase classname="Folder id with zid" name="Folder id with zid" time="0.002">
+    </testcase>
+    <testcase classname="Folder id without zid" name="Folder id without zid" time="0">
+    </testcase>
+    <testcase classname="Folder id without id" name="Folder id without id" time="0.001">
+    </testcase>
+    <testcase classname="Folder id with zid only" name="Folder id with zid only" time="0">
+    </testcase>
+    <testcase classname="Folder owner For a folder with an id without the zid, the primary account name is returned" name="Folder owner For a folder with an id without the zid, the primary account name is returned" time="0.007">
+    </testcase>
+    <testcase classname="Folder owner For a folder with an id containing the zid, the name of the shared account owning that folder&apos;s root is returned" name="Folder owner For a folder with an id containing the zid, the name of the shared account owning that folder&apos;s root is returned" time="0.002">
+    </testcase>
+    <testcase classname="Folder owner For a folder with an id containing an unknown zid, the primary account name is returned" name="Folder owner For a folder with an id containing an unknown zid, the primary account name is returned" time="0.002">
+    </testcase>
+    <testcase classname="isRoot If no folderId is specified false is returned" name="isRoot If no folderId is specified false is returned" time="0">
+    </testcase>
+    <testcase classname="isRoot A folder with a id = 1 is recognized as a root" name="isRoot A folder with a id = 1 is recognized as a root" time="0.001">
+    </testcase>
+    <testcase classname="isRoot A folder with a id != 1 is not recognized as a root" name="isRoot A folder with a id != 1 is not recognized as a root" time="0">
+    </testcase>
+    <testcase classname="isRoot A folder with a zid and an id = 1 is recognized as a root" name="isRoot A folder with a zid and an id = 1 is recognized as a root" time="0.001">
+    </testcase>
+    <testcase classname="isRoot A folder with a zid and an id != 1 is not recognized as a root" name="isRoot A folder with a zid and an id != 1 is not recognized as a root" time="0">
+    </testcase>
+    <testcase classname="isDefaultAccountRoot If no folderId is specified false is returned" name="isDefaultAccountRoot If no folderId is specified false is returned" time="0">
+    </testcase>
+    <testcase classname="isDefaultAccountRoot A folder with a id = 1 is recognized as the default account root" name="isDefaultAccountRoot A folder with a id = 1 is recognized as the default account root" time="0.001">
+    </testcase>
+    <testcase classname="isDefaultAccountRoot A folder with a id != 1 is not recognized as the default account root" name="isDefaultAccountRoot A folder with a id != 1 is not recognized as the default account root" time="0">
+    </testcase>
+    <testcase classname="isDefaultAccountRoot A folder with a zid and an id = 1 is not recognized as the default account root" name="isDefaultAccountRoot A folder with a zid and an id = 1 is not recognized as the default account root" time="0">
+    </testcase>
+    <testcase classname="isDefaultAccountRoot A folder with a zid and an id != 1 is not recognized as the default account root" name="isDefaultAccountRoot A folder with a zid and an id != 1 is not recognized as the default account root" time="0.001">
+    </testcase>
+    <testcase classname="isLink If no folderId is specified false is returned" name="isLink If no folderId is specified false is returned" time="0">
+    </testcase>
+    <testcase classname="isLink A folder with isLink = true and without a zid is recognized as a link" name="isLink A folder with isLink = true and without a zid is recognized as a link" time="0.001">
+    </testcase>
+    <testcase classname="isLink A folder with a isLink = false is not recognized as a link" name="isLink A folder with a isLink = false is not recognized as a link" time="0.001">
+    </testcase>
+    <testcase classname="isLink A folder with a zid is not recognized as a link" name="isLink A folder with a zid is not recognized as a link" time="0.001">
+    </testcase>
+    <testcase classname="isSystemFolder returns true if user root folder id is passed as parameter" name="isSystemFolder returns true if user root folder id is passed as parameter" time="0.001">
+    </testcase>
+    <testcase classname="isSystemFolder returns true if inbox folder id is passed as parameter" name="isSystemFolder returns true if inbox folder id is passed as parameter" time="0">
+    </testcase>
+    <testcase classname="isSystemFolder returns true if sent folder id is passed as parameter" name="isSystemFolder returns true if sent folder id is passed as parameter" time="0.001">
+    </testcase>
+    <testcase classname="isSystemFolder returns true if trash folder id is passed as parameter" name="isSystemFolder returns true if trash folder id is passed as parameter" time="0">
+    </testcase>
+    <testcase classname="isSystemFolder returns true if junk folder id is passed as parameter" name="isSystemFolder returns true if junk folder id is passed as parameter" time="0">
+    </testcase>
+    <testcase classname="isSystemFolder returns true if drafts folder id is passed as parameter" name="isSystemFolder returns true if drafts folder id is passed as parameter" time="0">
+    </testcase>
+    <testcase classname="isSystemFolder returns true if contacts folder id is passed as parameter" name="isSystemFolder returns true if contacts folder id is passed as parameter" time="0.001">
+    </testcase>
+    <testcase classname="isSystemFolder returns true if emailed contacts folder id is passed as parameter" name="isSystemFolder returns true if emailed contacts folder id is passed as parameter" time="0">
+    </testcase>
+    <testcase classname="isSystemFolder returns true if calendar folder id is passed as parameter" name="isSystemFolder returns true if calendar folder id is passed as parameter" time="0">
+    </testcase>
+    <testcase classname="isSystemFolder returns false if user defined folder id is passed as parameter" name="isSystemFolder returns false if user defined folder id is passed as parameter" time="0">
+    </testcase>
+    <testcase classname="isTrash If no folderId is specified false is returned" name="isTrash If no folderId is specified false is returned" time="0.001">
+    </testcase>
+    <testcase classname="isTrash A folder with a id = 6 is recognized as a trash" name="isTrash A folder with a id = 6 is recognized as a trash" time="0">
+    </testcase>
+    <testcase classname="isTrash A folder with a id != 6 is not recognized as a trash" name="isTrash A folder with a id != 6 is not recognized as a trash" time="0">
+    </testcase>
+    <testcase classname="isTrash A folder with a zid and an id = 6 is recognized as a trash" name="isTrash A folder with a zid and an id = 6 is recognized as a trash" time="0.001">
+    </testcase>
+    <testcase classname="isTrash A folder with a zid and an id != 6 is not recognized as a trash" name="isTrash A folder with a zid and an id != 6 is not recognized as a trash" time="0">
+    </testcase>
+    <testcase classname="isTrashed A folder inside the trash (passed by ref) is recognized as trashed" name="isTrashed A folder inside the trash (passed by ref) is recognized as trashed" time="0.002">
+    </testcase>
+    <testcase classname="isTrashed A folder inside the trash (passed by id) is recognized as trashed" name="isTrashed A folder inside the trash (passed by id) is recognized as trashed" time="0.002">
+    </testcase>
+    <testcase classname="isTrashed The inbox folder (passed by ref) is not recognized as trashed" name="isTrashed The inbox folder (passed by ref) is not recognized as trashed" time="0.002">
+    </testcase>
+    <testcase classname="isTrashed The inbox folder (passed by id) is not recognized as trashed" name="isTrashed The inbox folder (passed by id) is not recognized as trashed" time="0.001">
+    </testcase>
+    <testcase classname="isReadAllowed should return true if the folder has no permissions set" name="isReadAllowed should return true if the folder has no permissions set" time="0.001">
+    </testcase>
+    <testcase classname="isReadAllowed should return true if the folder has the &apos;r&apos; perm" name="isReadAllowed should return true if the folder has the &apos;r&apos; perm" time="0.003">
+    </testcase>
+    <testcase classname="isReadAllowed should return false if the parameter without the &apos;r&apos; perm" name="isReadAllowed should return false if the parameter without the &apos;r&apos; perm" time="0.001">
+    </testcase>
+    <testcase classname="isWriteAllowed should return true if the folder has no permissions set" name="isWriteAllowed should return true if the folder has no permissions set" time="0.001">
+    </testcase>
+    <testcase classname="isWriteAllowed should return true if the folder has the &apos;w&apos; perm" name="isWriteAllowed should return true if the folder has the &apos;w&apos; perm" time="0">
+    </testcase>
+    <testcase classname="isWriteAllowed should return false if the parameter without the &apos;w&apos; perm" name="isWriteAllowed should return false if the parameter without the &apos;w&apos; perm" time="0">
+    </testcase>
+    <testcase classname="isCreateAllowed should return true if the folder has no permissions set" name="isCreateAllowed should return true if the folder has no permissions set" time="0.001">
+    </testcase>
+    <testcase classname="isCreateAllowed should return true if the folder has the &apos;c&apos; perm" name="isCreateAllowed should return true if the folder has the &apos;c&apos; perm" time="0.001">
+    </testcase>
+    <testcase classname="isCreateAllowed should return false if the parameter without the &apos;c&apos; perm" name="isCreateAllowed should return false if the parameter without the &apos;c&apos; perm" time="0.001">
+    </testcase>
+    <testcase classname="isInsertAllowed should return true if the folder has no permissions set" name="isInsertAllowed should return true if the folder has no permissions set" time="0">
+    </testcase>
+    <testcase classname="isInsertAllowed should return true if the folder has the &apos;i&apos; perm" name="isInsertAllowed should return true if the folder has the &apos;i&apos; perm" time="0.001">
+    </testcase>
+    <testcase classname="isInsertAllowed should return false if the parameter without the &apos;i&apos; perm" name="isInsertAllowed should return false if the parameter without the &apos;i&apos; perm" time="0">
+    </testcase>
+    <testcase classname="isDeleteAllowed should return true if the folder has no permissions set" name="isDeleteAllowed should return true if the folder has no permissions set" time="0.001">
+    </testcase>
+    <testcase classname="isDeleteAllowed should return true if the folder has the &apos;d&apos; perm" name="isDeleteAllowed should return true if the folder has the &apos;d&apos; perm" time="0">
+    </testcase>
+    <testcase classname="isDeleteAllowed should return false if the parameter without the &apos;d&apos; perm" name="isDeleteAllowed should return false if the parameter without the &apos;d&apos; perm" time="0.001">
+    </testcase>
+    <testcase classname="isAdministerAllowed should return true if the folder has no permissions set" name="isAdministerAllowed should return true if the folder has no permissions set" time="0">
+    </testcase>
+    <testcase classname="isAdministerAllowed should return true if the folder has the &apos;a&apos; perm" name="isAdministerAllowed should return true if the folder has the &apos;a&apos; perm" time="0.001">
+    </testcase>
+    <testcase classname="isAdministerAllowed should return false if the parameter without the &apos;a&apos; perm" name="isAdministerAllowed should return false if the parameter without the &apos;a&apos; perm" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="useHistoryNavigation" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:05" time="0.826" tests="1">
+    <testcase classname="useHistoryNavigation should return an object with two functions" name="useHistoryNavigation should return an object with two functions" time="0.032">
+    </testcase>
+  </testsuite>
+  <testsuite name="useUpdateView" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:05" time="0.753" tests="3">
+    <testcase classname="useUpdateView should register a listener to the &quot;updateView&quot; event" name="useUpdateView should register a listener to the &quot;updateView&quot; event" time="0.025">
+    </testcase>
+    <testcase classname="useUpdateView should call the NoOp when the &quot;updateView&quot; event is triggered" name="useUpdateView should call the NoOp when the &quot;updateView&quot; event is triggered" time="0.046">
+    </testcase>
+    <testcase classname="useUpdateView should unregister a listener to the &quot;updateView&quot; event" name="useUpdateView should unregister a listener to the &quot;updateView&quot; event" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="with appointment parameter" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:05" time="0.935" tests="18">
+    <testcase classname="with appointment parameter it will call refresh" name="with appointment parameter it will call refresh" time="0.054">
+    </testcase>
+    <testcase classname="with appointment parameter it will open error-initialize-modal when GetFolderRequest fails" name="with appointment parameter it will open error-initialize-modal when GetFolderRequest fails" time="0.021">
+    </testcase>
+    <testcase classname="with appointment parameter it will open error-initialize-modal  when GetShareInfoRequest fails" name="with appointment parameter it will open error-initialize-modal  when GetShareInfoRequest fails" time="0.012">
+    </testcase>
+    <testcase classname="with appointment parameter should not open the error modal when getShareInfo returns an empty array" name="with appointment parameter should not open the error modal when getShareInfo returns an empty array" time="0.018">
+    </testcase>
+    <testcase classname="with appointment parameter If multiple accounts are available they will be on the same level of the main account" name="with appointment parameter If multiple accounts are available they will be on the same level of the main account" time="0.021">
+    </testcase>
+    <testcase classname="with appointment parameter If only main account is available postMessage will be called with an array with 1 item" name="with appointment parameter If only main account is available postMessage will be called with an array with 1 item" time="0.02">
+    </testcase>
+    <testcase classname="with message parameter it will call refresh" name="with message parameter it will call refresh" time="0.02">
+    </testcase>
+    <testcase classname="with message parameter it will open error-initialize-modal when GetFolderRequest fails" name="with message parameter it will open error-initialize-modal when GetFolderRequest fails" time="0.012">
+    </testcase>
+    <testcase classname="with message parameter it will open error-initialize-modal  when GetShareInfoRequest fails" name="with message parameter it will open error-initialize-modal  when GetShareInfoRequest fails" time="0.009">
+    </testcase>
+    <testcase classname="with message parameter should not open the error modal when getShareInfo returns an empty array" name="with message parameter should not open the error modal when getShareInfo returns an empty array" time="0.014">
+    </testcase>
+    <testcase classname="with message parameter If multiple accounts are available they will be on the same level of the main account" name="with message parameter If multiple accounts are available they will be on the same level of the main account" time="0.02">
+    </testcase>
+    <testcase classname="with message parameter If only main account is available postMessage will be called with an array with 1 item" name="with message parameter If only main account is available postMessage will be called with an array with 1 item" time="0.015">
+    </testcase>
+    <testcase classname="with contact parameter it will call refresh" name="with contact parameter it will call refresh" time="0.02">
+    </testcase>
+    <testcase classname="with contact parameter it will open error-initialize-modal when GetFolderRequest fails" name="with contact parameter it will open error-initialize-modal when GetFolderRequest fails" time="0.015">
+    </testcase>
+    <testcase classname="with contact parameter it will open error-initialize-modal  when GetShareInfoRequest fails" name="with contact parameter it will open error-initialize-modal  when GetShareInfoRequest fails" time="0.015">
+    </testcase>
+    <testcase classname="with contact parameter should not open the error modal when getShareInfo returns an empty array" name="with contact parameter should not open the error modal when getShareInfo returns an empty array" time="0.017">
+    </testcase>
+    <testcase classname="with contact parameter If multiple accounts are available they will be on the same level of the main account" name="with contact parameter If multiple accounts are available they will be on the same level of the main account" time="0.027">
+    </testcase>
+    <testcase classname="with contact parameter If only main account is available postMessage will be called with an array with 1 item" name="with contact parameter If only main account is available postMessage will be called with an array with 1 item" time="0.027">
+    </testcase>
+  </testsuite>
+  <testsuite name="useSortedTagsArray" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:05" time="0.602" tests="1">
+    <testcase classname="useSortedTagsArray should return the sorted tags array" name="useSortedTagsArray should return the sorted tags array" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="email-parser" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:06" time="0.354" tests="29">
+    <testcase classname="email-parser isValidEmail undefined is not valid" name="email-parser isValidEmail undefined is not valid" time="0.002">
+    </testcase>
+    <testcase classname="email-parser isValidEmail empty email is not valid" name="email-parser isValidEmail empty email is not valid" time="0.002">
+    </testcase>
+    <testcase classname="email-parser isValidEmail simple text is not valid" name="email-parser isValidEmail simple text is not valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with invalid domain is not valid" name="email-parser isValidEmail email with invalid domain is not valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with special character is not valid" name="email-parser isValidEmail email with special character is not valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with invalid format is not valid" name="email-parser isValidEmail email with invalid format is not valid" time="0.001">
+    </testcase>
+    <testcase classname="email-parser isValidEmail valid email is valid" name="email-parser isValidEmail valid email is valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail valid email with cyrillic characters is valid" name="email-parser isValidEmail valid email with cyrillic characters is valid" time="0.002">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with a single char as first level domain is not valid" name="email-parser isValidEmail email with a single char as first level domain is not valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with underscore or dash is valid" name="email-parser isValidEmail email with underscore or dash is valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail should validate an email with a long TLD" name="email-parser isValidEmail should validate an email with a long TLD" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail should validate an email with subdomain" name="email-parser isValidEmail should validate an email with subdomain" time="0.001">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with international characters in local part is valid" name="email-parser isValidEmail email with international characters in local part is valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with emoji is not valid" name="email-parser isValidEmail email with emoji is not valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with quoted local part is not valid" name="email-parser isValidEmail email with quoted local part is not valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with valid characters but in wrong order is not valid" name="email-parser isValidEmail email with valid characters but in wrong order is not valid" time="0.001">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with only domain part is not valid" name="email-parser isValidEmail email with only domain part is not valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with missing @ symbol is not valid" name="email-parser isValidEmail email with missing @ symbol is not valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with port number in domain is not valid" name="email-parser isValidEmail email with port number in domain is not valid" time="0">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with spaces is not valid" name="email-parser isValidEmail email with spaces is not valid" time="0.001">
+    </testcase>
+    <testcase classname="email-parser isValidEmail email with special characters in domain is not valid" name="email-parser isValidEmail email with special characters in domain is not valid" time="0">
+    </testcase>
+    <testcase classname="email-parser parseEmail cannot parse empty string" name="email-parser parseEmail cannot parse empty string" time="0">
+    </testcase>
+    <testcase classname="email-parser parseEmail clean Email in extended format with name" name="email-parser parseEmail clean Email in extended format with name" time="0.001">
+    </testcase>
+    <testcase classname="email-parser parseEmail clean Email already ok" name="email-parser parseEmail clean Email already ok" time="0">
+    </testcase>
+    <testcase classname="email-parser parseEmail clean Email surrounded with &lt;&gt;" name="email-parser parseEmail clean Email surrounded with &lt;&gt;" time="0">
+    </testcase>
+    <testcase classname="email-parser parseEmail clean Email trimming spaces" name="email-parser parseEmail clean Email trimming spaces" time="0">
+    </testcase>
+    <testcase classname="email-parser parseEmail email to trim in extended format" name="email-parser parseEmail email to trim in extended format" time="0">
+    </testcase>
+    <testcase classname="email-parser parseEmail do not parse invalid email in extended format" name="email-parser parseEmail do not parse invalid email in extended format" time="0">
+    </testcase>
+    <testcase classname="email-parser parseEmail do not parse an invalid email" name="email-parser parseEmail do not parse an invalid email" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="NoOp" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:06" time="0.423" tests="2">
+    <testcase classname="NoOp should raise an error if the API returns a fault" name="NoOp should raise an error if the API returns a fault" time="0.011">
+    </testcase>
+    <testcase classname="NoOp should resolve if the API returns success" name="NoOp should resolve if the API returns success" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="Folder name validation" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:06" time="0.348" tests="12">
+    <testcase classname="Folder name validation valid folder name" name="Folder name validation valid folder name" time="0.001">
+    </testcase>
+    <testcase classname="Folder name validation folder name with special characters" name="Folder name validation folder name with special characters" time="0">
+    </testcase>
+    <testcase classname="Folder name validation folder name with length less than 128" name="Folder name validation folder name with length less than 128" time="0">
+    </testcase>
+    <testcase classname="Folder name validation folder name with length more than 128" name="Folder name validation folder name with length more than 128" time="0.001">
+    </testcase>
+    <testcase classname="Shared account&apos;s folder has access for actions should return true for &apos;NEW&apos; action with &quot;rwidx&quot;(Manager) permission" name="Shared account&apos;s folder has access for actions should return true for &apos;NEW&apos; action with &quot;rwidx&quot;(Manager) permission" time="0">
+    </testcase>
+    <testcase classname="Shared account&apos;s folder has access for actions should return true for &apos;NEW&apos; action without permission" name="Shared account&apos;s folder has access for actions should return true for &apos;NEW&apos; action without permission" time="0">
+    </testcase>
+    <testcase classname="Shared account&apos;s folder has access for actions should return false for &apos;NEW&apos; action with &quot;r&quot; permission" name="Shared account&apos;s folder has access for actions should return false for &apos;NEW&apos; action with &quot;r&quot; permission" time="0">
+    </testcase>
+    <testcase classname="Shared account&apos;s folder has access for actions should return true for &apos;NEW&apos; action with &quot;rwidxa&quot;(Admin) permission" name="Shared account&apos;s folder has access for actions should return true for &apos;NEW&apos; action with &quot;rwidxa&quot;(Admin) permission" time="0">
+    </testcase>
+    <testcase classname="Shared account&apos;s folder has access for actions should return true for &apos;SHARE&apos; action with &quot;rwidxa&quot;(Admin) permission" name="Shared account&apos;s folder has access for actions should return true for &apos;SHARE&apos; action with &quot;rwidxa&quot;(Admin) permission" time="0.001">
+    </testcase>
+    <testcase classname="Shared account&apos;s folder has access for actions should return true for &apos;SHARE&apos; action without permission" name="Shared account&apos;s folder has access for actions should return true for &apos;SHARE&apos; action without permission" time="0.004">
+    </testcase>
+    <testcase classname="Shared account&apos;s folder has access for actions should return false for &apos;SHARE&apos; action with &quot;r&quot; permission" name="Shared account&apos;s folder has access for actions should return false for &apos;SHARE&apos; action with &quot;r&quot; permission" time="0.001">
+    </testcase>
+    <testcase classname="Shared account&apos;s folder has access for actions should return false for NEW action with &quot;rwidx&quot;(Manager) permission" name="Shared account&apos;s folder has access for actions should return false for NEW action with &quot;rwidx&quot;(Manager) permission" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Folder Selector" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:04" time="1.764" tests="2">
+    <testcase classname="Folder Selector should display the folders accordion when there is no filter in the search input" name="Folder Selector should display the folders accordion when there is no filter in the search input" time="0.114">
+    </testcase>
+    <testcase classname="Folder Selector should display flatten folders when filtering folders from the input" name="Folder Selector should display flatten folders when filtering folders from the input" time="0.126">
+    </testcase>
+  </testsuite>
+  <testsuite name="Api Wrapper" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:06" time="0.41" tests="4">
+    <testcase classname="Api Wrapper should return body when present" name="Api Wrapper should return body when present" time="0.021">
+    </testcase>
+    <testcase classname="Api Wrapper should return response with empty data when no body in response" name="Api Wrapper should return response with empty data when no body in response" time="0.003">
+    </testcase>
+    <testcase classname="Api Wrapper should return error when not 2XX" name="Api Wrapper should return error when not 2XX" time="0.003">
+    </testcase>
+    <testcase classname="Api Wrapper should not fail with 207" name="Api Wrapper should not fail with 207" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="FlattenFoldersAccordion" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:03" time="3.669" tests="6">
+    <testcase classname="FlattenFoldersAccordion should render all root folders" name="FlattenFoldersAccordion should render all root folders" time="0.232">
+    </testcase>
+    <testcase classname="FlattenFoldersAccordion should render children of first folder initially" name="FlattenFoldersAccordion should render children of first folder initially" time="0.099">
+    </testcase>
+    <testcase classname="FlattenFoldersAccordion should render children of expanded folder" name="FlattenFoldersAccordion should render children of expanded folder" time="0.08">
+    </testcase>
+    <testcase classname="FlattenFoldersAccordion should include only children with matching filter condition" name="FlattenFoldersAccordion should include only children with matching filter condition" time="0.038">
+    </testcase>
+    <testcase classname="FlattenFoldersAccordion should prevent click on disabled folder ids" name="FlattenFoldersAccordion should prevent click on disabled folder ids" time="0.017">
+    </testcase>
+    <testcase classname="FlattenFoldersAccordion should call onFolderSelected with the given Folder when clicking a folder" name="FlattenFoldersAccordion should call onFolderSelected with the given Folder when clicking a folder" time="0.016">
+    </testcase>
+  </testsuite>
+  <testsuite name="flattenAndFilterFoldersWithCap" errors="0" failures="0" skipped="0" timestamp="2025-05-21T15:05:02" time="40.096" tests="8">
+    <testcase classname="flattenAndFilterFoldersWithCap should run within acceptable time limits" name="flattenAndFilterFoldersWithCap should run within acceptable time limits" time="0.156">
+    </testcase>
+    <testcase classname="flattenAndFilterFoldersWithCap returns folders with exact name match" name="flattenAndFilterFoldersWithCap returns folders with exact name match" time="0.001">
+    </testcase>
+    <testcase classname="flattenAndFilterFoldersWithCap returns folders with partial name match" name="flattenAndFilterFoldersWithCap returns folders with partial name match" time="0.001">
+    </testcase>
+    <testcase classname="flattenAndFilterFoldersWithCap performs case-insensitive matching" name="flattenAndFilterFoldersWithCap performs case-insensitive matching" time="0.001">
+    </testcase>
+    <testcase classname="flattenAndFilterFoldersWithCap returns empty array when no matches are found" name="flattenAndFilterFoldersWithCap returns empty array when no matches are found" time="0">
+    </testcase>
+    <testcase classname="flattenAndFilterFoldersWithCap limits the number of returned results according to the limit" name="flattenAndFilterFoldersWithCap limits the number of returned results according to the limit" time="0">
+    </testcase>
+    <testcase classname="flattenAndFilterFoldersWithCap does not mutate original folder structure" name="flattenAndFilterFoldersWithCap does not mutate original folder structure" time="0.001">
+    </testcase>
+    <testcase classname="flattenAndFilterFoldersWithCap returns full results if limit is greater than matches" name="flattenAndFilterFoldersWithCap returns full results if limit is greater than matches" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>

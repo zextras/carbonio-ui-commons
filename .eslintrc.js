@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 module.exports = {
-	extends: ['../../node_modules/@zextras/carbonio-ui-configs/rules/eslint.js'],
+	extends: [require.resolve('@zextras/carbonio-ui-configs/rules/eslint')],
 	plugins: ['unused-imports', 'jest-dom', 'testing-library', 'notice'],
 	overrides: [
 		{
@@ -47,7 +47,7 @@ module.exports = {
 		'notice/notice': [
 			'error',
 			{
-				templateFile: 'src/carbonio-ui-commons/notice.template.ts'
+				templateFile: 'src/notice.template.ts'
 			}
 		],
 		// sonar lint rules

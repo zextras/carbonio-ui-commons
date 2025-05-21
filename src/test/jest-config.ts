@@ -162,7 +162,7 @@ export const defaultConfig: Config = {
 	 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#requestresponsetextencoder-is-not-defined-jest
 	 * @see https://github.com/mswjs/msw/issues/1916#issuecomment-1919965699
 	 */
-	testEnvironment: '<rootDir>/src/carbonio-ui-commons/test/jsdom-extended.ts',
+	testEnvironment: '<rootDir>/src/test/jsdom-extended.ts',
 
 	/**
 	 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#cannot-find-module-mswnode-jsdom

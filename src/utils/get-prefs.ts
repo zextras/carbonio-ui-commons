@@ -5,7 +5,7 @@
  */
 import { getUserSettings } from '@zextras/carbonio-shell-ui';
 
-import type { UserPrefs } from '../types';
+import { UserPrefs } from '../types/user-accounts';
 
 export const getPrefs = (): UserPrefs => {
 	const { prefs } = getUserSettings();

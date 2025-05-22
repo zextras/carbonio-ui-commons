@@ -10,7 +10,7 @@ import { sortBy } from 'lodash';
 
 import { FOLDERS } from '../../../constants/folders';
 import { getFolderIdParts } from '../../../helpers/folders';
-import { getRootsArray, useRootsArray } from '../../../store/zustand/folder';
+import { getRootsArray, useRootsArray } from '../../../store/zustand/folder/hooks';
 import { Folder } from '../../../types';
 
 /**

@@ -5,7 +5,7 @@
  */
 import { filter, values } from 'lodash';
 
-import { useFolderStore } from '../../../store/zustand/folder';
+import { useFolderStore } from '../../../store/zustand/folder/store';
 import { FolderState, LinkFolder, PopulateFoldersStoreOptions } from '../../../types/folder';
 import { getLinkIdMapKey } from '../../../worker/utils';
 import { generateFolders } from '../folders/folders-generator';

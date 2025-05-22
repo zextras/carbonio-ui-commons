@@ -8,8 +8,8 @@ import { getUserAccount } from '@zextras/carbonio-shell-ui';
 import { values } from 'lodash';
 
 import { FOLDERS } from '../../constants/folders';
-import { useFolderStore } from '../../store/zustand/folder';
 import { getRootsMap } from '../../store/zustand/folder/hooks';
+import { useFolderStore } from '../../store/zustand/folder/store';
 import { FOLDERS_DESCRIPTORS } from '../../test/constants';
 import { generateFolder } from '../../test/mocks/folders/folders-generator';
 import { populateFoldersStore } from '../../test/mocks/store/folders';

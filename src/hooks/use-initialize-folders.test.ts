@@ -8,7 +8,7 @@ import { useModal } from '@zextras/carbonio-design-system';
 import { http, HttpResponse } from 'msw';
 
 import { useInitializeFolders } from './use-initialize-folders';
-import { useFolderStore } from '../store/zustand/folder';
+import { useFolderStore } from '../store/zustand/folder/store';
 import { getSetupServer } from '../test/jest-setup';
 import {
 	handleFailedRequest,

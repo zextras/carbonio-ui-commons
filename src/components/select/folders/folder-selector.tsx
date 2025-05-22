@@ -15,7 +15,7 @@ import { FolderAccordionCustomComponent } from './folder-accordions-custom-compo
 import { FoldersAccordion } from './folders-accordion';
 import { useFolders } from './hooks';
 import { FOLDERS } from '../../../constants/folders';
-import { getFolder } from '../../../store/zustand/folder';
+import { getFolder } from '../../../store/zustand/folder/hooks';
 import { themeMui } from '../../../theme/theme-mui';
 import { Folder } from '../../../types';
 

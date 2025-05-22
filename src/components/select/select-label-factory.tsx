@@ -18,7 +18,7 @@ export const Square = styled.div<{ $disabled?: boolean; $color: string | undefin
 	opacity: ${({ $disabled }): number => ($disabled ? 0.5 : 1)};
 `;
 
-export const ColorContainer = styled(Container)`
+const ColorContainer = styled(Container)`
 	border-bottom: 0.0625rem solid ${({ theme }): string => theme.palette.gray2.regular};
 	transition: background 0.2s ease-out;
 	&:hover {
@@ -26,7 +26,7 @@ export const ColorContainer = styled(Container)`
 	}
 `;
 
-export const TextUpperCase = styled(Text)`
+const TextUpperCase = styled(Text)`
 	text-transform: capitalize;
 	color: ${({ theme, disabled }): string =>
 		disabled ? theme.palette.text.disabled : theme.palette.text.regular};

@@ -6,30 +6,14 @@
 
 import { sortBy } from 'lodash';
 
-import { ROOT_NAME } from '../../../constants';
 import { FOLDERS } from '../../../constants/folders';
+import { isRoot } from '../../../helpers/folders';
 import { Folders } from '../../../types/folder';
-import type { Folder, FolderView, LinkFolder, TreeNode } from '../../../types/folder';
+import type { Folder, FolderView, TreeNode } from '../../../types/folder';
 
 const hasId = (f: { id: string }, id: string): boolean => f.id.split(':').includes(id);
-const getOriginalId = (f: { id: string }): string => {
-	const parts = f.id.split(':');
-	return parts[1] ?? parts[0];
-};
 
-// TODO check if is still used by Calendars or Contacts
-export const sortFolders = (f: Folder): string => {
-	const id = getOriginalId(f);
-	if (id === FOLDERS.TRASH) {
-		return FOLDERS.LAST_SYSTEM_FOLDER_POSITION;
-	}
-	return parseInt(id, 10) < 17 ? `   ${id}` : f.name.toLowerCase();
-};
-
-export const isRoot = (f: Folder): boolean =>
-	f.id === FOLDERS.USER_ROOT || (f as LinkFolder).oname === ROOT_NAME;
-
-export const isTrash = (f: { id: string }): boolean => hasId(f, FOLDERS.TRASH);
+const isTrash = (f: { id: string }): boolean => hasId(f, FOLDERS.TRASH);
 
 export const isNestedInTrash = (item: { absFolderPath?: string }): boolean =>
 	!!item?.absFolderPath?.includes(`/Trash/`);
@@ -41,7 +25,7 @@ export const folderViewFilter =
 	(v: FolderView) =>
 	(deep?: boolean) =>
 	(f: Folder): boolean =>
-		f.view === v || !deep || (typeof f.view === 'undefined' && !isRoot(f));
+		f.view === v || !deep || (typeof f.view === 'undefined' && !isRoot(f.id));
 
 export const filterNodes = <T>(
 	children: TreeNode<T>[],

@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { ZIMBRA_STANDARD_COLORS } from '../../constants/utils';
 import { CustomLabelFactoryProps } from '../../types/select';
 
-export const Square = styled.div<{ $color: string }>`
+const Square = styled.div<{ $color: string }>`
 	width: 1.125rem;
 	height: 1.125rem;
 	position: relative;
@@ -22,6 +22,7 @@ export const Square = styled.div<{ $color: string }>`
 	background: ${({ $color }): string | undefined => $color};
 	border-radius: 0.25rem;
 `;
+
 export const ColorContainer = styled(Container)`
 	border-bottom: 0.0625rem solid ${({ theme }): string => theme.palette.gray2.regular};
 	cursor: 'pointer';

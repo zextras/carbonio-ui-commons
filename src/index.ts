@@ -100,15 +100,3 @@ export * from './worker/utils';
 
 // types
 export * from './types/index';
-// export * from './types/folder/index.d';
-// export * from './types/modals/index.d';
-// export * from './types/actions/index';
-// export * from './types/i18next.d';
-// export * from './types/workers';
-// export * from './types/styled-components.d';
-// export * from './types/tags/index.d';
-// export * from './types/identities/index.d';
-// export * from './types/user-accounts';
-// export * from './types/select/index.d';
-// export * from './types/soap/index.d';
-// export * from './types/index.d';

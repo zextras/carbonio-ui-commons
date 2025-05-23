@@ -16,6 +16,10 @@
   "exclude": [
     "node_modules",
     "dist",
-    "lib"
+    "lib",
+    "**.test.ts",
+    "**.test.tsx",
+    "**/tests/*",
+    "**/test/*"
   ]
 }

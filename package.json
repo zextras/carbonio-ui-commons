@@ -1,5 +1,5 @@
 {
-	"name": "carbonio-ui-commons",
+	"name": "@zextras/carbonio-ui-commons",
 	"version": "1.0.0",
 	"description": "Carbonio UI Commons",
 	"main": "src/index.ts",

@@ -6,7 +6,7 @@
 import { faker } from '@faker-js/faker';
 import { find } from 'lodash';
 
-import { FOLDER_VIEW } from '../../constants';
+import { FOLDER_VIEW } from '../../constants/utils';
 import {
 	BASE_FOLDER_CALENDAR_ARGS,
 	generateSoapCustomChild,

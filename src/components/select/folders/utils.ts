@@ -8,8 +8,8 @@ import { AccordionItemType } from '@zextras/carbonio-design-system';
 import { t } from '@zextras/carbonio-shell-ui';
 import { filter } from 'lodash';
 
-import { FOLDER_VIEW, ROOT_NAME, ZIMBRA_STANDARD_COLORS } from '../../../constants';
 import { FOLDERS } from '../../../constants/folders';
+import { FOLDER_VIEW, ROOT_NAME, ZIMBRA_STANDARD_COLORS } from '../../../constants/utils';
 import { getFolderIdParts, isSystemFolder } from '../../../helpers/folders';
 import { Folder } from '../../../types';
 

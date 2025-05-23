@@ -11,6 +11,8 @@ declare module 'i18next' {
 	interface CustomTypeOptions {
 		// custom resources type
 		resources: {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
 			[defaultNs: i18next.TypeOptions['defaultNS']]: Record<string, string>;
 		};
 		returnNull: false;

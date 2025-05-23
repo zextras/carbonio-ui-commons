@@ -11,8 +11,8 @@ import styled from 'styled-components';
 
 import { StatusIcon } from './status-icon';
 import { getFolderIconColor, getFolderIconName, getFolderTranslatedName } from './utils';
-import { ROOT_NAME } from '../../../constants';
 import { FOLDERS } from '../../../constants/folders';
+import { ROOT_NAME } from '../../../constants/utils';
 import { Folder } from '../../../types';
 
 const FittedRow = styled(Row)`

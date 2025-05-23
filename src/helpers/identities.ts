@@ -9,13 +9,14 @@ import { TFunction } from 'i18next';
 import { filter, findIndex, flatten, isArray, map, remove, sortBy } from 'lodash';
 
 import { getShareInfoRequest } from '../soap/get-share-info';
-import { AvailableAddress, IdentityDescriptor } from '../types/identities';
+import { IdentityDescriptor } from '../types/identities';
 
 type AccountItem = {
 	id: string;
 	address: string;
 };
 
+type AvailableAddress = any;
 export function getSharedAccounts(): Promise<Array<AccountItem>> {
 	return getShareInfoRequest().then((res) => {
 		const sharedAccounts: Array<AccountItem> = [];

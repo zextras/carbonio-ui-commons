@@ -6,15 +6,12 @@
 
 import React, { ComponentType, ReactElement, SyntheticEvent } from 'react';
 
-import type { Folder } from '../folder';
+import { AccordionItemType, ModalProps } from '@zextras/carbonio-design-system';
+import { Dictionary } from 'lodash';
 
-type RegisterActionType = {
-	id: string;
-	label: string;
-	icon: string;
-	click: (ev: React.SyntheticEvent) => void;
-	disabled: boolean;
-};
+import { ResFolder } from '../../utils';
+import type { Folder } from '../folder';
+import { ItemType } from '../tags';
 
 export type ActionType = {
 	id: string;
@@ -129,7 +126,7 @@ export type CreateUpdateTagModalPropType = {
 export type ShareRevokeModalType = {
 	folder: Folder;
 	onClose?: () => void;
-	grant: GrantType;
+	grant: any;
 	goBack: () => void;
 };
 

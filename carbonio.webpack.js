@@ -5,7 +5,7 @@
  */
 
 const customizeConfig = (config, pkg, options, mode) => {
-	config.resolve.alias['app-entrypoint'] = `${__dirname}/src/app.tsx`;
+	config.resolve.alias['app-entrypoint'] = `${__dirname}/src/index.ts`;
 	return config;
 };
 

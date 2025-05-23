@@ -6,8 +6,6 @@
 
 import React, { ComponentType, SyntheticEvent } from 'react';
 
-import { ItemType as AccordionItemType } from '@zextras/carbonio-design-system';
-
 import { WorkerMessage } from '../workers';
 
 export type Tag = {
@@ -47,17 +45,7 @@ export type ArgumentType = {
 	tag?: ItemType;
 };
 
-export interface ItemType extends AccordionItemType<T> {
-	item: T;
-	CustomComponent?: ComponentType<T>;
-	active: boolean;
-	color: number;
-	id: string;
-	label: string;
-	name: string;
-	open: boolean;
-	actions?: Array<unknown>;
-}
+export type ItemType = any;
 
 export type TagsAccordionItems = {
 	items: ItemType[];

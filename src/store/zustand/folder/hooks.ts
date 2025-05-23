@@ -10,8 +10,8 @@ import { filter, find, keyBy, some, values } from 'lodash';
 
 import { useFolderStore } from './store';
 import { getFlatChildrenFolders } from './utils';
-import { ROOT_NAME } from '../../../constants';
 import { FOLDERS } from '../../../constants/folders';
+import { ROOT_NAME } from '../../../constants/utils';
 import type { Folder, Folders, LinkFolder, SearchFolder, Searches } from '../../../types';
 
 /**

@@ -31,7 +31,7 @@ declare module '@mui/material/styles' {
 	}
 
 	interface CustomTheme extends Theme {
-		palette: IPalette;
+		palette: any;
 	}
 
 	interface TypeText {

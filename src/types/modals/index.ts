@@ -4,7 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ButtonProps, ContainerProps, IconComponent } from '@zextras/carbonio-design-system';
+import { SVGProps, SyntheticEvent } from 'react';
+
+import { ButtonProps, ContainerProps } from '@zextras/carbonio-design-system';
+
+type IconComponent = (props: SVGProps<SVGSVGElement>) => React.JSX.Element;
 
 export type ModalFooterProps = {
 	mainAlignment?: ContainerProps['mainAlignment'] | undefined;

@@ -90,7 +90,7 @@ export * from './constants/search';
 
 // theme
 export * from './theme/theme-mui';
-export * from './theme/theme.d';
+export * from './theme/theme';
 
 // worker
 export * from './worker/folder';
@@ -99,16 +99,16 @@ export * from './worker/handle-message';
 export * from './worker/utils';
 
 // types
-export * from './types/sidebar/index.d';
-export * from './types/folder/index.d';
-export * from './types/modals/index.d';
-export * from './types/actions/index';
-export * from './types/i18next.d';
-export * from './types/workers';
-export * from './types/styled-components.d';
-export * from './types/tags/index.d';
-export * from './types/identities/index.d';
-export * from './types/user-accounts';
-export * from './types/select/index.d';
-export * from './types/soap/index.d';
-export * from './types/index.d';
+export * from './types/index';
+// export * from './types/folder/index.d';
+// export * from './types/modals/index.d';
+// export * from './types/actions/index';
+// export * from './types/i18next.d';
+// export * from './types/workers';
+// export * from './types/styled-components.d';
+// export * from './types/tags/index.d';
+// export * from './types/identities/index.d';
+// export * from './types/user-accounts';
+// export * from './types/select/index.d';
+// export * from './types/soap/index.d';
+// export * from './types/index.d';

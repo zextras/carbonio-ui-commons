@@ -5,8 +5,6 @@
  */
 import { ComponentType } from 'react';
 
-import { Meta, SoapRetentionPolicy } from '@zextras/carbonio-shell-ui';
-
 import { WorkerMessage } from '../workers';
 
 export type FolderFields = {
@@ -132,10 +130,10 @@ export type BaseFolder = {
 	// whether this folder can be deleted
 	deletable: boolean;
 	// custom metadata
-	meta?: Array<Meta>;
+	meta?: Array<any>;
 	// ACL for sharing
 	acl?: { grant: Array<Grant> };
-	retentionPolicy?: SoapRetentionPolicy;
+	retentionPolicy?: any;
 	// indicates whether this folder is displayed in Calendars
 	checked?: boolean;
 };

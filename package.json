@@ -2,7 +2,7 @@
 	"name": "carbonio-ui-commons",
 	"version": "1.0.0",
 	"description": "Carbonio UI Commons",
-	"main": "./dist/zapp-ui.bundle.cjs",
+	"main": "src/index.ts",
 	"module": "./dist/zapp-ui.bundle.mjs",
 	"types": "./dist/zapp-ui.bundle.d.ts",
 	"engines": {

@@ -83,7 +83,6 @@ export * from './store/zustand/tags/hooks';
 export * from './store/zustand/tags/store';
 
 // constants
-export * from './constants/index';
 export * from './constants/folders';
 export * from './constants/utils/index';
 export * from './constants/participants';

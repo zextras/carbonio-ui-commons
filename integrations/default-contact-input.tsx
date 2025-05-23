@@ -23,7 +23,7 @@ export const DefaultContactInput = ({
 	orderedAccountIds: _orderedAccountIds,
 	// The following props are not used in this component, but are passed to the ChipInput component
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	labelFactory: _labelFactory,
+	chipLabelFactory: _labelFactory,
 	...rest
 }: ContactInputProps): React.JSX.Element => {
 	const internalOnChange = (items: ChipItem<UserOrDL>[]): void => {

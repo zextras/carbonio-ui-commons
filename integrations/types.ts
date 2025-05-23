@@ -66,5 +66,5 @@ export type ContactInputProps = Pick<
 	defaultValue: Array<ContactInputItem>;
 	dragAndDropEnabled?: boolean;
 	orderedAccountIds?: Array<string>;
-	labelFactory?: (value: ContactInputItemInternalValue, defaultLabel: string) => string;
+	chipLabelFactory?: (value: ContactInputItemInternalValue, defaultLabel: string) => string;
 };

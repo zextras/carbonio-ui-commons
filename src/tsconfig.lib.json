@@ -1,0 +1,21 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "DOM",
+      "es2023"
+    ],
+    "jsx": "react",
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": false,
+    "outDir": "lib",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib"
+  ]
+}

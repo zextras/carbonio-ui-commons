@@ -33,12 +33,21 @@ export type DistributionListContact = {
 	type: ContactType['DISTRIBUTION_LIST'];
 };
 
+export type GroupContact = {
+	id: string;
+	display: string;
+	groupId: string;
+	type: ContactType['GROUP'];
+};
+
 export type UserOrDL = UserContact | DistributionListContact;
 export type ContactInputItem = RequiredEmailLabelChipItem<UserOrDL>;
 
 export type ContactInputValue = Array<ContactInputItem>;
 
 export type ContactInputOnChange = ((items: ContactInputItem[]) => void) | undefined;
+
+export type ContactInputItemInternalValue = GroupContact | DistributionListContact | UserContact;
 
 export type ContactInputProps = Pick<
 	ChipInputProps,
@@ -57,4 +66,5 @@ export type ContactInputProps = Pick<
 	defaultValue: Array<ContactInputItem>;
 	dragAndDropEnabled?: boolean;
 	orderedAccountIds?: Array<string>;
+	labelFactory?: (value: ContactInputItemInternalValue, defaultLabel: string) => string;
 };

@@ -9,7 +9,7 @@ import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 
 import { SoapApiError } from '../../soap/errors/soap-api-error';
-import { setupHook } from '../../test/test-setup';
+import { setupHook } from '../../__test__/test-setup';
 import { getErrorMessage } from '../errors';
 
 class FakeSoapApiError extends SoapApiError {

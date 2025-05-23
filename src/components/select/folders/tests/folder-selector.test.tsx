@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import { setupTest, screen } from '../../../../test/test-setup';
+import { setupTest, screen } from '../../../../__test__/test-setup';
 import { FolderSelector } from '../folder-selector';
 
 describe('Folder Selector', () => {

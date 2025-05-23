@@ -5,7 +5,7 @@
  */
 
 import { useHistoryNavigation } from './use-history-navigation';
-import { setupHook } from '../test/test-setup';
+import { setupHook } from '../__test__/test-setup';
 
 describe('useHistoryNavigation', () => {
 	it('should return an object with two functions', () => {

@@ -7,7 +7,7 @@ import { faker } from '@faker-js/faker';
 import { SoapFault } from '@zextras/carbonio-shell-ui';
 import { useTranslation } from 'react-i18next';
 
-import { setupHook } from '../../../test/test-setup';
+import { setupHook } from '../../../__test__/test-setup';
 import { GenericSoapApiError } from '../generic-soap-api-error';
 
 describe('Soap	GenericApiError', () => {

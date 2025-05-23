@@ -4,4 +4,4 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export * from '../../src/test/mocks/carbonio-ui-preview';
+export * from '../../src/__test__/mocks/carbonio-ui-preview';

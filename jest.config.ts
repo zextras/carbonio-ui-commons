@@ -5,7 +5,7 @@
  */
 import { Config } from 'jest';
 
-import { defaultConfig } from './src/test/jest-config';
+import { defaultConfig } from './src/__test__/jest-config';
 
 /*
  * For a detailed explanation regarding each configuration property and type check, visit:

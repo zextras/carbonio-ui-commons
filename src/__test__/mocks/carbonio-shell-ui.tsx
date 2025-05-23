@@ -103,12 +103,12 @@ export const useActions = jest
 	.mockImplementation(() => []);
 
 // Integrated functions
-export const getIntegratedFunction = jest.fn<
+export const getIntegratedFunction: jest.Mock<ReturnType<typeof shell.getIntegratedFunction>, Parameters<typeof shell.getIntegratedFunction>, any> = jest.fn<
 	ReturnType<typeof shell.getIntegratedFunction>,
 	Parameters<typeof shell.getIntegratedFunction>
 >((id) => [jest.fn(), false]);
 
-export const useIntegratedFunction = jest.fn<
+export const useIntegratedFunction: jest.Mock<ReturnType<typeof shell.useIntegratedFunction>, Parameters<typeof shell.useIntegratedFunction>, any> = jest.fn<
 	ReturnType<typeof shell.useIntegratedFunction>,
 	Parameters<typeof shell.useIntegratedFunction>
 >((id) => [jest.fn(), false]);

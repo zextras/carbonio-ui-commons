@@ -10,10 +10,10 @@ import { values } from 'lodash';
 import { FOLDERS } from '../../constants/folders';
 import { getRootsMap } from '../../store/zustand/folder/hooks';
 import { useFolderStore } from '../../store/zustand/folder/store';
-import { FOLDERS_DESCRIPTORS } from '../../test/constants';
-import { generateFolder } from '../../test/mocks/folders/folders-generator';
-import { populateFoldersStore } from '../../test/mocks/store/folders';
-import { getMocksContext } from '../../test/mocks/utils/mocks-context';
+import { FOLDERS_DESCRIPTORS } from '../../__test__/constants';
+import { generateFolder } from '../../__test__/mocks/folders/folders-generator';
+import { populateFoldersStore } from '../../__test__/mocks/store/folders';
+import { getMocksContext } from '../../__test__/mocks/utils/mocks-context';
 import {
 	getFolderIdParts,
 	getFolderOwnerAccountName,

@@ -5,7 +5,7 @@
  */
 import { HttpResponse } from 'msw';
 
-import { createAPIInterceptor } from '../../test/mocks/network/msw/create-api-interceptor';
+import { createAPIInterceptor } from '../../__test__/mocks/network/msw/create-api-interceptor';
 import { apiWrapper } from '../api-wrapper';
 
 describe('Api Wrapper', () => {

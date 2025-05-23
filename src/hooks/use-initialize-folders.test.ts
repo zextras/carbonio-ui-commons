@@ -9,17 +9,17 @@ import { http, HttpResponse } from 'msw';
 
 import { useInitializeFolders } from './use-initialize-folders';
 import { useFolderStore } from '../store/zustand/folder/store';
-import { getSetupServer } from '../test/jest-setup';
+import { getSetupServer } from '../__test__/jest-setup';
 import {
 	handleFailedRequest,
 	handleGetFolderRequest
-} from '../test/mocks/network/msw/handle-get-folder';
+} from '../__test__/mocks/network/msw/handle-get-folder';
 import {
 	getEmptyMSWShareInfoResponse,
 	handleEmptyGetShareInfoRequest,
 	handleGetShareInfoRequest
-} from '../test/mocks/network/msw/handle-get-share-info';
-import { setupHook } from '../test/test-setup';
+} from '../__test__/mocks/network/msw/handle-get-share-info';
+import { setupHook } from '../__test__/test-setup';
 import { FolderView } from '../types/folder';
 import { folderWorker } from '../worker';
 

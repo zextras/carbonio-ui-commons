@@ -6,8 +6,8 @@
 
 import React from 'react';
 
-import { generateFolder } from '../../../../test/mocks/folders/folders-generator';
-import { makeListItemsVisible, screen, setupTest } from '../../../../test/test-setup';
+import { generateFolder } from '../../../../__test__/mocks/folders/folders-generator';
+import { makeListItemsVisible, screen, setupTest } from '../../../../__test__/test-setup';
 import { Folder } from '../../../../types';
 import { FlatFolders } from '../flat-folders';
 

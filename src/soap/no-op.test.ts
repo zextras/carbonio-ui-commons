@@ -7,8 +7,8 @@ import { faker } from '@faker-js/faker';
 import { ErrorSoapBodyResponse } from '@zextras/carbonio-shell-ui';
 
 import { NoOp } from './no-op';
-import { createSoapAPIInterceptor } from '../test/mocks/network/msw/create-api-interceptor';
-import { buildSoapErrorResponseBody } from '../test/mocks/utils/soap';
+import { createSoapAPIInterceptor } from '../__test__/mocks/network/msw/create-api-interceptor';
+import { buildSoapErrorResponseBody } from '../__test__/mocks/utils/soap';
 
 describe('NoOp', () => {
 	it('should raise an error if the API returns a fault', async () => {

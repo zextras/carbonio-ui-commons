@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { generateFolder } from '../../../../test/mocks/folders/folders-generator';
+import { generateFolder } from '../../../../__test__/mocks/folders/folders-generator';
 import { Folder } from '../../../../types';
 import { flattenAndFilterFoldersWithCap } from '../utils';
 

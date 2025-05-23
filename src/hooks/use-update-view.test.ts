@@ -7,8 +7,8 @@
 import { fireEvent } from '@testing-library/react';
 
 import { useUpdateView } from './use-update-view';
-import { createSoapAPIInterceptor } from '../test/mocks/network/msw/create-api-interceptor';
-import { setupHook } from '../test/test-setup';
+import { createSoapAPIInterceptor } from '../__test__/mocks/network/msw/create-api-interceptor';
+import { setupHook } from '../__test__/test-setup';
 
 describe('useUpdateView', () => {
 	it('should register a listener to the "updateView" event', () => {

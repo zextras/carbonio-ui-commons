@@ -8,8 +8,8 @@ import React from 'react';
 
 import { within } from '@testing-library/react';
 
-import { generateFolder } from '../../../../test/mocks/folders/folders-generator';
-import { setupTest, screen } from '../../../../test/test-setup';
+import { generateFolder } from '../../../../__test__/mocks/folders/folders-generator';
+import { setupTest, screen } from '../../../../__test__/test-setup';
 import { Folder } from '../../../../types';
 import { FolderAccordionCustomComponent } from '../folder-accordions-custom-component';
 import { FoldersAccordion } from '../folders-accordion';

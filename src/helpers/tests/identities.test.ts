@@ -6,9 +6,9 @@
 
 import { http } from 'msw';
 
-import { getSetupServer } from '../../test/jest-setup';
-import { handleGetShareInfoRequest } from '../../test/mocks/network/msw/handle-get-share-info';
-import { getMocksContext } from '../../test/mocks/utils/mocks-context';
+import { getSetupServer } from '../../__test__/jest-setup';
+import { handleGetShareInfoRequest } from '../../__test__/mocks/network/msw/handle-get-share-info';
+import { getMocksContext } from '../../__test__/mocks/utils/mocks-context';
 import { getOrderedAccountIds } from '../identities';
 
 describe('Default account address', () => {

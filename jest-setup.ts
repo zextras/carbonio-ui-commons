@@ -15,8 +15,8 @@ import {
   defaultBeforeEachTest,
   defaultAfterEachTest,
   defaultAfterAllTests,
-} from "./src/test/jest-setup";
-import { useLocalStorage } from "./src/test/mocks/carbonio-shell-ui";
+} from "./src/__test__/jest-setup";
+import { useLocalStorage } from "./src/__test__/mocks/carbonio-shell-ui";
 
 failOnConsole({
   ...getFailOnConsoleDefaultConfig(),

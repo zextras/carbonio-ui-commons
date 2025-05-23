@@ -14,7 +14,7 @@ import {
 	generateSoapRoot,
 	generateSoapSystemFolder,
 	getAccountSoapRoot
-} from '../../test/mocks/folders/soap-roots-generator';
+} from '../../__test__/mocks/folders/soap-roots-generator';
 import { BaseFolder, Folder } from '../../types/folder';
 import type { LinkFolder, SoapLink, UserFolder } from '../../types/folder';
 import { handleMessage, normalize, testUtils } from '../handle-message';

@@ -8,7 +8,7 @@ import React from 'react';
 import { act } from '@testing-library/react';
 import { noop } from 'lodash';
 
-import { setupTest, screen } from '../../../test/test-setup';
+import { setupTest, screen } from '../../../__test__/test-setup';
 import { FolderInitializationErrorModal } from '../folder-initialization-error-modal';
 
 beforeAll(() => {

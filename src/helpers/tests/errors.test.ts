@@ -8,8 +8,8 @@ import { SoapFault } from '@zextras/carbonio-shell-ui';
 import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 
-import { SoapApiError } from '../../soap/errors/soap-api-error';
 import { setupHook } from '../../__test__/test-setup';
+import { SoapApiError } from '../../soap/errors/soap-api-error';
 import { getErrorMessage } from '../errors';
 
 class FakeSoapApiError extends SoapApiError {

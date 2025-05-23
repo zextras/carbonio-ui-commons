@@ -8,7 +8,7 @@ import React, { ChangeEvent, ReactElement, useMemo, useState } from 'react';
 
 import { ThemeProvider } from '@mui/material';
 import { Button, Container, Input, Padding } from '@zextras/carbonio-design-system';
-import { t } from '@zextras/carbonio-shell-ui';
+import { useTranslation } from 'react-i18next';
 
 import { FlatFolders } from './flat-folders';
 import { FolderAccordionCustomComponent } from './folder-accordions-custom-component';
@@ -48,6 +48,8 @@ export const FolderSelector = ({
 	const disabledFolderIdsSelection = allowRootSelection
 		? []
 		: rootFolders.map((folder) => folder.id);
+
+	const [t] = useTranslation();
 
 	const inputName = selectedFolder ? selectedFolder.name : '';
 	return (

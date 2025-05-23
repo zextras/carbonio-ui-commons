@@ -6,7 +6,6 @@
 import { faker } from '@faker-js/faker';
 import { find } from 'lodash';
 
-import { FOLDER_VIEW } from '../../constants/utils';
 import {
 	BASE_FOLDER_CALENDAR_ARGS,
 	generateSoapCustomChild,
@@ -15,6 +14,7 @@ import {
 	generateSoapSystemFolder,
 	getAccountSoapRoot
 } from '../../__test__/mocks/folders/soap-roots-generator';
+import { FOLDER_VIEW } from '../../constants/utils';
 import { BaseFolder, Folder } from '../../types/folder';
 import type { LinkFolder, SoapLink, UserFolder } from '../../types/folder';
 import { handleMessage, normalize, testUtils } from '../handle-message';

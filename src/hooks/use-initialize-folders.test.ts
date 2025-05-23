@@ -8,7 +8,6 @@ import { useModal } from '@zextras/carbonio-design-system';
 import { http, HttpResponse } from 'msw';
 
 import { useInitializeFolders } from './use-initialize-folders';
-import { useFolderStore } from '../store/zustand/folder/store';
 import { getSetupServer } from '../__test__/jest-setup';
 import {
 	handleFailedRequest,
@@ -20,6 +19,7 @@ import {
 	handleGetShareInfoRequest
 } from '../__test__/mocks/network/msw/handle-get-share-info';
 import { setupHook } from '../__test__/test-setup';
+import { useFolderStore } from '../store/zustand/folder/store';
 import { FolderView } from '../types/folder';
 import { folderWorker } from '../worker';
 

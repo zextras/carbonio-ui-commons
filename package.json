@@ -2,9 +2,12 @@
 	"name": "@zextras/carbonio-ui-commons",
 	"version": "1.0.0",
 	"description": "Carbonio UI Commons",
-	"main": "./dist/zapp-ui.bundle.cjs",
-	"module": "./dist/zapp-ui.bundle.mjs",
-	"types": "./dist/zapp-ui.bundle.d.ts",
+ 	"main": "./lib/index.js",
+	"types": "./lib/index.d.ts",
+	"exports": {
+		".": "./lib/index.js",
+		"./*": null
+	},
 	"engines": {
 		"node": "v20",
 		"npm": "v10"

@@ -146,7 +146,5 @@ export * from './__test__/mocks/zustand';
 // __test__ setup files
 export * from './__test__/constants';
 export * from './__test__/i18n/i18n-test-factory';
-export * from './__test__/jest-config';
 export * from './__test__/jest-setup';
-export * from './__test__/jsdom-extended';
 export * from './__test__/test-setup';

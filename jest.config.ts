@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Config } from 'jest';
 
 const config: Config = {
@@ -35,7 +36,7 @@ const config: Config = {
 	},
 	reporters: ['default', 'jest-junit'],
 	setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
-	testEnvironment: '<rootDir>/src/test/jsdom-extended.ts',
+	testEnvironment: '<rootDir>/tests/setup/jsdom-extended.ts',
 	testEnvironmentOptions: {
 		customExportConditions: ['']
 	},

@@ -32,7 +32,7 @@ export type IdentityDescriptor = {
 /**
  * The type describe all the available addresses for an account
  */
-type AvailableAddress = {
+export type AvailableAddress = {
 	address: string;
 	type: IdentityType;
 	right?: string;

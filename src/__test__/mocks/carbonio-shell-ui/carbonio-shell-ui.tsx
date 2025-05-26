@@ -9,11 +9,9 @@ import React, { FC, ReactNode } from 'react';
 import * as shell from '@zextras/carbonio-shell-ui';
 import { useActions as realUseActions } from '@zextras/carbonio-shell-ui';
 
-import { generateAccount } from './accounts/account-generator';
-import { getSoapFetch } from './network/fetch';
-import { generateSettings } from './settings/settings-generator';
-
-export { JSNS } from '../../constants/utils';
+import { generateAccount } from '../accounts/account-generator';
+import { getSoapFetch } from '../network/fetch';
+import { generateSettings } from '../settings/settings-generator';
 
 export const mockedAccount = generateAccount();
 const mockedAccounts = [mockedAccount];
@@ -56,7 +54,7 @@ export const useIsCarbonioCE: jest.Mock<ReturnType<typeof shell.useIsCarbonioCE>
 	() => false
 );
 
-export * from './network/fetch';
+export * from '../network/fetch';
 export const soapFetch = getSoapFetch('test-environment');
 export const useNotify: jest.Mock<ReturnType<typeof shell.useNotify>> = jest.fn(() => []);
 export const useLocalStorage = jest.fn();

@@ -2,10 +2,14 @@
 	"name": "@zextras/carbonio-ui-commons",
 	"version": "1.0.0",
 	"description": "Carbonio UI Commons",
- 	"main": "./lib/index.js",
+	"main": "./lib/index.js",
 	"types": "./lib/index.d.ts",
 	"exports": {
 		".": "./lib/index.js",
+		"./carbonio-shell-ui-mock": {
+			"import": "./lib/__test__/mocks/carbonio-shell-ui/index.js",
+			"require": "./lib/__test__/mocks/carbonio-shell-ui/index.js"
+		},
 		"./*": null
 	},
 	"engines": {
@@ -13,29 +17,24 @@
 		"npm": "v10"
 	},
 	"scripts": {
- 		"build": "npm run build:pkg && npm run build:lib",
+		"build": "npm run build:pkg && npm run build:lib",
 		"build:dev": "npm run build:pkg -- --dev --pkgRel $(date +%s) && npm run build:lib",
 		"build:pkg": "sdk build",
 		"prebuild:lib": "rm -rf lib",
 		"build:lib": "tsc -p tsconfig.lib.json",
 		"deploy": "npm run build:pkg && sdk deploy",
 		"deploy:dev": "npm run build:pkg -- -d && sdk deploy",
-
- 		"test": "TZ=Europe/Rome jest --testTimeout=20000 --maxWorkers=50%",
+		"test": "TZ=Europe/Rome jest --testTimeout=20000 --maxWorkers=50%",
 		"type-check": "tsc --noEmit",
 		"type-check:watch": "npm run type-check -- --watch",
-
- 		"lint": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to node_modules/@zextras/carbonio-ui-configs src",
+		"lint": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to node_modules/@zextras/carbonio-ui-configs src",
 		"lint-fix": "eslint --fix --ext .js,.jsx,.ts,.tsx --quiet --resolve-plugins-relative-to node_modules/@zextras/carbonio-ui-configs",
 		"lint-errors": "eslint --ext .js,.jsx,.ts,.tsx --quiet --resolve-plugins-relative-to node_modules/@zextras/carbonio-ui-configs src",
 		"lint-stats": "eslint --ext .js,.jsx,.ts,.tsx --format node_modules/eslint-stats/byErrorAndWarningStacked --resolve-plugins-relative-to node_modules/@zextras/carbonio-ui-configs src",
 		"lint-check": "npm run lint-errors; npm run type-check",
-
- 		"prestart": "npm run prebuild:pkg",
+		"prestart": "npm run prebuild:pkg",
 		"start": "sdk watch",
-
- 		"prepack": "npm run build:lib",
-
+		"prepack": "npm run build:lib",
 		"packTo": "npm pack --pack-destination $PKG_PATH && cd $PKG_PATH && npm i zextras-carbonio-ui-commons-$npm_package_version.tgz",
 		"deploy-on-module": "npm pack && rm -rf $PKG_PATH/node_modules/@zextras/carbonio-ui-commons/* && tar -xf zextras-carbonio-ui-commons-$npm_package_version.tgz -C $PKG_PATH/node_modules/@zextras/carbonio-ui-commons/ --strip-components 1"
 	},
@@ -57,7 +56,7 @@
 		"@babel/preset-env": "^7.20.2",
 		"@babel/preset-react": "^7.18.6",
 		"@babel/preset-typescript": "^7.21.0",
- 		"@faker-js/faker": "^8.4.1",
+		"@faker-js/faker": "^8.4.1",
 		"@testing-library/dom": "^10.4.0",
 		"@testing-library/jest-dom": "^6.4.5",
 		"@testing-library/react": "^16.0.1",

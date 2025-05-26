@@ -7,6 +7,7 @@
 import { Config } from 'jest';
 
 const config: Config = {
+	testPathIgnorePatterns: ['<rootDir>/lib/', '<rootDir>/dist/', '<rootDir>/build/'],
 	clearMocks: true,
 	collectCoverage: true,
 	coverageReporters: ['lcov', 'html'],

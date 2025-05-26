@@ -45,6 +45,7 @@ export * from './hooks/use-initialize-tags';
 
 // utils
 export * from './utils/utils';
+export * from './utils/index';
 export * from './utils/clipboard';
 export * from './utils/get-prefs';
 export * from './utils/use-prefs';
@@ -55,8 +56,8 @@ export * from './helpers/email-parser';
 export * from './helpers/api-wrapper';
 export * from './helpers/folders';
 export * from './helpers/identities';
-export * from './helpers/use-history-navigation';
 export * from './helpers/search';
+export * from './helpers/use-history-navigation';
 
 // integrations
 export * from './integrations/hooks';
@@ -81,6 +82,7 @@ export * from './store/zustand/folder/store';
 // store/zustand/tags
 export * from './store/zustand/tags/hooks';
 export * from './store/zustand/tags/store';
+export * from './store/zustand/tags/index';
 
 // constants
 export * from './constants/folders';
@@ -99,4 +101,52 @@ export * from './worker/handle-message';
 export * from './worker/utils';
 
 // types
-export * from './types/index';
+export * from './types';
+export * from './types/actions';
+export * from './types/folder';
+export * from './types/i18next';
+export * from './types/identities';
+export * from './types/modals';
+export * from './types/select';
+export * from './types/sidebar';
+export * from './types/soap';
+export * from './types/styled-components';
+export * from './types/tags';
+export * from './types/user-accounts';
+export * from './types/workers';
+
+// __test__/mocks
+export * from './__test__/mocks/accounts/account-generator';
+export * from './__test__/mocks/accounts/default-account';
+export * from './__test__/mocks/accounts/fakeAccounts';
+export * from './__test__/mocks/folders/folders-generator';
+export * from './__test__/mocks/folders/roots-generator';
+export * from './__test__/mocks/folders/soap-roots-generator';
+export * from './__test__/mocks/carbonio-shell-ui';
+export * from './__test__/mocks/carbonio-ui-preview';
+export * from './__test__/mocks/file-mock';
+export * from './__test__/mocks/integrations/mock-contact-input';
+export * from './__test__/mocks/network/fetch';
+export * from './__test__/mocks/network/msw/create-api-interceptor';
+export * from './__test__/mocks/network/msw/handle-get-folder';
+export * from './__test__/mocks/network/msw/handle-get-share-info';
+export * from './__test__/mocks/network/msw/handlers';
+export * from './__test__/mocks/routing/use-history-navigation-mock';
+export * from './__test__/mocks/settings/default-settings';
+export * from './__test__/mocks/settings/settings-generator';
+export * from './__test__/mocks/store/folders';
+export * from './__test__/mocks/tags/tags';
+export * from './__test__/mocks/utils/file';
+export * from './__test__/mocks/utils/folder';
+export * from './__test__/mocks/utils/mocks-context';
+export * from './__test__/mocks/utils/soap';
+export * from './__test__/mocks/utils/window';
+export * from './__test__/mocks/zustand';
+
+// __test__ setup files
+export * from './__test__/constants';
+export * from './__test__/i18n/i18n-test-factory';
+export * from './__test__/jest-config';
+export * from './__test__/jest-setup';
+export * from './__test__/jsdom-extended';
+export * from './__test__/test-setup';

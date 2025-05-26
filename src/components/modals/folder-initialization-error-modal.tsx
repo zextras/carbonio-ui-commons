@@ -17,7 +17,7 @@ export const FolderInitializationErrorModal = ({
 }: {
 	onClose: () => void;
 }): React.JSX.Element => {
-	const { t } = useTranslation();
+	const [t] = useTranslation();
 
 	const title = t('modal.initializeError.title', 'Oops!…Something went wrong');
 	const body = t('modal.initializeError.content', 'Please reload the page or try again later');

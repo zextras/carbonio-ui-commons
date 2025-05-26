@@ -21,9 +21,9 @@ beforeAll(() => {
 describe('FolderInitializationErrorModal', () => {
 	it('it correctly renders the component', () => {
 		setupTest(<FolderInitializationErrorModal onClose={noop} />);
-		expect(screen.getByText('modal.initializeError.title')).toBeInTheDocument();
-		expect(screen.getByText('modal.initializeError.content')).toBeInTheDocument();
-		expect(screen.getByText('modal.initializeError.buttonConfirm')).toBeInTheDocument();
+		expect(screen.getByText('Oops!…Something went wrong')).toBeInTheDocument();
+		expect(screen.getByText('Please reload the page or try again later')).toBeInTheDocument();
+		expect(screen.getByText('Reload')).toBeInTheDocument();
 	});
 
 	it('calls onClose when the close button is clicked', async () => {
@@ -39,7 +39,7 @@ describe('FolderInitializationErrorModal', () => {
 	it('refreshes the page when the confirm button is clicked', async () => {
 		const { user } = setupTest(<FolderInitializationErrorModal onClose={noop} />);
 		const refreshButton = screen.getByRole('button', {
-			name: 'modal.initializeError.buttonConfirm'
+			name: 'Reload'
 		});
 		await act(async () => {
 			await user.click(refreshButton);

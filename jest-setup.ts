@@ -9,14 +9,16 @@ import '@testing-library/jest-dom';
 import failOnConsole from 'jest-fail-on-console';
 import fetchMock from 'jest-fetch-mock';
 
+// noinspection ES6PreferShortImport
 import {
 	getFailOnConsoleDefaultConfig,
 	defaultBeforeAllTests,
 	defaultBeforeEachTest,
 	defaultAfterEachTest,
-	defaultAfterAllTests,
-	useLocalStorage
-} from './src';
+	defaultAfterAllTests
+} from './src/__test__/jest-setup';
+// noinspection ES6PreferShortImport
+import { useLocalStorage } from './src/__test__/mocks/carbonio-shell-ui';
 
 failOnConsole({
 	...getFailOnConsoleDefaultConfig(),

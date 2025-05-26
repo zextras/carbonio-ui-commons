@@ -5,15 +5,10 @@
  */
 import { Config } from 'jest';
 
-import { defaultConfig } from './src/__test__/jest-config';
-
-/*
- * For a detailed explanation regarding each configuration property and type check, visit:
- * https://jestjs.io/docs/configuration
- */
-
 const config: Config = {
-	...defaultConfig,
+	clearMocks: true,
+	collectCoverage: true,
+	coverageReporters: ['lcov', 'html'],
 	collectCoverageFrom: [
 		'src/**/*.{js,ts}(x)?',
 		'!**/__mocks__/**', // Exclude mock files
@@ -23,13 +18,30 @@ const config: Config = {
 		'!src/tests/**', // Exclude test files from src/tests
 		'!src/**/test/mocks/**' // Exclude test files from src/**/test/mocks
 	],
+	coverageDirectory: 'coverage',
+	coverageProvider: 'babel',
+	testTimeout: 20000,
+	fakeTimers: {
+		enableGlobally: true
+	},
+	maxWorkers: '50%',
+	moduleDirectories: ['node_modules', 'utils'],
 	moduleNameMapper: {
-		...defaultConfig.moduleNameMapper,
+		'\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+			require.resolve('./mocks/file-mock.ts'),
+
+		uuid: require.resolve('uuid'),
 		'\\.(css|less)$': '<rootDir>/__mocks__/fileMock.js'
 	},
-	collectCoverage: true,
-	coverageReporters: ['lcov', 'html'],
-	testTimeout: 20000
+	reporters: ['default', 'jest-junit'],
+	setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
+	testEnvironment: '<rootDir>/src/test/jsdom-extended.ts',
+	testEnvironmentOptions: {
+		customExportConditions: ['']
+	},
+	transform: {
+		'^.+\\.[t|j]sx?$': ['babel-jest', { configFile: './babel.config.jest.js' }]
+	}
 };
 
 export default config;

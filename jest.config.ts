@@ -29,7 +29,7 @@ const config: Config = {
 	moduleDirectories: ['node_modules', 'utils'],
 	moduleNameMapper: {
 		'\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-			require.resolve('./mocks/file-mock.ts'),
+			'<rootDir>/src/__test__/mocks/file-mock.ts',
 
 		uuid: require.resolve('uuid'),
 		'\\.(css|less)$': '<rootDir>/__mocks__/fileMock.js'

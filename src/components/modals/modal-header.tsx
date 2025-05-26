@@ -14,7 +14,7 @@ import {
 	Container
 } from '@zextras/carbonio-design-system';
 
-const ModalHeader: FC<{ title: string; onClose?: () => void; showCloseIcon?: boolean }> = ({
+export const ModalHeader: FC<{ title: string; onClose?: () => void; showCloseIcon?: boolean }> = ({
 	title,
 	onClose,
 	showCloseIcon = true
@@ -42,5 +42,3 @@ const ModalHeader: FC<{ title: string; onClose?: () => void; showCloseIcon?: boo
 		<Padding bottom="medium" />
 	</Container>
 );
-
-export default ModalHeader;

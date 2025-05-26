@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 import type { ModalFooterProps } from '../../types';
 
-const ModalFooter: FC<ModalFooterProps> = ({
+export const ModalFooter: FC<ModalFooterProps> = ({
 	mainAlignment = 'center',
 	crossAlignment = 'center',
 	onConfirm,
@@ -161,4 +161,3 @@ const ModalFooter: FC<ModalFooterProps> = ({
 		</Container>
 	);
 };
-export default ModalFooter;

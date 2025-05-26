@@ -11,10 +11,10 @@ import { useTranslation } from 'react-i18next';
 
 import { deleteTag } from '../../soap/tags';
 import type { DeleteTagModalPropsType } from '../../types/sidebar';
-import ModalFooter from '../modals/modal-footer';
-import ModalHeader from '../modals/modal-header';
+import { ModalFooter } from '../modals/modal-footer';
+import { ModalHeader } from '../modals/modal-header';
 
-const DeleteTagModal: FC<DeleteTagModalPropsType> = ({ onClose, tag }) => {
+export const DeleteTagModal: FC<DeleteTagModalPropsType> = ({ onClose, tag }) => {
 	const [t] = useTranslation();
 	const createSnackbar = useSnackbar();
 
@@ -73,5 +73,3 @@ const DeleteTagModal: FC<DeleteTagModalPropsType> = ({ onClose, tag }) => {
 		</>
 	);
 };
-
-export default DeleteTagModal;

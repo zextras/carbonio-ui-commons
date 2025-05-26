@@ -9,8 +9,8 @@ import React, { useCallback } from 'react';
 import { Row, Text } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
-import ModalFooter from './modal-footer';
-import ModalHeader from './modal-header';
+import { ModalFooter } from './modal-footer';
+import { ModalHeader } from './modal-header';
 
 export const FolderInitializationErrorModal = ({
 	onClose

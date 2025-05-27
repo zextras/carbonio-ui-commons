@@ -6,18 +6,6 @@
 	"types": "./lib/index.d.ts",
 	"exports": {
 		".": "./lib/index.js",
-		"./carbonio-shell-ui-mock": {
-			"import": "./lib/__test__/mocks/carbonio-shell-ui/index.js",
-			"require": "./lib/__test__/mocks/carbonio-shell-ui/index.js"
-		},
-		"./carbonio-preview-ui-mock": {
-			"import": "./lib/__test__/mocks/carbonio-ui-preview/index.js",  
-			"require": "./lib/__test__/mocks/carbonio-ui-preview/index.js"
-		},
-		"./zustand-mock": {
-			"import": "./lib/__test__/mocks/zustand/index.js",  
-			"require": "./lib/__test__/mocks/zustand/index.js"
-		},
 		"./*": null
 	},
 	"engines": {

@@ -115,37 +115,3 @@ export * from './types/styled-components';
 export * from './types/tags';
 export * from './types/user-accounts';
 export * from './types/workers';
-
-// __test__/mocks
-export * from './__test__/mocks/accounts/account-generator';
-export * from './__test__/mocks/accounts/default-account';
-export * from './__test__/mocks/accounts/fakeAccounts';
-export * from './__test__/mocks/folders/folders-generator';
-export * from './__test__/mocks/folders/roots-generator';
-export * from './__test__/mocks/folders/soap-roots-generator';
-export * from './__test__/mocks/carbonio-shell-ui';
-export * from './__test__/mocks/carbonio-ui-preview';
-export * from './__test__/mocks/file-mock';
-export * from './__test__/mocks/integrations/mock-contact-input';
-export * from './__test__/mocks/network/fetch';
-export * from './__test__/mocks/network/msw/create-api-interceptor';
-export * from './__test__/mocks/network/msw/handle-get-folder';
-export * from './__test__/mocks/network/msw/handle-get-share-info';
-export * from './__test__/mocks/network/msw/handlers';
-export * from './__test__/mocks/routing/use-history-navigation-mock';
-export * from './__test__/mocks/settings/default-settings';
-export * from './__test__/mocks/settings/settings-generator';
-export * from './__test__/mocks/store/folders';
-export * from './__test__/mocks/tags/tags';
-export * from './__test__/mocks/utils/file';
-export * from './__test__/mocks/utils/folder';
-export * from './__test__/mocks/utils/mocks-context';
-export * from './__test__/mocks/utils/soap';
-export * from './__test__/mocks/utils/window';
-export * from './__test__/mocks/zustand';
-
-// __test__ setup files
-export * from './__test__/constants';
-export * from './__test__/i18n/i18n-test-factory';
-export * from './__test__/jest-setup';
-export * from './__test__/test-setup';

@@ -99,6 +99,7 @@ export * from './worker/folder';
 export * from './worker/tags';
 export * from './worker/handle-message';
 export * from './worker/utils';
+export * from './worker';
 
 // types
 export * from './types';

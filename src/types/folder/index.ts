@@ -49,7 +49,7 @@ export type FolderView =
 	| 'chat';
 
 // Grants
-type Grant = {
+export type Grant = {
 	// Rights - Some combination of (r)ead, (w)rite, (i)nsert, (d)elete, (a)dminister, workflow action (x), view (p)rivate, view (f)reebusy, (c)reate subfolder
 	perm: string;
 	/* The type of Grantee:

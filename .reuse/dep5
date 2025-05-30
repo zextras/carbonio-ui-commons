@@ -24,7 +24,7 @@ License: CC0-1.0
 
 Files: package.json
 Copyright: 2021 Zextras <https://www.zextras.com>
-License: AGPL-3.0-only
+License: AGPL-3.0-ognly
 
 Files: package-lock.json
 Copyright: 2021 Zextras <https://www.zextras.com>
@@ -41,3 +41,11 @@ License: AGPL-3.0-only
 Files: src/assets/*
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: CC-BY-NC-SA-4.0
+
+Files: .github/*
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: CC0-1.0
+
+Files: .gitmodules
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: CC0-1.0

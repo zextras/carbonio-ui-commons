@@ -1,0 +1,33 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "DOM",
+      "es2023"
+    ],
+    "jsx": "react",
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": false,
+    "outDir": "lib",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib",
+    "src/**/__test__",
+    "src/**/__tests__",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "**/tests/*",
+    "**/test/*"
+  ]
+}

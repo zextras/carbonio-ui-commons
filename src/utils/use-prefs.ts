@@ -1,0 +1,13 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+import { useUserSettings } from '@zextras/carbonio-shell-ui';
+
+import { UserPrefs } from '../types/user-accounts';
+
+export const usePrefs = (): UserPrefs => {
+	const { prefs } = useUserSettings();
+	return <UserPrefs>prefs;
+};

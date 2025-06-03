@@ -35,4 +35,4 @@ export const FOLDERS = {
 	TASKS: '15',
 	BRIEFCASE: '16',
 	LAST_SYSTEM_FOLDER_POSITION: '16.1'
-};
+} as const;

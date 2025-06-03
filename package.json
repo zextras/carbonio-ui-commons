@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/carbonio-ui-commons",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Carbonio UI Commons",
 	"main": "./lib/index.js",
 	"types": "./lib/index.d.ts",

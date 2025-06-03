@@ -38,7 +38,7 @@ pipeline {
 		booleanParam defaultValue: true, description: 'Enable SonarQube Stage', name: 'RUN_SONARQUBE'
 	}
 	stages {
-		stage("Read npm login settings") {
+		stage("Npm login + stash .npmrc") {
 			steps {
 				withCredentials([
 						usernamePassword(

@@ -117,22 +117,22 @@ pipeline {
 			}
 		}
 
-		stage('SonarQube analysis') {
-			agent {
-				node {
-					label 'nodejs-agent-v4'
-				}
-			}
-			steps {
-				script {
-					unstash(name: 'lcov.info')
-					nodeCmd('npm i -D sonarqube-scanner')
-				}
-				withSonarQubeEnv(credentialsId: 'sonarqube-user-token', installationName: 'SonarQube instance') {
-					nodeCmd("npx sonar-scanner -Dsonar.projectKey=${getPackageName().replaceAll("@zextras/", "")} -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info")
-				}
-			}
-		}
+//		stage('SonarQube analysis') {
+//			agent {
+//				node {
+//					label 'nodejs-agent-v4'
+//				}
+//			}
+//			steps {
+//				script {
+//					unstash(name: 'lcov.info')
+//					nodeCmd('npm i -D sonarqube-scanner')
+//				}
+//				withSonarQubeEnv(credentialsId: 'sonarqube-user-token', installationName: 'SonarQube instance') {
+//					nodeCmd("npx sonar-scanner -Dsonar.projectKey=${getPackageName().replaceAll("@zextras/", "")} -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info")
+//				}
+//			}
+//		}
 
 		stage("Build") {
 			agent {

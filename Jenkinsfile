@@ -150,6 +150,7 @@ pipeline {
 
 		stage('Release to NPM') {
 			when {
+				beforeAgent true
 				branch 'release'
 			}
 			steps {

@@ -34,9 +34,6 @@ pipeline {
 		timeout(time: 20, unit: 'MINUTES')
 		buildDiscarder(logRotator(numToKeepStr: '50'))
 	}
-	parameters {
-		booleanParam defaultValue: true, description: 'Enable SonarQube Stage', name: 'RUN_SONARQUBE'
-	}
 	stages {
 		stage("Npm login + stash .npmrc") {
 			steps {

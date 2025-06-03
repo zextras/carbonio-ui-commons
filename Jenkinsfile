@@ -38,11 +38,7 @@ pipeline {
 		booleanParam defaultValue: true, description: 'Enable SonarQube Stage', name: 'RUN_SONARQUBE'
 	}
 	stages {
-		// npm login -> required to publish on NPM
 		stage("Read npm login settings") {
-			when {
-				branch 'release'
-			}
 			steps {
 				withCredentials([
 						usernamePassword(

@@ -8,6 +8,9 @@
 		".": "./lib/index.js",
 		"./*": null
 	},
+	"publishConfig": {
+		"access": "public"
+	},
 	"engines": {
 		"node": "v20",
 		"npm": "v10"
@@ -29,6 +32,7 @@
 		"lint-stats": "eslint --ext .js,.jsx,.ts,.tsx --format node_modules/eslint-stats/byErrorAndWarningStacked --resolve-plugins-relative-to node_modules/@zextras/carbonio-ui-configs src",
 		"lint-check": "npm run lint-errors; npm run type-check",
 		"prestart": "npm run prebuild:pkg",
+		"prettify:check": "prettier --check .",
 		"start": "sdk watch",
 		"prepack": "npm run build:lib",
 		"packTo": "npm pack --pack-destination $PKG_PATH && cd $PKG_PATH && npm i zextras-carbonio-ui-commons-$npm_package_version.tgz",
@@ -47,6 +51,8 @@
 	"devDependencies": {
 		"@tsconfig/node20": "^20.1.5",
 		"@babel/core": "^7.24.0",
+		"@commitlint/cli": "^19.6.1",
+		"@commitlint/config-conventional": "^19.6.0",
 		"@babel/plugin-proposal-class-properties": "^7.18.6",
 		"@babel/plugin-transform-runtime": "^7.24.0",
 		"@babel/preset-env": "^7.20.2",

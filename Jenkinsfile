@@ -8,10 +8,6 @@ def nodeCmd(String cmd) {
 	sh '. load_nvm && nvm install && nvm use && npm ci && ' + cmd
 }
 
-def getPackageName() {
-	return sh(script: 'grep \'"name":\' package.json | sed -n --regexp-extended \'s/.*"name": "([^"]+).*/\\1/p\' ', returnStdout: true).trim()
-}
-
 void npmLogin(String npmAuthToken) {
 	if (!fileExists(file: '.npmrc')) {
 		sh(
@@ -129,7 +125,7 @@ pipeline {
 					nodeCmd('npm i -D sonarqube-scanner')
 				}
 				withSonarQubeEnv(credentialsId: 'sonarqube-user-token', installationName: 'SonarQube instance') {
-					nodeCmd("npx sonar-scanner -Dsonar.projectKey=${getPackageName().replaceAll("@zextras/", "")} -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info")
+					nodeCmd("npx sonar-scanner -Dsonar.projectKey=carbonio-ui-commons -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info")
 				}
 			}
 		}

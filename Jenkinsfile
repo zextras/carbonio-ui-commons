@@ -54,7 +54,7 @@ pipeline {
 			steps {
 				container('nodejs-' + nodeVersion) {
 					script {
-						sh 'npm ci'
+						nodeCmd('npm ci')
 					}
 				}
 			}

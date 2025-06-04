@@ -50,15 +50,6 @@ pipeline {
 				)
 			}
 		}
-		stage('Install dependencies') {
-			steps {
-				container('nodejs-' + nodeVersion) {
-					script {
-						nodeCmd('npm ci')
-					}
-				}
-			}
-		}
 		stage('Tests') {
 			parallel {
 				stage('Prettify') {

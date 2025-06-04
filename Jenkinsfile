@@ -125,7 +125,7 @@ pipeline {
 					nodeCmd('npm i -D sonarqube-scanner')
 				}
 				withSonarQubeEnv(credentialsId: 'sonarqube-user-token', installationName: 'SonarQube instance') {
-					nodeCmd("npx sonar-scanner -Dsonar.projectKey=carbonio-ui-commons -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info")
+					nodeCmd("npx sonar-scanner -Dsonar.projectKey='carbonio-ui-commons' -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info")
 				}
 			}
 		}

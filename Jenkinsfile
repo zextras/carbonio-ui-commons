@@ -4,16 +4,21 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-def nodeCmd(String cmd) {
-	sh '. load_nvm && nvm install && nvm use && npm ci && ' + cmd
+// FLAGS
+String nodeVersion
+
+def getNodeVersion() {
+    return sh(
+        script: 'sed "s/^[vV]//" .nvmrc | cut -d. -f1',
+        returnStdout: true
+    ).trim()
 }
 
 void npmLogin(String npmAuthToken) {
 	if (!fileExists(file: '.npmrc')) {
 		sh(
-				script: """
-                touch .npmrc;
-                echo "//registry.npmjs.org/:_authToken=${npmAuthToken}" > .npmrc
+			script: """
+                echo "//registry.npmjs.org/:_authToken=${npmAuthToken}" >> .npmrc
             """,
 				returnStdout: false
 		)
@@ -23,7 +28,7 @@ void npmLogin(String npmAuthToken) {
 pipeline {
 	agent {
 		node {
-			label 'nodejs-agent-v4'
+			label 'nodejs-v1'
 		}
 	}
 	options {
@@ -31,8 +36,14 @@ pipeline {
 		buildDiscarder(logRotator(numToKeepStr: '50'))
 	}
 	stages {
-		stage("Npm login + stash .npmrc") {
-			steps {
+        stage("Read settings") {
+            steps {
+                container('base') {
+                    script {
+                        nodeVersion = getNodeVersion()
+                        echo "NodeJS Major Version: $nodeVersion"
+                    }
+                }
 				withCredentials([
 						usernamePassword(
 								credentialsId: "npm-zextras-bot-auth-token",
@@ -44,69 +55,52 @@ pipeline {
 						npmLogin(NPM_PASSWORD)
 					}
 				}
-				stash(
-						includes: ".npmrc",
-						name: ".npmrc"
-				)
-			}
-		}
+            }
+        }
+        stage('Install dependencies') {
+            steps {
+                container('nodejs-' + nodeVersion) {
+                    script {
+                        sh 'npm ci'
+                    }
+                }
+            }
+        }
 		stage('Tests') {
 			parallel {
 				stage('Prettify') {
-					agent {
-						node {
-							label 'nodejs-agent-v4'
-						}
-					}
 					steps {
-						unstash(name: ".npmrc")
-						nodeCmd('npm run prettify:check')
+						container('nodejs-' + nodeVersion) {
+							sh 'npm run prettify:check'
+						}
 					}
 				}
 				stage('Lint') {
-					agent {
-						node {
-							label 'nodejs-agent-v4'
-						}
-					}
 					steps {
-						unstash(name: ".npmrc")
-						nodeCmd('npm run lint')
+						container('nodejs-' + nodeVersion) {
+							sh 'npm run lint'
+						}
 					}
 				}
 				stage('TypeCheck') {
-					agent {
-						node {
-							label "nodejs-agent-v4"
-						}
-					}
 					steps {
-						unstash(name: ".npmrc")
-						nodeCmd('npm run type-check')
+						container('nodejs-' + nodeVersion) {
+							sh 'npm run type-check'
+						}
 					}
 				}
 				stage('Unit Tests') {
-					agent {
-						node {
-							label 'nodejs-agent-v4'
-						}
-					}
 					steps {
-						unstash(name: ".npmrc")
-						nodeCmd('npm run test')
-						script {
-							if (fileExists('coverage/lcov.info')) {
-								stash(
-										includes: 'coverage/lcov.info',
-										name: 'lcov.info'
-								)
-							}
+						container('nodejs-' + nodeVersion) {
+							sh 'npm run test'
 						}
 					}
 					post {
 						always {
-							junit 'junit.xml'
-							recordCoverage(tools: [[parser: 'COBERTURA', pattern: 'coverage/cobertura-coverage.xml']])
+							container('nodejs-' + nodeVersion) {
+								junit 'junit.xml'
+								recordCoverage(tools: [[parser: 'COBERTURA', pattern: 'coverage/cobertura-coverage.xml']])
+							}
 						}
 					}
 				}
@@ -114,46 +108,36 @@ pipeline {
 		}
 
 		stage('SonarQube analysis') {
-			agent {
-				node {
-					label 'nodejs-agent-v4'
-				}
-			}
 			steps {
-				script {
-					unstash(name: 'lcov.info')
-					nodeCmd('npm i -D sonarqube-scanner')
-				}
-				withSonarQubeEnv(credentialsId: 'sonarqube-user-token', installationName: 'SonarQube instance') {
-					nodeCmd("npx sonar-scanner -Dsonar.projectKey='carbonio-ui-commons' -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info")
+				container('nodejs-' + nodeVersion) {
+					withSonarQubeEnv(credentialsId: 'sonarqube-user-token', installationName: 'SonarQube instance') {
+						sh "npx sonar-scanner -Dsonar.projectKey='carbonio-ui-commons' -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
+					}
 				}
 			}
 		}
 
 		stage("Build") {
-			agent {
-				node {
-					label "nodejs-agent-v4"
-				}
-			}
 			steps {
-				script {
-					unstash(name: '.npmrc')
-					nodeCmd('npm run build')
+				container('nodejs-' + nodeVersion) {
+					script {
+						sh 'npm run build'
+					}
 				}
 			}
 		}
 
 		stage('Release to NPM') {
 			when {
-				beforeAgent true
 				branch 'release'
 			}
 			steps {
-				script {
-					withCredentials([usernamePassword(credentialsId: 'npm-zextras-bot-auth-token', usernameVariable: 'AUTH_USERNAME', passwordVariable: 'NPM_TOKEN')]) {
-						withCredentials([usernamePassword(credentialsId: 'tarsier-bot-pr-token-github', usernameVariable: 'GH_USERNAME', passwordVariable: 'GH_TOKEN')]) {
-							nodeCmd("npx semantic-release")
+				container('nodejs-' + nodeVersion) {
+					script {
+						withCredentials([usernamePassword(credentialsId: 'npm-zextras-bot-auth-token', usernameVariable: 'AUTH_USERNAME', passwordVariable: 'NPM_TOKEN')]) {
+							withCredentials([usernamePassword(credentialsId: 'tarsier-bot-pr-token-github', usernameVariable: 'GH_USERNAME', passwordVariable: 'GH_TOKEN')]) {
+								sh "npx semantic-release"
+							}
 						}
 					}
 				}

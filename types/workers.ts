@@ -3,14 +3,15 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { SoapNotify, useRefresh } from '@zextras/carbonio-shell-ui';
+import type { SoapNotify } from '@zextras/carbonio-shell-ui';
+import { useInfoRefresh } from '@zextras/carbonio-ui-soap-lib';
 
 export type SyncNotifyMessage = {
 	op: 'notify';
 	notify: SoapNotify;
 };
 
-export type SyncRefreshMessage = ReturnType<typeof useRefresh> & {
+export type SyncRefreshMessage = ReturnType<typeof useInfoRefresh> & {
 	op: 'refresh';
 };
 

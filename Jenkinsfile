@@ -129,7 +129,10 @@ pipeline {
 
 		stage('Release to NPM') {
 			when {
-				branch 'release'
+				anyOf {
+					branch 'release'
+					branch 'devel'
+				}
 			}
 			steps {
 				container('nodejs-' + nodeVersion) {

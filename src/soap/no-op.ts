@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ErrorSoapBodyResponse, soapFetch } from '@zextras/carbonio-shell-ui';
+import { ErrorSoapBodyResponse, soapFetch } from '@zextras/carbonio-ui-soap-lib';
 
 import { JSNS } from '../constants/utils';
 

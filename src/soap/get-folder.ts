@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { soapFetch } from '@zextras/carbonio-shell-ui';
+import { soapFetch } from '@zextras/carbonio-ui-soap-lib';
 import { isNil, omitBy } from 'lodash';
 
 import { FolderView } from '../types/folder';

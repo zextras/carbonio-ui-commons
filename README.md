@@ -20,7 +20,6 @@ Common frontend features module for Zextras Carbonio
   <img src="https://img.shields.io/twitter/follow/zextras?style=social&logo=twitter" alt="Follow on Twitter"></a>
 </p>
 
-
 <h2>License</h2>
 
 Released under the AGPL-3.0-only license

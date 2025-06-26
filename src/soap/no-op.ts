@@ -4,9 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ErrorSoapBodyResponse, soapFetch } from '@zextras/carbonio-ui-soap-lib';
+import { ErrorSoapBodyResponse, legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
 
 import { JSNS } from '../constants/utils';
+
+/*
+ * TODO remove this file and use an export from @zextras/carbonio-ui-soap-lib
+ */
 
 type NoOpRequest = {
 	_jsns: JSNS.MAIL;
@@ -14,11 +18,14 @@ type NoOpRequest = {
 
 type NoOpResponse = { _jsns: JSNS.MAIL } | ErrorSoapBodyResponse;
 
+/**
+ * @deprecated
+ */
 export const NoOp = async (): Promise<void> => {
 	const request = {
 		_jsns: JSNS.MAIL
 	} as const;
-	const response = await soapFetch<NoOpRequest, NoOpResponse>('NoOp', request);
+	const response = await legacySoapFetch<NoOpRequest, NoOpResponse>('NoOp', request);
 	if ('Fault' in response) {
 		throw new Error(response.Fault.Reason.Text);
 	}

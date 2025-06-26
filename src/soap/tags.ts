@@ -4,20 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
+import { legacySoapFetch, SoapBody } from '@zextras/carbonio-ui-soap-lib';
 
-import { ZimbraRequest } from '../types';
 import { Tag } from '../types/tags';
 
-export type CreateTagRequest = ZimbraRequest & {
+export type CreateTagRequest = SoapBody<{
 	tag: Omit<Tag, 'id'>;
-};
+}>;
 
-export type CreateTagResponse = ZimbraRequest & {
+export type CreateTagResponse = SoapBody<{
 	tag: [Tag];
-};
+}>;
 
-export type TagActionRequest = ZimbraRequest & {
+export type TagActionRequest = SoapBody<{
 	action: {
 		op: 'rename' | 'color' | 'delete' | 'update';
 		id: string;
@@ -25,7 +24,7 @@ export type TagActionRequest = ZimbraRequest & {
 		color?: number;
 		rgb?: string;
 	};
-};
+}>;
 
 export type TagActionResponse = {
 	action: { op: string; id: string };

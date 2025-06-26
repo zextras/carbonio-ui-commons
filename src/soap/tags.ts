@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { soapFetch } from '@zextras/carbonio-ui-soap-lib';
+import { legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
 
 import { ZimbraRequest } from '../types';
 import { Tag } from '../types/tags';
@@ -32,25 +32,25 @@ export type TagActionResponse = {
 };
 
 export const createTag = (tag: Omit<Tag, 'id'>): Promise<CreateTagResponse> =>
-	soapFetch<CreateTagRequest, CreateTagResponse>('CreateTag', {
+	legacySoapFetch<CreateTagRequest, CreateTagResponse>('CreateTag', {
 		_jsns: 'urn:zimbraMail',
 		tag
 	});
 
 export const deleteTag = (id: string): Promise<TagActionResponse> =>
-	soapFetch<TagActionRequest, TagActionResponse>('TagAction', {
+	legacySoapFetch<TagActionRequest, TagActionResponse>('TagAction', {
 		_jsns: 'urn:zimbraMail',
 		action: { op: 'delete', id }
 	});
 
 export const renameTag = (id: string, name: string): Promise<TagActionResponse> =>
-	soapFetch<TagActionRequest, TagActionResponse>('TagAction', {
+	legacySoapFetch<TagActionRequest, TagActionResponse>('TagAction', {
 		_jsns: 'urn:zimbraMail',
 		action: { op: 'rename', id, name }
 	});
 
 export const changeTagColor = (id: string, color: string | number): Promise<TagActionResponse> =>
-	soapFetch<TagActionRequest, TagActionResponse>('TagAction', {
+	legacySoapFetch<TagActionRequest, TagActionResponse>('TagAction', {
 		_jsns: 'urn:zimbraMail',
 		action: typeof color === 'number' ? { op: 'color', color, id } : { op: 'color', rgb: color, id }
 	});

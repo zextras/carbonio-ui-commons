@@ -5,14 +5,13 @@
  */
 
 import { faker } from '@faker-js/faker';
-import {
-	Account,
+import { Account, IS_FOCUS_MODE } from '@zextras/carbonio-shell-ui';
+import type {
 	ErrorSoapBodyResponse,
 	ErrorSoapResponse,
-	IS_FOCUS_MODE,
 	SoapContext,
 	SoapResponse
-} from '@zextras/carbonio-shell-ui';
+} from '@zextras/carbonio-ui-soap-lib';
 import { find, map, maxBy } from 'lodash';
 
 import { getMocksContext } from '../utils/mocks-context';

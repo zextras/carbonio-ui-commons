@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { ErrorSoapResponse, SoapHeader } from '@zextras/carbonio-shell-ui';
+import { ErrorSoapResponse, SoapHeader } from '@zextras/carbonio-ui-soap-lib';
 import { filter } from 'lodash';
 import { HttpResponse, HttpResponseResolver } from 'msw';
 

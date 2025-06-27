@@ -10,7 +10,6 @@ import * as shell from '@zextras/carbonio-shell-ui';
 import { useActions as realUseActions } from '@zextras/carbonio-shell-ui';
 
 import { generateAccount } from '../accounts/account-generator';
-import { getSoapFetch } from '../network/fetch';
 import { generateSettings } from '../settings/settings-generator';
 
 export const mockedAccount = generateAccount();

@@ -12,16 +12,27 @@ const WHOLE_QUERY_REGEX = new RegExp(
 	'im'
 );
 
+function getChipString(chip: QueryChip): string {
+	if (typeof chip.value === 'string') {
+		return chip.value;
+	}
+
+	if (typeof chip.label === 'string') {
+		return chip.label;
+	}
+
+	return '';
+}
+
 const QUOTED_TERM_REGEX = /^"([^"]+)"$/im;
 
 const MULTIWORD_TERM_REGEX = /^(\S+\s+\S+.*)$/im;
 
 export const convertSearchChipToString = (chip: QueryChip): string => {
-	const chipString = chip.value || chip.label || '';
-	const match = chipString.match(WHOLE_QUERY_REGEX);
+	const match = getChipString(chip).match(WHOLE_QUERY_REGEX);
 
 	if (!match) {
-		return chipString;
+		return getChipString(chip);
 	}
 
 	const prefixAndColon = match[1] ? `${match[1]}:` : '';

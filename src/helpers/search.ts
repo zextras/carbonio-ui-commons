@@ -3,25 +3,40 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { QueryChip } from '@zextras/carbonio-search-ui';
 
 import { SEARCH_QUERY_PREFIXES } from '../constants/search';
+
+type ConvertSearchChipToStringProps = {
+	value?: string | boolean;
+	label?: string | boolean;
+};
 
 const WHOLE_QUERY_REGEX = new RegExp(
 	`^(?:(${Object.values(SEARCH_QUERY_PREFIXES).join('|')}):)?(.+)$`,
 	'im'
 );
 
+function getChipString(chip: ConvertSearchChipToStringProps): string {
+	if (typeof chip.value === 'string') {
+		return chip.value;
+	}
+
+	if (typeof chip.label === 'string') {
+		return chip.label;
+	}
+
+	return '';
+}
+
 const QUOTED_TERM_REGEX = /^"([^"]+)"$/im;
 
 const MULTIWORD_TERM_REGEX = /^(\S+\s+\S+.*)$/im;
 
-export const convertSearchChipToString = (chip: QueryChip): string => {
-	const chipString = chip.value || chip.label || '';
-	const match = chipString.match(WHOLE_QUERY_REGEX);
+export const convertSearchChipToString = (chip: ConvertSearchChipToStringProps): string => {
+	const match = getChipString(chip).match(WHOLE_QUERY_REGEX);
 
 	if (!match) {
-		return chipString;
+		return getChipString(chip);
 	}
 
 	const prefixAndColon = match[1] ? `${match[1]}:` : '';

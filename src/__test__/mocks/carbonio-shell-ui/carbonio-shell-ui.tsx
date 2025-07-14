@@ -53,7 +53,6 @@ export const useIsCarbonioCE: jest.Mock<ReturnType<typeof shell.useIsCarbonioCE>
 	() => false
 );
 
-export * from '../network/fetch';
 export const useLocalStorage = jest.fn();
 export const AppLink: FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;
 export const editSettings = jest.fn(() => Promise.resolve({ data: {} }));

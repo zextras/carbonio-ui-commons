@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { ErrorSoapBodyResponse } from '@zextras/carbonio-shell-ui';
+import type { ErrorSoapBodyResponse } from '@zextras/carbonio-ui-soap-lib';
 
 import { NoOp } from './no-op';
 import { createSoapAPIInterceptor } from '../__test__/mocks/network/msw/create-api-interceptor';

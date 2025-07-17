@@ -3,7 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { AccountSettingsPrefs, useUserSettings } from '@zextras/carbonio-shell-ui';
+import { useUserSettings } from '@zextras/carbonio-shell-ui';
+import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 
 export const usePrefs = (): AccountSettingsPrefs => {
 	const { prefs } = useUserSettings();

@@ -17,11 +17,11 @@ const WHOLE_QUERY_REGEX = new RegExp(
 );
 
 function getChipString(chip: ConvertSearchChipToStringProps): string {
-	if (typeof chip.value === 'string') {
+	if (typeof chip.value === 'string' && chip.value !== '') {
 		return chip.value;
 	}
 
-	if (typeof chip.label === 'string') {
+	if (typeof chip.label === 'string' && chip.label !== '') {
 		return chip.label;
 	}
 

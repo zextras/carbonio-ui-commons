@@ -111,6 +111,6 @@ export * from './types/modals';
 export * from './types/select';
 export * from './types/sidebar';
 export * from './types/soap';
-export * from './types/styled-components';
+export * from './types/emotion';
 export * from './types/tags';
 export * from './types/workers';

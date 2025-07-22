@@ -8,7 +8,7 @@ import React, { useMemo } from 'react';
 import type { SelectProps, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
 import { Container, Icon, Padding, Row, Select, Text } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import { ZIMBRA_STANDARD_COLORS } from '../../constants/utils';
 import { CustomLabelFactoryProps } from '../../types/select';

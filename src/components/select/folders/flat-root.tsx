@@ -19,7 +19,7 @@ import {
 	ListItem
 } from '@zextras/carbonio-design-system';
 import { useUserAccount } from '@zextras/carbonio-shell-ui';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import { FlatFolder, type FlaFolderProps } from './flat-folder';
 import { FOLDERS } from '../../../constants/folders';
@@ -34,12 +34,6 @@ type FlatRootProps = FlaFolderProps & {
 };
 
 const FOLDER_ROW_HEIGHT = '2.6rem';
-
-const CustomListItem = styled(ListItem).attrs({
-	background: 'gray6',
-	activeBackground: 'highlight',
-	selectedBackground: 'gray5'
-})``;
 
 const CustomContainer = styled(Container)<{ $active?: boolean }>`
 	&:hover {
@@ -125,10 +119,13 @@ export const FlatRoot = ({
 			<Collapse crossSize="100%" orientation="vertical" open={open} disableTransition={false}>
 				<List>
 					{childrenFolders.map<ReactElement>((childFolder) => (
-						<CustomListItem
+						<ListItem
 							key={childFolder.id}
 							selected={selectedFolderId === childFolder.id}
 							active={selectedFolderId === childFolder.id}
+							background={'gray6'}
+							activeBackground={'highlight'}
+							selectedBackground={'gray5'}
 						>
 							{(visible: boolean): ReactElement =>
 								visible ? (
@@ -141,7 +138,7 @@ export const FlatRoot = ({
 									<div style={{ height: `${FOLDER_ROW_HEIGHT}` }} />
 								)
 							}
-						</CustomListItem>
+						</ListItem>
 					))}
 				</List>
 			</Collapse>

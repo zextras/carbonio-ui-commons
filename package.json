@@ -88,8 +88,6 @@
 		"typescript": "^5.7.2"
 	},
 	"dependencies": {
-		"@emotion/react": "^11.14.0",
-		"@emotion/styled": "^11.14.1",
 		"@mui/icons-material": "^5.15.12",
 		"@mui/material": "^5.15.12",
 		"@zextras/carbonio-design-system": "^10.1.1",
@@ -107,6 +105,10 @@
 		"react-router-dom": "^6.30.0",
 		"uuid": "^9.0.0",
 		"zustand": "^4.5.2"
+	},
+	"peerDependencies": {
+		"@emotion/react": "^11",
+		"@emotion/styled": "^11"
 	},
 	"files": [
 		"lib",

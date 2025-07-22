@@ -23,6 +23,31 @@ describe('search', () => {
 			expect(result).toBe(label);
 		});
 
+		it("should return value of the 'label' field if it is set and 'value' is empty string", () => {
+			const label = faker.word.noun();
+			const chip = { label, value: '' };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe(label);
+		});
+
+		it("should return empty string if both 'value' and 'label' are empty string", () => {
+			const chip = { label: '', value: '' };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe('');
+		});
+
+		it("should return empty string if 'value' is undefined and 'label' is empty string", () => {
+			const chip = { label: '', value: undefined };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe('');
+		});
+
+		it("should return empty string if 'label' is undefined and 'value' is empty string", () => {
+			const chip = { label: undefined, value: '' };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe('');
+		});
+
 		it("should return value of the 'value' field if it is set", () => {
 			const value = faker.word.noun();
 			const label = faker.word.noun();

@@ -107,8 +107,8 @@
 		"zustand": "^4.5.2"
 	},
 	"peerDependencies": {
-		"@emotion/react": "^11",
-		"@emotion/styled": "^11"
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.0"
 	},
 	"files": [
 		"lib",

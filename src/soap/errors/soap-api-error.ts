@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { SoapFault } from '@zextras/carbonio-shell-ui';
+import type { SoapFault } from '@zextras/carbonio-ui-soap-lib';
 import { TFunction } from 'i18next';
 
 export abstract class SoapApiError extends Error {

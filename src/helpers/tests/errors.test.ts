@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { SoapFault } from '@zextras/carbonio-shell-ui';
+import type { SoapFault } from '@zextras/carbonio-ui-soap-lib';
 import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 

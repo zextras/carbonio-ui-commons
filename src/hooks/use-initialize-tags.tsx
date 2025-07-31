@@ -5,14 +5,14 @@
  */
 import { useEffect, useState } from 'react';
 
-import { useRefresh } from '@zextras/carbonio-shell-ui';
+import { useInfoRefresh } from '@zextras/carbonio-ui-soap-lib';
 import { isEmpty } from 'lodash';
 
 import { tagsWorker } from '../worker';
 
 export const useInitializeTags = (): void => {
 	const [initialized, setInitialized] = useState(false);
-	const refresh = useRefresh();
+	const refresh = useInfoRefresh();
 	useEffect(() => {
 		if (!isEmpty(refresh) && !initialized) {
 			setInitialized(true);

@@ -6,9 +6,17 @@
 /**
  * @type {import('semantic-release').GlobalConfig}
  */
+const SECTION_FEATURES = 'Features';
+const SECTION_BUG_FIXES = 'Bug Fixes';
+const SECTION_OTHER_CHANGES = 'Other changes';
+
 export default {
 	branches: [
 		'release',
+		{
+			name: 'beta',
+			prerelease: true
+		},
 		{
 			name: 'devel',
 			prerelease: true
@@ -30,32 +38,32 @@ export default {
 					types: [
 						{
 							type: 'feat',
-							section: 'Features',
+							section: SECTION_FEATURES,
 							hidden: false
 						},
 						{
 							type: 'fix',
-							section: 'Bug Fixes',
+							section: SECTION_BUG_FIXES,
 							hidden: false
 						},
 						{
 							type: 'refactor',
-							section: 'Other changes',
+							section: SECTION_OTHER_CHANGES,
 							hidden: false
 						},
 						{
 							type: 'perf',
-							section: 'Other changes',
+							section: SECTION_OTHER_CHANGES,
 							hidden: false
 						},
 						{
 							type: 'build',
-							section: 'Other changes',
+							section: SECTION_OTHER_CHANGES,
 							hidden: false
 						},
 						{
 							type: 'ci',
-							section: 'Other changes',
+							section: SECTION_OTHER_CHANGES,
 							hidden: false
 						}
 					]

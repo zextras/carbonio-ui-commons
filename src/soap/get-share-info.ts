@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { ErrorSoapBodyResponse, soapFetch } from '@zextras/carbonio-shell-ui';
+import { ErrorSoapBodyResponse, legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
 import { isEmpty } from 'lodash';
 
 import { ResFolder } from '../utils';
@@ -22,13 +22,13 @@ export const getShareInfoRequest = async (): Promise<{
 	isFulfilled: boolean;
 	folders: Array<ResFolder>;
 }> => {
-	const result = await soapFetch<GetShareInfoRequest, GetShareInfoResponse | ErrorSoapBodyResponse>(
-		'GetShareInfo',
-		{
-			_jsns: 'urn:zimbraAccount',
-			includeSelf: 0
-		}
-	);
+	const result = await legacySoapFetch<
+		GetShareInfoRequest,
+		GetShareInfoResponse | ErrorSoapBodyResponse
+	>('GetShareInfo', {
+		_jsns: 'urn:zimbraAccount',
+		includeSelf: 0
+	});
 
 	if ('Fault' in result) {
 		return Promise.reject(result.Fault);

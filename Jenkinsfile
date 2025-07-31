@@ -132,6 +132,7 @@ pipeline {
 				anyOf {
 					branch 'release'
 					branch 'devel'
+					branch 'beta'
 				}
 			}
 			steps {

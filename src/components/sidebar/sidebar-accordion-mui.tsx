@@ -68,7 +68,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 											onClick({ accordion, expanded: !openIds.includes(accordion.id) });
 										}}
 									>
-									<ExpandMoreIcon color="primary"/>
+										<ExpandMoreIcon color="primary" />
 									</button>
 								)
 							}

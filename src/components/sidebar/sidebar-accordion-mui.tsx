@@ -61,13 +61,15 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 							expandIcon={
 								accordion?.children?.length > 0 &&
 								!hasId(accordion, 'all') && (
-									<ExpandMoreIcon
-										color="primary"
+									<button
+										style={{ all: 'unset', cursor: 'pointer' }}
 										onClick={(e): void => {
 											e.preventDefault();
 											onClick({ accordion, expanded: !openIds.includes(accordion.id) });
 										}}
-									/>
+									>
+									<ExpandMoreIcon color="primary"/>
+									</button>
 								)
 							}
 							aria-controls="panel1a-content"

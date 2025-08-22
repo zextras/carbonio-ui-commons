@@ -3,12 +3,15 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { faker } from '@faker-js/faker';
 import { act, waitFor } from '@testing-library/react';
 import { useModal } from '@zextras/carbonio-design-system';
+import { ApiManager } from '@zextras/carbonio-ui-soap-lib';
 import { http, HttpResponse } from 'msw';
 
 import { useInitializeFolders } from './use-initialize-folders';
 import { getSetupServer } from '../__test__/jest-setup';
+import { createSoapAPIInterceptor } from '../__test__/mocks/network/msw/create-api-interceptor';
 import {
 	handleFailedRequest,
 	handleGetFolderRequest
@@ -18,6 +21,7 @@ import {
 	handleEmptyGetShareInfoRequest,
 	handleGetShareInfoRequest
 } from '../__test__/mocks/network/msw/handle-get-share-info';
+import { getMocksContext } from '../__test__/mocks/utils/mocks-context';
 import { setupHook } from '../__test__/test-setup';
 import { useFolderStore } from '../store/zustand/folder/store';
 import { FolderView } from '../types/folder';
@@ -25,8 +29,21 @@ import { folderWorker } from '../worker';
 
 jest.mock('@zextras/carbonio-design-system', () => ({
 	...jest.requireActual('@zextras/carbonio-design-system'),
-	useModal: jest.fn()
+	useModal: jest.fn().mockReturnValue({ createModal: jest.fn(), closeModal: jest.fn() })
 }));
+
+beforeAll(() => {
+	ApiManager.getApiManager().setSessionInfo({
+		accountId: getMocksContext().identities.primary.identity.id,
+		accountName: getMocksContext().identities.primary.identity.email,
+		session: {
+			id: faker.number.int(),
+			_content: faker.number.int()
+		},
+		carbonioVersion: faker.word.words(10),
+		legacyRefreshInfo: {}
+	});
+});
 
 describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parameter', (view) => {
 	test('it will call refresh', async () => {
@@ -55,6 +72,7 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		(useModal as jest.Mock).mockImplementation(() => ({ createModal: createModalSpy }));
 		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleFailedRequest));
+		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
 		await waitFor(() => {
 			expect(workerSpy).toHaveBeenCalledTimes(0);
@@ -86,7 +104,9 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 	});
 	it('should not open the error modal when getShareInfo returns an empty array', async () => {
 		const createModalSpy = jest.fn();
+		(useModal as jest.Mock).mockImplementation(() => ({ createModal: createModalSpy }));
 		useFolderStore.setState({ folders: {} });
+		createSoapAPIInterceptor('NoOp');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(
 			http.post('/service/soap/GetShareInfoRequest', handleEmptyGetShareInfoRequest)

@@ -113,5 +113,4 @@ export * from './types/sidebar';
 export * from './types/soap';
 export * from './types/styled-components';
 export * from './types/tags';
-export * from './types/user-accounts';
 export * from './types/workers';

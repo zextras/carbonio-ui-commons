@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { SoapNotify } from '@zextras/carbonio-shell-ui';
+import type { SoapNotify } from '@zextras/carbonio-ui-soap-lib';
 
 import type { Tag, TagMessage, Tags } from '../types/tags';
 

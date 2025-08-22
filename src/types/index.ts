@@ -5,7 +5,6 @@
  */
 
 export * from './modals';
-export * from './user-accounts';
 export * from './soap';
 export * from './folder';
 export * from './tags';

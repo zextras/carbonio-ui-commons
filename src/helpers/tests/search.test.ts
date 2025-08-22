@@ -23,6 +23,31 @@ describe('search', () => {
 			expect(result).toBe(label);
 		});
 
+		it("should return value of the 'label' field if it is set and 'value' is empty string", () => {
+			const label = faker.word.noun();
+			const chip = { label, value: '' };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe(label);
+		});
+
+		it("should return empty string if both 'value' and 'label' are empty string", () => {
+			const chip = { label: '', value: '' };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe('');
+		});
+
+		it("should return empty string if 'value' is undefined and 'label' is empty string", () => {
+			const chip = { label: '', value: undefined };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe('');
+		});
+
+		it("should return empty string if 'label' is undefined and 'value' is empty string", () => {
+			const chip = { label: undefined, value: '' };
+			const result = convertSearchChipToString(chip);
+			expect(result).toBe('');
+		});
+
 		it("should return value of the 'value' field if it is set", () => {
 			const value = faker.word.noun();
 			const label = faker.word.noun();
@@ -96,6 +121,47 @@ describe('search', () => {
 			const chip = { value: `${prefix}:${term}` };
 			const result = convertSearchChipToString(chip);
 			expect(result).toBe(`${prefix}:${term}`);
+		});
+	});
+	describe('convertSearchChipToString - boolean value/label', () => {
+		it('should return empty string if chip.value and chip.label are both boolean true', () => {
+			const chip = {
+				value: true,
+				label: true
+			};
+			expect(convertSearchChipToString(chip)).toBe('');
+		});
+
+		it('should return empty string if chip.value and chip.label are both boolean false', () => {
+			const chip = {
+				value: false,
+				label: false
+			};
+			expect(convertSearchChipToString(chip)).toBe('');
+		});
+
+		it('should use label if value is boolean and label is a string', () => {
+			const chip = {
+				value: true,
+				label: 'subject:test'
+			};
+			expect(convertSearchChipToString(chip)).toBe('subject:test');
+		});
+
+		it('should use value if label is boolean and value is a string', () => {
+			const chip = {
+				value: 'to:john@example.com',
+				label: false
+			};
+			expect(convertSearchChipToString(chip)).toBe('to:john@example.com');
+		});
+
+		it('should quote multiword label string even if value is boolean', () => {
+			const chip = {
+				value: false,
+				label: 'from john@example.com'
+			};
+			expect(convertSearchChipToString(chip)).toBe('"from john@example.com"');
 		});
 	});
 });

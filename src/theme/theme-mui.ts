@@ -5,6 +5,8 @@
  */
 
 import { createTheme, CustomPaletteOptions, CustomTheme } from '@mui/material/styles';
+import { ThemeProviderProps } from '@zextras/carbonio-design-system';
+import { merge } from 'lodash';
 
 export const theme: CustomTheme = createTheme(<CustomPaletteOptions>{
 	palette: {
@@ -273,3 +275,6 @@ export const themeMui = createTheme({
 		}
 	}
 });
+
+export const themeMuiExtension: ThemeProviderProps['extension'] = (parentTheme) =>
+	merge({}, themeMui, parentTheme);

@@ -22,7 +22,11 @@ import {
 	RenderHookOptions
 } from '@testing-library/react';
 import userEvent, { UserEvent as RTLUserEvent } from '@testing-library/user-event';
-import { ModalManager, SnackbarManager, ThemeProvider } from '@zextras/carbonio-design-system';
+import {
+	ModalManager,
+	SnackbarManager,
+	ThemeProvider as DSThemeProvider
+} from '@zextras/carbonio-design-system';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { MemoryRouter, MemoryRouterProps, Route, RouteProps, Routes } from 'react-router-dom';
@@ -30,6 +34,7 @@ import { Store } from 'redux';
 
 import { getAppI18n } from './i18n/i18n-test-factory';
 import { previewContextMock, PreviewsManagerContext } from './mocks/carbonio-ui-preview';
+import { themeMuiExtension } from '../theme/theme-mui';
 
 type ByRoleWithIconOptions = ByRoleOptions & {
 	icon: string | RegExp;
@@ -110,7 +115,7 @@ export const ProvidersWrapper = ({
 	const i18n = useMemo(() => getAppI18n(), []);
 
 	return (
-		<ThemeProvider>
+		<DSThemeProvider extension={themeMuiExtension}>
 			<MemoryRouter
 				future={{ v7_startTransition: false, v7_relativeSplatPath: false }}
 				initialEntries={initialEntries}
@@ -133,7 +138,7 @@ export const ProvidersWrapper = ({
 					/>
 				</Routes>
 			</MemoryRouter>
-		</ThemeProvider>
+		</DSThemeProvider>
 	);
 };
 

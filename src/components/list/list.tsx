@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { List } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const CustomList = styled(List)`
 	padding-bottom: 0.25rem;

@@ -5,12 +5,10 @@
  */
 import React from 'react';
 
-import { AnyColor, getColor, ListItem, ListItemProps } from '@zextras/carbonio-design-system';
 import styled from '@emotion/styled';
+import { AnyColor, getColor, ListItem, ListItemProps } from '@zextras/carbonio-design-system';
 
-const CustomListItemHelper = styled(ListItem)``;
-
-const StyledCustomListItem = styled(CustomListItemHelper)<{
+const StyledCustomListItem = styled(ListItem)<{
 	$baseBackgroundColor: AnyColor;
 	$focusBackgroundColor: AnyColor;
 }>`
@@ -19,10 +17,6 @@ const StyledCustomListItem = styled(CustomListItemHelper)<{
 	&:active {
 		background: ${({ $focusBackgroundColor, theme }): string =>
 			getColor($focusBackgroundColor, theme)};
-		${CustomListItemHelper} {
-			background: ${({ $focusBackgroundColor, theme }): string =>
-				getColor($focusBackgroundColor, theme)};
-		}
 	}
 
 	&:hover {

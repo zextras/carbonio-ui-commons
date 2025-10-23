@@ -2,10 +2,10 @@
 	"name": "@zextras/carbonio-ui-commons",
 	"version": "1.0.1",
 	"description": "Carbonio UI Commons",
-	"types": "./lib/index.d.ts",
+	"types": "./lib/types/index.d.ts",
 	"exports": {
 		".": {
-			"types": "./lib/index.d.ts",
+			"types": "./lib/types/index.d.ts",
 			"import": "./lib/index.mjs",
 			"require": "./lib/index.js"
 		},

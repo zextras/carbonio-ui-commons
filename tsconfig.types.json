@@ -4,7 +4,7 @@
 	"exclude": ["src/**/*.test.*", "node_modules", "dist"],
 	"compilerOptions": {
 		"noUncheckedIndexedAccess": false,
-		"declarationDir": "./dist/types",
+		"declarationDir": "./lib/types",
 		"types": ["node"]
 	}
 }

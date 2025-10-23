@@ -1,0 +1,10 @@
+{
+	"extends": "@zextras/carbonio-ui-configs/rules/tsconfig.lib.json",
+	"files": ["src/index.ts"],
+	"exclude": ["src/**/*.test.*", "node_modules", "dist"],
+	"compilerOptions": {
+		"noUncheckedIndexedAccess": false,
+		"declarationDir": "./lib/types",
+		"types": ["node"]
+	}
+}

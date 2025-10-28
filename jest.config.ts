@@ -43,7 +43,8 @@ const config: Config = {
 	},
 	transform: {
 		'^.+\\.[t|j]sx?$': ['babel-jest', { configFile: './babel.config.jest.js' }]
-	}
+	},
+	transformIgnorePatterns: ['/node_modules/(?!until-async).+\\.js$']
 };
 
 export default config;

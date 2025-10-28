@@ -37,7 +37,7 @@ export default {
 		babel({
 			babelHelpers: 'runtime',
 			extensions: ['.js', '.jsx', '.ts', '.tsx'],
-			ignore: ['node_modules']
+			ignore: ['node_modules', 'lib']
 		}),
 		postcss(),
 		{
@@ -53,5 +53,21 @@ export default {
 		},
 		json()
 	],
-	external: ['react']
+	external: [
+		'react',
+		'react-dom',
+		'react-i18next',
+		'react-router-dom',
+		'lodash',
+		'@zextras/carbonio-design-system',
+		'@zextras/carbonio-shell-ui',
+		/@emotion\/.*$/,
+		/@mui\/.*$/,
+		'core-js',
+		'uuid',
+		'zustand',
+		'i18next',
+		'immer',
+		'@zextras/carbonio-ui-soap-lib'
+	]
 };

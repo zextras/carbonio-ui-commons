@@ -89,6 +89,7 @@
 		"react-redux": "^8.0.5",
 		"rollup": "^4.35.0",
 		"rollup-plugin-postcss": "^4.0.2",
+		"ts-node": "^10.9.2",
 		"typescript": "^5.7.2"
 	},
 	"dependencies": {

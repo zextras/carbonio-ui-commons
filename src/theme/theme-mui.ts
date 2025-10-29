@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { createTheme, CustomPaletteOptions, CustomTheme } from '@mui/material/styles';
+import { createTheme, CustomPaletteOptions, CustomTheme } from '@mui/material';
 import { ThemeProviderProps } from '@zextras/carbonio-design-system';
 import { merge } from 'lodash';
 

@@ -6,7 +6,7 @@
 
 import { PaletteColorOptions, PaletteOptions, Theme } from '@mui/material';
 
-declare module '@mui/material/styles' {
+declare module '@mui/material' {
 	interface CustomPaletteOptions extends PaletteOptions {
 		palette: {
 			currentColor: PaletteColorOptions;

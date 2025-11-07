@@ -3,9 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const folderWorker = new Worker(new URL('./folder', import.meta.url));
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const tagsWorker = new Worker(new URL('./tags', import.meta.url));
+import path from 'path';
+
+export const folderWorker = new Worker(path.dirname('./folder.ts'));
+export const tagsWorker = new Worker(path.dirname('./tags.ts'));

@@ -8,8 +8,7 @@
 			"types": "./lib/types/index.d.ts",
 			"import": "./lib/index.mjs",
 			"require": "./lib/index.js"
-		},
-		"./*": null
+		}
 	},
 	"publishConfig": {
 		"access": "public"

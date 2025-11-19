@@ -6,7 +6,7 @@
 import React, { ReactElement } from 'react';
 
 import { Container, Icon, Padding, Row, Text, getColor } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import { CustomLabelFactoryProps } from '../../types/select';
 

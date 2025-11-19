@@ -6,8 +6,7 @@
  */
 import React, { ChangeEvent, ReactElement, useMemo, useState } from 'react';
 
-import { ThemeProvider } from '@mui/material';
-import { Button, Container, Input, Padding } from '@zextras/carbonio-design-system';
+import { Button, Container, Input, Padding, ThemeProvider } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
 import { FlatFolders } from './flat-folders';
@@ -16,8 +15,8 @@ import { FoldersAccordion } from './folders-accordion';
 import { useFolders } from './hooks';
 import { FOLDERS } from '../../../constants/folders';
 import { getFolder } from '../../../store/zustand/folder/hooks';
-import { themeMui } from '../../../theme/theme-mui';
 import { Folder } from '../../../types';
+import { themeMuiExtension } from '../../../theme/theme-mui';
 
 export type FolderSelectorProps = {
 	inputLabel?: string;
@@ -81,7 +80,7 @@ export const FolderSelector = ({
 						filterChildren={filterChildren}
 					/>
 				) : (
-					<ThemeProvider theme={themeMui}>
+					<ThemeProvider extension={themeMuiExtension}>
 						<Padding vertical="medium" />
 						<FoldersAccordion
 							folders={rootFolders}

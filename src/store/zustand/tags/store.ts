@@ -14,6 +14,9 @@ export const useTagStore = create<TagState>()(() => ({
 	tags: {}
 }));
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 tagsWorker.onmessage = ({ data }): void => {
+	console.log('store tags Worker');
 	useTagStore.setState(data);
 };

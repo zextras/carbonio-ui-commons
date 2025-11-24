@@ -10,6 +10,7 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import postcss from 'rollup-plugin-postcss';
 
 import pkg from './package.json' with { type: 'json' };
+import webWorkerLoader from "rollup-plugin-web-worker-loader";
 
 export default {
 	input: 'src/index.ts',
@@ -33,6 +34,8 @@ export default {
 		nodeResolve({
 			extensions: ['.mjs', '.js', '.json', '.node', '.ts', '.tsx', '.jsx']
 		}),
+
+		webWorkerLoader({inline: true, extensions: ['.js','.ts']}),
 		commonjs(),
 		babel({
 			babelHelpers: 'runtime',

@@ -65,6 +65,7 @@ function deletedIdsContainTags({
 }
 
 onmessage = ({ data }: TagMessage): void => {
+	console.log('tags Worker');
 	if (data.op === 'refresh' && data.tags) postMessage({ tags: handleTagRefresh(data.tags.tag) });
 
 	const tagIds = data.state && Object.keys(data.state);

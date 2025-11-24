@@ -3,7 +3,15 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import path from 'path';
 
-export const folderWorker = new Worker(path.dirname('./folder.ts'));
-export const tagsWorker = new Worker(path.dirname('./tags.ts'));
+// eslint-disable-next-line import/no-unresolved,@typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line import/no-unresolved
+import FolderWorker from 'web-worker:./folder';
+// eslint-disable-next-line import/no-unresolved,@typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line import/no-unresolved
+import TagWorker from 'web-worker:./tags';
+
+export const folderWorker = new FolderWorker();
+export const tagsWorker = new TagWorker();

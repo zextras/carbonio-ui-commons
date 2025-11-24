@@ -29,6 +29,8 @@ export const useFolderStore = create<FolderState>()((set) => ({
 	}
 }));
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 folderWorker.onmessage = ({ data }): void => {
 	useFolderStore.setState(data);
 };

@@ -6,7 +6,7 @@
 
 import React, { FC, useCallback, useRef } from 'react';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { ExpandMore } from '@mui/icons-material';
 import { Accordion, AccordionDetails, AccordionSummary, Container } from '@mui/material';
 import { useLocalStorage } from '@zextras/carbonio-shell-ui';
 
@@ -68,7 +68,7 @@ export const SidebarAccordionMui: FC<SidebarAccordionProps> = ({
 											onClick({ accordion, expanded: !openIds.includes(accordion.id) });
 										}}
 									>
-										<ExpandMoreIcon color="primary" />
+										<ExpandMore color="primary" />
 									</button>
 								)
 							}

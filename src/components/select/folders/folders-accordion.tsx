@@ -6,7 +6,7 @@
 
 import React, { SyntheticEvent, useState } from 'react';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { ExpandMore } from '@mui/icons-material';
 import {
 	Accordion as MUIAccordion,
 	Container as MUIContainer,
@@ -72,7 +72,7 @@ export const FoldersAccordion = ({
 						expandIcon={
 							folder?.children?.length > 0 &&
 							!hasId(folder, 'all') && (
-								<ExpandMoreIcon
+								<ExpandMore
 									color="primary"
 									onClick={(e): void => {
 										e.preventDefault();

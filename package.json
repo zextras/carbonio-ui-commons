@@ -16,13 +16,10 @@
 		"npm": "v10"
 	},
 	"scripts": {
-		"build": "npm run build:pkg && npm run build:lib",
-		"build:dev": "npm run build:pkg -- --dev --pkgRel $(date +%s) && npm run build:lib",
-		"build:pkg": "sdk build",
+		"build": "npm run build:lib",
+		"build:dev": "npm run build:lib",
 		"prebuild:lib": "rm -rf lib",
 		"build:lib": "tsc -p tsconfig.lib.json",
-		"deploy": "npm run build:pkg && sdk deploy",
-		"deploy:dev": "npm run build:pkg -- -d && sdk deploy",
 		"test": "TZ=Europe/Rome jest --testTimeout=20000 --maxWorkers=50%",
 		"type-check": "tsc --noEmit",
 		"type-check:watch": "npm run type-check -- --watch",
@@ -91,7 +88,6 @@
 		"@mui/icons-material": "^5.15.12",
 		"@mui/material": "^5.15.12",
 		"@zextras/carbonio-design-system": "11.0.0",
-		"@zextras/carbonio-shell-ui": "13.0.0",
 		"@zextras/carbonio-ui-preview": "4.0.0",
 		"@zextras/carbonio-ui-soap-lib": "^1.0.3",
 		"core-js": "^3.36.0",
@@ -109,7 +105,8 @@
 	},
 	"peerDependencies": {
 		"@emotion/react": "^11.14.0",
-		"@emotion/styled": "^11.14.0"
+		"@emotion/styled": "^11.14.0",
+		"@zextras/carbonio-shell-ui": "12.0.0-devel.1756979172527"
 	},
 	"files": [
 		"lib",

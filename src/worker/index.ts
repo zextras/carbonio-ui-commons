@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import path from 'path';
 
-export const folderWorker = new Worker(path.join(__dirname, './folder'));
-
-export const tagsWorker = new Worker(path.join(__dirname, './tags'));
+export const folderWorker = new Worker(new URL('./folder', import.meta.url));
+export const tagsWorker = new Worker(new URL('./tags', import.meta.url));

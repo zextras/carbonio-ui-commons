@@ -8,5 +8,5 @@ import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 
 export const usePrefs = (): AccountSettingsPrefs => {
 	const { prefs } = useUserSettings();
-	return prefs;
+	return prefs as AccountSettingsPrefs;
 };

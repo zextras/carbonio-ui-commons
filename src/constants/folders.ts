@@ -14,7 +14,8 @@ export const FolderActionsType = {
 	REMOVE_FROM_LIST: 'removeFromList',
 	SHARES_INFO: 'sharesInfo',
 	SHARE: 'share',
-	MARK_ALL_READ: 'read'
+	MARK_ALL_READ: 'read',
+	ARCHIVE: 'archive'
 } as const;
 
 export const FOLDERS = {
@@ -34,5 +35,6 @@ export const FOLDERS = {
 	IM_LOGS: '14',
 	TASKS: '15',
 	BRIEFCASE: '16',
-	LAST_SYSTEM_FOLDER_POSITION: '16.1'
+	ARCHIVE: '20',
+	LAST_SYSTEM_FOLDER_POSITION: '20.1'
 } as const;

@@ -113,6 +113,7 @@ export const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	i4ms: f.i4ms,
 	i4next: f.i4next,
 	url: f.url,
+	lsd: f.lsd,
 	activesyncdisabled: !!f.activesyncdisabled,
 	webOfflineSyncDays: f.webOfflineSyncDays,
 	perm: f.perm,

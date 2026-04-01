@@ -118,6 +118,8 @@ export type BaseFolder = {
 	i4next?: number;
 	// URL (RSS, iCal, etc.) this folder syncs its contents to
 	url?: string;
+	// Last successful sync date from external URL in epoch seconds
+	lsd?: number;
 	activesyncdisabled: boolean;
 	// Number of days for which web client would sync folder data for offline use
 	webOfflineSyncDays?: number;

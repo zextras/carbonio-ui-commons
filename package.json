@@ -17,8 +17,8 @@
 		"pnpm": ">=10"
 	},
 	"scripts": {
-		"build": "npm run build:lib",
-		"build:dev": "npm run build:lib",
+		"build": "pnpm run build:lib",
+		"build:dev": "pnpm run build:lib",
 		"prebuild:lib": "rm -rf lib",
 		"build:lib": "tsc -p tsconfig.lib.json",
 		"test": "TZ=Europe/Rome jest --testTimeout=20000 --maxWorkers=50%",
@@ -32,7 +32,7 @@
 		"prestart": "pnpm run prebuild:pkg",
 		"prettify:check": "prettier --check .",
 		"start": "sdk watch",
-		"prepack": "npm run build:lib",
+		"prepack": "pnpm run build:lib",
 		"packTo": "pnpm pack --pack-destination $PKG_PATH && cd $PKG_PATH && pnpm add ./zextras-carbonio-ui-commons-$npm_package_version.tgz",
 		"deploy-on-module": "pnpm pack && rm -rf $PKG_PATH/node_modules/@zextras/carbonio-ui-commons/* && tar -xf zextras-carbonio-ui-commons-$npm_package_version.tgz -C $PKG_PATH/node_modules/@zextras/carbonio-ui-commons/ --strip-components 1"
 	},

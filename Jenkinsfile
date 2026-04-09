@@ -44,6 +44,11 @@ pipeline {
                         echo "NodeJS Major Version: $nodeVersion"
                     }
                 }
+                container('nodejs-' + nodeVersion) {
+                    script {
+                        sh 'corepack enable'
+                    }
+                }
 				withCredentials([
 						usernamePassword(
 								credentialsId: "npm-zextras-bot-auth-token",
@@ -61,7 +66,7 @@ pipeline {
             steps {
                 container('nodejs-' + nodeVersion) {
                     script {
-                        sh 'corepack enable && pnpm install --frozen-lockfile'
+                        sh 'pnpm install --frozen-lockfile'
                     }
                 }
             }
@@ -140,7 +145,7 @@ pipeline {
 					script {
    						withCredentials([usernamePassword(credentialsId: 'npm-zextras-bot-auth-token', usernameVariable: 'AUTH_USERNAME', passwordVariable: 'NPM_TOKEN')]) {
                             withCredentials([usernamePassword(credentialsId: 'jenkins-integration-with-github-account', usernameVariable: 'GH_USERNAME', passwordVariable: 'GH_TOKEN')]) {
-                                sh "corepack enable && npx semantic-release"
+                                sh "npx semantic-release"
                             }
                         }
 					}

@@ -61,7 +61,7 @@ pipeline {
             steps {
                 container('nodejs-' + nodeVersion) {
                     script {
-                        sh 'pnpm install --frozen-lockfile'
+                        sh 'corepack enable && pnpm install --frozen-lockfile'
                     }
                 }
             }

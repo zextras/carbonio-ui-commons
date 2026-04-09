@@ -2,19 +2,19 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: carbonio-ui-commons
 Upstream-Contact: Zextras <https://www.zextras.com>
 
-Files: translations/*
+Files: translations/\*
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: AGPL-3.0-only
 
-Files: .idea/*
+Files: .idea/\*
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: CC0-1.0
 
-Files: .vscode/*
+Files: .vscode/\*
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: CC0-1.0
 
-Files: .husky/*
+Files: .husky/\*
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: CC0-1.0
 
@@ -26,9 +26,13 @@ Files: package.json
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: AGPL-3.0-only
 
-Files: package-lock.json
+Files: pnpm-lock.yaml
 Copyright: 2021 Zextras <https://www.zextras.com>
-License: AGPL-3.0-only
+License: CC0-1.0
+
+Files: .prettierignore
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: CC0-1.0
 
 Files: tsconfig.json
 Copyright: 2021 Zextras <https://www.zextras.com>
@@ -38,11 +42,11 @@ Files: CHANGELOG.md
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: AGPL-3.0-only
 
-Files: src/*
+Files: src/\*
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: CC-BY-NC-SA-4.0
 
-Files: .github/*
+Files: .github/\*
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: CC0-1.0
 

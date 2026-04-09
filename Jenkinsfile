@@ -44,6 +44,11 @@ pipeline {
                         echo "NodeJS Major Version: $nodeVersion"
                     }
                 }
+                container('nodejs-' + nodeVersion) {
+                    script {
+                        sh 'corepack enable'
+                    }
+                }
 				withCredentials([
 						usernamePassword(
 								credentialsId: "npm-zextras-bot-auth-token",
@@ -61,7 +66,7 @@ pipeline {
             steps {
                 container('nodejs-' + nodeVersion) {
                     script {
-                        sh 'npm ci'
+                        sh 'pnpm install --frozen-lockfile'
                     }
                 }
             }
@@ -71,28 +76,28 @@ pipeline {
 				stage('Prettify') {
 					steps {
 						container('nodejs-' + nodeVersion) {
-							sh 'npm run prettify:check'
+							sh 'pnpm run prettify:check'
 						}
 					}
 				}
 				stage('Lint') {
 					steps {
 						container('nodejs-' + nodeVersion) {
-							sh 'npm run lint'
+							sh 'pnpm run lint'
 						}
 					}
 				}
 				stage('TypeCheck') {
 					steps {
 						container('nodejs-' + nodeVersion) {
-							sh 'npm run type-check'
+							sh 'pnpm run type-check'
 						}
 					}
 				}
 				stage('Unit Tests') {
 					steps {
 						container('nodejs-' + nodeVersion) {
-							sh 'npm run test'
+							sh 'pnpm run test'
 						}
 					}
 					post {
@@ -121,7 +126,7 @@ pipeline {
 			steps {
 				container('nodejs-' + nodeVersion) {
 					script {
-						sh 'npm run build'
+						sh 'pnpm run build'
 					}
 				}
 			}

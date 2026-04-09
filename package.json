@@ -74,6 +74,7 @@
 		"babel-plugin-transform-import-meta": "2.3.3",
 		"eslint": "8.57.1",
 		"eslint-plugin-jest-dom": "5.5.0",
+		"prettier": "3.6.2",
 		"eslint-plugin-notice": "0.9.10",
 		"eslint-plugin-testing-library": "5.11.1",
 		"eslint-plugin-unused-imports": "2.0.0",

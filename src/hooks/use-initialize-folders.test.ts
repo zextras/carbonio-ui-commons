@@ -10,7 +10,7 @@ import { ApiManager } from '@zextras/carbonio-ui-soap-lib';
 import { http, HttpResponse } from 'msw';
 
 import { useInitializeFolders } from './use-initialize-folders';
-import { getSetupServer } from '../__test__/jest-setup';
+import { getSetupServer } from '../__test__/vitest-setup';
 import { createSoapAPIInterceptor } from '../__test__/mocks/network/msw/create-api-interceptor';
 import {
 	handleFailedRequest,
@@ -27,10 +27,13 @@ import { useFolderStore } from '../store/zustand/folder/store';
 import { FolderView } from '../types/folder';
 import { folderWorker } from '../worker';
 
-jest.mock('@zextras/carbonio-design-system', () => ({
-	...jest.requireActual('@zextras/carbonio-design-system'),
-	useModal: jest.fn().mockReturnValue({ createModal: jest.fn(), closeModal: jest.fn() })
-}));
+vi.mock('@zextras/carbonio-design-system', async (importOriginal) => {
+	const actual = await importOriginal();
+	return {
+		...(actual as object),
+		useModal: vi.fn().mockReturnValue({ createModal: vi.fn(), closeModal: vi.fn() })
+	};
+});
 
 beforeAll(() => {
 	ApiManager.getApiManager().setSessionInfo({
@@ -47,8 +50,8 @@ beforeAll(() => {
 
 describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parameter', (view) => {
 	test('it will call refresh', async () => {
-		(useModal as jest.Mock).mockImplementation(() => ({ createModal: jest.fn() }));
-		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
+		(useModal as ReturnType<typeof vi.fn>).mockImplementation(() => ({ createModal: vi.fn() }));
+		const workerSpy = vi.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
@@ -68,9 +71,11 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		});
 	});
 	test('it will open error-initialize-modal when GetFolderRequest fails', async () => {
-		const createModalSpy = jest.fn();
-		(useModal as jest.Mock).mockImplementation(() => ({ createModal: createModalSpy }));
-		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
+		const createModalSpy = vi.fn();
+		(useModal as ReturnType<typeof vi.fn>).mockImplementation(() => ({
+			createModal: createModalSpy
+		}));
+		const workerSpy = vi.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleFailedRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 		await waitFor(() => setupHook(useInitializeFolders, { initialProps: [view] }));
@@ -86,9 +91,11 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 	});
 
 	test('it will open error-initialize-modal  when GetShareInfoRequest fails', async () => {
-		const createModalSpy = jest.fn();
-		(useModal as jest.Mock).mockImplementation(() => ({ createModal: createModalSpy }));
-		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
+		const createModalSpy = vi.fn();
+		(useModal as ReturnType<typeof vi.fn>).mockImplementation(() => ({
+			createModal: createModalSpy
+		}));
+		const workerSpy = vi.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleFailedRequest));
 		setupHook(useInitializeFolders, { initialProps: [view] });
@@ -103,8 +110,10 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 		});
 	});
 	it('should not open the error modal when getShareInfo returns an empty array', async () => {
-		const createModalSpy = jest.fn();
-		(useModal as jest.Mock).mockImplementation(() => ({ createModal: createModalSpy }));
+		const createModalSpy = vi.fn();
+		(useModal as ReturnType<typeof vi.fn>).mockImplementation(() => ({
+			createModal: createModalSpy
+		}));
 		useFolderStore.setState({ folders: {} });
 		createSoapAPIInterceptor('NoOp');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
@@ -117,13 +126,13 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 			})
 		);
 		await act(async () => {
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		expect(createModalSpy).not.toHaveBeenCalled();
 	});
 	test('If multiple accounts are available they will be on the same level of the main account', async () => {
 		useFolderStore.setState({ folders: {} });
-		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
+		const workerSpy = vi.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(http.post('/service/soap/GetShareInfoRequest', handleGetShareInfoRequest));
 		await waitFor(() =>
@@ -152,7 +161,7 @@ describe.each<FolderView>(['appointment', 'message', 'contact'])('with %s parame
 
 	test('If only main account is available postMessage will be called with an array with 1 item', async () => {
 		useFolderStore.setState({ folders: {} });
-		const workerSpy = jest.spyOn(folderWorker, 'postMessage');
+		const workerSpy = vi.spyOn(folderWorker, 'postMessage');
 		getSetupServer().use(http.post('/service/soap/GetFolderRequest', handleGetFolderRequest));
 		getSetupServer().use(
 			http.post('/service/soap/GetShareInfoRequest', () => {

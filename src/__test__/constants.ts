@@ -48,3 +48,5 @@ export const FOLDERS_DESCRIPTORS = {
 		desc: 'calendar'
 	}
 };
+
+export const VITEST_DEFAULT_TIMEZONE = 'Europe/Berlin';

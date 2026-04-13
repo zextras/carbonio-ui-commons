@@ -14,7 +14,7 @@ import { FolderInitializationErrorModal } from '../folder-initialization-error-m
 beforeAll(() => {
 	Object.defineProperty(window, 'location', {
 		configurable: true,
-		value: { reload: jest.fn() }
+		value: { reload: vi.fn() }
 	});
 });
 
@@ -27,7 +27,7 @@ describe('FolderInitializationErrorModal', () => {
 	});
 
 	it('calls onClose when the close button is clicked', async () => {
-		const onClose = jest.fn();
+		const onClose = vi.fn();
 		const { user } = setupTest(<FolderInitializationErrorModal onClose={onClose} />);
 		const closeButton = await screen.findByTestId('icon: CloseOutline');
 		await act(async () => {

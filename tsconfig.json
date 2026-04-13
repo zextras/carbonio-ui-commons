@@ -1,8 +1,9 @@
 {
 	"extends": "@zextras/carbonio-ui-configs/rules/tsconfig.type-check.json",
 	"compilerOptions": {
-		"noUncheckedIndexedAccess": false
+		"noUncheckedIndexedAccess": false,
+		"types": ["vitest/globals"],
 	},
-	"include": ["**/*", ".eslintrc.js", "jest.config.ts", "jest-setup.ts"],
+	"include": ["**/*"],
 	"exclude": ["./node_modules/*", "./dist/*"]
 }

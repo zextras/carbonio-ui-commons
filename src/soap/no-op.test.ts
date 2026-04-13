@@ -15,7 +15,7 @@ describe('NoOp', () => {
 		const reason = faker.word.preposition(8);
 		const response: ErrorSoapBodyResponse = buildSoapErrorResponseBody({ reason });
 		createSoapAPIInterceptor('NoOp', response);
-		await expect(NoOp).rejects.toThrowError(reason);
+		await expect(NoOp).rejects.toThrow(reason);
 	});
 
 	it('should resolve if the API returns success', () => {

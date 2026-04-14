@@ -93,4 +93,3 @@ export const useIntegratedFunction = vi.fn(
 	(_id: Parameters<typeof shell.useIntegratedFunction>[0]) =>
 		[vi.fn(), false] as ReturnType<typeof shell.useIntegratedFunction>
 );
-

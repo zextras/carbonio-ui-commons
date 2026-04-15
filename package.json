@@ -63,7 +63,7 @@
 		"@testing-library/user-event": "14.6.1",
 		"@tsconfig/node20": "20.1.9",
 		"@types/jest": "29.5.14",
-		"@types/lodash": "4.17.20",
+		"@types/lodash": "4.17.24",
 		"@types/react": "18.3.23",
 		"@types/react-dom": "18.3.7",
 		"@types/react-redux": "7.1.34",

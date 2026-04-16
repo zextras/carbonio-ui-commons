@@ -24,7 +24,7 @@ describe('flattenFolders', () => {
 			<FlatFolders
 				rootFolders={[root]}
 				searchString={'trash'}
-				onFolderSelected={jest.fn()}
+				onFolderSelected={vi.fn()}
 				allowRootSelection={false}
 			/>
 		);
@@ -47,7 +47,7 @@ describe('flattenFolders', () => {
 			<FlatFolders
 				rootFolders={[root]}
 				searchString={'trash'}
-				onFolderSelected={jest.fn()}
+				onFolderSelected={vi.fn()}
 				filterChildren={(folder: Folder): boolean => folder.name === 'trash'}
 				allowRootSelection={false}
 			/>
@@ -64,7 +64,7 @@ describe('flattenFolders', () => {
 			id: '1',
 			children: []
 		});
-		const onSelect = jest.fn();
+		const onSelect = vi.fn();
 
 		const { user } = setupTest(
 			<FlatFolders
@@ -85,7 +85,7 @@ describe('flattenFolders', () => {
 			id: '1',
 			children: []
 		});
-		const onSelect = jest.fn();
+		const onSelect = vi.fn();
 
 		const { user } = setupTest(
 			<FlatFolders

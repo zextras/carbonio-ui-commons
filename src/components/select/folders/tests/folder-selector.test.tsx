@@ -10,7 +10,7 @@ import { setupTest, screen } from '../../../../__test__/test-setup';
 import { FolderSelector } from '../folder-selector';
 
 describe('Folder Selector', () => {
-	const onFolderSelected = jest.fn();
+	const onFolderSelected = vi.fn();
 	it('should display the folders accordion when there is no filter in the search input', async () => {
 		setupTest(
 			<FolderSelector

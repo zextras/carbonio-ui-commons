@@ -21,7 +21,7 @@ import { handleMessage, normalize, testUtils } from '../handle-message';
 
 beforeEach(() => {
 	testUtils.resetFolders();
-	window.postMessage = jest.fn();
+	window.postMessage = vi.fn();
 });
 
 const getRandomWord = (used: Array<string>): string => {
@@ -119,7 +119,7 @@ describe('folders web worker', () => {
 			expect(testUtils.getCurrentView()).toBe(FOLDER_VIEW.appointment);
 		});
 		test('postMessage is called with normalized folders', () => {
-			const workerSpy = jest.spyOn(window, 'postMessage');
+			const workerSpy = vi.spyOn(window, 'postMessage');
 			const tree = generateSoapRoot(true, true, faker.string.uuid());
 			const data = {
 				op: 'refresh',
@@ -156,7 +156,7 @@ describe('folders web worker', () => {
 			workerSpy.mockRestore();
 		});
 		test('folders are flattened', () => {
-			const workerSpy = jest.spyOn(window, 'postMessage');
+			const workerSpy = vi.spyOn(window, 'postMessage');
 			const primaryAccount = getAccountSoapRoot(true);
 			const calendar = generateSoapSystemFolder(BASE_FOLDER_CALENDAR_ARGS);
 			const calendarSubFolderLevel1 = generateSoapCustomChild(calendar);
@@ -215,7 +215,7 @@ describe('folders web worker', () => {
 			);
 		});
 		test('each folder has its own children structure', () => {
-			const workerSpy = jest.spyOn(window, 'postMessage');
+			const workerSpy = vi.spyOn(window, 'postMessage');
 			const primaryAccount = getAccountSoapRoot(true);
 			const calendar = generateSoapSystemFolder(BASE_FOLDER_CALENDAR_ARGS);
 			const calendarSubFolderLevel1 = generateSoapCustomChild(calendar);

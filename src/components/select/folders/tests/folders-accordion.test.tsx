@@ -24,7 +24,7 @@ describe('FlattenFoldersAccordion', () => {
 
 	const root2Child1 = generateFolder({ id: 'root-2-child-1', children: [] });
 	const rootFolder2 = generateFolder({ id: '2', children: [root2Child1] });
-	const onFolderSelected = jest.fn();
+	const onFolderSelected = vi.fn();
 
 	it('should render all root folders', async () => {
 		setupTest(
@@ -94,7 +94,7 @@ describe('FlattenFoldersAccordion', () => {
 			id: '1',
 			children: []
 		});
-		const onSelect = jest.fn();
+		const onSelect = vi.fn();
 
 		const { user } = setupTest(
 			<FoldersAccordion
@@ -115,7 +115,7 @@ describe('FlattenFoldersAccordion', () => {
 			id: '1',
 			children: []
 		});
-		const onSelect = jest.fn();
+		const onSelect = vi.fn();
 
 		const { user } = setupTest(
 			<FoldersAccordion

@@ -331,17 +331,36 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 			}
 		}
 	});
+
+const collectFolderSubtreeIds = (folderId: string): string[] => {
+	const folder = folders[folderId];
+	if (!folder) {
+		return [];
+	}
+
+	return folder.children.reduce<string[]>(
+		(acc, child) => [...acc, child.id, ...collectFolderSubtreeIds(child.id)],
+		[]
+	);
+};
+
 export const handleFolderDeleted = (deleted: string[]): void =>
 	deleted.forEach((val) => {
-		const folder = folders[val];
-		if (folder) {
-			if (folder.parent) {
-				const parent = folders[folder.parent];
-				parent.children = parent.children.filter((obj) => obj.id !== val);
+		const folderIdsToDelete = [val, ...collectFolderSubtreeIds(val)];
+
+		folderIdsToDelete.forEach((folderId) => {
+			const folder = folders[folderId];
+			if (folder) {
+				if (folder.parent) {
+					const parent = folders[folder.parent];
+					if (parent) {
+						parent.children = parent.children.filter((obj) => obj.id !== folderId);
+					}
+				}
+				delete folders[folderId];
+				delete searches[folderId];
 			}
-			delete folders[val];
-			delete searches[val];
-		}
+		});
 	});
 export const handleFolderNotify = (notify: SoapNotify): void => {
 	handleFolderCreated(notify.created?.folder ?? []);

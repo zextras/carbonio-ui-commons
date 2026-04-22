@@ -1357,6 +1357,174 @@ describe('folders web worker', () => {
 				expect(folders[folderToDelete.id]).toBeDefined();
 				expect(folders[primaryAccount.id].children).toHaveLength(1);
 			});
+
+			test('when a folder with children is deleted, the whole subtree is removed', () => {
+				const primaryAccount = getNormalizedPrimaryAccount();
+				const parentFolder = generateSoapCustomChild({
+					...primaryAccount,
+					view: FOLDER_VIEW.appointment
+				});
+				const childFolder = generateSoapCustomChild({
+					...parentFolder,
+					view: FOLDER_VIEW.appointment
+				});
+
+				const normalizedChildFolder = {
+					...childFolder,
+					children: [],
+					depth: 2,
+					isLink: false,
+					parent: parentFolder.id
+				};
+				const normalizedParentFolder = {
+					...parentFolder,
+					children: [normalizedChildFolder],
+					depth: 1,
+					isLink: false,
+					parent: primaryAccount.id
+				};
+				const tree = {
+					[primaryAccount.id]: {
+						...primaryAccount,
+						children: [normalizedParentFolder] as UserFolder[]
+					},
+					[parentFolder.id]: normalizedParentFolder as UserFolder,
+					[childFolder.id]: normalizedChildFolder as UserFolder
+				};
+
+				testUtils.setFolders(tree);
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
+
+				const data = {
+					op: 'notify',
+					notify: {
+						deleted: [parentFolder.id]
+					}
+				};
+
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
+
+				const folders = testUtils.getFolders();
+
+				expect(folders[parentFolder.id]).toBeUndefined();
+				expect(folders[childFolder.id]).toBeUndefined();
+				expect(folders[primaryAccount.id].children).toHaveLength(0);
+			});
+
+			test('when a child folder is deleted but its parent is already missing from the store, it does not throw', () => {
+				const primaryAccount = getNormalizedPrimaryAccount();
+				const parentFolder = generateSoapCustomChild({
+					...primaryAccount,
+					view: FOLDER_VIEW.appointment
+				});
+				const childFolder = generateSoapCustomChild({
+					...parentFolder,
+					view: FOLDER_VIEW.appointment
+				});
+
+				const normalizedChildFolder = {
+					...childFolder,
+					children: [],
+					depth: 2,
+					isLink: false,
+					parent: parentFolder.id
+				};
+
+				// Intentionally do NOT put parentFolder in the tree — simulates parent already deleted
+				const tree = {
+					[primaryAccount.id]: {
+						...primaryAccount,
+						children: [] as UserFolder[]
+					},
+					[childFolder.id]: normalizedChildFolder as UserFolder
+				};
+
+				testUtils.setFolders(tree);
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
+
+				const data = {
+					op: 'notify',
+					notify: {
+						deleted: [childFolder.id]
+					}
+				};
+
+				expect(() =>
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					})
+				).not.toThrow();
+
+				const folders = testUtils.getFolders();
+
+				expect(folders[childFolder.id]).toBeUndefined();
+				expect(folders[primaryAccount.id].children).toHaveLength(0);
+			});
+
+			test('when deleted ids include parent and child, deletion is order-independent', () => {
+				const primaryAccount = getNormalizedPrimaryAccount();
+				const parentFolder = generateSoapCustomChild({
+					...primaryAccount,
+					view: FOLDER_VIEW.appointment
+				});
+				const childFolder = generateSoapCustomChild({
+					...parentFolder,
+					view: FOLDER_VIEW.appointment
+				});
+
+				const normalizedChildFolder = {
+					...childFolder,
+					children: [],
+					depth: 2,
+					isLink: false,
+					parent: parentFolder.id
+				};
+				const normalizedParentFolder = {
+					...parentFolder,
+					children: [normalizedChildFolder],
+					depth: 1,
+					isLink: false,
+					parent: primaryAccount.id
+				};
+				const tree = {
+					[primaryAccount.id]: {
+						...primaryAccount,
+						children: [normalizedParentFolder] as UserFolder[]
+					},
+					[parentFolder.id]: normalizedParentFolder as UserFolder,
+					[childFolder.id]: normalizedChildFolder as UserFolder
+				};
+
+				testUtils.setFolders(tree);
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
+
+				const data = {
+					op: 'notify',
+					notify: {
+						deleted: [parentFolder.id, childFolder.id]
+					}
+				};
+
+				expect(() =>
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					})
+				).not.toThrow();
+
+				const folders = testUtils.getFolders();
+
+				expect(folders[parentFolder.id]).toBeUndefined();
+				expect(folders[childFolder.id]).toBeUndefined();
+				expect(folders[primaryAccount.id].children).toHaveLength(0);
+			});
 		});
 	});
 });

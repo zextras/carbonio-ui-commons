@@ -12,10 +12,10 @@ import * as historyNavigation from '../../../helpers/use-history-navigation';
  */
 export const mockUseHistoryNavigation = (): HistoryNavigation => {
 	const result = {
-		replaceHistory: jest.fn(),
-		pushHistory: jest.fn()
+		replaceHistory: vi.fn(),
+		pushHistory: vi.fn()
 	} satisfies HistoryNavigation;
-	jest.spyOn(historyNavigation, 'useHistoryNavigation').mockReturnValue(result);
+	vi.spyOn(historyNavigation, 'useHistoryNavigation').mockReturnValue(result);
 
 	return result;
 };

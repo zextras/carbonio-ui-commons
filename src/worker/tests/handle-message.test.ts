@@ -21,7 +21,7 @@ import { handleMessage, normalize, testUtils } from '../handle-message';
 
 beforeEach(() => {
 	testUtils.resetFolders();
-	window.postMessage = jest.fn();
+	window.postMessage = vi.fn();
 });
 
 const getRandomWord = (used: Array<string>): string => {
@@ -58,6 +58,8 @@ const getNormalizedCreatedLink = (createdLink: SoapLink, parent: string): LinkFo
 	i4n: undefined,
 	i4u: undefined,
 	lsd: undefined,
+	dsId: undefined,
+	dsType: undefined,
 	md: undefined,
 	meta: undefined,
 	perm: 'r',
@@ -80,6 +82,8 @@ const getNormalizedCreatedFolder = (folder: BaseFolder, parent: string): UserFol
 	i4n: undefined,
 	i4u: undefined,
 	lsd: undefined,
+	dsId: undefined,
+	dsType: undefined,
 	md: undefined,
 	meta: undefined,
 	perm: undefined,
@@ -115,7 +119,7 @@ describe('folders web worker', () => {
 			expect(testUtils.getCurrentView()).toBe(FOLDER_VIEW.appointment);
 		});
 		test('postMessage is called with normalized folders', () => {
-			const workerSpy = jest.spyOn(window, 'postMessage');
+			const workerSpy = vi.spyOn(window, 'postMessage');
 			const tree = generateSoapRoot(true, true, faker.string.uuid());
 			const data = {
 				op: 'refresh',
@@ -152,7 +156,7 @@ describe('folders web worker', () => {
 			workerSpy.mockRestore();
 		});
 		test('folders are flattened', () => {
-			const workerSpy = jest.spyOn(window, 'postMessage');
+			const workerSpy = vi.spyOn(window, 'postMessage');
 			const primaryAccount = getAccountSoapRoot(true);
 			const calendar = generateSoapSystemFolder(BASE_FOLDER_CALENDAR_ARGS);
 			const calendarSubFolderLevel1 = generateSoapCustomChild(calendar);
@@ -211,7 +215,7 @@ describe('folders web worker', () => {
 			);
 		});
 		test('each folder has its own children structure', () => {
-			const workerSpy = jest.spyOn(window, 'postMessage');
+			const workerSpy = vi.spyOn(window, 'postMessage');
 			const primaryAccount = getAccountSoapRoot(true);
 			const calendar = generateSoapSystemFolder(BASE_FOLDER_CALENDAR_ARGS);
 			const calendarSubFolderLevel1 = generateSoapCustomChild(calendar);
@@ -1352,6 +1356,174 @@ describe('folders web worker', () => {
 
 				expect(folders[folderToDelete.id]).toBeDefined();
 				expect(folders[primaryAccount.id].children).toHaveLength(1);
+			});
+
+			test('when a folder with children is deleted, the whole subtree is removed', () => {
+				const primaryAccount = getNormalizedPrimaryAccount();
+				const parentFolder = generateSoapCustomChild({
+					...primaryAccount,
+					view: FOLDER_VIEW.appointment
+				});
+				const childFolder = generateSoapCustomChild({
+					...parentFolder,
+					view: FOLDER_VIEW.appointment
+				});
+
+				const normalizedChildFolder = {
+					...childFolder,
+					children: [],
+					depth: 2,
+					isLink: false,
+					parent: parentFolder.id
+				};
+				const normalizedParentFolder = {
+					...parentFolder,
+					children: [normalizedChildFolder],
+					depth: 1,
+					isLink: false,
+					parent: primaryAccount.id
+				};
+				const tree = {
+					[primaryAccount.id]: {
+						...primaryAccount,
+						children: [normalizedParentFolder] as UserFolder[]
+					},
+					[parentFolder.id]: normalizedParentFolder as UserFolder,
+					[childFolder.id]: normalizedChildFolder as UserFolder
+				};
+
+				testUtils.setFolders(tree);
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
+
+				const data = {
+					op: 'notify',
+					notify: {
+						deleted: [parentFolder.id]
+					}
+				};
+
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data
+				});
+
+				const folders = testUtils.getFolders();
+
+				expect(folders[parentFolder.id]).toBeUndefined();
+				expect(folders[childFolder.id]).toBeUndefined();
+				expect(folders[primaryAccount.id].children).toHaveLength(0);
+			});
+
+			test('when a child folder is deleted but its parent is already missing from the store, it does not throw', () => {
+				const primaryAccount = getNormalizedPrimaryAccount();
+				const parentFolder = generateSoapCustomChild({
+					...primaryAccount,
+					view: FOLDER_VIEW.appointment
+				});
+				const childFolder = generateSoapCustomChild({
+					...parentFolder,
+					view: FOLDER_VIEW.appointment
+				});
+
+				const normalizedChildFolder = {
+					...childFolder,
+					children: [],
+					depth: 2,
+					isLink: false,
+					parent: parentFolder.id
+				};
+
+				// Intentionally do NOT put parentFolder in the tree — simulates parent already deleted
+				const tree = {
+					[primaryAccount.id]: {
+						...primaryAccount,
+						children: [] as UserFolder[]
+					},
+					[childFolder.id]: normalizedChildFolder as UserFolder
+				};
+
+				testUtils.setFolders(tree);
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
+
+				const data = {
+					op: 'notify',
+					notify: {
+						deleted: [childFolder.id]
+					}
+				};
+
+				expect(() =>
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					})
+				).not.toThrow();
+
+				const folders = testUtils.getFolders();
+
+				expect(folders[childFolder.id]).toBeUndefined();
+				expect(folders[primaryAccount.id].children).toHaveLength(0);
+			});
+
+			test('when deleted ids include parent and child, deletion is order-independent', () => {
+				const primaryAccount = getNormalizedPrimaryAccount();
+				const parentFolder = generateSoapCustomChild({
+					...primaryAccount,
+					view: FOLDER_VIEW.appointment
+				});
+				const childFolder = generateSoapCustomChild({
+					...parentFolder,
+					view: FOLDER_VIEW.appointment
+				});
+
+				const normalizedChildFolder = {
+					...childFolder,
+					children: [],
+					depth: 2,
+					isLink: false,
+					parent: parentFolder.id
+				};
+				const normalizedParentFolder = {
+					...parentFolder,
+					children: [normalizedChildFolder],
+					depth: 1,
+					isLink: false,
+					parent: primaryAccount.id
+				};
+				const tree = {
+					[primaryAccount.id]: {
+						...primaryAccount,
+						children: [normalizedParentFolder] as UserFolder[]
+					},
+					[parentFolder.id]: normalizedParentFolder as UserFolder,
+					[childFolder.id]: normalizedChildFolder as UserFolder
+				};
+
+				testUtils.setFolders(tree);
+				testUtils.setCurrentView(FOLDER_VIEW.appointment);
+
+				const data = {
+					op: 'notify',
+					notify: {
+						deleted: [parentFolder.id, childFolder.id]
+					}
+				};
+
+				expect(() =>
+					handleMessage({
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						data
+					})
+				).not.toThrow();
+
+				const folders = testUtils.getFolders();
+
+				expect(folders[parentFolder.id]).toBeUndefined();
+				expect(folders[childFolder.id]).toBeUndefined();
+				expect(folders[primaryAccount.id].children).toHaveLength(0);
 			});
 		});
 	});

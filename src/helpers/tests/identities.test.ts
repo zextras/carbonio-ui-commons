@@ -6,7 +6,7 @@
 
 import { http } from 'msw';
 
-import { getSetupServer } from '../../__test__/jest-setup';
+import { getSetupServer } from '../../__test__/vitest-setup';
 import { handleGetShareInfoRequest } from '../../__test__/mocks/network/msw/handle-get-share-info';
 import { getMocksContext } from '../../__test__/mocks/utils/mocks-context';
 import { getOrderedAccountIds } from '../identities';

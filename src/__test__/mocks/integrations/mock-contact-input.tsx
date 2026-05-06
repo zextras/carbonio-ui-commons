@@ -39,9 +39,7 @@ function generateMockedContactInput(
 }
 
 export function mockContactInput({ valueToAdd }: { valueToAdd?: ContactInputItem } = {}): void {
-	jest
-		.spyOn(contactInput, 'useContactInput')
-		.mockReturnValue(generateMockedContactInput(valueToAdd));
+	vi.spyOn(contactInput, 'useContactInput').mockReturnValue(generateMockedContactInput(valueToAdd));
 }
 export const generateMockContactInputItem = (): ContactInputItem => ({
 	id: '1',
@@ -58,5 +56,5 @@ export const EDIT_ACTION: ChipAction = {
 	id: EDIT_ACTION_ID,
 	label: 'Edit',
 	type: 'button',
-	onClick: jest.fn()
+	onClick: vi.fn()
 };

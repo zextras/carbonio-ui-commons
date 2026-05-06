@@ -48,6 +48,28 @@ export type FolderView =
 	| 'task'
 	| 'chat';
 
+/**
+ * Type of a DataSource sync account.
+ *
+ * Matches the server-side `DataSourceType` enum
+ * (soap/src/main/java/com/zimbra/soap/admin/type/DataSourceType.java).
+ *
+ * The `dsType` attribute is present on a `<folder>` element in `GetFolderResponse`
+ * only when that folder is the **root** folder of a DataSource.
+ */
+export type DataSourceType =
+	| 'pop3' // POP3 email import
+	| 'imap' // IMAP two-way sync
+	| 'caldav' // CalDAV calendar sync (e.g. Google Calendar, iCloud, Nextcloud)
+	| 'contacts' // Contacts sync
+	| 'yab' // Yahoo Address Book
+	| 'rss' // RSS/Atom feed
+	| 'cal' // iCal/ICS subscription (read-only, URL-based)
+	| 'gal' // Global Address List import
+	| 'xsync' // Custom/extension sync type
+	| 'tagmap' // Tag mapping datasource
+	| 'unknown'; // Fallback for unrecognized types
+
 // Grants
 export type Grant = {
 	// Rights - Some combination of (r)ead, (w)rite, (i)nsert, (d)elete, (a)dminister, workflow action (x), view (p)rivate, view (f)reebusy, (c)reate subfolder
@@ -138,6 +160,10 @@ export type BaseFolder = {
 	retentionPolicy?: any;
 	// indicates whether this folder is displayed in Calendars
 	checked?: boolean;
+	// DataSource ID - present only when this folder is the root folder of a DataSource
+	dsId?: string;
+	// DataSource type (e.g., caldav, imap, pop3) - present only when this folder is the root folder of a DataSource
+	dsType?: DataSourceType;
 };
 
 export type SoapLink = SoapFolder & LinkFolderFields;

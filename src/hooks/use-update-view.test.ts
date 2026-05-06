@@ -12,7 +12,7 @@ import { setupHook } from '../__test__/test-setup';
 
 describe('useUpdateView', () => {
 	it('should register a listener to the "updateView" event', () => {
-		const addEventListener = jest.spyOn(window, 'addEventListener');
+		const addEventListener = vi.spyOn(window, 'addEventListener');
 		setupHook(useUpdateView);
 		expect(addEventListener).toHaveBeenCalledWith<Parameters<typeof window.addEventListener>>(
 			'updateView',
@@ -21,7 +21,7 @@ describe('useUpdateView', () => {
 	});
 
 	it('should call the NoOp when the "updateView" event is triggered', async () => {
-		const callWatcher = jest.fn();
+		const callWatcher = vi.fn();
 		const apiInterceptor = createSoapAPIInterceptor('NoOp').then(() => callWatcher());
 		setupHook(useUpdateView);
 		fireEvent(window, new CustomEvent('updateView'));
@@ -30,7 +30,7 @@ describe('useUpdateView', () => {
 	});
 
 	it('should unregister a listener to the "updateView" event', () => {
-		const removeEventListener = jest.spyOn(window, 'removeEventListener');
+		const removeEventListener = vi.spyOn(window, 'removeEventListener');
 		const { unmount } = setupHook(useUpdateView);
 		unmount();
 		expect(removeEventListener).toHaveBeenCalledWith<Parameters<typeof window.removeEventListener>>(

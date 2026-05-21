@@ -17,6 +17,7 @@
 		"pnpm": ">=10"
 	},
 	"scripts": {
+		"bump-version": "semantic-release",
 		"build": "pnpm run build:lib",
 		"build:dev": "pnpm run build:lib",
 		"prebuild:lib": "rm -rf lib",

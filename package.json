@@ -17,6 +17,7 @@
 		"pnpm": ">=10"
 	},
 	"scripts": {
+		"bump-version": "semantic-release",
 		"build": "pnpm run build:lib",
 		"build:dev": "pnpm run build:lib",
 		"prebuild:lib": "rm -rf lib",
@@ -93,7 +94,8 @@
 		"semantic-release": "24.2.9",
 		"ts-node": "10.9.2",
 		"typescript": "5.8.3",
-		"vitest": "4.1.2"
+		"vitest": "4.1.2",
+		"sonarqube-scanner": "4.3.6"
 	},
 	"dependencies": {
 		"core-js": "3.47.0",

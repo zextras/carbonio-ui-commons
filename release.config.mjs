@@ -11,17 +11,7 @@ const SECTION_BUG_FIXES = 'Bug Fixes';
 const SECTION_OTHER_CHANGES = 'Other changes';
 
 export default {
-	branches: [
-		'release',
-		{
-			name: 'beta',
-			prerelease: true
-		},
-		{
-			name: 'devel',
-			prerelease: true
-		}
-	],
+	branches: ['devel'],
 	plugins: [
 		[
 			'@semantic-release/commit-analyzer',

@@ -1,0 +1,11 @@
+version = 1
+
+[[annotations]]
+path = ["translations/**", "package.json", "tsconfig.json", "CHANGELOG.md"]
+SPDX-FileCopyrightText = "2021 Zextras <https://www.zextras.com>"
+SPDX-License-Identifier = "AGPL-3.0-only"
+
+[[annotations]]
+path = [".idea/**", ".vscode/**", ".husky/**", ".nvmrc", "pnpm-lock.yaml", ".prettierignore", ".github/**", ".gitmodules"]
+SPDX-FileCopyrightText = "2021 Zextras <https://www.zextras.com>"
+SPDX-License-Identifier = "CC0-1.0"

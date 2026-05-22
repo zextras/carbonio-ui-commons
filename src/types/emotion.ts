@@ -10,5 +10,6 @@ declare module '@emotion/react' {
 	 * Augment Theme as suggested inside Emotion module
 	 * @see https://emotion.sh/docs/typescript#define-a-theme
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-empty-interface
 	interface Theme extends DSTheme {}
 }

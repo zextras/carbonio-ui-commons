@@ -110,7 +110,7 @@
 		"@emotion/styled": "11.14.1",
 		"@mui/icons-material": "5.18.0",
 		"@mui/material": "5.18.0",
-		"@zextras/carbonio-design-system": ">=12.0.0",
+		"@zextras/carbonio-design-system": ">=12.0.4",
 		"@zextras/carbonio-shell-ui": ">=14.0.0",
 		"@zextras/carbonio-ui-soap-lib": ">=1.0.4",
 		"lodash": "4.18.1",

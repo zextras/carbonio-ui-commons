@@ -95,7 +95,7 @@
 		"ts-node": "10.9.2",
 		"typescript": "5.9.3",
 		"vitest": "4.1.9",
-		"sonarqube-scanner": "4.3.6"
+		"sonarqube-scanner": "4.3.8"
 	},
 	"dependencies": {
 		"core-js": "3.47.0",

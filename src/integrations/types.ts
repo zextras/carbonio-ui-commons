@@ -30,6 +30,12 @@ export type UserContact = {
 export type DistributionListContact = {
 	id: string;
 	email: string;
+	/**
+	 * Display name of the distribution list, populated from the `full` attribute
+	 * of the FullAutocomplete response (the server maps it from the LDAP
+	 * displayName attribute). Absent when the list has no display name.
+	 */
+	fullName?: string;
 	type: ContactType['DISTRIBUTION_LIST'];
 };
 

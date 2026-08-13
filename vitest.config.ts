@@ -35,7 +35,7 @@ export default defineConfig({
 		setupFiles: ['./src/__test__/vitest-setup.ts'],
 		clearMocks: true,
 		restoreMocks: true,
-		maxWorkers: '50%',
+		maxWorkers: 2,
 		testTimeout: 20000,
 		reporters: ['default', junitReporter],
 		coverage: {

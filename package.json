@@ -2,7 +2,7 @@
 	"name": "@zextras/carbonio-ui-commons",
 	"version": "0.0.0-semantically-released",
 	"description": "Carbonio UI Commons",
-	"packageManager": "pnpm@10.32.1",
+	"packageManager": "pnpm@10.34.5",
 	"main": "./lib/index.js",
 	"types": "./lib/index.d.ts",
 	"exports": {
@@ -14,7 +14,7 @@
 	},
 	"engines": {
 		"node": "v22",
-		"pnpm": ">=10"
+		"pnpm": ">=10.34.5"
 	},
 	"scripts": {
 		"bump-version": "semantic-release",

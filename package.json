@@ -98,7 +98,7 @@
 		"sonarqube-scanner": "4.3.8"
 	},
 	"dependencies": {
-		"core-js": "3.47.0",
+		"core-js": "3.50.0",
 		"i18next": "22.5.1",
 		"immer": "9.0.21",
 		"redux": "4.2.1",

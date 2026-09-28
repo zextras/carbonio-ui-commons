@@ -5,8 +5,13 @@
  */
 
 import { generateFolder } from '../../../../__test__/mocks/folders/folders-generator';
+import { ZIMBRA_STANDARD_COLORS } from '../../../../constants/utils';
 import { Folder } from '../../../../types';
-import { flattenAndFilterFoldersWithCap } from '../utils';
+import {
+	flattenAndFilterFoldersWithCap,
+	getFolderIconColor,
+	resolveFolderColorHex
+} from '../utils';
 
 function generateFolderFunction(name: string, n: number, depth: number): Folder {
 	if (depth >= 3) {
@@ -86,5 +91,52 @@ describe('flattenAndFilterFoldersWithCap', () => {
 	it('returns full results if limit is greater than matches', () => {
 		const result = flattenAndFilterFoldersWithCap(mockFolders, 'fol', 100);
 		expect(result.length).toBe(4);
+	});
+});
+
+describe('resolveFolderColorHex', () => {
+	it('returns the rgb custom color when present, even with a standard color index', () => {
+		expect(resolveFolderColorHex(3, '#123456')).toBe('#123456');
+	});
+
+	it('returns the standard color at the given index when there is no rgb', () => {
+		expect(resolveFolderColorHex(5, undefined)).toBe(ZIMBRA_STANDARD_COLORS[5].hex);
+	});
+
+	it('accepts the index as a string', () => {
+		expect(resolveFolderColorHex('2', undefined)).toBe(ZIMBRA_STANDARD_COLORS[2].hex);
+	});
+
+	it('falls back to the first standard color when neither is set', () => {
+		expect(resolveFolderColorHex(undefined, undefined)).toBe(ZIMBRA_STANDARD_COLORS[0].hex);
+	});
+
+	it('falls back to the first standard color for an out-of-palette index', () => {
+		expect(resolveFolderColorHex(42, undefined)).toBe(ZIMBRA_STANDARD_COLORS[0].hex);
+	});
+
+	it('ignores an empty rgb', () => {
+		expect(resolveFolderColorHex(1, '')).toBe(ZIMBRA_STANDARD_COLORS[1].hex);
+	});
+});
+
+describe('getFolderIconColor', () => {
+	it('prefers the folder rgb over its color index', () => {
+		const folder = { ...generateFolder(), color: 1, rgb: '#abcdef' };
+		expect(getFolderIconColor(folder)).toBe('#abcdef');
+	});
+
+	it('uses the rgb even when the color index is missing', () => {
+		const folder = { ...generateFolder(), color: undefined, rgb: '#abcdef' };
+		expect(getFolderIconColor(folder)).toBe('#abcdef');
+	});
+
+	it('uses the standard color when there is no rgb', () => {
+		const folder = { ...generateFolder(), color: 4, rgb: undefined };
+		expect(getFolderIconColor(folder)).toBe(ZIMBRA_STANDARD_COLORS[4].hex);
+	});
+
+	it('falls back to the first standard color for an accordion item without color', () => {
+		expect(getFolderIconColor({ id: '1', label: 'item' })).toBe(ZIMBRA_STANDARD_COLORS[0].hex);
 	});
 });

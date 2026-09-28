@@ -31,6 +31,11 @@ export * from './components/select/select-label-factory';
 export * from './components/select/color-select';
 export * from './components/select/folders-selector';
 
+// components/color-picker
+export * from './components/color-picker/color-dots-row';
+export * from './components/color-picker/color-picker';
+export * from './components/color-picker/folder-color-picker';
+
 // components/list
 export * from './components/list/list-item';
 export * from './components/list/list';
@@ -42,6 +47,9 @@ export * from './components/tags/delete-tag-modal';
 export * from './hooks/use-initialize-folders';
 export * from './hooks/use-update-view';
 export * from './hooks/use-initialize-tags';
+export * from './hooks/use-close-on-escape';
+export * from './hooks/use-on-outside-click';
+export * from './hooks/use-prevent-backdrop-close';
 
 // utils
 export * from './utils/utils';

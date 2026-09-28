@@ -6,14 +6,13 @@
 
 import '@testing-library/jest-dom';
 
-import { beforeAll, afterEach, afterAll } from 'vitest';
-import moment from 'moment-timezone';
-
 import { noop } from 'lodash';
+import moment from 'moment-timezone';
 import { setupServer, SetupServer } from 'msw/node';
+import { beforeAll, afterEach, afterAll } from 'vitest';
 
-import { getRestHandlers } from './mocks/network/msw/handlers';
 import { VITEST_DEFAULT_TIMEZONE } from './constants';
+import { getRestHandlers } from './mocks/network/msw/handlers';
 
 vi.mock('@zextras/carbonio-shell-ui');
 vi.mock('@zextras/carbonio-ui-preview');
@@ -102,11 +101,13 @@ Object.defineProperty(window, 'matchMedia', {
 
 export const getSetupServer = (): SetupServer => server;
 
-window.ResizeObserver = vi.fn().mockImplementation(() => ({
-	observe: vi.fn(),
-	unobserve: vi.fn(),
-	disconnect: vi.fn()
-}));
+window.ResizeObserver = vi.fn(function ResizeObserverMock() {
+	return {
+		observe: vi.fn(),
+		unobserve: vi.fn(),
+		disconnect: vi.fn()
+	};
+});
 
 beforeAll(() => {
 	Object.defineProperty(window, 'IntersectionObserver', {

@@ -32,14 +32,18 @@ export function flattenAndFilterFoldersWithCap(
 
 	return flattenAndFilter(folders).slice(0, limit);
 }
-export const getFolderIconColor = (f: Folder | AccordionItemType): string => {
-	if ('color' in f && f?.color) {
-		return Number(f.color) < 10
-			? ZIMBRA_STANDARD_COLORS[Number(f.color)].hex
-			: (f?.rgb ?? ZIMBRA_STANDARD_COLORS[0].hex);
-	}
-	return ZIMBRA_STANDARD_COLORS[0].hex;
-};
+/**
+ * Resolves a folder's color into a single hex string: an `rgb` custom color takes precedence,
+ * otherwise the standard color at `color` index, defaulting to the first standard color.
+ */
+export const resolveFolderColorHex = (
+	color: number | string | undefined,
+	rgb: string | undefined
+): string =>
+	rgb || ZIMBRA_STANDARD_COLORS[Number(color ?? 0)]?.hex || ZIMBRA_STANDARD_COLORS[0].hex;
+
+export const getFolderIconColor = (f: Folder | AccordionItemType): string =>
+	resolveFolderColorHex('color' in f ? f.color : undefined, 'rgb' in f ? f.rgb : undefined);
 
 const getFolderDefaultIcon = (folder: Folder | AccordionItemType): string => {
 	const folderView = 'view' in folder && folder.view;

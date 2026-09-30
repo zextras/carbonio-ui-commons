@@ -35,6 +35,7 @@ export * from './components/select/folders-selector';
 export * from './components/color-picker/color-dots-row';
 export * from './components/color-picker/color-picker';
 export * from './components/color-picker/folder-color-picker';
+export * from './components/color-picker/tag-color-picker';
 
 // components/list
 export * from './components/list/list-item';
@@ -65,6 +66,7 @@ export * from './helpers/api-wrapper';
 export * from './helpers/folders';
 export * from './helpers/identities';
 export * from './helpers/search';
+export * from './helpers/tags';
 export * from './helpers/use-history-navigation';
 
 // integrations

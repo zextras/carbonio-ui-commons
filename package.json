@@ -98,7 +98,7 @@
 		"sonarqube-scanner": "4.4.0"
 	},
 	"dependencies": {
-		"core-js": "3.47.0",
+		"core-js": "3.50.0",
 		"i18next": "22.5.1",
 		"immer": "9.0.21",
 		"react-colorful": "5.8.0",

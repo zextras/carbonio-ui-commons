@@ -25,6 +25,7 @@ import { FolderView, LinksIdMap } from '../types';
 
 const IM_LOGS = '14';
 const USER_ROOT = '1';
+const COUNTER_FIELDS = ['u', 'n', 's'] as const;
 
 let folders: Folders = {};
 const searches: Searches = {};
@@ -298,8 +299,25 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 		const parentMountPointId = getKeyByValue(folders, { id: val.l });
 		const isSharedWithMe = folderIsSharedWithMe(mountPointId);
 		const parentIsSharedWithMe = folderIsSharedWithMe(parentMountPointId);
-		const parentFolderId = parentIsSharedWithMe && parentMountPointId ? parentMountPointId : val.l;
-		const folderId = isSharedWithMe && mountPointId ? mountPointId : val.id;
+		const hasDirectEntry = !!folders[val.id];
+
+		// The folder is available both directly and through a mountpoint: the mountpoint has its
+		// own metadata (checked, color, name, ...), so only the counters are propagated to it
+		if (hasDirectEntry && mountPointId && mountPointId !== val.id && isSharedWithMe) {
+			const mountPoint = folders[mountPointId];
+			COUNTER_FIELDS.forEach((field) => {
+				if (typeof val[field] !== 'undefined') {
+					Object.assign(mountPoint, { [field]: val[field] });
+				}
+			});
+		}
+
+		// Without a direct entry the notify is remapped on the mountpoint
+		const folderId = !hasDirectEntry && isSharedWithMe && mountPointId ? mountPointId : val.id;
+		const parentFolderId =
+			(hasDirectEntry && val.l && folders[val.l]) || !parentIsSharedWithMe || !parentMountPointId
+				? val.l
+				: parentMountPointId;
 		const folder = folderId ? folders[folderId] : null;
 
 		if (folder) {

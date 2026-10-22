@@ -1193,6 +1193,141 @@ describe('folders web worker', () => {
 				}
 			});
 		});
+		describe('handle modified folder reachable both directly and through a mountpoint', () => {
+			const SHARED_ID = 'Ozid:X';
+			const buildStore = (withDirectEntry: boolean): void => {
+				const userRoot = {
+					...getNormalizedPrimaryAccount(),
+					id: '1',
+					name: 'USER_ROOT',
+					parent: undefined
+				} as Folder;
+				const mountPoint = {
+					...normalize({ ...generateSoapLink(userRoot as unknown as BaseFolder), id: 'M' }),
+					zid: 'Ozid',
+					rid: 'X',
+					isLink: true,
+					checked: false,
+					color: 1,
+					name: 'mountpoint-name',
+					u: 0,
+					children: [],
+					parent: '1',
+					depth: 1
+				} as unknown as LinkFolder;
+				const direct = {
+					...mountPoint,
+					id: SHARED_ID,
+					zid: undefined,
+					rid: undefined,
+					isLink: false,
+					color: 2,
+					name: 'direct-name',
+					parent: undefined,
+					depth: 0
+				} as unknown as UserFolder;
+				testUtils.setFolders({
+					'1': userRoot,
+					M: mountPoint,
+					...(withDirectEntry ? { [SHARED_ID]: direct } : {})
+				});
+			};
+			const notify = (folder: Record<string, unknown>): void =>
+				handleMessage({
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data: { op: 'notify', notify: { modified: { folder: [folder] } } }
+				});
+
+			test('check toggle and color are applied to the direct folder and not to the mountpoint', () => {
+				buildStore(true);
+				notify({ id: SHARED_ID, f: '#', color: 5 });
+				const folders = testUtils.getFolders();
+				expect(folders[SHARED_ID].checked).toBe(true);
+				expect(folders[SHARED_ID].color).toBe(5);
+				expect(folders.M.checked).toBe(false);
+				expect(folders.M.color).toBe(1);
+				expect(folders.M.name).toBe('mountpoint-name');
+			});
+
+			test('without a direct entry the notify is remapped on the mountpoint', () => {
+				buildStore(false);
+				notify({ id: SHARED_ID, u: 3 });
+				const folders = testUtils.getFolders();
+				expect(folders[SHARED_ID]).toBeUndefined();
+				expect(folders.M.u).toBe(3);
+				expect(folders.M.id).toBe('M');
+			});
+
+			test('unread counter is updated on both the direct folder and the mountpoint', () => {
+				buildStore(true);
+				notify({ id: SHARED_ID, u: 3 });
+				const folders = testUtils.getFolders();
+				expect(folders[SHARED_ID].u).toBe(3);
+				expect(folders.M.u).toBe(3);
+			});
+
+			test('rename of the direct folder does not rename the mountpoint', () => {
+				buildStore(true);
+				notify({ id: SHARED_ID, name: 'renamed', n: 7 });
+				const folders = testUtils.getFolders();
+				expect(folders[SHARED_ID].name).toBe('renamed');
+				expect(folders.M.name).toBe('mountpoint-name');
+				expect(folders.M.n).toBe(7);
+			});
+
+			test('unchecking the direct folder (no-op refresh from the server) does not touch the mountpoint', () => {
+				buildStore(true);
+				const mountPointFlags = testUtils.getFolders().M.f;
+				testUtils.getFolders()[SHARED_ID].checked = true;
+				testUtils.getFolders()[SHARED_ID].f = '#i';
+				notify({ id: SHARED_ID, f: 'i' });
+				const folders = testUtils.getFolders();
+				expect(folders[SHARED_ID].checked).toBe(false);
+				expect(folders[SHARED_ID].f).toBe('i');
+				expect(folders.M.checked).toBe(false);
+				expect(folders.M.f).toBe(mountPointFlags);
+			});
+
+			test('moving the direct folder uses the direct parent and not the mountpoint of the parent', () => {
+				buildStore(true);
+				const folders = testUtils.getFolders();
+				const oldParent = {
+					...folders[SHARED_ID],
+					id: 'Ozid:Z',
+					children: [folders[SHARED_ID]]
+				} as unknown as UserFolder;
+				const newParent = {
+					...folders[SHARED_ID],
+					id: 'Ozid:Y',
+					children: [],
+					depth: 0
+				} as unknown as UserFolder;
+				const newParentMountPoint = {
+					...folders.M,
+					id: 'MY',
+					rid: 'Y',
+					children: []
+				} as unknown as LinkFolder;
+				folders[SHARED_ID].parent = 'Ozid:Z';
+				testUtils.setFolders({
+					...folders,
+					'Ozid:Z': oldParent,
+					'Ozid:Y': newParent,
+					MY: newParentMountPoint
+				});
+
+				notify({ id: SHARED_ID, l: 'Ozid:Y' });
+
+				const result = testUtils.getFolders();
+				expect(result[SHARED_ID].parent).toBe('Ozid:Y');
+				expect(result['Ozid:Y'].children.map((c) => c.id)).toContain(SHARED_ID);
+				expect(result.MY.children).toHaveLength(0);
+				expect(result['Ozid:Z'].children).toHaveLength(0);
+				expect(result.M.parent).toBe('1');
+			});
+		});
+
 		describe('handle deleted', () => {
 			test("When a folder is deleted it will not be available on the first level neither inside its parent's structure", () => {
 				const primaryAccount = getNormalizedPrimaryAccount();

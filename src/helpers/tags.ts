@@ -51,8 +51,11 @@ const getTagPillTintAlpha = (luminance: number): number => {
 	if (luminance < 0.1) {
 		return 0.16;
 	}
-	if (luminance < 0.45) {
+	if (luminance < 0.35) {
 		return 0.14;
+	}
+	if (luminance < 0.45) {
+		return 0.16;
 	}
 	return 0.3;
 };

@@ -11,6 +11,17 @@ import { TagDot, TagPill } from '../tag-pill';
 const RED = '#ef5350';
 const REMOVE_URGENT = 'Remove tag Urgent';
 
+/** The rules inside media queries that apply to `element`: jsdom matches no media query. */
+const mediaRulesOf = (element: Element): Array<{ condition: string; rule: CSSStyleRule }> =>
+	Array.from(document.styleSheets)
+		.flatMap((sheet) => Array.from(sheet.cssRules))
+		.filter((rule): rule is CSSMediaRule => rule instanceof CSSMediaRule)
+		.flatMap((media) =>
+			(Array.from(media.cssRules) as Array<CSSStyleRule>)
+				.filter((rule) => element.matches(rule.selectorText))
+				.map((rule) => ({ condition: media.conditionText, rule }))
+		);
+
 describe('TagPill', () => {
 	test('shows the name on a tint of the tag colour, with a dot of the colour', () => {
 		setupTest(<TagPill name="Client" color="#2b73d2" />);
@@ -90,6 +101,47 @@ describe('TagPill', () => {
 		expect(slot).not.toHaveStyle({ 'margin-left': '-0.375rem' });
 	});
 
+	test('with reduced motion the hidden "×" keeps its width but takes no clicks', () => {
+		setupTest(<TagPill name="Urgent" color={RED} onRemove={vi.fn()} />);
+
+		const slot = screen.getByRole('button', { name: REMOVE_URGENT }).parentElement as HTMLElement;
+		const noClicks = mediaRulesOf(slot).filter(
+			({ rule }) => rule.style.getPropertyValue('pointer-events') === 'none'
+		);
+		expect(noClicks.map(({ condition }) => condition)).toEqual([
+			expect.stringContaining('prefers-reduced-motion: reduce')
+		]);
+	});
+
+	test('on a touch screen with reduced motion the "×", shown at rest, takes the first tap', () => {
+		setupTest(<TagPill name="Urgent" color={RED} onRemove={vi.fn()} />);
+
+		const slot = screen.getByRole('button', { name: REMOVE_URGENT }).parentElement as HTMLElement;
+		const noClicks = mediaRulesOf(slot).filter(
+			({ rule }) => rule.style.getPropertyValue('pointer-events') === 'none'
+		);
+		expect(noClicks.map(({ condition }) => condition)).toEqual([
+			expect.stringContaining('hover: hover')
+		]);
+	});
+
+	test('on the way out the slot gives back its overlap with its width, so the pill never widens', () => {
+		setupTest(<TagPill name="Urgent" color={RED} onRemove={vi.fn()} />);
+
+		const slot = screen.getByRole('button', { name: REMOVE_URGENT }).parentElement;
+		expect(slot).toHaveStyle({
+			transition: 'opacity 60ms ease-in,width 120ms ease-in 60ms,margin-left 120ms ease-in 60ms'
+		});
+	});
+
+	test('at rest the hidden "×" is scaled to 0.6, so it grows as it fades in', () => {
+		setupTest(<TagPill name="Urgent" color={RED} onRemove={vi.fn()} />);
+
+		expect(screen.getByRole('button', { name: REMOVE_URGENT })).toHaveStyle({
+			transform: 'translateY(-50%) scale(0.6)'
+		});
+	});
+
 	test('the remove button has the tooltip "Remove tag"', async () => {
 		const { user } = setupTest(<TagPill name="Urgent" color={RED} onRemove={vi.fn()} />);
 
@@ -134,6 +186,7 @@ describe('TagDot', () => {
 		setupTest(<TagDot color="#ffc107" />);
 
 		expect(screen.getByTestId('tag-dot')).toHaveStyle({
+			display: 'inline-block',
 			'background-color': '#ffc107',
 			'box-shadow': '0 0 0 1px #767676'
 		});

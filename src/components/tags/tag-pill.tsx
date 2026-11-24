@@ -42,6 +42,7 @@ const PILL_SIZES: Record<
 };
 
 const Dot = styled.span<{ $color: string }>`
+	display: inline-block;
 	flex: none;
 	width: 0.5rem;
 	height: 0.5rem;
@@ -54,6 +55,17 @@ const Dot = styled.span<{ $color: string }>`
 export const TagDot = ({ color }: Readonly<{ color: string }>): React.JSX.Element => (
 	<Dot data-testid="tag-dot" $color={color} />
 );
+
+/** What marks a tag before its name: the shared icon for a tag from a shared folder, else its dot. */
+export const TagMark = ({
+	shared,
+	color
+}: Readonly<{ shared?: boolean; color?: string }>): React.JSX.Element | null => {
+	if (shared) {
+		return <Icon icon="PeopleOutline" size="small" color="text" />;
+	}
+	return color ? <TagDot color={color} /> : null;
+};
 
 const PillRoot = styled.span<{
 	$size: TagPillSize;
@@ -88,14 +100,24 @@ const PillRoot = styled.span<{
 		margin-left: ${REMOVE_SLOT_OVERLAP};
 		opacity: 1;
 		overflow: visible;
+		pointer-events: auto;
 		transition:
 			width 160ms ease-out,
+			margin-left 160ms ease-out,
 			opacity 160ms ease-out;
+	}
+
+	&:hover [data-remove-slot] button,
+	&:focus-within [data-remove-slot] button {
+		transform: translateY(-50%) scale(1);
+		transition: transform 160ms ease-out;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		&:hover [data-remove-slot],
-		&:focus-within [data-remove-slot] {
+		&:focus-within [data-remove-slot],
+		&:hover [data-remove-slot] button,
+		&:focus-within [data-remove-slot] button {
 			transition: none;
 		}
 	}
@@ -134,8 +156,9 @@ const PillLabel = styled(Text, {
 
 /**
  * The "×" slot: hidden until the pill is hovered or focused, then the pill widens by
- * `REMOVE_SLOT_WIDTH` (160ms ease-out in, 120ms ease-in out). Always shown where there is no hover
- * (touch) and without the animation when the user asks for reduced motion.
+ * `REMOVE_SLOT_WIDTH` (160ms ease-out) while the "×" fades in from scale 0.6. On the way out the "×"
+ * fades first, then the pill narrows (120ms ease-in). Always shown where there is no hover (touch)
+ * and without the animation when the user asks for reduced motion.
  */
 const RemoveSlot = styled.span`
 	position: relative;
@@ -147,8 +170,9 @@ const RemoveSlot = styled.span`
 	opacity: 0;
 	overflow: hidden;
 	transition:
-		width 120ms ease-in,
-		opacity 120ms ease-in;
+		opacity 60ms ease-in,
+		width 120ms ease-in 60ms,
+		margin-left 120ms ease-in 60ms;
 
 	@media (hover: none) {
 		width: ${REMOVE_SLOT_WIDTH};
@@ -161,6 +185,11 @@ const RemoveSlot = styled.span`
 		width: ${REMOVE_SLOT_WIDTH};
 		margin-left: ${REMOVE_SLOT_OVERLAP};
 		transition: none;
+	}
+
+	/* With reduced motion it keeps its width over the end of the pill: hidden, it must take no clicks */
+	@media (prefers-reduced-motion: reduce) and (hover: hover) {
+		pointer-events: none;
 	}
 `;
 
@@ -180,7 +209,17 @@ const RemoveButton = styled.button`
 	background: transparent;
 	color: inherit;
 	cursor: pointer;
-	transform: translateY(-50%);
+	transform: translateY(-50%) scale(0.6);
+	transition: transform 120ms ease-in;
+
+	@media (hover: none) {
+		transform: translateY(-50%) scale(1);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transform: translateY(-50%) scale(1);
+		transition: none;
+	}
 `;
 
 export type TagPillProps = {
@@ -240,11 +279,7 @@ export const TagPill = forwardRef<HTMLButtonElement, Readonly<TagPillProps>>(fun
 	);
 	const content = (
 		<>
-			{shared ? (
-				<Icon icon="PeopleOutline" size="small" color="text" />
-			) : (
-				color && <TagDot color={color} />
-			)}
+			<TagMark shared={shared} color={color} />
 			{label}
 		</>
 	);

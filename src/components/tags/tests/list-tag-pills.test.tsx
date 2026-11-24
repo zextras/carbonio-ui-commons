@@ -64,6 +64,24 @@ describe('ListTagPills', () => {
 		expect(screen.getByText('+2')).toBeVisible();
 	});
 
+	test('as a dot, a tag from a shared folder keeps the shared icon, as it has no colour', () => {
+		setupTest(
+			<ListTagPills
+				tags={[tag('Client'), { id: 'nil:Finance', name: 'Finance', shared: true }]}
+				lineWidth={150}
+			/>
+		);
+
+		expect(screen.getAllByTestId('tag-dot')).toHaveLength(1);
+		expect(screen.getByTestId('icon: PeopleOutline')).toBeVisible();
+	});
+
+	test('as a dot, a tag without a colour is an empty dot', () => {
+		setupTest(<ListTagPills tags={[{ id: 'nocolour', name: 'No colour' }]} lineWidth={150} />);
+
+		expect(screen.getByTestId('tag-dot')).toHaveStyle({ 'background-color': 'rgba(0, 0, 0, 0)' });
+	});
+
 	test('hovering "+N" opens a card with the hidden tags', async () => {
 		const { user } = setupTest(<ListTagPills tags={TAGS} lineWidth={150} />);
 

@@ -6,11 +6,11 @@
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { Container, Icon, Portal, Text, Tooltip } from '@zextras/carbonio-design-system';
+import { Container, Portal, Text, Tooltip } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
 import { CARD_WIDTH_PX, CardPosition, cardPosition } from './hidden-tags-card-position';
-import { TagDot, TagPill } from './tag-pill';
+import { TagMark, TagPill } from './tag-pill';
 import { fitTagPills, LIST_TAG_PILLS_GAP, TAG_PILLS_MAX_BUDGET } from './tag-pills-fit';
 import { getTagPillColors } from '../../helpers/tags';
 
@@ -95,6 +95,11 @@ const Counter = styled(Text)`
  * Not the DS Popover: its Popper moves the focus into itself when it opens, which would take it
  * away from whatever the user is typing in while the pointer rests on "+N".
  */
+/** Holds a dot or the shared icon as the target of its tooltip. */
+const DotSlot = styled.span`
+	display: inline-flex;
+`;
+
 const Card = styled.div`
 	position: fixed;
 	/* As the DS Popper: above the boards, below dropdowns and modals (999). */
@@ -217,11 +222,7 @@ const HiddenTagsCount = ({
 								gap="0.5rem"
 								padding={{ left: 'medium', right: 'small' }}
 							>
-								{tag.shared ? (
-									<Icon icon="PeopleOutline" size="small" color="text" />
-								) : (
-									tag.color && <TagDot color={tag.color} />
-								)}
+								<TagMark shared={tag.shared} color={tag.color} />
 								<Text size="small">{tag.name}</Text>
 							</CardRow>
 						))}
@@ -271,9 +272,10 @@ export const ListTagPills = memo(function ListTagPills({
 			{visible.map((tag, index) =>
 				fit.mode === 'dots' ? (
 					<Tooltip key={tag.id} label={tag.tooltip ?? tag.name}>
-						<span>
-							<TagDot color={tag.color ?? 'transparent'} />
-						</span>
+						<DotSlot>
+							{/* A shared tag has no colour: its icon, as on its pill; no colour at all: an empty dot */}
+							<TagMark shared={tag.shared} color={tag.color ?? 'transparent'} />
+						</DotSlot>
 					</Tooltip>
 				) : (
 					<TagPill

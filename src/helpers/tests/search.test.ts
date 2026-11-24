@@ -70,6 +70,19 @@ describe('search', () => {
 			expect(result).toBe(value);
 		});
 
+		it.each([
+			String.raw`tag:"Q1 \"draft\""`,
+			String.raw`tag:"Q1\"draft "`,
+			String.raw`"say \"hi\" now"`,
+			String.raw`"C:\Docs x\"`
+		])('should keep as it is a quoted term with escaped quotes inside: %s', (value) => {
+			expect(convertSearchChipToString({ value })).toBe(value);
+		});
+
+		it('should still wrap a multiword term whose quotes are not escaped', () => {
+			expect(convertSearchChipToString({ value: 'tag:"a" "b"' })).toBe('tag:""a" "b""');
+		});
+
 		it('should return a string wrapped in double quotes if the chip value contains spaces and there is no known prefix', () => {
 			const value = faker.word.words(2);
 			const chip = { value };

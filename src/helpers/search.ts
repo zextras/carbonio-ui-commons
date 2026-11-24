@@ -28,7 +28,11 @@ function getChipString(chip: ConvertSearchChipToStringProps): string {
 	return '';
 }
 
-const QUOTED_TERM_REGEX = /^"([^"]+)"$/im;
+/**
+ * A term in quotes, as the server's search grammar reads it: a quote inside is escaped as \", any other
+ * backslash is a plain character.
+ */
+const QUOTED_TERM_REGEX = /^"(?:\\"|[^"\n])+"$/im;
 
 const MULTIWORD_TERM_REGEX = /^(\S+\s+\S+.*)$/im;
 

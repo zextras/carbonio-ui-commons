@@ -6,9 +6,10 @@
 import React from 'react';
 
 import { screen, setupTest } from '../../../__test__/test-setup';
-import { TagDot, TagPill } from '../tag-pill';
+import { IconTagPill, TagIcon, TagPill } from '../tag-pill';
 
 const RED = '#ef5350';
+const ICON_PILL = 'icon-tag-pill';
 const REMOVE_URGENT = 'Remove tag Urgent';
 
 /** The rules inside media queries that apply to `element`: jsdom matches no media query. */
@@ -23,14 +24,19 @@ const mediaRulesOf = (element: Element): Array<{ condition: string; rule: CSSSty
 		);
 
 describe('TagPill', () => {
-	test('shows the name on a tint of the tag colour, with a dot of the colour', () => {
+	test('shows the name on a tint of the tag colour, with a 12px tag icon of the colour', () => {
 		setupTest(<TagPill name="Client" color="#2b73d2" />);
 
 		expect(screen.getByText('Client')).toBeVisible();
 		expect(screen.getByTestId('tag-pill')).toHaveStyle({
 			'background-color': 'rgba(43, 115, 210, 0.14)'
 		});
-		expect(screen.getByTestId('tag-dot')).toHaveStyle({ 'background-color': '#2b73d2' });
+		expect(screen.queryByTestId('tag-dot')).not.toBeInTheDocument();
+		expect(screen.getByTestId('icon: Tag')).toHaveStyle({
+			color: '#2b73d2',
+			width: '0.75rem',
+			height: '0.75rem'
+		});
 	});
 
 	test('a near-white colour gets a border', () => {
@@ -156,7 +162,7 @@ describe('TagPill', () => {
 
 			expect(screen.getByText('Finance')).toBeVisible();
 			expect(screen.getByTestId('icon: PeopleOutline')).toBeVisible();
-			expect(screen.queryByTestId('tag-dot')).not.toBeInTheDocument();
+			expect(screen.queryByTestId('icon: Tag')).not.toBeInTheDocument();
 			expect(screen.getByTestId('tag-pill')).toHaveStyle({
 				'background-color': 'rgba(0, 0, 0, 0)',
 				border: '1px solid #767676'
@@ -181,14 +187,82 @@ describe('TagPill', () => {
 	});
 });
 
-describe('TagDot', () => {
-	test('is a dot of the tag colour with a grey outline', () => {
-		setupTest(<TagDot color="#ffc107" />);
+/** The CSS rules that apply to the path of `icon`, outline included. */
+const pathRulesOf = (icon: Element): Array<CSSStyleRule> => {
+	const path = icon.querySelector('path');
+	return Array.from(document.styleSheets)
+		.flatMap((sheet) => Array.from(sheet.cssRules))
+		.filter((rule): rule is CSSStyleRule => rule instanceof CSSStyleRule)
+		.filter((rule) => path !== null && path.matches(rule.selectorText));
+};
 
-		expect(screen.getByTestId('tag-dot')).toHaveStyle({
-			display: 'inline-block',
-			'background-color': '#ffc107',
-			'box-shadow': '0 0 0 1px #767676'
+describe('TagIcon', () => {
+	test('is the tag icon in the exact tag colour, outlined in grey', () => {
+		setupTest(<TagIcon color="#ffc107" />);
+
+		const icon = screen.getByTestId('icon: Tag');
+		expect(icon).toHaveStyle({ color: '#ffc107', width: '0.75rem' });
+		const outline = pathRulesOf(icon).find((rule) => rule.style.getPropertyValue('stroke'))?.style;
+		expect(outline?.getPropertyValue('stroke')).toBe('#767676');
+		// centre-aligned, the same width however the icon is scaled
+		expect(outline?.getPropertyValue('stroke-width')).toBe('0.5px');
+		expect(outline?.getPropertyValue('vector-effect')).toBe('non-scaling-stroke');
+	});
+
+	test('at 16px, in menus, the outline is 0.75px', () => {
+		setupTest(<TagIcon color="#ffc107" size="medium" />);
+
+		const icon = screen.getByTestId('icon: Tag');
+		expect(icon).toHaveStyle({ width: '1rem' });
+		const outline = pathRulesOf(icon).find((rule) => rule.style.getPropertyValue('stroke'))?.style;
+		expect(outline?.getPropertyValue('stroke-width')).toBe('0.75px');
+	});
+});
+
+describe('IconTagPill', () => {
+	test('is a round 20px pill with the tag icon on the tint, without the name', () => {
+		setupTest(<IconTagPill name="Client" color="#2b73d2" />);
+
+		expect(screen.getByTestId(ICON_PILL)).toHaveStyle({
+			width: '1.25rem',
+			height: '1.25rem',
+			'border-radius': '50%',
+			'background-color': 'rgba(43, 115, 210, 0.14)'
 		});
+		expect(screen.getByTestId('icon: Tag')).toBeVisible();
+		expect(screen.queryByText('Client')).not.toBeInTheDocument();
+	});
+
+	test('shows the name of the tag on hover', async () => {
+		const { user } = setupTest(<IconTagPill name="Client" color="#2b73d2" />);
+
+		await user.hover(screen.getByTestId(ICON_PILL));
+
+		expect(await screen.findByText('Client')).toBeVisible();
+	});
+
+	test('is not a Tab stop', async () => {
+		const { user } = setupTest(<IconTagPill name="Client" color="#2b73d2" />);
+
+		await user.tab();
+
+		expect(document.body).toHaveFocus();
+	});
+
+	test('a near-white colour gets the same border as a pill', () => {
+		setupTest(<IconTagPill name="Later" color="#fffde7" />);
+
+		expect(screen.getByTestId(ICON_PILL)).toHaveStyle({ border: '1px solid #c9ced6' });
+	});
+
+	test('a tag from a shared folder keeps the shared icon and the outline, and its tooltip', async () => {
+		const { user } = setupTest(
+			<IconTagPill name="Finance" shared tooltip="Finance (from m@x.com's folder)" />
+		);
+
+		expect(screen.getByTestId('icon: PeopleOutline')).toBeVisible();
+		expect(screen.getByTestId(ICON_PILL)).toHaveStyle({ border: '1px solid #767676' });
+		await user.hover(screen.getByTestId(ICON_PILL));
+		expect(await screen.findByText("Finance (from m@x.com's folder)")).toBeVisible();
 	});
 });

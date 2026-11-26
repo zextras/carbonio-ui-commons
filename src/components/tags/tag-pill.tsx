@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 import { getTagPillColors } from '../../helpers/tags';
 
-/** Outline of the dot and of a shared-folder pill: ≥ 3:1 on white, whatever the tag colour. */
+/** Outline of the tag icon and of a shared-folder pill: ≥ 3:1 on white, whatever the tag colour. */
 export const TAG_OUTLINE_COLOR = '#767676';
 
 export type TagPillSize = 'small' | 'medium';
@@ -41,30 +41,52 @@ const PILL_SIZES: Record<
 	}
 };
 
-const Dot = styled.span<{ $color: string }>`
-	display: inline-block;
+/** Outline width of the tag icon by size: thin enough to keep the colour, ≥ 3:1 on any colour. */
+const TAG_ICON_OUTLINE: Record<TagPillSize, string> = { small: '0.5px', medium: '0.75px' };
+
+/** The shared-folder icon: never shrinks in the pill. */
+const SharedIcon = styled(Icon)`
 	flex: none;
-	width: 0.5rem;
-	height: 0.5rem;
-	border-radius: 50%;
-	background-color: ${({ $color }): string => $color};
-	box-shadow: 0 0 0 1px ${TAG_OUTLINE_COLOR};
 `;
 
-/** A tag's colour as an outlined dot: inside a pill, or alone where a pill does not fit. */
-export const TagDot = ({ color }: Readonly<{ color: string }>): React.JSX.Element => (
-	<Dot data-testid="tag-dot" $color={color} />
+/** Centre-aligned outline (the SVG default), the same width however the 24px glyph is scaled. */
+const OutlinedIcon = styled(Icon, {
+	shouldForwardProp: (prop) => prop !== '$outline'
+})<{ $outline: string }>`
+	flex: none;
+
+	& path {
+		stroke: ${TAG_OUTLINE_COLOR};
+		stroke-width: ${({ $outline }): string => $outline};
+		vector-effect: non-scaling-stroke;
+	}
+`;
+
+/**
+ * A tag's colour as the tag icon, in the exact palette colour, outlined: 12px (`small`) in pills,
+ * 16px (`medium`) in menus and popovers.
+ */
+export const TagIcon = ({
+	color,
+	size = 'small'
+}: Readonly<{ color: string; size?: TagPillSize }>): React.JSX.Element => (
+	<OutlinedIcon icon="Tag" size={size} color={color} $outline={TAG_ICON_OUTLINE[size]} />
 );
 
-/** What marks a tag before its name: the shared icon for a tag from a shared folder, else its dot. */
+/** What marks a tag before its name: the shared icon for a tag from a shared folder, else its icon. */
 export const TagMark = ({
 	shared,
-	color
-}: Readonly<{ shared?: boolean; color?: string }>): React.JSX.Element | null => {
+	color,
+	size = 'small'
+}: Readonly<{
+	shared?: boolean;
+	color?: string;
+	size?: TagPillSize;
+}>): React.JSX.Element | null => {
 	if (shared) {
-		return <Icon icon="PeopleOutline" size="small" color="text" />;
+		return <SharedIcon icon="PeopleOutline" size={size} color="text" />;
 	}
-	return color ? <TagDot color={color} /> : null;
+	return color ? <TagIcon color={color} size={size} /> : null;
 };
 
 const PillRoot = styled.span<{
@@ -247,7 +269,7 @@ export type TagPillProps = {
 };
 
 /**
- * A tag as a pill: colour dot + name on a tint of the tag colour. Text is always #333, so the
+ * A tag as a pill: tag icon + name on a tint of the tag colour. Text is always #333, so the
  * colour is never the only thing that tells tags apart.
  */
 export const TagPill = forwardRef<HTMLButtonElement, Readonly<TagPillProps>>(function TagPill(
@@ -323,3 +345,42 @@ export const TagPill = forwardRef<HTMLButtonElement, Readonly<TagPillProps>>(fun
 		</PillRoot>
 	);
 });
+
+const IconPillRoot = styled.span<{ $background: string; $border: string | undefined }>`
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: none;
+	box-sizing: border-box;
+	width: 1.25rem;
+	height: 1.25rem;
+	border-radius: 50%;
+	background-color: ${({ $background }): string => $background};
+	border: ${({ $border }): string => ($border ? `1px solid ${$border}` : 'none')};
+`;
+
+export type IconTagPillProps = Pick<TagPillProps, 'name' | 'color' | 'shared' | 'tooltip'>;
+
+/**
+ * A tag as a round 20px pill with its icon only, where its name does not fit: the name (or the
+ * shared tag's tooltip) on hover. Read-only and not a Tab stop: the row it is in lists every tag.
+ */
+export const IconTagPill = ({
+	name,
+	color,
+	shared = false,
+	tooltip
+}: Readonly<IconTagPillProps>): React.JSX.Element => {
+	const colors = !shared && color ? getTagPillColors(color) : undefined;
+	return (
+		<Tooltip label={tooltip ?? name}>
+			<IconPillRoot
+				data-testid="icon-tag-pill"
+				$background={colors?.background ?? 'transparent'}
+				$border={shared ? TAG_OUTLINE_COLOR : colors?.border}
+			>
+				<TagMark shared={shared} color={color} />
+			</IconPillRoot>
+		</Tooltip>
+	);
+};

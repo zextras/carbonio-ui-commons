@@ -3,15 +3,18 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useMemo, useRef } from 'react';
 
 import styled from '@emotion/styled';
-import { Container, Portal, Text, Tooltip } from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
+import { Text } from '@zextras/carbonio-design-system';
 
-import { CARD_WIDTH_PX, CardPosition, cardPosition } from './hidden-tags-card-position';
-import { TagMark, TagPill } from './tag-pill';
-import { fitTagPills, LIST_TAG_PILLS_GAP, TAG_PILLS_MAX_BUDGET } from './tag-pills-fit';
+import { IconTagPill, TagPill } from './tag-pill';
+import {
+	fitTagPills,
+	LIST_TAG_PILLS_GAP,
+	TagPillSlot,
+	TAG_PILLS_MAX_BUDGET
+} from './tag-pills-fit';
 import { getTagPillColors } from '../../helpers/tags';
 
 export type TagPillItem = {
@@ -26,11 +29,9 @@ export type TagPillItem = {
 };
 
 const LIST_PILL_FONT_SIZE_PX = 12;
-/** Padding (6 + 8), dot (8) and the gap after it (6) around the name of a small pill. */
-const LIST_PILL_CHROME_PX = 28;
-/** A shared pill: the 12px icon instead of the 8px dot, and a 1px border on each side. */
-const SHARED_PILL_EXTRA_PX = 6;
-/** A near-white pill: a 1px border on each side. */
+/** Padding (6 + 8), the 12px tag icon and the 6px gap after it, around the name of a small pill. */
+const LIST_PILL_CHROME_PX = 32;
+/** A shared or near-white pill: a 1px border on each side. */
 const BORDER_PX = 2;
 /** Horizontal padding of the "+N" text. */
 const COUNTER_PADDING_PX = 4;
@@ -66,172 +67,35 @@ const measureTextWidth = (text: string): number => {
 };
 
 const pillWidth = (tag: TagPillItem): number => {
-	const text = Math.ceil(measureTextWidth(tag.name)) + LIST_PILL_CHROME_PX;
-	if (tag.shared) {
-		return text + SHARED_PILL_EXTRA_PX;
-	}
-	return tag.color && getTagPillColors(tag.color).border ? text + BORDER_PX : text;
+	const width = Math.ceil(measureTextWidth(tag.name)) + LIST_PILL_CHROME_PX;
+	const bordered = tag.shared || (tag.color !== undefined && getTagPillColors(tag.color).border);
+	return bordered ? width + BORDER_PX : width;
 };
 
-const counterWidth = (hiddenCount: number): number =>
+/** Width of "+N" with its padding: the list's own counter, or a button of the same size. */
+export const listTagPillsCounterWidth = (hiddenCount: number): number =>
 	Math.ceil(measureTextWidth(`+${hiddenCount}`)) + COUNTER_PADDING_PX;
 
 const pxToRem = (px: number): string => `${px / 16}rem`;
 
-/** Delay before the hidden-tags card opens, so it doesn't flash while the pointer crosses a row. */
-export const HIDDEN_TAGS_CARD_DELAY_MS = 300;
-
-const Counter = styled(Text)`
-	padding: 0 0.125rem;
-	cursor: default;
-	color: ${({ theme }): string => theme.palette.secondary.active};
-
-	&:hover {
-		text-decoration: underline;
-	}
-`;
-
-/**
- * Not the DS Popover: its Popper moves the focus into itself when it opens, which would take it
- * away from whatever the user is typing in while the pointer rests on "+N".
- */
-/** Holds a dot or the shared icon as the target of its tooltip. */
-const DotSlot = styled.span`
-	display: inline-flex;
-`;
-
-const Card = styled.div`
-	position: fixed;
-	/* As the DS Popper: above the boards, below dropdowns and modals (999). */
-	z-index: 99;
-	box-sizing: border-box;
-	width: ${pxToRem(CARD_WIDTH_PX)};
-	overflow-y: auto;
-	padding: ${({ theme }): string => theme.sizes.padding.small} 0;
-	border-radius: ${({ theme }): string => theme.borderRadius};
-	background-color: ${({ theme }): string => theme.palette.gray6.regular};
-	box-shadow: ${({ theme }): string => theme.shadows.regular};
-`;
+const slotMaxWidth = (slot: TagPillSlot): string | undefined =>
+	slot.kind === 'pill' && slot.maxWidth !== undefined ? pxToRem(slot.maxWidth) : undefined;
 
 /** secondary.active rather than secondary: #828282 is below 4.5:1 on white at 12px. */
-const CardTitle = styled(Text)`
+const Counter = styled(Text)`
+	padding: 0 0.125rem;
 	color: ${({ theme }): string => theme.palette.secondary.active};
 `;
 
-const CardRow = styled(Container)`
-	min-height: 2rem;
+const Tags = styled.span`
+	display: flex;
+	align-items: center;
+	flex: none;
+	min-width: 0;
+	gap: ${pxToRem(LIST_TAG_PILLS_GAP)};
 `;
 
-const HiddenTagsCount = ({
-	tags
-}: Readonly<{ tags: ReadonlyArray<TagPillItem> }>): React.JSX.Element => {
-	const [t] = useTranslation();
-	const anchorRef = useRef<HTMLDivElement>(null);
-	const cardRef = useRef<HTMLDivElement>(null);
-	const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
-	const [position, setPosition] = useState<CardPosition>();
-
-	const close = useCallback((): void => {
-		clearTimeout(timeoutRef.current);
-		setPosition(undefined);
-	}, []);
-	const onAnchorEnter = useCallback((): void => {
-		clearTimeout(timeoutRef.current);
-		timeoutRef.current = setTimeout(() => {
-			if (anchorRef.current) {
-				setPosition(cardPosition(anchorRef.current.getBoundingClientRect()));
-			}
-		}, HIDDEN_TAGS_CARD_DELAY_MS);
-	}, []);
-	// The card stays open while the pointer moves from "+N" into it, and back.
-	const onLeave = useCallback(
-		(event: React.MouseEvent): void => {
-			const to = event.relatedTarget;
-			const inside = (el: HTMLElement | null): boolean => to instanceof Node && !!el?.contains(to);
-			if (!inside(anchorRef.current) && !inside(cardRef.current)) {
-				close();
-			}
-		},
-		[close]
-	);
-
-	const open = position !== undefined;
-	// Esc closes it; so do a scroll outside it and a resize, since the card is fixed and "+N" moves.
-	useEffect(() => {
-		if (!open) {
-			return undefined;
-		}
-		const onKeyDown = (event: KeyboardEvent): void => {
-			if (event.key === 'Escape') {
-				close();
-			}
-		};
-		const onScroll = (event: Event): void => {
-			if (!(event.target instanceof Node && cardRef.current?.contains(event.target))) {
-				close();
-			}
-		};
-		document.addEventListener('keydown', onKeyDown);
-		window.addEventListener('scroll', onScroll, true);
-		window.addEventListener('resize', close);
-		return (): void => {
-			document.removeEventListener('keydown', onKeyDown);
-			window.removeEventListener('scroll', onScroll, true);
-			window.removeEventListener('resize', close);
-		};
-	}, [open, close]);
-	useEffect(() => (): void => clearTimeout(timeoutRef.current), []);
-
-	return (
-		<>
-			<Counter
-				ref={anchorRef}
-				size="extrasmall"
-				data-testid="hidden-tags-count"
-				onMouseEnter={onAnchorEnter}
-				onMouseLeave={onLeave}
-			>
-				+{tags.length}
-			</Counter>
-			{position && (
-				<Portal show>
-					<Card
-						ref={cardRef}
-						onMouseLeave={onLeave}
-						data-testid="hidden-tags-card"
-						aria-hidden
-						style={position}
-					>
-						<Container
-							padding={{ top: 'extrasmall', bottom: 'small', horizontal: 'medium' }}
-							crossAlignment="flex-start"
-						>
-							<CardTitle size="extrasmall">
-								{t('label.more_tags', {
-									count: tags.length,
-									defaultValue_one: '{{count}} more tag',
-									defaultValue: '{{count}} more tags'
-								})}
-							</CardTitle>
-						</Container>
-						{tags.map((tag) => (
-							<CardRow
-								key={tag.id}
-								orientation="horizontal"
-								mainAlignment="flex-start"
-								gap="0.5rem"
-								padding={{ left: 'medium', right: 'small' }}
-							>
-								<TagMark shared={tag.shared} color={tag.color} />
-								<Text size="small">{tag.name}</Text>
-							</CardRow>
-						))}
-					</Card>
-				</Portal>
-			)}
-		</>
-	);
-};
+type ShownTag = { tag: TagPillItem; slot: TagPillSlot };
 
 export type ListTagPillsProps = {
 	/** In display order (see `sortTagsByName`; shared tags last). */
@@ -240,55 +104,97 @@ export type ListTagPillsProps = {
 	lineWidth: number;
 	/** Most px the tags may take: 200 on the subject line, 160 on a conversation child row. */
 	maxBudget?: number;
+	/**
+	 * What stands for the tags that don't fit, in place of the plain "+N": e.g. a button that opens
+	 * them. Rendered outside the part hidden from screen readers. While `frozen` it is called also
+	 * when no hidden tag is left, so that the caller can close what it opened.
+	 */
+	renderMore?: (hidden: ReadonlyArray<TagPillItem>) => React.ReactNode;
+	/**
+	 * While true, the tags shown keep their place and kind, whatever the width: e.g. while the hidden
+	 * ones are open. A removed tag leaves; the hidden ones are the rest.
+	 */
+	frozen?: boolean;
 };
 
 /**
- * The tags of a list row: pills while they fit in 40% of the line, then "+N" as plain text whose
- * hover card lists the others; two dots at most on a line too narrow for a pill. Read-only and
- * pointer-only: the row's accessible name lists the tags.
+ * The tags of a list row: pills while they fit in 40% of the line, then icon-only pills, then "+N"
+ * (see `fitTagPills`). The pills are read-only and hidden from screen readers: the row's accessible
+ * name lists the tags.
  */
 export const ListTagPills = memo(function ListTagPills({
 	tags,
 	lineWidth,
-	maxBudget = TAG_PILLS_MAX_BUDGET
+	maxBudget = TAG_PILLS_MAX_BUDGET,
+	renderMore,
+	frozen = false
 }: Readonly<ListTagPillsProps>): React.JSX.Element | null {
 	const pillWidths = useMemo(() => tags.map(pillWidth), [tags]);
-	const fit = fitTagPills({ lineWidth, pillWidths, counterWidth, maxBudget });
+	const fitted = useMemo<ReadonlyArray<ShownTag>>(() => {
+		const { slots } = fitTagPills({
+			lineWidth,
+			pillWidths,
+			counterWidth: listTagPillsCounterWidth,
+			maxBudget
+		});
+		return slots.map((slot, index) => ({ tag: tags[index], slot }));
+	}, [lineWidth, maxBudget, pillWidths, tags]);
+
+	// The layout of the last render that was not frozen: the one the user is looking at.
+	const lastFitted = useRef(fitted);
+	if (!frozen) {
+		lastFitted.current = fitted;
+	}
+	const frozenLayout = lastFitted.current;
+	const shown = useMemo<ReadonlyArray<ShownTag>>(() => {
+		if (!frozen) {
+			return fitted;
+		}
+		const byId = new Map(tags.map((tag) => [tag.id, tag]));
+		return frozenLayout.flatMap(({ tag, slot }) => {
+			const current = byId.get(tag.id);
+			return current ? [{ tag: current, slot }] : [];
+		});
+	}, [fitted, frozen, frozenLayout, tags]);
+	const hidden = useMemo(() => {
+		const shownIds = new Set(shown.map(({ tag }) => tag.id));
+		return tags.filter((tag) => !shownIds.has(tag.id));
+	}, [shown, tags]);
 
 	if (tags.length === 0) {
 		return null;
 	}
-	const visible = tags.slice(0, fit.visibleCount);
-	const hidden = tags.slice(fit.visibleCount);
 
 	return (
-		<Container
-			orientation="horizontal"
-			width="fit"
-			mainAlignment="flex-start"
-			gap={fit.mode === 'dots' ? '0.1875rem' : pxToRem(LIST_TAG_PILLS_GAP)}
-			style={{ flex: 'none', minWidth: 0 }}
-		>
-			{visible.map((tag, index) =>
-				fit.mode === 'dots' ? (
-					<Tooltip key={tag.id} label={tag.tooltip ?? tag.name}>
-						<DotSlot>
-							{/* A shared tag has no colour: its icon, as on its pill; no colour at all: an empty dot */}
-							<TagMark shared={tag.shared} color={tag.color ?? 'transparent'} />
-						</DotSlot>
-					</Tooltip>
-				) : (
-					<TagPill
-						key={tag.id}
-						name={tag.name}
-						color={tag.color}
-						shared={tag.shared}
-						tooltip={tag.tooltip}
-						maxWidth={index === 0 ? pxToRem(fit.firstPillMaxWidth) : undefined}
-					/>
-				)
-			)}
-			{hidden.length > 0 && <HiddenTagsCount tags={hidden} />}
-		</Container>
+		<Tags data-testid="list-tag-pills">
+			<Tags aria-hidden="true">
+				{shown.map(({ tag, slot }) =>
+					slot.kind === 'icon' ? (
+						<IconTagPill
+							key={tag.id}
+							name={tag.name}
+							color={tag.color}
+							shared={tag.shared}
+							tooltip={tag.tooltip}
+						/>
+					) : (
+						<TagPill
+							key={tag.id}
+							name={tag.name}
+							color={tag.color}
+							shared={tag.shared}
+							tooltip={tag.tooltip}
+							maxWidth={slotMaxWidth(slot)}
+						/>
+					)
+				)}
+				{hidden.length > 0 && !renderMore && (
+					<Counter size="extrasmall" data-testid="hidden-tags-count">
+						+{hidden.length}
+					</Counter>
+				)}
+			</Tags>
+			{(hidden.length > 0 || frozen) && renderMore?.(hidden)}
+		</Tags>
 	);
 });

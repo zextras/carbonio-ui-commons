@@ -311,7 +311,10 @@ export const TagPill = forwardRef<HTMLButtonElement, Readonly<TagPillProps>>(fun
 			data-testid="tag-pill"
 			$size={size}
 			$background={colors?.background ?? 'transparent'}
-			$hoverBackground={colors?.hoverBackground ?? 'transparent'}
+			// Darker on hover only when there is something to do with it
+			$hoverBackground={
+				(clickable || removable ? colors?.hoverBackground : colors?.background) ?? 'transparent'
+			}
 			$border={shared ? TAG_OUTLINE_COLOR : colors?.border}
 			$maxWidth={maxWidth}
 		>

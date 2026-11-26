@@ -9,6 +9,8 @@ import { screen, setupTest } from '../../../__test__/test-setup';
 import { IconTagPill, TagIcon, TagPill } from '../tag-pill';
 
 const RED = '#ef5350';
+/** The rest tint of #2b73d2. */
+const CLIENT_TINT = 'rgba(43, 115, 210, 0.14)';
 const ICON_PILL = 'icon-tag-pill';
 const REMOVE_URGENT = 'Remove tag Urgent';
 
@@ -23,13 +25,33 @@ const mediaRulesOf = (element: Element): Array<{ condition: string; rule: CSSSty
 				.map((rule) => ({ condition: media.conditionText, rule }))
 		);
 
+/** The background the element takes on hover: what its own `:hover` rule sets, if any. */
+const hoverBackgroundOf = (element: Element): string | undefined =>
+	Array.from(document.styleSheets)
+		.flatMap((sheet) => Array.from(sheet.cssRules))
+		.filter((rule): rule is CSSStyleRule => rule instanceof CSSStyleRule)
+		.filter((rule) =>
+			rule.selectorText
+				.split(',')
+				.map((selector) => selector.trim())
+				.some(
+					(selector) =>
+						// Emotion's own class rules only: jsdom can't parse every selector of the other sheets
+						selector.startsWith('.css-') &&
+						selector.endsWith(':hover') &&
+						element.matches(selector.slice(0, -':hover'.length))
+				)
+		)
+		.map((rule) => rule.style.getPropertyValue('background-color'))
+		.find(Boolean);
+
 describe('TagPill', () => {
 	test('shows the name on a tint of the tag colour, with a 12px tag icon of the colour', () => {
 		setupTest(<TagPill name="Client" color="#2b73d2" />);
 
 		expect(screen.getByText('Client')).toBeVisible();
 		expect(screen.getByTestId('tag-pill')).toHaveStyle({
-			'background-color': 'rgba(43, 115, 210, 0.14)'
+			'background-color': CLIENT_TINT
 		});
 		expect(screen.queryByTestId('tag-dot')).not.toBeInTheDocument();
 		expect(screen.getByTestId('icon: Tag')).toHaveStyle({
@@ -49,6 +71,25 @@ describe('TagPill', () => {
 		setupTest(<TagPill name="Client" color="#2b73d2" />);
 
 		expect(screen.queryByRole('button')).not.toBeInTheDocument();
+	});
+
+	test('keeps its colour on hover when it can be neither clicked nor removed', () => {
+		setupTest(<TagPill name="Client" color="#2b73d2" />);
+
+		expect(hoverBackgroundOf(screen.getByTestId('tag-pill'))).toBe(CLIENT_TINT);
+	});
+
+	test('gets darker on hover when clickable or removable', () => {
+		setupTest(
+			<>
+				<TagPill name="Client" color="#2b73d2" onClick={vi.fn()} />
+				<TagPill name="Urgent" color="#2b73d2" onRemove={vi.fn()} />
+			</>
+		);
+
+		const [clickable, removable] = screen.getAllByTestId('tag-pill');
+		expect(hoverBackgroundOf(clickable)).toBe('rgba(43, 115, 210, 0.24)');
+		expect(hoverBackgroundOf(removable)).toBe('rgba(43, 115, 210, 0.24)');
 	});
 
 	test('is a button named after the tag when clickable', async () => {
@@ -227,7 +268,7 @@ describe('IconTagPill', () => {
 			width: '1.25rem',
 			height: '1.25rem',
 			'border-radius': '50%',
-			'background-color': 'rgba(43, 115, 210, 0.14)'
+			'background-color': CLIENT_TINT
 		});
 		expect(screen.getByTestId('icon: Tag')).toBeVisible();
 		expect(screen.queryByText('Client')).not.toBeInTheDocument();

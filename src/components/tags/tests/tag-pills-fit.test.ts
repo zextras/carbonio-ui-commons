@@ -132,17 +132,4 @@ describe('fitTagPills', () => {
 		expect(fit.slots).toEqual([]);
 		expect(fit.hiddenCount).toBe(2);
 	});
-
-	test('uses the budget given by the caller, e.g. 160px in conversation child rows', () => {
-		// 60 + 4 + 60 = 124, + "+2" = 148; a third pill or an icon and "+1" would pass 160
-		const fit = fitTagPills({
-			lineWidth: 2000,
-			pillWidths: [60, 60, 60, 60],
-			counterWidth,
-			maxBudget: 160
-		});
-
-		expect(kinds(fit.slots)).toEqual(['pill', 'pill']);
-		expect(fit.hiddenCount).toBe(2);
-	});
 });

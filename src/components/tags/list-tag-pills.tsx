@@ -9,12 +9,7 @@ import styled from '@emotion/styled';
 import { Text } from '@zextras/carbonio-design-system';
 
 import { IconTagPill, TagPill } from './tag-pill';
-import {
-	fitTagPills,
-	LIST_TAG_PILLS_GAP,
-	TagPillSlot,
-	TAG_PILLS_MAX_BUDGET
-} from './tag-pills-fit';
+import { fitTagPills, LIST_TAG_PILLS_GAP, TagPillSlot } from './tag-pills-fit';
 import { getTagPillColors } from '../../helpers/tags';
 
 export type TagPillItem = {
@@ -100,10 +95,8 @@ type ShownTag = { tag: TagPillItem; slot: TagPillSlot };
 export type ListTagPillsProps = {
 	/** In display order (see `sortTagsByName`; shared tags last). */
 	tags: ReadonlyArray<TagPillItem>;
-	/** Width of the line the tags share with the subject (or the sender), in px. */
+	/** Width of the line the tags share with the subject (or the fragment), in px. */
 	lineWidth: number;
-	/** Most px the tags may take: 200 on the subject line, 160 on a conversation child row. */
-	maxBudget?: number;
 	/**
 	 * What stands for the tags that don't fit, in place of the plain "+N": e.g. a button that opens
 	 * them. Rendered outside the part hidden from screen readers. While `frozen` it is called also
@@ -125,7 +118,6 @@ export type ListTagPillsProps = {
 export const ListTagPills = memo(function ListTagPills({
 	tags,
 	lineWidth,
-	maxBudget = TAG_PILLS_MAX_BUDGET,
 	renderMore,
 	frozen = false
 }: Readonly<ListTagPillsProps>): React.JSX.Element | null {
@@ -134,11 +126,10 @@ export const ListTagPills = memo(function ListTagPills({
 		const { slots } = fitTagPills({
 			lineWidth,
 			pillWidths,
-			counterWidth: listTagPillsCounterWidth,
-			maxBudget
+			counterWidth: listTagPillsCounterWidth
 		});
 		return slots.map((slot, index) => ({ tag: tags[index], slot }));
-	}, [lineWidth, maxBudget, pillWidths, tags]);
+	}, [lineWidth, pillWidths, tags]);
 
 	// The layout of the last render that was not frozen: the one the user is looking at.
 	const lastFitted = useRef(fitted);

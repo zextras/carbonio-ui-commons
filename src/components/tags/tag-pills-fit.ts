@@ -4,12 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/** Share of the line the tags may take: the subject (or sender) keeps at least 60%. */
+/** Share of the line the tags may take: the subject (or fragment) keeps at least 60%. */
 export const TAG_PILLS_BUDGET_RATIO = 0.4;
 /** Most the tags may take on a list row's subject line. */
 export const TAG_PILLS_MAX_BUDGET = 200;
-/** Most the tags may take on a conversation child row, after the date. */
-export const TAG_PILLS_CHILD_ROW_MAX_BUDGET = 160;
 /** The first pill is always shown, truncated at this width. */
 export const FIRST_TAG_PILL_MAX_WIDTH = 160;
 /**
@@ -33,13 +31,12 @@ export type TagPillsFit = {
 };
 
 export type FitTagPillsArgs = {
-	/** Width of the whole line the tags share with the subject (or the sender), in px. */
+	/** Width of the whole line the tags share with the subject (or the fragment), in px. */
 	lineWidth: number;
 	/** Natural width of each pill, in display order, in px. */
 	pillWidths: ReadonlyArray<number>;
 	/** Width of the "+N" for a given number of hidden tags, in px. */
 	counterWidth: (hiddenCount: number) => number;
-	maxBudget?: number;
 	gap?: number;
 };
 
@@ -76,7 +73,7 @@ const firstPillMaxWidth = ({ total, budget, gap, counterSpace }: FitContext): nu
 };
 
 /**
- * How a list row shows its tags, in 40% of the line (at most `maxBudget`): pills in order while they
+ * How a list row shows its tags, in 40% of the line (at most `TAG_PILLS_MAX_BUDGET`): pills in order while they
  * fit; when the next one doesn't, the last tag as a pill truncated to what is left (64px at least),
  * any other as icon-only pills while they fit, then "+N" for the rest. Room for "+N" is kept while
  * tags remain. The first pill is always shown, and leaves room for an icon when more tags follow.
@@ -86,12 +83,11 @@ export const fitTagPills = ({
 	lineWidth,
 	pillWidths,
 	counterWidth,
-	maxBudget = TAG_PILLS_MAX_BUDGET,
 	gap = LIST_TAG_PILLS_GAP
 }: FitTagPillsArgs): TagPillsFit => {
 	const context: FitContext = {
 		total: pillWidths.length,
-		budget: Math.min(lineWidth * TAG_PILLS_BUDGET_RATIO, maxBudget),
+		budget: Math.min(lineWidth * TAG_PILLS_BUDGET_RATIO, TAG_PILLS_MAX_BUDGET),
 		gap,
 		counterSpace: (hiddenCount) => (hiddenCount > 0 ? gap + counterWidth(hiddenCount) : 0)
 	};

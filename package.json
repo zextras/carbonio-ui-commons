@@ -69,7 +69,7 @@
 		"@testing-library/user-event": "14.6.1",
 		"@tsconfig/node22": "22.0.7",
 		"@types/jest": "30.0.0",
-		"@types/lodash": "4.17.24",
+		"@types/lodash": "4.17.27",
 		"@types/node": "22.20.5",
 		"@types/react": "18.3.31",
 		"@types/react-dom": "18.3.7",

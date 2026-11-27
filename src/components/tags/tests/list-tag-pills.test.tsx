@@ -8,12 +8,7 @@ import React from 'react';
 import { isInaccessible } from '@testing-library/react';
 
 import { screen, setupTest } from '../../../__test__/test-setup';
-import {
-	LIST_TAG_PILLS_COUNTER_MIN_WIDTH,
-	ListTagPills,
-	listTagPillsCounterWidth,
-	TagPillItem
-} from '../list-tag-pills';
+import { ListTagPills, TagPillItem } from '../list-tag-pills';
 
 const PILL = 'tag-pill';
 const ICON_PILL = 'icon-tag-pill';
@@ -55,19 +50,6 @@ describe('ListTagPills', () => {
 		setupTest(<ListTagPills tags={SIX} lineWidth={2000} />);
 
 		expect(screen.queryByRole('button')).not.toBeInTheDocument();
-	});
-
-	// The fit must count the width "+N" is drawn with, or the subject loses the difference
-	test('counts "+N" as 24px at least, the width of its target', () => {
-		expect(LIST_TAG_PILLS_COUNTER_MIN_WIDTH).toBe(24);
-		expect(listTagPillsCounterWidth(2)).toBe(24);
-		expect(listTagPillsCounterWidth(1000)).toBeGreaterThan(24);
-	});
-
-	test('draws the plain "+N" 24px wide at least, as the fit counts it', () => {
-		setupTest(<ListTagPills tags={SIX} lineWidth={2000} />);
-
-		expect(screen.getByText('+2')).toHaveStyle({ minWidth: '1.5rem', textAlign: 'center' });
 	});
 
 	test('an icon-only pill shows the name of its tag on hover', async () => {

@@ -30,8 +30,6 @@ const LIST_PILL_CHROME_PX = 32;
 const BORDER_PX = 2;
 /** Horizontal padding of the "+N" text. */
 const COUNTER_PADDING_PX = 4;
-/** Narrowest "+N" of a list row: a 24×24 target, however short its text. */
-export const LIST_TAG_PILLS_COUNTER_MIN_WIDTH = 24;
 const FONT_FAMILY = 'Roboto, sans-serif';
 
 let measuringContext: OffscreenCanvasRenderingContext2D | null | undefined;
@@ -69,15 +67,9 @@ const pillWidth = (tag: TagPillItem): number => {
 	return bordered ? width + BORDER_PX : width;
 };
 
-/**
- * Width of "+N" with its padding, at least `LIST_TAG_PILLS_COUNTER_MIN_WIDTH`: the list's own counter,
- * or a button of the same size.
- */
+/** Width of "+N" with its padding: the list's own counter, or a button of the same size. */
 export const listTagPillsCounterWidth = (hiddenCount: number): number =>
-	Math.max(
-		Math.ceil(measureTextWidth(`+${hiddenCount}`)) + COUNTER_PADDING_PX,
-		LIST_TAG_PILLS_COUNTER_MIN_WIDTH
-	);
+	Math.ceil(measureTextWidth(`+${hiddenCount}`)) + COUNTER_PADDING_PX;
 
 const pxToRem = (px: number): string => `${px / 16}rem`;
 
@@ -86,9 +78,7 @@ const slotMaxWidth = (slot: TagPillSlot): string | undefined =>
 
 /** secondary.active rather than secondary: #828282 is below 4.5:1 on white at 12px. */
 const Counter = styled(Text)`
-	min-width: ${pxToRem(LIST_TAG_PILLS_COUNTER_MIN_WIDTH)};
 	padding: 0 0.125rem;
-	text-align: center;
 	color: ${({ theme }): string => theme.palette.secondary.active};
 `;
 

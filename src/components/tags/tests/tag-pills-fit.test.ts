@@ -43,7 +43,7 @@ describe('fitTagPills', () => {
 
 	test('turns the tags after the last pill that fits into icon-only pills, then "+N"', () => {
 		// 60 + 4 + 60 = 124; a third pill leaves no room for "+N". Icons of 20px, 4px apart: 148, 172;
-		// a third icon would need 196 + 24 (the icon of the last tag) > 200
+		// a third icon would need 196 + 24 (the "+1") > 200
 		const fit = fitTagPills({
 			lineWidth: 2000,
 			pillWidths: [60, 60, 60, 60, 60, 60],
@@ -80,7 +80,7 @@ describe('fitTagPills', () => {
 	});
 
 	test('a tag that is not the last one is never truncated: it becomes an icon', () => {
-		// 100 + 4 + 80 = 184, too much with the icon of the last tag; 96px are left, but another tag follows
+		// 100 + 4 + 80 = 184, too much with "+1"; 96px are left, but another tag follows
 		const fit = fitTagPills({ lineWidth: 2000, pillWidths: [100, 80, 60], counterWidth });
 
 		expect(fit.slots.slice(1)).toEqual([ICON, ICON]);
@@ -117,7 +117,7 @@ describe('fitTagPills', () => {
 	});
 
 	test('on a line narrower than 160px shows only icon-only pills, then "+N"', () => {
-		// budget 60 (150 * 0.4): 20 + 4 + 20 = 44 with no tag left; three icons would need 68
+		// budget 60 (150 * 0.4): 20 + 4 + 20 = 44 with no tag left; two icons and "+1" would need 68
 		expect(
 			kinds(fitTagPills({ lineWidth: 150, pillWidths: [60, 60], counterWidth }).slots)
 		).toEqual(['icon', 'icon']);
@@ -131,35 +131,5 @@ describe('fitTagPills', () => {
 
 		expect(fit.slots).toEqual([]);
 		expect(fit.hiddenCount).toBe(2);
-	});
-
-	describe('with a "+N" of 24px, wider than an icon', () => {
-		const wideCounter = (): number => 24;
-
-		test('two icons when they fit, not "+2" alone', () => {
-			// budget 46: two icons and their gap take 44
-			const fit = fitTagPills({ lineWidth: 115, pillWidths: [60, 60], counterWidth: wideCounter });
-
-			expect(fit.slots).toEqual([ICON, ICON]);
-			expect(fit.hiddenCount).toBe(0);
-		});
-
-		test('the first pill keeps room for the icons of the others, not for "+N"', () => {
-			// budget 120: 4 + 20 + 4 + 20 after the first pill, which gets 72
-			const fit = fitTagPills({
-				lineWidth: 300,
-				pillWidths: [80, 30, 30],
-				counterWidth: wideCounter
-			});
-
-			expect(fit.slots).toEqual([{ kind: 'pill', maxWidth: 72 }, ICON, ICON]);
-		});
-
-		test('never "+1": the single tag left is an icon', () => {
-			const fit = fitTagPills({ lineWidth: 200, pillWidths: [80, 80], counterWidth: wideCounter });
-
-			expect(kinds(fit.slots)).toEqual(['pill', 'icon']);
-			expect(fit.hiddenCount).toBe(0);
-		});
 	});
 });

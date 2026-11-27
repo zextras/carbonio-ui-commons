@@ -49,11 +49,7 @@ type FitContext = {
 	counterSpace: (hiddenCount: number) => number;
 };
 
-/**
- * Icon-only pills from `start` while they fit, keeping room for "+N" while tags remain. A single tag
- * left is never "+1": it is shown as an icon, which is narrower than "+N", even when it goes past the
- * budget (by gap + 20px at most, less than "+1" would).
- */
+/** Icon-only pills from `start` while they fit, keeping room for "+N" while tags remain. */
 const fillWithIcons = (start: number, state: FitState, context: FitContext): TagPillsFit => {
 	const { total, budget, gap, counterSpace } = context;
 	let index = start;
@@ -67,10 +63,6 @@ const fillWithIcons = (start: number, state: FitState, context: FitContext): Tag
 		state.slots.push({ kind: 'icon' });
 		index += 1;
 	}
-	if (total - index === 1) {
-		state.slots.push({ kind: 'icon' });
-		return { slots: state.slots, hiddenCount: 0 };
-	}
 	return { slots: state.slots, hiddenCount: total - index };
 };
 
@@ -83,9 +75,8 @@ const firstPillMaxWidth = ({ total, budget, gap, counterSpace }: FitContext): nu
 /**
  * How a list row shows its tags, in 40% of the line (at most `TAG_PILLS_MAX_BUDGET`): pills in order while they
  * fit; when the next one doesn't, the last tag as a pill truncated to what is left (64px at least),
- * any other as icon-only pills while they fit, then "+N" for the rest (never "+1": a single tag left
- * is an icon). Room for "+N", or for that icon, is kept while tags remain. The first pill is always
- * shown, and leaves room for an icon when more tags follow.
+ * any other as icon-only pills while they fit, then "+N" for the rest. Room for "+N" is kept while
+ * tags remain. The first pill is always shown, and leaves room for an icon when more tags follow.
  * A budget too small for a 64px pill shows icon-only pills only.
  */
 export const fitTagPills = ({
@@ -98,13 +89,7 @@ export const fitTagPills = ({
 		total: pillWidths.length,
 		budget: Math.min(lineWidth * TAG_PILLS_BUDGET_RATIO, TAG_PILLS_MAX_BUDGET),
 		gap,
-		// One tag left takes an icon, never "+1"
-		counterSpace: (hiddenCount) => {
-			if (hiddenCount === 0) {
-				return 0;
-			}
-			return gap + (hiddenCount === 1 ? ICON_TAG_PILL_SIZE : counterWidth(hiddenCount));
-		}
+		counterSpace: (hiddenCount) => (hiddenCount > 0 ? gap + counterWidth(hiddenCount) : 0)
 	};
 	const { total, budget, counterSpace } = context;
 	if (total === 0) {

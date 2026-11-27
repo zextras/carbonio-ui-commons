@@ -86,7 +86,6 @@ const slotMaxWidth = (slot: TagPillSlot): string | undefined =>
 
 /** secondary.active rather than secondary: #828282 is below 4.5:1 on white at 12px. */
 const Counter = styled(Text)`
-	box-sizing: border-box;
 	min-width: ${pxToRem(LIST_TAG_PILLS_COUNTER_MIN_WIDTH)};
 	padding: 0 0.125rem;
 	text-align: center;

@@ -43,6 +43,9 @@ export * from './components/list/list';
 
 // components/tags
 export * from './components/tags/delete-tag-modal';
+export * from './components/tags/list-tag-pills';
+export * from './components/tags/tag-pill';
+export * from './components/tags/tag-pills-fit';
 
 // hooks
 export * from './hooks/use-initialize-folders';

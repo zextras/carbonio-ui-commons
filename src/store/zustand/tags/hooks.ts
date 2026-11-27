@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { orderBy, pick } from 'lodash';
+import { pick } from 'lodash';
 
 import { useTagStore } from './store';
+import { sortTagsByName } from '../../../helpers/tags';
 import { Tag, Tags } from '../../../types/tags';
 
 function sortTags(tags: Tags): Array<Tag> {
-	return orderBy(Object.values(tags), (tag: Tag) => tag.name.toLowerCase(), 'asc');
+	return sortTagsByName(Object.values(tags));
 }
 
 export const useTags = (ids?: Array<string> | string): Tags =>
